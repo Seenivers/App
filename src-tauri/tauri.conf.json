@@ -4,10 +4,10 @@
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:5173",
-    "distDir": "../public"
+    "distDir": "../build"
   },
   "package": {
-    "productName": "rmdb",
+    "productName": "RMDB",
     "version": "0.1.0"
   },
   "tauri": {
@@ -21,11 +21,11 @@
         "readFile": true,
         "writeFile": true,
         "readDir": true,
-        "copyFile": true,
+        "copyFile": false,
         "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
-        "renameFile": true,
+        "removeDir": false,
+        "removeFile": false,
+        "renameFile": false,
         "exists": true
       },
       "dialog": {
@@ -34,7 +34,7 @@
         "confirm": true,
         "message": true,
         "open": true,
-        "save": true
+        "save": false
       },
       "window": {
         "all": true,
@@ -60,8 +60,8 @@
         "setMinSize": true,
         "setMaxSize": true,
         "setPosition": true,
-        "setFullscreen": true,
-        "setFocus": true,
+        "setFullscreen": false,
+        "setFocus": false,
         "setIcon": true,
         "startDragging": false,
         "print": false
