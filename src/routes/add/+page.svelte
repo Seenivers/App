@@ -192,7 +192,7 @@
 	}
 </script>
 
-<main class="min-h-screen h-fit w-full bg-neutral pb-10">
+<main class="min-h-screen h-fit w-full bg-base-100 pb-10">
 	<div class="w-full pt-5 flex justify-center gap-5">
 		<button class="btn text-xl" disabled={dir !== null} on:click={selectFile}>
 			Filmdatei auswählen
@@ -202,7 +202,7 @@
 		</button>
 		<a href="/" class="btn text-xl"> Zurück </a>
 	</div>
-	<hr class="my-5 border-2 border-base-100" />
+	<hr class="my-5 border-2 border-base-300" />
 	{#if data}
 		{#each data as item, index}
 			<div class="bg-base-200 p-3 rounded-md flex justify-between h-fit mt-3 mx-24">

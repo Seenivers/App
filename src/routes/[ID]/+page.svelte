@@ -66,59 +66,90 @@
 
 			<div>
 				<h1 class="mb-2 text-2xl font-bold">{data.tmdb.title}</h1>
-				<h2 class="mb-2 text-base font-bold">{data.tmdb.tagline}</h2>
+				{#if data.tmdb.tagline}
+					<h2 class="mb-2 text-base font-bold">{data.tmdb.tagline}</h2>
+				{/if}
 				<br />
-				<div class="mb-2">
-					<span class="font-bold">Stimmenanzahl:</span>
-					<p>{data.tmdb.vote_count}</p>
-				</div>
-				<div class="mb-2">
-					<span class="font-bold">Durchschnittliche Bewertung:</span>
-					<p>{data.tmdb.vote_average}</p>
-				</div>
+				{#if data.tmdb.vote_count}
+					<div class="mb-2">
+						<span class="font-bold">Stimmenanzahl:</span>
+						<p>{data.tmdb.vote_count}</p>
+					</div>
+				{/if}
+				{#if data.tmdb.vote_average}
+					<div class="mb-2">
+						<span class="font-bold">Durchschnittliche Bewertung:</span>
+						<p>{data.tmdb.vote_average}</p>
+					</div>
+				{/if}
 				<div class="mb-2 flex">
 					<span class="mr-2 font-bold">Genres:</span>
-					{#each data.tmdb.genres as genre (genre.id)}
-						<span class="mr-2">{genre.name}</span>
-					{/each}
+					{#if data.tmdb.genres && data.tmdb.genres.length > 0}
+						{#each data.tmdb.genres as genre (genre.id)}
+							<span class="mr-2">{genre.name}</span>
+						{/each}
+					{:else}
+						<span>Keine Informationen verfügbar</span>
+					{/if}
 				</div>
 				<div class="mb-2">
 					<span class="font-bold">Produktionsfirmen:</span>
 					<ul>
-						{#each data.tmdb.production_companies ?? [] as company}
-							<li>{company.name}</li>
-						{/each}
+						{#if data.tmdb.production_companies && data.tmdb.production_companies.length > 0}
+							{#each data.tmdb.production_companies as company}
+								<li>{company.name}</li>
+							{/each}
+						{:else}
+							<li>Keine Informationen verfügbar</li>
+						{/if}
 					</ul>
 				</div>
 				<div class="mb-2">
 					<span class="font-bold">Produktionsländer:</span>
 					<ul>
-						{#each data.tmdb.production_countries ?? [] as country}
-							<li>{country.name}</li>
-						{/each}
+						{#if data.tmdb.production_countries && data.tmdb.production_countries.length > 0}
+							{#each data.tmdb.production_countries as country}
+								<li>{country.name}</li>
+							{/each}
+						{:else}
+							<li>Keine Informationen verfügbar</li>
+						{/if}
 					</ul>
-				</div>
-				<div class="mb-2">
-					<span class="font-bold">Veröffentlichungsdatum:</span>
-					<p>{data.tmdb.release_date}</p>
-				</div>
-				<div class="mb-2">
-					<span class="font-bold">Laufzeit:</span>
-					<p>{data.tmdb.runtime} Minuten</p>
-				</div>
-				<div class="mb-2">
-					<span class="font-bold">Beliebtheit:</span>
-					<p>{data.tmdb.popularity}</p>
-				</div>
-				<div class="mb-2">
-					<span class="font-bold">Handlung:</span>
-					<p>{data.tmdb.overview}</p>
-				</div>
+				</div>				
+				{#if data.tmdb.release_date}
+					<div class="mb-2">
+						<span class="font-bold">Veröffentlichungsdatum:</span>
+						<p>{data.tmdb.release_date}</p>
+					</div>
+				{/if}
+				{#if data.tmdb.runtime}
+					<div class="mb-2">
+						<span class="font-bold">Laufzeit:</span>
+						<p>{data.tmdb.runtime} Minuten</p>
+					</div>
+				{/if}
+				{#if data.tmdb.popularity}
+					<div class="mb-2">
+						<span class="font-bold">Beliebtheit:</span>
+						<p>{data.tmdb.popularity}</p>
+					</div>
+				{/if}
+				{#if data.tmdb.overview}
+					<div class="mb-2">
+						<span class="font-bold">Handlung:</span>
+						<p>{data.tmdb.overview}</p>
+					</div>
+				{/if}
 			</div>
+			
 		</div>
 	{:else}
-		<span class="justify-center flex text-3xl w-full">Lade Daten</span>
-		<a href="/" class="btn">Zurück</a>
+		<div class="justify-center flex w-full h-full">
+			<div class="grid gap-8">
+				<span class=" text-5xl ">Keine Daten</span>
+			<a href="/" class="btn text-3xl">Zurück</a>
+			</div>
+		</div>
 	{/if}
 </main>
 
@@ -157,7 +188,7 @@
 				class="input input-bordered join-item"
 				type="number"
 				placeholder="TMDB ID"
-				id="{id.toString()}"
+				id={id.toString()}
 				bind:value={newID}
 				required
 			/>
