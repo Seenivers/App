@@ -1,3 +1,5 @@
+import { get } from "svelte/store";
+import { settings } from "./db";
 const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM2QzNTk3MGMxNDI1ZDAyNjNlODgxOTc2YjdkMGE2OCIsInN1YiI6IjYzYmZjYzQzZTE2ZTVhMDA3ZWE5NmVkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-0B4iiurqQ7Pf5axF1WarNlXLOhhytlby5xpulvs1U4"
 export const imageURL = "https://image.tmdb.org/t/p/original/"
 export const placeholderURL = 'https://via.placeholder.com/300x450'
@@ -15,7 +17,7 @@ export async function findMovie(name: string) {
 
 
     try {
-      let response = await fetch('https://api.themoviedb.org/3/search/movie?language=de-de&query=' + name, options)
+      let response = await fetch(`https://api.themoviedb.org/3/search/movie?language=${get(settings).language}&query=` + name, options)
 
       if (response.ok) {
         let jsonData = await response.json();

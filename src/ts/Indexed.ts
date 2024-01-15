@@ -223,3 +223,8 @@ type Medias = {
     total_pages: number;
     total_results: number;
   }; {}
+
+
+  type Settings = {
+    language: string
+  }
