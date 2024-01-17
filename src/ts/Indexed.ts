@@ -226,5 +226,6 @@ type Medias = {
 
 
   type Settings = {
-    language: string
+    language: string;
+    keywords: string[]
   }

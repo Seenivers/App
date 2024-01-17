@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { settings } from '../../ts/db';
+	import { save } from '../../ts/dir';
 
-
-	console.log('Systemsprache:', $settings.language);
 	const languageNames = [
 		{ name: 'Afrikaans', value: 'af-ZA' },
 		{ name: 'Arabic (United Arab Emirates)', value: 'ar-AE' },
@@ -85,8 +84,8 @@
 		{ name: 'Chinese (Taiwan)', value: 'zh-TW' },
 		{ name: 'Zulu (South Africa)', value: 'zu-ZA' }
 	];
+	let Words: string;
 
-	
 </script>
 
 <main class="w-full flex justify-center h-screen overflow-auto">
@@ -100,19 +99,31 @@
 					<span class="label-text text-xl">Wähle deine Sprache aus</span>
 				</div>
 				<select class="select select-bordered text-lg" bind:value={$settings.language}>
-					{#each languageNames as names}
-						<option value={names.value} selected={names.value === $settings.language}
-							>{names.name}</option
-						>
-					{/each}
-				</select>
+						{#each languageNames as names}
+							<option value={names.value} selected={names.value === $settings.language}
+								>{names.name}</option
+							>
+						{/each}
+					</select>
+							</label>
+
+			<label class="form-control">
+				<div class="label">
+					<span class="label-text">Schlüsselwörter</span>
+				</div>
+				<textarea
+					class="textarea textarea-bordered h-24 w-2/5"
+					placeholder="Mit Komma trennen"
+					bind:value={Words}
+					on:change={() => {
+						settings.update((e) => {
+							e.keywords = Words.split(',');
+							return e;
+						});
+						save();
+					}}
+				/>
 			</label>
-
-
-
-			  
-			  
 		</div>
-
 	</div>
 </main>
