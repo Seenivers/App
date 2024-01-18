@@ -111,7 +111,10 @@
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "endpoints": ["https://db.rmdb.blackgame.net/latest.json"],
+      "dialog": false,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEMwRDk3MDFFNUZGMTRGOQpSV1Q1RlAvbEFaY05ERGlTemZ5RlE5ekJ1dmQ3bXB2TDVSZTBoeVBra3ozNUtFc0Y2T2RmMEFXOQo="
     },
     "windows": [
       {
