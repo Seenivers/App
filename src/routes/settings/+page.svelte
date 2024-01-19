@@ -126,7 +126,7 @@
 						bind:value={Words}
 						on:change={() => {
 							settings.update((e) => {
-								e.keywords = Words.split(',');
+								e.keywords = Words.replace(/\s/g, '').split(',');
 								return e;
 							});
 							save();

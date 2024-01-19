@@ -2,7 +2,7 @@
 	import { open } from '@tauri-apps/api/dialog';
 	import { readDir } from '@tauri-apps/api/fs';
 	import { findMovie, getMovie, imageURL, placeholderURL } from '../../ts/tmdb';
-	import { mediaLibrary } from '../../ts/db';
+	import { mediaLibrary, settings } from '../../ts/db';
 	import { save } from '../../ts/dir';
 	import { videoDir } from '@tauri-apps/api/path';
 
@@ -24,31 +24,6 @@
 	let dir: string | null = null;
 	let file: boolean = false;
 	let data: MediaItem[];
-	let filterKeywords: string[] = [
-		'mp4',
-		'HD',
-		'Stream',
-		'»',
-		'StreamKiste',
-		'tv',
-		'mp4',
-		'HDStream',
-		'unrated',
-		'proper',
-		'limited',
-		'internal',
-		'telesync',
-		'dvdrip',
-		'bdrip',
-		'xvid',
-		'hdtv',
-		'1080p',
-		'720p',
-		'bluray',
-		'x264',
-		'x265',
-		'hevc'
-	];
 	let status: { disabledInputs: boolean; searchStatus: string; searchResults?: TMDBMovie[] }[] = [];
 	let modalID: number = 0;
 
@@ -125,7 +100,7 @@
 			const item = data[i];
 			const fullName = item.name
 				.split(/[.\s]+/)
-				.filter((word) => !filterKeywords.includes(word))
+				.filter((word) => !$settings.keywords.includes(word))
 				.join(' ');
 
 			status[i] = { disabledInputs: false, searchStatus: 'searching' };
@@ -215,7 +190,7 @@
 				<span>
 					Name: {item.name
 						.split(/[.\s]+/)
-						.filter((word) => !filterKeywords.includes(word))
+						.filter((word) => !$settings.keywords.includes(word))
 						.join(' ')}{' '}
 					<br />
 					Pfad: {item.path}
