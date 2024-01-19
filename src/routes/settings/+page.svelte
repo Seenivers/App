@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { settings } from '../../ts/db';
 	import { save } from '../../ts/dir';
 
@@ -86,6 +87,13 @@
 	];
 	let Words: string;
 
+	const unsubscribe = settings.subscribe((e) => {
+		if (e) {
+			Words = e.keywords.join(', ');
+		}
+	});
+
+	onDestroy(unsubscribe);
 </script>
 
 <main class="w-full flex justify-center h-screen overflow-auto">
@@ -94,36 +102,38 @@
 		<h1 class="text-4xl flex place-content-center w-full">Settings</h1>
 
 		<div>
-			<label class="form-control w-full max-w-xs">
-				<div class="label">
-					<span class="label-text text-xl">Wähle deine Sprache aus</span>
-				</div>
-				<select class="select select-bordered text-lg" bind:value={$settings.language}>
+			{#if $settings && $settings.keywords}
+				<label class="form-control w-full max-w-xs">
+					<div class="label">
+						<span class="label-text text-xl">Wähle deine Sprache aus</span>
+					</div>
+					<select class="select select-bordered text-lg" bind:value={$settings.language}>
 						{#each languageNames as names}
 							<option value={names.value} selected={names.value === $settings.language}
 								>{names.name}</option
 							>
 						{/each}
 					</select>
-							</label>
+				</label>
 
-			<label class="form-control">
-				<div class="label">
-					<span class="label-text">Schlüsselwörter</span>
-				</div>
-				<textarea
-					class="textarea textarea-bordered h-24 w-2/5"
-					placeholder="Mit Komma trennen"
-					bind:value={Words}
-					on:change={() => {
-						settings.update((e) => {
-							e.keywords = Words.split(',');
-							return e;
-						});
-						save();
-					}}
-				/>
-			</label>
+				<label class="form-control">
+					<div class="label">
+						<span class="label-text">Schlüsselwörter</span>
+					</div>
+					<textarea
+						class="textarea textarea-bordered h-28 w-full max-w-xs max-h-80"
+						placeholder="Mit Komma trennen"
+						bind:value={Words}
+						on:change={() => {
+							settings.update((e) => {
+								e.keywords = Words.split(',');
+								return e;
+							});
+							save();
+						}}
+					/>
+				</label>
+			{/if}
 		</div>
 	</div>
 </main>

@@ -13,7 +13,6 @@
 
 	onMount(async () => {
 		data = await checkUpdate();
-		console.log(data);
 
 		if (data.shouldUpdate) {
 			update = true;
@@ -38,7 +37,7 @@
 
 {#if update && data}
 	<div
-		class="fixed bottom-5 right-5 h-fit w-80 rounded-md border border-neutral bg-neutral-content text-black"
+		class="fixed bottom-5 right-5 h-fit w-80 rounded-md border border-neutral bg-neutral-content text-black z-10"
 	>
 		<span class="mx-3 text-lg">Eine neue Version ist Verfügbar</span>
 		<div class="p-3">

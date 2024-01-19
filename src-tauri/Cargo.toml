@@ -1,12 +1,12 @@
 [package]
-name = "rmdb"
+name = "app"
 version = "0.1.0"
 description = "Ralf's Movie Database"
 authors = ["Ralf"]
 license = ""
 repository = "RMDB"
 default-run = "app"
-edition = "2024"
+edition = "2021"
 rust-version = "1.60"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
