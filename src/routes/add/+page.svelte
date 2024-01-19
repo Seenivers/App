@@ -14,6 +14,7 @@
 	interface MediaItem {
 		name: string;
 		path: string;
+		watched: boolean;
 		tmdb: {
 			id: number | null;
 			searchResults?: SearchResult[];
@@ -86,10 +87,15 @@
 
 		if (file) {
 			entries = dir;
-			data = [{ name: dir.split('\\').pop() || '', path: dir, tmdb: { id: null } }];
+			data = [{ name: dir.split('\\').pop() || '', path: dir, watched: false, tmdb: { id: null } }];
 		} else {
 			entries = await readDir(dir);
-			data = entries.map((entry) => ({ name: entry.name, path: entry.path, tmdb: { id: null } }));
+			data = entries.map((entry) => ({
+				name: entry.name,
+				path: entry.path,
+				watched: false,
+				tmdb: { id: null }
+			}));
 		}
 
 		data = data.filter((item) => !$mediaLibrary.map((item) => item.path).includes(item.path));
@@ -298,9 +304,7 @@
 								class="flex bg-neutral p-3 rounded-md hover:bg-opacity-70 text-lg h-fit"
 							>
 								<img
-									src={result.poster_path
-										? imageURL + result.poster_path
-										: placeholderURL}
+									src={result.poster_path ? imageURL + result.poster_path : placeholderURL}
 									alt="poster"
 									class="h-72"
 								/>

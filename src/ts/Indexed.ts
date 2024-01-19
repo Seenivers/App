@@ -1,6 +1,7 @@
 type Medias = {
     name: string;
     path: string;
+    watched: boolean;
     type: "movie" | "series"; // Entweder "movie" oder "series"
     tmdb: {
       // Gemeinsame Felder für Filme und Serien
@@ -102,6 +103,7 @@ type Medias = {
   type Media = {
     name: string;
     path: string;
+    watched: boolean;
     type: "movie" | "series"; // Entweder "movie" oder "series"
     tmdb: {
       // Gemeinsame Felder für Filme und Serien

@@ -62,6 +62,19 @@
 						editModal.showModal();
 					}}>Bearbeiten</button
 				>
+				<button
+					class="btn"
+					on:click={() => {
+						mediaLibrary.update((library) => {
+							return library.map((item) => {
+								if (item.tmdb.id === id) {
+									item.watched = !item.watched;
+								}
+								return item;
+							});
+						});
+					}}>{data.watched ? 'Als Gesehen markieren' : 'Als Nicht Gesehen markieren'}</button
+				>
 			</div>
 
 			<div>
@@ -115,7 +128,7 @@
 							<li>Keine Informationen verfügbar</li>
 						{/if}
 					</ul>
-				</div>				
+				</div>
 				{#if data.tmdb.release_date}
 					<div class="mb-2">
 						<span class="font-bold">Veröffentlichungsdatum:</span>
@@ -141,13 +154,12 @@
 					</div>
 				{/if}
 			</div>
-			
 		</div>
 	{:else}
 		<div class="justify-center flex w-full h-full">
 			<div class="grid gap-8">
-				<span class=" text-5xl ">Keine Daten</span>
-			<a href="/" class="btn text-3xl">Zurück</a>
+				<span class=" text-5xl">Keine Daten</span>
+				<a href="/" class="btn text-3xl">Zurück</a>
 			</div>
 		</div>
 	{/if}
