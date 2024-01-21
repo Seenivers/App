@@ -18,7 +18,7 @@
 					class="relative hover:bg-base-content/20 transition-all bg-base-100 h-fit w-72 rounded-2xl px-2 pt-2 duration-300 hover:scale-105"
 				>
 					{#if watched}
-						<div class="z-9 absolute left-2 top-2 rounded-2xl bg-red-950 bg-opacity-90 px-2">
+						<div class="z-9 absolute left-2 top-2 rounded-2xl bg-red-950 bg-opacity-90 px-2 m-2">
 							<span>Angesehen</span>
 						</div>
 					{/if}

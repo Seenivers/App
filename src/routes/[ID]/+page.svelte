@@ -33,7 +33,11 @@
 <main class="h-fit w-full p-3 sm:p-10">
 	{#if data}
 		<div class="mx-auto w-full lg:w-[80%] xl:w-[50%]">		
-				<Videoplayer src={convertFileSrc(data.path)} poster={imageURL + data.tmdb.backdrop_path}></Videoplayer>			
+				{#if data.path}
+					<Videoplayer src={convertFileSrc(data.path)} poster={imageURL + data.tmdb.backdrop_path}></Videoplayer>
+				{:else}
+					<span>Video Datei Nicht gefunden</span>
+				{/if}
 			<div>
 				<a href="/" class="btn mb-2">Zurück</a>
 				<button
