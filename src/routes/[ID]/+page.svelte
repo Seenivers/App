@@ -6,6 +6,7 @@
 	import { convertFileSrc } from '@tauri-apps/api/tauri';
 	import { getMovie, imageURL } from '../../ts/tmdb';
 	import { save } from '../../ts/dir';
+	import Videoplayer from '$lib/videoplayer.svelte';
 
 	let id: number = parseInt($page.params.ID);
 	let data: Media;
@@ -31,18 +32,8 @@
 
 <main class="h-fit w-full p-3 sm:p-10">
 	{#if data}
-		<div class="mx-auto w-full lg:w-[80%] xl:w-[50%]">
-			<div class="flex justify-center">
-				<!-- svelte-ignore a11y-media-has-caption -->
-				<video
-					src={convertFileSrc(data.path)}
-					poster={imageURL + data.tmdb.backdrop_path}
-					controls
-					controlsList="nodownload noremoteplayback"
-				>
-					Your browser does not support the video tag.
-				</video>
-			</div>
+		<div class="mx-auto w-full lg:w-[80%] xl:w-[50%]">		
+				<Videoplayer src={convertFileSrc(data.path)} poster={imageURL + data.tmdb.backdrop_path}></Videoplayer>			
 			<div>
 				<a href="/" class="btn mb-2">Zurück</a>
 				<button
