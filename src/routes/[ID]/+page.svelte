@@ -34,7 +34,7 @@
 	{#if data}
 		<div class="mx-auto w-full lg:w-[80%] xl:w-[50%]">		
 				{#if data.path}
-					<Videoplayer src={convertFileSrc(data.path)} poster={imageURL + data.tmdb.backdrop_path}></Videoplayer>
+					<Videoplayer src={convertFileSrc(data.path)} poster={imageURL + data.tmdb.backdrop_path} ID={id}></Videoplayer>
 				{:else}
 					<span>Video Datei Nicht gefunden</span>
 				{/if}

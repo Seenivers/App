@@ -15,6 +15,7 @@
 		name: string;
 		path: string;
 		watched: boolean;
+		watchTime: number;
 		tmdb: {
 			id: number | null;
 			searchResults?: SearchResult[];
@@ -62,9 +63,10 @@
 
 		if (file) {
 			entries = dir;
-			data = [{ name: dir.split('\\').pop() || '', path: dir, watched: false, tmdb: { id: null } }];
+			data = [{ name: dir.split('\\').pop() || '', path: dir, watched: false, watchTime: 0, tmdb: { id: null } }];
 		} else {
 			entries = await readDir(dir);
+			// @ts-ignore
 			data = entries.map((entry) => ({
 				name: entry.name,
 				path: entry.path,
@@ -164,6 +166,7 @@
 
 			if (!isDuplicate) {
 				data[index].tmdb = await getMovie(tmdbId);
+				// @ts-ignore
 				mediaLibrary.update((library) => [...library, data[index]]);
 				save();
 			} else {
@@ -270,6 +273,7 @@
 							<button
 								on:click={async () => {
 									data[i].tmdb = result;
+									// @ts-ignore
 									mediaLibrary.update((library) => [...library, data[i]]);
 									status[i] = { disabledInputs: true, searchStatus: 'foundOne' };
 									save();
