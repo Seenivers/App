@@ -77,7 +77,7 @@
 								return item;
 							});
 						});
-					}}>{data.watched ? 'Als Gesehen markieren' : 'Als Nicht Gesehen markieren'}</button
+					}}>{data.watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}</button
 				>
 			</div>
 
