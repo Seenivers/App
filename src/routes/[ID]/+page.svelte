@@ -7,15 +7,20 @@
 	import { getMovie, imageURL } from '../../ts/tmdb';
 	import { save } from '../../ts/dir';
 	import Videoplayer from '$lib/videoplayer.svelte';
+	import { BaseDirectory, exists } from '@tauri-apps/api/fs';
 
 	let id: number = parseInt($page.params.ID);
 	let data: Media;
 	let newID: number = id;
+	let pathAvailable: boolean = false;
 
 	const unsubscribe = mediaLibrary.subscribe(async (value: Medias) => {
 		if (id && value !== undefined) {
 			// @ts-ignore
 			data = value.find((value: Media) => value.tmdb.id === id);
+			if (data && data.path) {
+				pathAvailable = await exists(data.path, { dir: BaseDirectory.AppData });
+			}
 		}
 	});
 
@@ -32,12 +37,16 @@
 
 <main class="h-fit w-full p-3 sm:p-10">
 	{#if data}
-		<div class="mx-auto w-full lg:w-[80%] xl:w-[50%]">		
-				{#if data.path}
-					<Videoplayer src={convertFileSrc(data.path)} poster={imageURL + data.tmdb.backdrop_path} ID={id}></Videoplayer>
-				{:else}
-					<span>Video Datei Nicht gefunden</span>
-				{/if}
+		<div class="mx-auto w-full lg:w-[80%] xl:w-[50%]">
+			{#if pathAvailable}
+				<Videoplayer
+					src={convertFileSrc(data.path)}
+					poster={imageURL + data.tmdb.backdrop_path}
+					ID={id}
+				/>
+			{:else}
+				<span class="text-2xl font-bold underline">Video Datei Nicht gefunden</span>
+			{/if}
 			<div>
 				<a href="/" class="btn mb-2">Zurück</a>
 				<button
