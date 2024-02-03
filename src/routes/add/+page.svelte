@@ -54,6 +54,7 @@
 			loadData();
 		}
 	}
+
 	async function loadData() {
 		if (dir === null) {
 			return;
@@ -63,7 +64,15 @@
 
 		if (file) {
 			entries = dir;
-			data = [{ name: dir.split('\\').pop() || '', path: dir, watched: false, watchTime: 0, tmdb: { id: null } }];
+			data = [
+				{
+					name: dir.split('\\').pop() || '',
+					path: dir,
+					watched: false,
+					watchTime: 0,
+					tmdb: { id: null }
+				}
+			];
 		} else {
 			entries = await readDir(dir);
 			// @ts-ignore
@@ -94,7 +103,7 @@
 	}
 
 	async function suche() {
-		if (!data) {
+		if (!data || !window.navigator.onLine) {
 			return;
 		}
 
@@ -178,16 +187,24 @@
 
 <main class="min-h-screen h-fit w-full bg-base-100 pb-10">
 	<div class="w-full pt-5 flex justify-center gap-5">
-		<button class="btn text-xl" disabled={dir !== null} on:click={selectFile}>
+		<button
+			class="btn text-xl"
+			disabled={dir !== null || !window.navigator.onLine}
+			on:click={selectFile}
+		>
 			Filmdatei auswählen
 		</button>
-		<button class="btn text-xl" disabled={dir !== null} on:click={selectFolder}>
+		<button
+			class="btn text-xl"
+			disabled={dir !== null || !window.navigator.onLine}
+			on:click={selectFolder}
+		>
 			Ordner auswählen
 		</button>
 		<a href="/" class="btn text-xl"> Zurück </a>
 	</div>
 	<hr class="my-5 border-2 border-base-300" />
-	{#if data}
+	{#if data && window.navigator.onLine}
 		{#each data as item, index}
 			<div class="bg-base-200 p-3 rounded-md flex justify-between h-fit mt-3 mx-24">
 				<span>
@@ -220,7 +237,7 @@
 							: status[index].searchStatus === 'foundMultiple'
 							? 'btn-info'
 							: ''}
-							{status[index].searchStatus !== 'foundMultiple' ? 'btn-ghost' : ''}						"
+							{status[index].searchStatus !== 'foundMultiple' ? 'btn-ghost' : ''}"
 					>
 						{#if status[index].searchStatus === 'notStarted'}
 							<span>⏰</span>
@@ -247,6 +264,10 @@
 				</div>
 			</div>
 		{/each}
+	{:else if !window.navigator.onLine}
+		<span class="w-full flex justify-center text-xl underline"
+			>Du bist Offline und kannst gerade keine Filme hinzufügen.</span
+		>
 	{/if}
 </main>
 
