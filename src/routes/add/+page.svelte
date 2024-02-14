@@ -75,7 +75,9 @@
 			];
 		} else {
 			entries = await readDir(dir);
-			// @ts-ignore
+			// Filtere nur die .mp4-Dateien
+			entries = entries.filter((entry) => entry.name.toLowerCase().endsWith('.mp4'));
+			// Mapping für die Daten
 			data = entries.map((entry) => ({
 				name: entry.name,
 				path: entry.path,
