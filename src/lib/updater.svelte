@@ -12,10 +12,14 @@
 	let data: UpdateResult;
 
 	onMount(async () => {
-		data = await checkUpdate();
+		if (window.navigator.onLine) {
+			data = await checkUpdate();
 
-		if (data.shouldUpdate) {
-			update = true;
+			if (data.shouldUpdate) {
+				update = true;
+			}
+		} else {
+			console.log('No internet connection');
 		}
 	});
 

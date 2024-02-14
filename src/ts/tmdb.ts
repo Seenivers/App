@@ -5,7 +5,7 @@ export const imageURL = "https://image.tmdb.org/t/p/original/"
 export const placeholderURL = 'https://via.placeholder.com/300x450'
 
 export async function findMovie(name: string) {
-  if (window.navigator.onLine) {throw("Du bist offline")}
+  if (!window.navigator.onLine) {throw("Du bist offline")}
   if (name) {
     const options = {
       method: 'GET',
@@ -38,7 +38,7 @@ export async function findMovie(name: string) {
 
 // https://developer.themoviedb.org/reference/movie-details
 export async function getMovie(ID: number) {
-  if (window.navigator.onLine) {throw("Du bist offline")}
+  if (!window.navigator.onLine) {throw("Du bist offline")}
   if (ID) {
     const options = {
       method: 'GET',
