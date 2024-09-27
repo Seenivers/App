@@ -12,6 +12,7 @@
 		"fs:allow-write-text-file",
 		"fs:allow-read-text-file",
 		"fs:allow-remove",
+		"fs:allow-open",
 		{
 			"identifier": "fs:scope",
 			"allow": [{ "path": "$APPDATA" }, { "path": "$APPDATA/**" }]
