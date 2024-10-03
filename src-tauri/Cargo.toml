@@ -3,8 +3,10 @@ name = "Seenivers"
 version = "0.1.0"
 description = "A Seenivers App"
 authors = ["BlackTiger007"]
-license = ""
-repository = ""
+homepage = "https://seenivers.com"
+license = "GNU General Public License v3.0"
+license-file = "https://github.com/Seenivers/.github/blob/main/LICENSE"
+repository = "https://github.com/Seenivers"
 edition = "2021"
 rust-version = "1.71"
 
