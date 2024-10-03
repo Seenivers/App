@@ -16,6 +16,10 @@
 		{
 			"identifier": "fs:scope",
 			"allow": [{ "path": "$APPDATA" }, { "path": "$APPDATA/**" }, { "path": "*/**" }]
+		},
+		{
+			"identifier": "http:default",
+			"allow": [{ "url": "https://seenivers.com" }]
 		}
 	]
 }
