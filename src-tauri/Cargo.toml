@@ -5,7 +5,6 @@ description = "A Seenivers App"
 authors = ["BlackTiger007"]
 homepage = "https://seenivers.com"
 license = "GNU General Public License v3.0"
-license-file = "https://github.com/Seenivers/.github/blob/main/LICENSE"
 repository = "https://github.com/Seenivers"
 edition = "2021"
 rust-version = "1.71"
@@ -29,3 +28,7 @@ tauri-plugin-dialog = "2.0.0-rc"
 tauri-plugin-fs = "2.0.0-rc"
 tauri-plugin-store = "2.0.0-rc"
 tauri-plugin-http = "2.0.0-rc"
+tauri-plugin-process = "2"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"
