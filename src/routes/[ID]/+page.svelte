@@ -32,7 +32,7 @@
 </script>
 
 <!-- Navbar -->
-<nav class="navbar flex-wrap gap-3 bg-base-100 p-2 md:p-4">
+<nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100 p-2 md:p-4">
 	<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
 	<button
 		class="btn btn-sm my-2 md:btn-md"
@@ -59,13 +59,12 @@
 	>
 		{$data.movies[index].watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 	</button>
-	<a
+	<!-- <a
 		href="/{$data.movies[index].belongs_to_collection
 			? $data.movies[index].belongs_to_collection.id
 			: ''}/collection"
-		class="btn btn-sm md:btn-md"
-		class:btn-disabled={!$data.movies[index].belongs_to_collection}>Öffne Sammlung</a
-	>
+		class="btn btn-sm md:btn-md">Öffne Sammlung</a
+	> -->
 </nav>
 
 <!-- Main -->
