@@ -5,6 +5,18 @@ import type { Data } from './types';
 // Initialize the Store instance
 const store = new Store('data.lib', 'AppConfig');
 
+const save = async () => {
+	data.subscribe((data) => {
+		store.content = {
+			settings: data.settings,
+			movies: data.movies,
+			actors: data.actors,
+			collections: data.collections
+		};
+	});
+	await store.save();
+};
+
 // Default settings
 const defaultSettings = {
 	language: window.navigator.language,
@@ -29,6 +41,9 @@ const defaultSettings = {
 	adult: false
 };
 
+// Initialize the writable store with a placeholder
+export const data = writable<Data>();
+
 // Function to load stored data or use default values
 async function initializeData() {
 	const savedData = await store.load();
@@ -39,22 +54,15 @@ async function initializeData() {
 		movies: savedData?.movies || [],
 		actors: savedData?.actors || [],
 		collections: savedData?.collections || [],
-		save: async () => {
-			data.subscribe((data) => {
-				store.content = {
-					settings: data.settings,
-					movies: data.movies,
-					actors: data.actors,
-					collections: data.collections
-				};
-			});
-			await store.save();
-		}
+		save
 	};
 }
 
-// Initialize the writable store
-export const data = writable<Data>(await initializeData());
+// Load data asynchronously and update the store once it's ready
+(async () => {
+	const initialData = await initializeData();
+	data.set(initialData);
+})();
 
 // Monitor online status and update settings
 const onlineHandler = () => {
