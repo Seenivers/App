@@ -15,13 +15,15 @@
 		]
  */
 
+import { app } from '@tauri-apps/api';
 import {
 	exists,
 	BaseDirectory,
 	create,
 	writeTextFile,
 	readTextFile,
-	remove
+	remove,
+	mkdir
 } from '@tauri-apps/plugin-fs';
 
 export class Store {
@@ -47,6 +49,11 @@ export class Store {
 	 * @returns {Promise<Record<string, any>>} The content of the store or an empty object.
 	 */
 	async load(): Promise<Record<string, any>> {
+		// Gibt es App identifier (seenivers)
+		if (!(await exists('', { baseDir: BaseDirectory.AppConfig }))) {
+			await mkdir('', { baseDir: BaseDirectory.AppConfig, recursive: true });
+		}
+
 		if (await exists(this.fileName, { baseDir: BaseDirectory.AppConfig })) {
 			const content = await readTextFile(this.fileName, {
 				baseDir: BaseDirectory.AppConfig
