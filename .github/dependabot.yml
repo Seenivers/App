@@ -13,7 +13,7 @@ updates:
       time: "09:00"
       timezone: "Europe/Berlin"
 
-  - package-ecosystem: "Cargo" # See documentation for possible values
+  - package-ecosystem: "cargo" # See documentation for possible values
     directory: "./src-tauri" # Location of package manifests
     schedule:
       interval: "monthly"
