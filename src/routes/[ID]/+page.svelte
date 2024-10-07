@@ -59,12 +59,6 @@
 	>
 		{$data.movies[index].watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 	</button>
-	<!-- <a
-		href="/{$data.movies[index].belongs_to_collection
-			? $data.movies[index].belongs_to_collection.id
-			: ''}/collection"
-		class="btn btn-sm md:btn-md">Öffne Sammlung</a
-	> -->
 </nav>
 
 <!-- Main -->
