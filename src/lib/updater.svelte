@@ -11,7 +11,7 @@
 	let modalOpen = false;
 
 	onMount(async () => {
-		if (!$data.settings.online) return;
+		if ($data && !$data.settings.online) return;
 		update = await check();
 		if (update) {
 			modalOpen = true;

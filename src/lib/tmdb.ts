@@ -1,6 +1,7 @@
 import { fetch } from '@tauri-apps/plugin-http';
 import TMDB from '@blacktiger/tmdb';
 import { data } from './db';
+import { newToast } from './toast/toast';
 
 const STATIC_KEY = '51baf525-2720-4c43-8d34-b759bb71ae88';
 let apiKey: string | null = null; // Initialisiere apiKey als null
@@ -23,6 +24,7 @@ async function newApiKey() {
 		return true; // Erfolgreich abgerufen
 	} else {
 		console.error('Fehler beim Abrufen des API-Schlüssels:', result);
+		newToast('error', 'Fehler beim Abrufen des API-Schlüssels.' + result);
 		return false; // Fehler beim Abrufen
 	}
 }
@@ -36,6 +38,7 @@ newApiKey().then((success) => {
 		tmdb = new TMDB(apiKey, language()); // Initialisiere tmdb erst, wenn apiKey gesetzt ist
 	} else {
 		console.error('API-Key konnte nicht abgerufen werden.');
+		newToast('error', 'API-Key konnte nicht abgerufen werden.');
 	}
 });
 

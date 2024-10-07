@@ -1,6 +1,6 @@
 import { Store } from './store';
 import { writable } from 'svelte/store';
-import type { Data } from './types';
+import type { Data, Settings } from './types';
 
 // Initialize the Store instance
 const store = new Store('data.lib', 'AppConfig');
@@ -18,7 +18,7 @@ const save = async () => {
 };
 
 // Default settings
-const defaultSettings = {
+const defaultSettings: Settings = {
 	language: window.navigator.language,
 	online: window.navigator.onLine,
 	keywords: [
@@ -38,7 +38,8 @@ const defaultSettings = {
 		'StreamKistetv',
 		'»'
 	],
-	adult: false
+	adult: false,
+	toastPosition: { horizontal: 'end', vertical: 'bottom' }
 };
 
 // Initialize the writable store with a placeholder

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { data } from './db';
+	import { newToast } from './toast/toast';
 
 	export let index: number;
 	let duration: number;
@@ -31,7 +32,10 @@
 
 	function Fullscreen() {
 		if (document.fullscreenElement) {
-			document.exitFullscreen().catch((err) => console.error(err));
+			document.exitFullscreen().catch((err) => {
+				console.error(err);
+				newToast('error', 'Fehler beim Vollbildmodus verlassen.' + err);
+			});
 		} else {
 			player.requestFullscreen();
 		}

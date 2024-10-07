@@ -5,6 +5,7 @@
 	import { tmdb } from '$lib/tmdb';
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
+	import { newToast } from '$lib/toast/toast';
 
 	let selected: string | string[] | null = null;
 	let status: {
@@ -128,6 +129,10 @@
 		status[i].searchStatus = 'searching';
 		if (!$data.settings.online && tmdb) {
 			console.error(!$data.settings.online && tmdb);
+			newToast(
+				'error',
+				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten'
+			);
 			return;
 		}
 		const { name, primaryReleaseYear, page } = status[i].searchParams;
@@ -162,6 +167,10 @@
 	async function addMovie(id: number, path: string) {
 		if (!$data.settings.online && tmdb) {
 			console.error(!$data.settings.online && tmdb);
+			newToast(
+				'error',
+				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten'
+			);
 			return;
 		}
 		const result = await tmdb.movie.details(id);
