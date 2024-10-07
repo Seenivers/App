@@ -1,6 +1,6 @@
 {
 	"productName": "seenivers",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"identifier": "seenivers",
 	"build": {
 		"frontendDist": "../build",
@@ -19,7 +19,7 @@
 			}
 		],
 		"security": {
-			"csp": "default-src 'self' ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost",
+			"csp": "default-src 'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org https://api.themoviedb.org",
 			"assetProtocol": {
 				"enable": true,
 				"scope": {
