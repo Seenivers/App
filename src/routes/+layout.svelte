@@ -15,7 +15,11 @@
 		<slot />
 		<Toast />
 	{:else}
-		<span class="loading loading-infinity loading-lg text-info"></span>
+		<div class="flex items-center justify-center">
+			<div
+				class="h-16 w-16 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+			/>
+		</div>
 	{/if}
 	<Updater />
 </div>
