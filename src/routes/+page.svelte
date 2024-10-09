@@ -66,7 +66,7 @@
 		</div>
 		<select class="join-item select select-bordered" bind:value={searchCriteria.genre}>
 			<option value={null}>Kein Filter</option>
-			{#each $data.movies.flatMap((item) => item.genres.map((i) => i.name)) as item}
+			{#each Array.from(new Set($data.movies.flatMap( (item) => item.genres.map((i) => i.name) ))) as item}
 				<option>{item}</option>
 			{/each}
 		</select>
