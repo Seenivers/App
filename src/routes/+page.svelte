@@ -1,6 +1,50 @@
-<script>
+<script lang="ts">
 	import { placeholderURL, imageURL } from '$lib';
 	import { data } from '$lib/db';
+
+	// Typ für die Suchparameter
+	type SearchCriteria = {
+		title: string;
+		genre: string | null;
+		isWatched: boolean | null;
+	};
+
+	// Suchparameter initialisieren
+	let searchCriteria: SearchCriteria = {
+		title: '',
+		genre: null,
+		isWatched: null
+	};
+
+	// Gefilterte Filme basierend auf den Suchparametern
+	let matchedMovies: typeof $data.movies = [];
+
+	function filterMovies() {
+		// Filtert die Filme basierend auf den Kriterien
+		matchedMovies = $data.movies.filter((movie) => {
+			// Filter für den Titel
+			const titleMatches =
+				searchCriteria.title === '' ||
+				movie.title.toLowerCase().includes(searchCriteria.title.toLowerCase());
+
+			// Filter für das Genre
+			const genreMatches =
+				searchCriteria.genre === null ||
+				movie.genres.some((genre) =>
+					genre.name.toLowerCase().includes(searchCriteria.genre?.toLowerCase() || '')
+				);
+
+			// Filter für den "Gesehen"-Status
+			const watchedMatches =
+				searchCriteria.isWatched === null || movie.watched === searchCriteria.isWatched;
+
+			// Rückgabe nur, wenn alle Bedingungen erfüllt sind
+			return titleMatches && genreMatches && watchedMatches;
+		});
+	}
+
+	// Initiale Filterung ausführen
+	filterMovies();
 </script>
 
 <div class="navbar bg-base-100">
@@ -10,9 +54,31 @@
 </div>
 
 <main class="flex-grow flex-col p-5">
-	<div class="flex flex-wrap justify-center gap-5 p-5 pb-36">
-		{#if $data.movies.length >= 1}
-			{#each $data.movies as item}
+	<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
+		<div>
+			<div>
+				<input
+					class="input join-item input-bordered"
+					placeholder="Title"
+					bind:value={searchCriteria.title}
+				/>
+			</div>
+		</div>
+		<select class="join-item select select-bordered" bind:value={searchCriteria.genre}>
+			<option value={null}>Kein Filter</option>
+			{#each $data.movies.flatMap((item) => item.genres.map((i) => i.name)) as item}
+				<option>{item}</option>
+			{/each}
+		</select>
+		<select class="join-item select select-bordered" bind:value={searchCriteria.isWatched}>
+			<option value={null}>Film angesehen</option>
+			<option value={true}>Angeschaut</option>
+			<option value={false}>Nicht angeschaut</option>
+		</select>
+	</div>
+	<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
+		{#if matchedMovies.length >= 1}
+			{#each matchedMovies as item}
 				<a
 					href={item.id.toString()}
 					draggable="false"
