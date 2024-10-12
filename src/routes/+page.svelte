@@ -2,6 +2,7 @@
 	import { placeholderURL, imageURL } from '$lib';
 	import { data } from '$lib/db';
 	import Fuse, { type FuseResult } from 'fuse.js';
+	import { onMount } from 'svelte';
 
 	// Typ für die Suchparameter
 	type SearchCriteria = {
@@ -27,8 +28,9 @@
 		threshold: 0.4 // Anpassung des Schwellenwerts für unscharfe Übereinstimmungen
 	});
 
-	// Referenz für das Such-Eingabefeld
+	// Referenzen für das Such-Eingabefeld
 	let searchInput: HTMLInputElement;
+	let datalistItem: HTMLDataListElement;
 
 	// Initiale Filterung ausführen
 	filterMovies();
@@ -74,6 +76,68 @@
 			searchInput.focus();
 		}
 	}
+
+	onMount(() => {
+		searchInput.onfocus = function () {
+			datalistItem.style.display = 'block';
+			datalistItem.style.width = `${searchInput.offsetWidth}px`;
+			searchInput.style.borderBottomLeftRadius = '0';
+		};
+		// Datalist-Optionen verstecken
+		searchInput.onblur = function () {
+			// Kurze Verzögerung, um sicherzustellen, dass das Klicken auf ein Optionselement erkannt wird
+			setTimeout(() => {
+				datalistItem.style.display = 'none';
+				searchInput.style.borderBottomLeftRadius = '0.5rem';
+			}, 200);
+		};
+		// Datalist-Optionen behandeln
+		for (let option of datalistItem.options) {
+			option.onclick = () => {
+				searchInput.value = option.value;
+				datalistItem.style.display = 'none';
+			};
+		}
+		searchInput.oninput = () => {
+			const text = searchInput.value.toUpperCase();
+			for (let option of datalistItem.options) {
+				option.style.display = option.value.toUpperCase().includes(text) ? 'block' : 'none';
+			}
+		};
+		let currentFocus = -1;
+		searchInput.onkeydown = (e: KeyboardEvent) => {
+			const optionsArray = Array.from(datalistItem.options);
+			switch (e.key) {
+				case 'ArrowDown':
+					currentFocus++;
+					addActive(optionsArray);
+					break;
+				case 'ArrowUp':
+					currentFocus--;
+					addActive(optionsArray);
+					break;
+				case 'Enter':
+					e.preventDefault();
+					if (currentFocus > -1 && currentFocus < optionsArray.length) {
+						optionsArray[currentFocus].click();
+					}
+					break;
+				default:
+					break;
+			}
+		};
+		function addActive(options: HTMLOptionElement[]) {
+			if (options.length === 0) return;
+			removeActive(options);
+			// Schleifen Sie den Fokus nach oben/unten durch
+			if (currentFocus >= options.length) currentFocus = 0;
+			if (currentFocus < 0) currentFocus = options.length - 1;
+			options[currentFocus].classList.add('active');
+		}
+		function removeActive(options: HTMLOptionElement[]) {
+			options.forEach((option) => option.classList.remove('active'));
+		}
+	});
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -89,15 +153,18 @@
 		<div>
 			<input
 				class="input join-item input-bordered"
-				placeholder="Title"
+				placeholder="Titel"
 				bind:value={searchCriteria.title}
 				on:input={filterMovies}
 				bind:this={searchInput}
-				list="title-suggestions"
 			/>
-			<datalist id="title-suggestions">
+			<datalist
+				class="absolute z-10 overflow-y-auto rounded-b-lg bg-base-100"
+				bind:this={datalistItem}
+			>
 				{#each Array.from(new Set($data.movies.map((movie) => movie.title))) as title}
-					<option value={title}>{title}</option>
+					<option class="cursor-pointer px-2 hover:bg-base-content/20" value={title}>{title}</option
+					>
 				{/each}
 			</datalist>
 		</div>
