@@ -15,7 +15,6 @@
 		]
  */
 
-import { app } from '@tauri-apps/api';
 import {
 	exists,
 	BaseDirectory,
