@@ -3,5 +3,5 @@
 @import 'tailwindcss/utilities';
 
 .active {
-    @apply bg-base-content/20;
+	@apply bg-base-content/20;
 }
