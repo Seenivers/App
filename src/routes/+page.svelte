@@ -83,6 +83,7 @@
 			datalistItem.style.width = `${searchInput.offsetWidth}px`;
 			searchInput.style.borderBottomLeftRadius = '0';
 		};
+
 		// Datalist-Optionen verstecken
 		searchInput.onblur = function () {
 			// Kurze Verzögerung, um sicherzustellen, dass das Klicken auf ein Optionselement erkannt wird
@@ -91,20 +92,25 @@
 				searchInput.style.borderBottomLeftRadius = '0.5rem';
 			}, 200);
 		};
+
 		// Datalist-Optionen behandeln
 		for (let option of datalistItem.options) {
 			option.onclick = () => {
-				searchInput.value = option.value;
+				searchCriteria.title = option.value;
 				datalistItem.style.display = 'none';
+				filterMovies();
 			};
 		}
+
 		searchInput.oninput = () => {
-			const text = searchInput.value.toUpperCase();
+			const text = searchCriteria.title.toUpperCase();
 			for (let option of datalistItem.options) {
 				option.style.display = option.value.toUpperCase().includes(text) ? 'block' : 'none';
 			}
 		};
+
 		let currentFocus = -1;
+
 		searchInput.onkeydown = (e: KeyboardEvent) => {
 			const optionsArray = Array.from(datalistItem.options);
 			switch (e.key) {
@@ -126,6 +132,7 @@
 					break;
 			}
 		};
+
 		function addActive(options: HTMLOptionElement[]) {
 			if (options.length === 0) return;
 			removeActive(options);
@@ -134,6 +141,7 @@
 			if (currentFocus < 0) currentFocus = options.length - 1;
 			options[currentFocus].classList.add('active');
 		}
+
 		function removeActive(options: HTMLOptionElement[]) {
 			options.forEach((option) => option.classList.remove('active'));
 		}
