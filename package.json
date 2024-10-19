@@ -39,6 +39,7 @@
 	"type": "module",
 	"dependencies": {
 		"@blacktiger/tmdb": "^0.22.0",
+		"@changesets/cli": "^2.27.9",
 		"@tauri-apps/api": "^2.0.1",
 		"@tauri-apps/plugin-dialog": "^2.0.0-rc.1",
 		"@tauri-apps/plugin-fs": "^2.0.0-rc.2",
