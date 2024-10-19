@@ -17,7 +17,7 @@ jobs:
             args: '--target aarch64-apple-darwin'
           - platform: 'macos-latest' # for Intel based macs.
             args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+          - platform: 'ubuntu-22.04'
             args: ''
           - platform: 'windows-latest'
             args: ''
@@ -46,16 +46,17 @@ jobs:
       - name: install frontend dependencies
         run: npm install
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: Build and Publish Tauri App
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: v__VERSION__
-          releaseName: 'App v__VERSION__'
-          releaseBody: ${{ github.event.release.body }} # Use the release body content directly from the release
-          releaseId: ${{ github.ref_name }}
-          releaseDraft: ${{ github.event.release.draft }} # Use the draft status from the release
-          prerelease: ${{ github.event.release.prerelease }} # Use the prerelease status from the release
+          tagName: ${{ github.event.release.tag_name }}
+          releaseName: 'App v${{ github.event.release.tag_name }}'
+          releaseBody: ${{ github.event.release.body }}
+          releaseId: ${{ github.event.release.id }}
+          releaseDraft: ${{ github.event.release.draft }}
+          prerelease: ${{ github.event.release.prerelease }}
           args: ${{ matrix.args }}
