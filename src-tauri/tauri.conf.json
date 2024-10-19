@@ -1,6 +1,6 @@
 {
 	"productName": "seenivers",
-	"version": "0.1.5",
+	"version": "../package.json",
 	"identifier": "seenivers",
 	"build": {
 		"frontendDist": "../build",
