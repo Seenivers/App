@@ -90,6 +90,7 @@
 	}
 
 	function ended() {
+		if (document.fullscreenElement) fullscreen();
 		steuerElemente = true;
 		$data.movies[index].watched = true;
 		$data.movies[index].watchTime = 0;
