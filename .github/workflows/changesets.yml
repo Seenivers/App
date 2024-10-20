@@ -29,6 +29,12 @@ jobs:
       - name: Version Packages
         run: npx changeset version
 
+      - name: Generate Release Notes
+        id: changelog
+        run: |
+          npx changeset changelog --no-version
+          echo "::set-output name=notes::$(cat CHANGELOG.md)"
+
       - name: Create Release
         run: |
           git config --global user.name "github-actions[bot]"
@@ -36,6 +42,6 @@ jobs:
           git add .
           git commit -m "chore(release): version bump and changelog"
           git push origin main
-          gh release create v$(node -p "require('./package.json').version") --generate-notes
+          gh release create v$(node -p "require('./package.json').version") --generate-notes --title "Release v$(node -p "require('./package.json').version")" --body "${{ steps.changelog.outputs.notes }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
