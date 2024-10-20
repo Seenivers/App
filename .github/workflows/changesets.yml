@@ -9,6 +9,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   release:
@@ -16,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -29,19 +30,11 @@ jobs:
       - name: Version Packages
         run: npx changeset version
 
-      - name: Generate Release Notes
-        id: changelog
-        run: |
-          npx changeset changelog --no-version
-          echo "::set-output name=notes::$(cat CHANGELOG.md)"
-
-      - name: Create Release
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "chore(release): version bump and changelog"
-          git push origin main
-          gh release create v$(node -p "require('./package.json').version") --generate-notes --title "Release v$(node -p "require('./package.json').version")" --body "${{ steps.changelog.outputs.notes }}"
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
+        with:
+          version: npx changeset version
+          commit: 'chore(release): version bump and changelog'
+          title: 'Release: Version Bump and Changelog'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
