@@ -1,5 +1,13 @@
 # app
 
+## 0.4.1
+
+### Patch Changes
+
+- 13afa10: simplify workflow by removing versioning step in Changesets Release
+- f992d7c: update Changesets configuration to disable automatic commits and add private packages support
+- a547285: exit fullscreen mode at the end of the movie or video
+
 ## 0.4.0
 
 ### Minor Changes
