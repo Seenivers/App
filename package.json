@@ -1,6 +1,6 @@
 {
 	"name": "app",
-	"version": "0.4.2",
+	"version": "0.4.3",
 	"private": true,
 	"scripts": {
 		"dev:tauri": "npx tauri dev",
@@ -14,6 +14,8 @@
 		"tauri": "tauri"
 	},
 	"devDependencies": {
+		"@semantic-release/changelog": "^6.0.3",
+		"@semantic-release/git": "^10.0.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^3.0.4",
 		"@sveltejs/kit": "^2.7.0",
@@ -29,6 +31,7 @@
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"prettier-plugin-tailwindcss": "^0.6.5",
+		"semantic-release": "^24.1.3",
 		"svelte": "^4.2.7",
 		"svelte-check": "^4.0.5",
 		"tailwindcss": "^3.4.9",
