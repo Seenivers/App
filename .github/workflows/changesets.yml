@@ -7,13 +7,9 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   release:
-    name: PR Release
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -27,7 +23,16 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Create Release Pull Request
-        uses: changesets/action@v1
+      - name: Version Packages
+        run: npx changeset version
+
+      - name: Create Release
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore(release): version bump and changelog"
+          git push origin main
+          gh release create v$(node -p "require('./package.json').version") --generate-notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
