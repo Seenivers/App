@@ -1,5 +1,12 @@
 # app
 
+## 0.4.0
+
+### Minor Changes
+
+- c3cd412: switch to Changesets action for creating release pull requests
+- 582af72: generate release notes and update release creation step
+
 ## 0.3.0
 
 ### Minor Changes
