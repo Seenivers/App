@@ -1,5 +1,11 @@
 # app
 
+## 0.3.0
+
+### Minor Changes
+
+- d69b614: rename release workflow to 'Tauri Release' and update release name to 'Tauri'
+
 ## 0.2.0
 
 ### Minor Changes
