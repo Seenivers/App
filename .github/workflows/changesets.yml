@@ -35,4 +35,4 @@ jobs:
           git push origin main
           gh release create v$(node -p "require('./package.json').version") --generate-notes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT  }}
