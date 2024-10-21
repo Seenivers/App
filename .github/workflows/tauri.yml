@@ -2,7 +2,27 @@ name: Tauri Release
 
 on:
   workflow_call:
-  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'The tag name for the release'
+        required: true
+        type: string
+      body:
+        description: 'The release body'
+        required: true
+        type: string
+      id:
+        description: 'The release ID'
+        required: true
+        type: string
+      draft:
+        description: 'Is this a draft release?'
+        required: true
+        type: boolean
+      prerelease:
+        description: 'Is this a prerelease?'
+        required: true
+        type: boolean
 
 jobs:
   publish-tauri:
@@ -12,9 +32,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+          - platform: 'macos-latest'
             args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' # for Intel based macs.
+          - platform: 'macos-latest'
             args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
             args: ''
@@ -22,27 +42,27 @@ jobs:
             args: ''
 
     runs-on: ${{ matrix.platform }}
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      - name: install Rust stable
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          # Those targets are only used on macOS runners so it's in an `if` to slightly speed up Windows and Linux builds.
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: install dependencies (ubuntu only)
+      - name: Install dependencies (Ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      - name: install frontend dependencies
+      - name: Install frontend dependencies
         run: npm install
 
       - name: Build and Publish Tauri App
@@ -52,10 +72,10 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: ${{ github.event.release.tag_name }}
-          releaseName: 'App v${{ github.event.release.tag_name }}'
-          releaseBody: ${{ github.event.release.body }}
-          releaseId: ${{ github.event.release.id }}
-          releaseDraft: ${{ github.event.release.draft }}
-          prerelease: ${{ github.event.release.prerelease }}
+          tagName: ${{ inputs.tag_name }}
+          releaseName: 'App v${{ inputs.tag_name }}'
+          releaseBody: ${{ inputs.body }}
+          releaseId: ${{ inputs.id }}
+          releaseDraft: ${{ inputs.draft }}
+          prerelease: ${{ inputs.prerelease }}
           args: ${{ matrix.args }}
