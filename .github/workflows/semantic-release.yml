@@ -40,17 +40,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
-      - name: Save Release Details
+      - name: Save and Log Release Details
         id: log_release_details
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "tag_name=$(gh release view --json tagName --jq '.tagName')" >> $GITHUB_ENV
-          echo "body=$(gh release view --json body --jq '.body')" >> $GITHUB_ENV
-          echo "id=$(gh release view --json id --jq '.id')" >> $GITHUB_ENV
-          echo "draft=$(gh release view --json isDraft --jq '.isDraft')" >> $GITHUB_ENV
-          echo "prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')" >> $GITHUB_ENV
-
+          tag_name=$(gh release view --json tagName --jq '.tagName')
+          body=$(gh release view --json body --jq '.body')
+          id=$(gh release view --json id --jq '.id')
+          draft=$(gh release view --json isDraft --jq '.isDraft')
+          prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')
 
           echo "Release Details:"
           echo "Tag Name: ${tag_name}"
@@ -63,8 +62,8 @@ jobs:
         id: call_tauri
         uses: ./.github/actions/tauri
         with:
-          tag_name: ${{ env.tag_name }}
-          id: ${{ env.id }}
-          body: ${{ env.body }}
-          prerelease: ${{ env.prerelease }}
-          draft: ${{ env.draft }}
+          tag_name: ${{ steps.log_release_details.outputs.tag_name }}
+          id: ${{ steps.log_release_details.outputs.id }}
+          body: ${{ steps.log_release_details.outputs.body }}
+          prerelease: ${{ steps.log_release_details.outputs.prerelease }}
+          draft: ${{ steps.log_release_details.outputs.draft }}
