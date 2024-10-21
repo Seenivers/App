@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/Seenivers/App/compare/v0.5.0...v0.5.1) (2024-10-21)
+
+
+### Bug Fixes
+
+* **workflows:** escape line breaks in release body for JSON compatibility ([7da6563](https://github.com/Seenivers/App/commit/7da65634b69dd952236609822b82b8bb38bded0d))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-21)
 
 
