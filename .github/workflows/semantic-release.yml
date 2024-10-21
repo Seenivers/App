@@ -38,8 +38,7 @@ jobs:
         id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release --debug
-
+        run: npx semantic-release
       - name: Set Outputs
         id: set_outputs
         run: |
@@ -49,9 +48,14 @@ jobs:
           echo "draft=${{ steps.semantic_release.outputs.draft }}" >> $GITHUB_ENV
           echo "prerelease=${{ steps.semantic_release.outputs.prerelease }}" >> $GITHUB_ENV
 
-      - name: Log Outputs
+      - name: Log Release Details
         run: |
-          echo "Semantic Release Outputs: $(echo '${{ toJson(steps.semantic_release.outputs) }}')"
+          echo "Release URL: $(gh release view --json url --jq '.url')"
+          echo "Tag Name: $(gh release view --json tagName --jq '.tagName')"
+          echo "Body: $(gh release view --json body --jq '.body')"
+          echo "ID: $(gh release view --json id --jq '.id')"
+          echo "Draft: $(gh release view --json isDraft --jq '.isDraft')"
+          echo "Prerelease: $(gh release view --json isPrerelease --jq '.isPrerelease')"
 
   # call-tauri:
   #   name: Call Tauri Workflow
