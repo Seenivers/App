@@ -23,18 +23,6 @@ on:
         description: 'Is this a prerelease?'
         required: true
         type: boolean
-      github_token:
-        description: 'GitHub token for authentication'
-        required: true
-        type: string
-      tauri_signing_private_key:
-        description: 'Tauri signing private key'
-        required: true
-        type: string
-      tauri_signing_private_key_password:
-        description: 'Password for Tauri signing private key'
-        required: true
-        type: string
 
 jobs:
   publish-tauri:
@@ -80,9 +68,9 @@ jobs:
       - name: Build and Publish Tauri App
         uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${ github_token }
-          TAURI_SIGNING_PRIVATE_KEY: ${ tauri_signing_private_key }
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${ tauri_signing_private_key_password }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ inputs.tag_name }}
           releaseName: 'App v${{ inputs.tag_name }}'
