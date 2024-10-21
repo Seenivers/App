@@ -40,19 +40,30 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
+      - name: Set Outputs
+        id: set_outputs
+        run: |
+          echo "tag_name=${{ steps.semantic_release.outputs.tag_name }}" >> $GITHUB_ENV
+          echo "body=${{ steps.semantic_release.outputs.body }}" >> $GITHUB_ENV
+          echo "id=${{ steps.semantic_release.outputs.id }}" >> $GITHUB_ENV
+          echo "draft=${{ steps.semantic_release.outputs.draft }}" >> $GITHUB_ENV
+          echo "prerelease=${{ steps.semantic_release.outputs.prerelease }}" >> $GITHUB_ENV
+
       - name: Log Outputs
         run: |
-          echo "Tag Name: ${{ steps.semantic_release.outputs.tag_name }}"
-          echo "Release Body: ${{ steps.semantic_release.outputs.body }}"
-          echo "ID: ${{ steps.semantic_release.outputs.id }}"
-          echo "Draft: ${{ steps.semantic_release.outputs.draft }}"
-          echo "Prerelease: ${{ steps.semantic_release.outputs.prerelease }}"
+          echo "Semantic Release Output: ${{ steps.semantic_release.outputs }}"
 
-      - name: Call Tauri Workflow
-        uses: ./.github/workflows/tauri.yml
-        with:
-          tag_name: ${{ steps.semantic_release.outputs.tag_name }}
-          body: ${{ steps.semantic_release.outputs.body }}
-          id: ${{ steps.semantic_release.outputs.id }}
-          draft: ${{ steps.semantic_release.outputs.draft }}
-          prerelease: ${{ steps.semantic_release.outputs.prerelease }}
+  # call-tauri:
+  #   name: Call Tauri Workflow
+  #   runs-on: ubuntu-latest
+  #   needs: release
+
+  #   steps:
+  #     - name: Call Tauri Workflow
+  #       uses: ./.github/workflows/tauri.yml
+  #       with:
+  #         tag_name: ${{ steps.set_outputs.outputs.tag_name }}
+  #         body: ${{ steps.set_outputs.outputs.body }}
+  #         id: ${{ steps.set_outputs.outputs.id }}
+  #         draft: ${{ steps.set_outputs.outputs.draft }}
+  #         prerelease: ${{ steps.set_outputs.outputs.prerelease }}
