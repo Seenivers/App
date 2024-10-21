@@ -60,7 +60,7 @@ jobs:
 
           echo "tag_name=${tag_name}" > release_info.txt
           echo "id=${id}" >> release_info.txt
-          echo "body=${body}" >> release_info.txt
+          echo "body=${body//$'\n'/\\n}" >> release_info.txt
           echo "prerelease=${prerelease}" >> release_info.txt
           echo "draft=${draft}" >> release_info.txt
 
