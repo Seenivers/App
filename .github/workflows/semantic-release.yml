@@ -40,32 +40,31 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
-      # - name: Set Outputs
-      #   id: set_outputs
-      #   run: |
-      #     echo "tag_name=$(gh release view --json tagName --jq '.tagName')" >> $GITHUB_ENV
-      #     echo "body=$(gh release view --json body --jq '.body')" >> $GITHUB_ENV
-      #     echo "id=$(gh release view --json id --jq '.id')" >> $GITHUB_ENV
-      #     echo "draft=$(gh release view --json isDraft --jq '.isDraft')" >> $GITHUB_ENV
-      #     echo "prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')" >> $GITHUB_ENV
-
-      - name: Log Release Details
+      - name: Save Release Details
+        id: log_release_details
         env:
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Release URL: $(gh release view --json url --jq '.url')"
-          echo "Tag Name: $(gh release view --json tagName --jq '.tagName')"
-          echo "Body: $(gh release view --json body --jq '.body')"
-          echo "ID: $(gh release view --json id --jq '.id')"
-          echo "Draft: $(gh release view --json isDraft --jq '.isDraft')"
-          echo "Prerelease: $(gh release view --json isPrerelease --jq '.isPrerelease')"
+          echo "tag_name=$(gh release view --json tagName --jq '.tagName')" >> $GITHUB_ENV
+          echo "body=$(gh release view --json body --jq '.body')" >> $GITHUB_ENV
+          echo "id=$(gh release view --json id --jq '.id')" >> $GITHUB_ENV
+          echo "draft=$(gh release view --json isDraft --jq '.isDraft')" >> $GITHUB_ENV
+          echo "prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')" >> $GITHUB_ENV
 
-  call-tauri:
-    name: Call Tauri Workflow
-    uses: ./.github/workflows/tauri.yml
-    with:
-      tag_name: $(gh release view --json tagName --jq '.tagName')
-      body: $(gh release view --json body --jq '.body')
-      id: $(gh release view --json id --jq '.id')
-      draft: $(gh release view --json isDraft --jq '.isDraft')
-      prerelease: $(gh release view --json isPrerelease --jq '.isPrerelease')
+
+          echo "Release Details:"
+          echo "Tag Name: ${tag_name}"
+          echo "Body: ${body}"
+          echo "ID: ${id}"
+          echo "Draft: ${draft}"
+          echo "Prerelease: ${prerelease}"
+
+      - name: Call Tauri Workflow
+        id: call_tauri
+        uses: ./.github/actions/tauri
+        with:
+          tag_name: ${{ env.tag_name }}
+          id: ${{ env.id }}
+          body: ${{ env.body }}
+          prerelease: ${{ env.prerelease }}
+          draft: ${{ env.draft }}
