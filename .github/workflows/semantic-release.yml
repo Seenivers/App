@@ -58,8 +58,12 @@ jobs:
           echo "Draft: ${draft}"
           echo "Prerelease: ${prerelease}"
 
-      - name: Call Tauri Workflow
-        id: call_tauri
+  tauri-release:
+    needs: semantic-release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Tauri Action
         uses: ./.github/actions/tauri
         with:
           tag_name: ${{ steps.log_release_details.outputs.tag_name }}
@@ -67,7 +71,4 @@ jobs:
           body: ${{ steps.log_release_details.outputs.body }}
           prerelease: ${{ steps.log_release_details.outputs.prerelease }}
           draft: ${{ steps.log_release_details.outputs.draft }}
-        env:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tauri_signing_private_key: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          tauri_signing_private_key_password: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          platform: ${{ matrix.platform }}
