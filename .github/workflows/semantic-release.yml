@@ -58,17 +58,19 @@ jobs:
           echo "Draft: ${draft}"
           echo "Prerelease: ${prerelease}"
 
-          echo "tag_name=${tag_name}" > release_info.txt
-          echo "id=${id}" >> release_info.txt
-          echo "body=${body//$'\n'/\\n}" >> release_info.txt
-          echo "prerelease=${prerelease}" >> release_info.txt
-          echo "draft=${draft}" >> release_info.txt
+          echo '{
+            "tag_name": "'"${tag_name}"'",
+            "id": "'"${id}"'",
+            "body": "'"${body}"'",
+            "prerelease": "'"${prerelease}"'",
+            "draft": "'"${draft}"'"
+          }' > release_info.json
 
       - name: Upload Release Details
         uses: actions/upload-artifact@v4
         with:
           name: release-info
-          path: release_info.txt
+          path: release_info.json
 
   tauri-release:
     needs: semantic-release
@@ -82,7 +84,13 @@ jobs:
 
       - name: Read Release Details
         run: |
-          source release_info.txt
+          release_info=$(cat release_info.json)
+          tag_name=$(echo "$release_info" | jq -r '.tag_name')
+          id=$(echo "$release_info" | jq -r '.id')
+          body=$(echo "$release_info" | jq -r '.body')
+          draft=$(echo "$release_info" | jq -r '.draft')
+          prerelease=$(echo "$release_info" | jq -r '.prerelease')
+
           echo "Tag Name: $tag_name"
           echo "ID: $id"
           echo "Body: $body"
