@@ -38,7 +38,7 @@ jobs:
         id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: npx semantic-release --debug
 
       - name: Set Outputs
         id: set_outputs
@@ -51,7 +51,7 @@ jobs:
 
       - name: Log Outputs
         run: |
-          echo "Semantic Release Output: ${{ steps.semantic_release.outputs }}"
+          echo "Semantic Release Outputs: $(echo '${{ toJson(steps.semantic_release.outputs) }}')"
 
   # call-tauri:
   #   name: Call Tauri Workflow
