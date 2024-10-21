@@ -51,6 +51,8 @@ jobs:
           draft=$(gh release view --json isDraft --jq '.isDraft')
           prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')
 
+          body="${body//$'\n'/\\n}"
+
           echo "Release Details:"
           echo "Tag Name: ${tag_name}"
           echo "Body: ${body}"
