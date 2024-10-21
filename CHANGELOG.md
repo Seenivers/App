@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-10-21)
+
+
+### Features
+
+* **workflow:** simplify output handling and log release details ([b2c9008](https://github.com/Seenivers/App/commit/b2c90081ee0b8f460505d8170a98adfe2e689baf))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-21)
 
 
