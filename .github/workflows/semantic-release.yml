@@ -1,10 +1,10 @@
 name: Semantic Release
 
 on:
-  workflow_dispatch:
-
-permissions:
-  contents: read
+  push:
+    branches:
+      - main
+      - next
 
 jobs:
   release:
@@ -16,6 +16,13 @@ jobs:
       issues: write
       pull-requests: write
       id-token: write
+
+    outputs:
+      tag_name: ${{ steps.extract_release.outputs.tag_name }}
+      body: ${{ steps.extract_release.outputs.body }}
+      id: ${{ steps.extract_release.outputs.id }}
+      draft: ${{ steps.extract_release.outputs.draft }}
+      prerelease: ${{ steps.extract_release.outputs.prerelease }}
 
     steps:
       - name: Checkout
@@ -35,6 +42,26 @@ jobs:
         run: npm audit signatures
 
       - name: Release
+        id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+
+      - name: Set output variables
+        id: set_output
+        run: |
+          RELEASE_URL=$(jq -r '.url' <<< $(gh release view --json url))
+          TAG_NAME=$(jq -r '.tagName' <<< $(gh release view --json tagName))
+          BODY=$(jq -r '.body' <<< $(gh release view --json body))
+          ID=$(jq -r '.id' <<< $(gh release view --json id))
+          DRAFT=$(jq -r '.isDraft' <<< $(gh release view --json isDraft))
+          PRERELEASE=$(jq -r '.isPrerelease' <<< $(gh release view --json isPrerelease))
+
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "body=${BODY}" >> $GITHUB_OUTPUT
+          echo "id=${ID}" >> $GITHUB_OUTPUT
+          echo "draft=${DRAFT}" >> $GITHUB_OUTPUT
+          echo "prerelease=${PRERELEASE}" >> $GITHUB_OUTPUT
+
+      - name: Call Tauri Workflow
+        uses: ./.github/workflows/tauri.yml
