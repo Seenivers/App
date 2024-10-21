@@ -67,3 +67,7 @@ jobs:
           body: ${{ steps.log_release_details.outputs.body }}
           prerelease: ${{ steps.log_release_details.outputs.prerelease }}
           draft: ${{ steps.log_release_details.outputs.draft }}
+        env:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tauri_signing_private_key: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          tauri_signing_private_key_password: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
