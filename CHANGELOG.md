@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/Seenivers/App/compare/v0.5.0...v0.5.1) (2024-10-21)
+
+
+### Bug Fixes
+
+* **workflow:** add GitHub token to log release details step ([9280eea](https://github.com/Seenivers/App/commit/9280eeae4f227b369680359505b3c073eb33a0d8))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-21)
 
 
