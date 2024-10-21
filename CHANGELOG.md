@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/Seenivers/App/compare/v0.5.0...v0.5.1) (2024-10-21)
+
+
+### Bug Fixes
+
+* **workflow:** escape newlines in release body for artifact upload ([f16b999](https://github.com/Seenivers/App/commit/f16b999bcc60d8bc6f74fa263b703f0b06df7f18))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-21)
 
 
