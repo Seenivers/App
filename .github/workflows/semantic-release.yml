@@ -49,6 +49,8 @@ jobs:
           echo "prerelease=${{ steps.semantic_release.outputs.prerelease }}" >> $GITHUB_ENV
 
       - name: Log Release Details
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           echo "Release URL: $(gh release view --json url --jq '.url')"
           echo "Tag Name: $(gh release view --json tagName --jq '.tagName')"
