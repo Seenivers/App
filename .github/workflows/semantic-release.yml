@@ -58,17 +58,42 @@ jobs:
           echo "Draft: ${draft}"
           echo "Prerelease: ${prerelease}"
 
+          echo "tag_name=${tag_name}" > release_info.txt
+          echo "id=${id}" >> release_info.txt
+          echo "body=${body}" >> release_info.txt
+          echo "prerelease=${prerelease}" >> release_info.txt
+          echo "draft=${draft}" >> release_info.txt
+
+      - name: Upload Release Details
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-info
+          path: release_info.txt
+
   tauri-release:
     needs: semantic-release
     runs-on: ubuntu-latest
 
     steps:
-      - name: Call Tauri Action
-        uses: ./.github/actions/tauri
+      - name: Download Release Details
+        uses: actions/download-artifact@v4
         with:
-          tag_name: ${{ steps.log_release_details.outputs.tag_name }}
-          id: ${{ steps.log_release_details.outputs.id }}
-          body: ${{ steps.log_release_details.outputs.body }}
-          prerelease: ${{ steps.log_release_details.outputs.prerelease }}
-          draft: ${{ steps.log_release_details.outputs.draft }}
-          platform: ${{ matrix.platform }}
+          name: release-info
+
+      - name: Read Release Details
+        run: |
+          source release_info.txt
+          echo "Tag Name: $tag_name"
+          echo "ID: $id"
+          echo "Body: $body"
+          echo "Draft: $draft"
+          echo "Prerelease: $prerelease"
+
+      - name: Call Tauri Action
+        uses: ./.github/workflows/tauri.yml
+        with:
+          tag_name: $tag_name
+          id: $id
+          body: $body
+          prerelease: $prerelease
+          draft: $draft
