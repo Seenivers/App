@@ -49,6 +49,8 @@ jobs:
 
       - name: Set output variables
         id: set_output
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           RELEASE_URL=$(jq -r '.url' <<< $(gh release view --json url))
           TAG_NAME=$(jq -r '.tagName' <<< $(gh release view --json tagName))
