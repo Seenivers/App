@@ -51,21 +51,12 @@ jobs:
           draft=$(gh release view --json isDraft --jq '.isDraft')
           prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')
 
-          body="${body//$'\n'/\\n}"
-
-          echo "Release Details:"
-          echo "Tag Name: ${tag_name}"
-          echo "Body: ${body}"
-          echo "ID: ${id}"
-          echo "Draft: ${draft}"
-          echo "Prerelease: ${prerelease}"
-
           echo '{
             "tag_name": "'"${tag_name}"'",
             "id": "'"${id}"'",
-            "body": "'"${body}"'",
-            "prerelease": "'"${prerelease}"'",
-            "draft": "'"${draft}"'"
+            "body": "'"${body//$'\n'/\\n}"'",
+            "prerelease": '"$prerelease"',
+            "draft": '"$draft"'
           }' > release_info.json
 
       - name: Upload Release Details
@@ -103,21 +94,17 @@ jobs:
           name: release-info
 
       - name: Read Release Details
-        id: log_release_details
+        id: read_release_details
         shell: bash
         run: |
           release_info=$(cat release_info.json)
-          tag_name=$(echo "$release_info" | jq -r '.tag_name')
-          id=$(echo "$release_info" | jq -r '.id')
-          body=$(echo "$release_info" | jq -r '.body')
-          draft=$(echo "$release_info" | jq -r '.draft')
-          prerelease=$(echo "$release_info" | jq -r '.prerelease')
+          echo "$release_info"
 
-          echo "Tag Name: $tag_name"
-          echo "ID: $id"
-          echo "Body: $body"
-          echo "Draft: $draft"
-          echo "Prerelease: $prerelease"
+          echo "tag_name=$(echo "$release_info" | jq -r '.tag_name')" >> $GITHUB_ENV
+          echo "id=$(echo "$release_info" | jq -r '.id')" >> $GITHUB_ENV
+          echo "body=$(echo "$release_info" | jq -r '.body')" >> $GITHUB_ENV
+          echo "draft=$(echo "$release_info" | jq -r '.draft')" >> $GITHUB_ENV
+          echo "prerelease=$(echo "$release_info" | jq -r '.prerelease')" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -148,10 +135,10 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: '${{ steps.log_release_details.outputs.tag_name }}'
-          releaseName: 'App v${{ steps.log_release_details.outputs.tag_name }}'
-          releaseBody: '${{ steps.log_release_details.outputs.body }}'
-          releaseId: '${{ steps.log_release_details.outputs.id }}'
-          releaseDraft: ${{ steps.log_release_details.outputs.draft }}
-          prerelease: ${{ steps.log_release_details.outputs.prerelease }}
+          tagName: ${{ env.tag_name }}
+          releaseName: 'App v${{ env.tag_name }}'
+          releaseBody: ${{ env.body }}
+          releaseId: ${{ env.id }}
+          releaseDraft: ${{ env.draft }}
+          prerelease: ${{ env.prerelease }}
           args: ${{ matrix.args }}
