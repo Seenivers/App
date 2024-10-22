@@ -104,6 +104,7 @@ jobs:
 
       - name: Read Release Details
         id: log_release_details
+        shell: bash
         run: |
           release_info=$(cat release_info.json)
           tag_name=$(echo "$release_info" | jq -r '.tag_name')
