@@ -103,6 +103,7 @@ jobs:
           name: release-info
 
       - name: Read Release Details
+        id: log_release_details
         run: |
           release_info=$(cat release_info.json)
           tag_name=$(echo "$release_info" | jq -r '.tag_name')
@@ -146,10 +147,10 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: $tag_name
-          releaseName: 'App v$tag_name'
-          releaseBody: $body
-          releaseId: $id
-          releaseDraft: $draft
-          prerelease: $prerelease
+          tagName: '${{ steps.log_release_details.outputs.tag_name }}'
+          releaseName: 'App v${{ steps.log_release_details.outputs.tag_name }}'
+          releaseBody: '${{ steps.log_release_details.outputs.body }}'
+          releaseId: '${{ steps.log_release_details.outputs.id }}'
+          releaseDraft: ${{ steps.log_release_details.outputs.draft }}
+          prerelease: ${{ steps.log_release_details.outputs.prerelease }}
           args: ${{ matrix.args }}
