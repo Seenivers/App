@@ -98,13 +98,14 @@ jobs:
         shell: bash
         run: |
           release_info=$(cat release_info.json)
-          echo "$release_info"
 
-          echo "tag_name=$(echo "$release_info" | jq -r '.tag_name')" >> $GITHUB_ENV
-          echo "id=$(echo "$release_info" | jq -r '.id')" >> $GITHUB_ENV
-          echo "body=$(echo "$release_info" | jq -r '.body')" >> $GITHUB_ENV
-          echo "draft=$(echo "$release_info" | jq -r '.draft')" >> $GITHUB_ENV
-          echo "prerelease=$(echo "$release_info" | jq -r '.prerelease')" >> $GITHUB_ENV
+          tag_name=$(echo "$release_info" | jq -r '.tag_name')
+          id=$(echo "$release_info" | jq -r '.id')
+          body=$(echo "$release_info" | jq -r '.body')
+          draft=$(echo "$release_info" | jq -r '.draft')
+          prerelease=$(echo "$release_info" | jq -r '.prerelease')
+
+          echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App v${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease}}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -135,10 +136,10 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: ${{ env.tag_name }}
-          releaseName: 'App v${{ env.tag_name }}'
-          releaseBody: ${{ env.body }}
-          releaseId: ${{ env.id }}
-          releaseDraft: ${{ env.draft }}
-          prerelease: ${{ env.prerelease }}
+          tagName: ${{ fromJson(env.release_details).tag_name }}
+          releaseName: ${{ fromJson(env.release_details).release_name }}
+          releaseBody: ${{ fromJson(env.release_details).release_body }}
+          releaseId: ${{ fromJson(env.release_details).release_id }}
+          releaseDraft: ${{ fromJson(env.release_details).release_draft }}
+          prerelease: ${{ fromJson(env.release_details).prerelease }}
           args: ${{ matrix.args }}
