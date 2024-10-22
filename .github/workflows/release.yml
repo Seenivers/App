@@ -1,4 +1,4 @@
-name: Semantic Release
+name: Release
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   semantic-release:
-    name: Release
+    name: Semantic Release
     runs-on: ubuntu-latest
 
     permissions:
@@ -40,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
-      - name: Save and Log Release Details
+      - name: Save Release Details
         id: log_release_details
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -75,8 +75,26 @@ jobs:
           path: release_info.json
 
   tauri-release:
+    name: Tauri Release
     needs: semantic-release
-    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest'
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest'
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04'
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
 
     steps:
       - name: Download Release Details
@@ -99,11 +117,39 @@ jobs:
           echo "Draft: $draft"
           echo "Prerelease: $prerelease"
 
-      - name: Call Tauri Action
-        uses: ./.github/workflows/tauri.yml
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          tag_name: $tag_name
-          id: $id
-          body: $body
+          node-version: lts/*
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install dependencies (Ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build and Publish Tauri App
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: $tag_name
+          releaseName: 'App v$tag_name'
+          releaseBody: $body
+          releaseId: $id
+          releaseDraft: $draft
           prerelease: $prerelease
-          draft: $draft
+          args: ${{ matrix.args }}
