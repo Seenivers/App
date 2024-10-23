@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/Seenivers/App/compare/v0.5.0...v0.5.1) (2024-10-23)
+
+
+### Bug Fixes
+
+* **workflow:** replace sed with awk and printf for better cross-platform compatibility ([e212fc2](https://github.com/Seenivers/App/commit/e212fc27d3a737bb32c9794f2a3d96990d4d2681))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-23)
 
 
