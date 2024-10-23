@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-10-23)
+
+
+### Features
+
+* **release:** escape newlines and quotes in release body for consistent formatting ([2a13f31](https://github.com/Seenivers/App/commit/2a13f31427f894f9750d9b633320b597d8595549))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-22)
 
 
