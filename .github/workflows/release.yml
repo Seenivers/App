@@ -105,7 +105,13 @@ jobs:
           draft=$(echo "$release_info" | jq -r '.draft')
           prerelease=$(echo "$release_info" | jq -r '.prerelease')
 
-          body=$(echo "$body" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g')
+          body=$(echo "$body" | sed ':a;N;$!ba;s/\r//g' | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g')
+
+          echo "$tag_name"
+          echo "$id"
+          echo "$body"
+          echo "$draft"
+          echo "$prerelease"
 
           echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App v${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease}}" >> $GITHUB_ENV
 
