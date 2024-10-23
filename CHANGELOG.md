@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0) (2024-10-23)
+
+
+### Features
+
+* **release:** remove carriage returns and escape newlines and quotes in release body ([9e310bb](https://github.com/Seenivers/App/commit/9e310bbcbca84104e305b9960bf9f0c0c38da181))
+
 # [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-10-23)
 
 
