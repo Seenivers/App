@@ -55,6 +55,10 @@ jobs:
           draft=$(gh release view --json isDraft --jq '.isDraft')
           prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')
 
+          asset_count=$(gh release view --json assets --jq '.assets | length')
+
+          echo "ASSET_COUNT=${asset_count}" >> $GITHUB_ENV
+
           echo '{
             "tag_name": "'"${tag_name}"'",
             "id": "'"${id}"'",
@@ -62,8 +66,6 @@ jobs:
             "prerelease": '"$prerelease"',
             "draft": '"$draft"'
           }' > release_info.json
-
-          echo "::set-output name=id::$id"
 
       - name: Upload Release Details
         uses: actions/upload-artifact@v4
@@ -74,7 +76,6 @@ jobs:
   tauri-release:
     name: Tauri Release
     needs: semantic-release
-    if: needs.semantic-release.outputs.id != ''
 
     permissions:
       contents: write
@@ -115,6 +116,13 @@ jobs:
           body=$(printf '%s' "$body" | awk '{gsub(/"/, "\\\""); printf "%s\\n", $0}' | tr '\n' '\\' | sed 's/\\$//')
 
           echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App ${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease}}" >> $GITHUB_ENV
+
+      - name: Check Asset Count
+        run: |
+          if [ "${{ env.ASSET_COUNT }}" -gt 3 ]; then
+            echo "More than 3 assets found. Skipping Tauri Release."
+            exit 0
+          fi
 
       - name: Checkout
         uses: actions/checkout@v4
