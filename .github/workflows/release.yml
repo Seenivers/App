@@ -44,7 +44,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
+      - name: Check if Release was created
+        id: check_release
+        run: |
+          if [ -z "$(gh release list | grep "$(echo ${GITHUB_REF} | awk -F'/' '{print $3}')" )" ]; then
+            echo "No new release created."
+            echo "release_created=false" >> $GITHUB_ENV
+          else
+            echo "Release created."
+            echo "release_created=true" >> $GITHUB_ENV
+          fi
+
       - name: Save Release Details
+        if: env.release_created == 'true'
         id: log_release_details
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -64,6 +76,7 @@ jobs:
           }' > release_info.json
 
       - name: Upload Release Details
+        if: env.release_created == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: release-info
@@ -72,6 +85,7 @@ jobs:
   tauri-release:
     name: Tauri Release
     needs: semantic-release
+    if: needs.semantic-release.outputs.release_created == 'true'
 
     permissions:
       contents: write
