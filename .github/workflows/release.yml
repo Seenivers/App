@@ -119,7 +119,7 @@ jobs:
 
       - name: Check Asset Count
         run: |
-          if [ "${{ env.ASSET_COUNT }}" -gt 3 ]; then
+          if [[ "${{ env.ASSET_COUNT }}" -gt 3 ]]; then
             echo "More than 3 assets found. Skipping Tauri Release."
             exit 0
           fi
