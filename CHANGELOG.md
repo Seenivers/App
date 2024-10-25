@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/Seenivers/App/compare/v0.7.0...v0.8.0) (2024-10-25)
+
+
+### Features
+
+* **release:** add asset count check to skip Tauri Release if more than 3 assets found ([43a6c96](https://github.com/Seenivers/App/commit/43a6c965260abb4284e94a3c359f36de83384a6b))
+
 # [0.7.0](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0) (2024-10-25)
 
 
