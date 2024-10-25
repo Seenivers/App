@@ -1,3 +1,17 @@
+# [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-10-25)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate tauri-plugin-store to v2.1.0 ([680a334](https://github.com/Seenivers/App/commit/680a3345003433e06598cc92018f3f6dfa54174c))
+* **release:** manually bump version to 0.5.0 due to semantic-release issue ([b928ef3](https://github.com/Seenivers/App/commit/b928ef3abf342fb6f0ce94d5e95970dd7b456ed0))
+* **workflow:** remove extra 'v' from release name to avoid 'vv...' issue ([3819e9c](https://github.com/Seenivers/App/commit/3819e9c364daeb1ff7e4b3d7defa3b25b51c33a3))
+
+
+### Features
+
+* **release:** add release check and conditional Tauri release steps ([6291656](https://github.com/Seenivers/App/commit/62916568ac13633ca4811fd6dbbd4b2aecd41798))
+
 ## [0.5.1](https://github.com/Seenivers/App/compare/v0.5.0...v0.5.1) (2024-10-25)
 
 
