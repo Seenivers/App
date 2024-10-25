@@ -1,3 +1,10 @@
+## [0.8.1](https://github.com/Seenivers/App/compare/v0.8.0...v0.8.1) (2024-10-25)
+
+
+### Bug Fixes
+
+* **workflow:** correct syntax in Check Asset Count step ([6bc569a](https://github.com/Seenivers/App/commit/6bc569a69143464b5a565e12b33f6be669f12652))
+
 # [0.8.0](https://github.com/Seenivers/App/compare/v0.7.0...v0.8.0) (2024-10-25)
 
 
