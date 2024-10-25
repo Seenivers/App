@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0) (2024-10-25)
+
+
+### Features
+
+* **release:** add conditional execution for Tauri Release based on successful Semantic Release ([6a218f1](https://github.com/Seenivers/App/commit/6a218f15f7c798e306266d6f82674ea4a8271caf))
+
 # [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-10-25)
 
 
