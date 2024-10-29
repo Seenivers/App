@@ -1,3 +1,10 @@
+# [0.7.0-next.1](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0-next.1) (2024-10-29)
+
+
+### Features
+
+* **release:** update GitHub Actions workflow to include asset count check for Tauri Release ([d946f7e](https://github.com/Seenivers/App/commit/d946f7e6f0bf670da78aa29c57e32f9c7f750607))
+
 # [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-10-29)
 
 
