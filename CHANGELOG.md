@@ -1,69 +1,60 @@
 # [0.7.0-next.2](https://github.com/Seenivers/App/compare/v0.7.0-next.1...v0.7.0-next.2) (2024-10-29)
 
-
 ### Bug Fixes
 
-* **release:** revert asset count retrieval to gh release view for accuracy ([d700626](https://github.com/Seenivers/App/commit/d700626ea2883c5cae7872f3e73e1e91dfaf1be6))
+- **release:** revert asset count retrieval to gh release view for accuracy ([d700626](https://github.com/Seenivers/App/commit/d700626ea2883c5cae7872f3e73e1e91dfaf1be6))
 
 # [0.7.0-next.1](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0-next.1) (2024-10-29)
 
-
 ### Bug Fixes
 
-* **release:** correct asset count check in Tauri Release workflow ([d3fe762](https://github.com/Seenivers/App/commit/d3fe762cf01bc6982a7907c046d335e424529123))
-* **release:** store asset_count in environment and update condition check ([502b221](https://github.com/Seenivers/App/commit/502b2217c48de1737dc158c35caa2ad8355687f7))
-
+- **release:** correct asset count check in Tauri Release workflow ([d3fe762](https://github.com/Seenivers/App/commit/d3fe762cf01bc6982a7907c046d335e424529123))
+- **release:** store asset_count in environment and update condition check ([502b221](https://github.com/Seenivers/App/commit/502b2217c48de1737dc158c35caa2ad8355687f7))
 
 ### Features
 
-* **ci:** update release workflow to include asset count check before Tauri release ([f899b07](https://github.com/Seenivers/App/commit/f899b07277a7568f35069ac7662fe7ec13ba9fe6))
-* **release:** update GitHub Actions workflow to include asset count check for Tauri Release ([d946f7e](https://github.com/Seenivers/App/commit/d946f7e6f0bf670da78aa29c57e32f9c7f750607))
+- **ci:** update release workflow to include asset count check before Tauri release ([f899b07](https://github.com/Seenivers/App/commit/f899b07277a7568f35069ac7662fe7ec13ba9fe6))
+- **release:** update GitHub Actions workflow to include asset count check for Tauri Release ([d946f7e](https://github.com/Seenivers/App/commit/d946f7e6f0bf670da78aa29c57e32f9c7f750607))
 
 # [0.7.0-next.4](https://github.com/Seenivers/App/compare/v0.7.0-next.3...v0.7.0-next.4) (2024-10-29)
 
-
 ### Bug Fixes
 
-* **release:** store asset_count in environment and update condition check ([502b221](https://github.com/Seenivers/App/commit/502b2217c48de1737dc158c35caa2ad8355687f7))
+- **release:** store asset_count in environment and update condition check ([502b221](https://github.com/Seenivers/App/commit/502b2217c48de1737dc158c35caa2ad8355687f7))
 
 # [0.7.0-next.3](https://github.com/Seenivers/App/compare/v0.7.0-next.2...v0.7.0-next.3) (2024-10-29)
 
-
 ### Features
 
-* **ci:** update release workflow to include asset count check before Tauri release ([f899b07](https://github.com/Seenivers/App/commit/f899b07277a7568f35069ac7662fe7ec13ba9fe6))
+- **ci:** update release workflow to include asset count check before Tauri release ([f899b07](https://github.com/Seenivers/App/commit/f899b07277a7568f35069ac7662fe7ec13ba9fe6))
 
 # [0.7.0-next.2](https://github.com/Seenivers/App/compare/v0.7.0-next.1...v0.7.0-next.2) (2024-10-29)
 
-
 ### Bug Fixes
 
-* **release:** correct asset count check in Tauri Release workflow ([d3fe762](https://github.com/Seenivers/App/commit/d3fe762cf01bc6982a7907c046d335e424529123))
+- **release:** correct asset count check in Tauri Release workflow ([d3fe762](https://github.com/Seenivers/App/commit/d3fe762cf01bc6982a7907c046d335e424529123))
 
 # [0.7.0-next.1](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0-next.1) (2024-10-29)
 
-
 ### Features
 
-* **release:** update GitHub Actions workflow to include asset count check for Tauri Release ([d946f7e](https://github.com/Seenivers/App/commit/d946f7e6f0bf670da78aa29c57e32f9c7f750607))
+- **release:** update GitHub Actions workflow to include asset count check for Tauri Release ([d946f7e](https://github.com/Seenivers/App/commit/d946f7e6f0bf670da78aa29c57e32f9c7f750607))
 
 # [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-10-29)
 
-
 ### Bug Fixes
 
-* **deps:** update rust crate tauri-plugin-store to v2.1.0 ([680a334](https://github.com/Seenivers/App/commit/680a3345003433e06598cc92018f3f6dfa54174c))
-* **release:** manually bump version to 0.5.0 due to semantic-release issue ([b928ef3](https://github.com/Seenivers/App/commit/b928ef3abf342fb6f0ce94d5e95970dd7b456ed0))
-* **workflow:** correct syntax in Check Asset Count step ([6bc569a](https://github.com/Seenivers/App/commit/6bc569a69143464b5a565e12b33f6be669f12652))
-* **workflow:** remove extra 'v' from release name to avoid 'vv...' issue ([3819e9c](https://github.com/Seenivers/App/commit/3819e9c364daeb1ff7e4b3d7defa3b25b51c33a3))
-
+- **deps:** update rust crate tauri-plugin-store to v2.1.0 ([680a334](https://github.com/Seenivers/App/commit/680a3345003433e06598cc92018f3f6dfa54174c))
+- **release:** manually bump version to 0.5.0 due to semantic-release issue ([b928ef3](https://github.com/Seenivers/App/commit/b928ef3abf342fb6f0ce94d5e95970dd7b456ed0))
+- **workflow:** correct syntax in Check Asset Count step ([6bc569a](https://github.com/Seenivers/App/commit/6bc569a69143464b5a565e12b33f6be669f12652))
+- **workflow:** remove extra 'v' from release name to avoid 'vv...' issue ([3819e9c](https://github.com/Seenivers/App/commit/3819e9c364daeb1ff7e4b3d7defa3b25b51c33a3))
 
 ### Features
 
-* **ci:** add asset count check to semantic-release job and streamline release workflows ([e4a8fae](https://github.com/Seenivers/App/commit/e4a8fae3cd8838b1e52da30caffc79542fdde7bf))
-* **release:** add asset count check to skip Tauri Release if more than 3 assets found ([43a6c96](https://github.com/Seenivers/App/commit/43a6c965260abb4284e94a3c359f36de83384a6b))
-* **release:** add conditional execution for Tauri Release based on successful Semantic Release ([6a218f1](https://github.com/Seenivers/App/commit/6a218f15f7c798e306266d6f82674ea4a8271caf))
-* **release:** add release check and conditional Tauri release steps ([6291656](https://github.com/Seenivers/App/commit/62916568ac13633ca4811fd6dbbd4b2aecd41798))
+- **ci:** add asset count check to semantic-release job and streamline release workflows ([e4a8fae](https://github.com/Seenivers/App/commit/e4a8fae3cd8838b1e52da30caffc79542fdde7bf))
+- **release:** add asset count check to skip Tauri Release if more than 3 assets found ([43a6c96](https://github.com/Seenivers/App/commit/43a6c965260abb4284e94a3c359f36de83384a6b))
+- **release:** add conditional execution for Tauri Release based on successful Semantic Release ([6a218f1](https://github.com/Seenivers/App/commit/6a218f15f7c798e306266d6f82674ea4a8271caf))
+- **release:** add release check and conditional Tauri release steps ([6291656](https://github.com/Seenivers/App/commit/62916568ac13633ca4811fd6dbbd4b2aecd41798))
 
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-23)
 
