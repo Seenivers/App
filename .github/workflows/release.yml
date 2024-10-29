@@ -57,9 +57,7 @@ jobs:
           draft=$(gh release view --json isDraft --jq '.isDraft')
           prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')
 
-          last_release_info=$(gh release list --limit 1 --json tagName,isDraft,isPrerelease,assets)
-
-          asset_count=$(echo "$last_release_info" | jq -r '.[0].assets | length')
+          asset_count=$(gh release view --json assets --jq '.assets | length')
 
           echo "asset_count=${asset_count}" >> $GITHUB_ENV
 
