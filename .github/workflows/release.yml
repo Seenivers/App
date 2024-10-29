@@ -14,6 +14,8 @@ jobs:
   semantic-release:
     name: Semantic Release
     runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check_asset_count.outputs.should_run }}
 
     permissions:
       contents: write
@@ -62,8 +64,7 @@ jobs:
             "id": "'"${id}"'",
             "body": "'"${body//$'\n'/\\n}"'",
             "prerelease": '"$prerelease"',
-            "draft": '"$draft"',
-            "asset_count": "'"${asset_count}"'"
+            "draft": '"$draft"'
           }' > release_info.json
 
       - name: Upload Release Details
@@ -72,9 +73,21 @@ jobs:
           name: release-info
           path: release_info.json
 
+      - name: Check Asset Count
+        id: check_asset_count
+        shell: bash
+        run: |
+          if [[ ${{ fromJson(env.release_details).asset_count }} -gt 3 ]]; then
+            echo "More than 3 assets found. Skipping Tauri Release."
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
   tauri-release:
     name: Tauri Release
     needs: semantic-release
+    if: needs.semantic-release.outputs.should_run == 'true'
 
     permissions:
       contents: write
@@ -111,19 +124,10 @@ jobs:
           body=$(echo "$release_info" | jq -r '.body')
           draft=$(echo "$release_info" | jq -r '.draft')
           prerelease=$(echo "$release_info" | jq -r '.prerelease')
-          asset_count=$(echo "$release_info" | jq -r '.asset_count')
 
           body=$(printf '%s' "$body" | awk '{gsub(/"/, "\\\""); printf "%s\\n", $0}' | tr '\n' '\\' | sed 's/\\$//')
 
-          echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App ${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease},\"asset_count\":${asset_count}}" >> $GITHUB_ENV
-
-      - name: Check Asset Count
-        shell: bash
-        run: |
-          if [[ ${{ fromJson(env.release_details).asset_count }} > 3 ]]; then
-            echo "More than 3 assets found. Skipping Tauri Release."
-            exit 0
-          fi
+          echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App ${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v4
