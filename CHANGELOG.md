@@ -1,3 +1,19 @@
+# [0.7.0](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0) (2024-10-29)
+
+
+### Bug Fixes
+
+* **release:** correct asset count check in Tauri Release workflow ([d3fe762](https://github.com/Seenivers/App/commit/d3fe762cf01bc6982a7907c046d335e424529123))
+* **release:** include asset count in message when skipping Tauri Release ([edc0370](https://github.com/Seenivers/App/commit/edc0370b2720ee8e9521c871531552fd6927bced))
+* **release:** revert asset count retrieval to gh release view for accuracy ([d700626](https://github.com/Seenivers/App/commit/d700626ea2883c5cae7872f3e73e1e91dfaf1be6))
+* **release:** store asset_count in environment and update condition check ([502b221](https://github.com/Seenivers/App/commit/502b2217c48de1737dc158c35caa2ad8355687f7))
+
+
+### Features
+
+* **ci:** update release workflow to include asset count check before Tauri release ([f899b07](https://github.com/Seenivers/App/commit/f899b07277a7568f35069ac7662fe7ec13ba9fe6))
+* **release:** update GitHub Actions workflow to include asset count check for Tauri Release ([d946f7e](https://github.com/Seenivers/App/commit/d946f7e6f0bf670da78aa29c57e32f9c7f750607))
+
 # [0.7.0-next.2](https://github.com/Seenivers/App/compare/v0.7.0-next.1...v0.7.0-next.2) (2024-10-29)
 
 ### Bug Fixes
