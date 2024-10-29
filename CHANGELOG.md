@@ -1,3 +1,10 @@
+# [0.7.0-next.4](https://github.com/Seenivers/App/compare/v0.7.0-next.3...v0.7.0-next.4) (2024-10-29)
+
+
+### Bug Fixes
+
+* **release:** store asset_count in environment and update condition check ([502b221](https://github.com/Seenivers/App/commit/502b2217c48de1737dc158c35caa2ad8355687f7))
+
 # [0.7.0-next.3](https://github.com/Seenivers/App/compare/v0.7.0-next.2...v0.7.0-next.3) (2024-10-29)
 
 
