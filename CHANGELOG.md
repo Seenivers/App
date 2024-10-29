@@ -1,3 +1,10 @@
+# [0.7.0-next.2](https://github.com/Seenivers/App/compare/v0.7.0-next.1...v0.7.0-next.2) (2024-10-29)
+
+
+### Bug Fixes
+
+* **release:** revert asset count retrieval to gh release view for accuracy ([d700626](https://github.com/Seenivers/App/commit/d700626ea2883c5cae7872f3e73e1e91dfaf1be6))
+
 # [0.7.0-next.1](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0-next.1) (2024-10-29)
 
 
