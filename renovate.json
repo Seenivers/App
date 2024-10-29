@@ -7,17 +7,14 @@
 	"packageRules": [
 		{
 			"matchPaths": ["package.json", "npm"],
-			"groupName": "npm dependencies",
 			"labels": ["npm", "dependencies"]
 		},
 		{
 			"matchPaths": ["Cargo.toml", "src-tauri/Cargo.toml"],
-			"groupName": "Rust dependencies",
 			"labels": ["rust", "dependencies"]
 		},
 		{
 			"matchPaths": [".github/workflows/*.yml"],
-			"groupName": "GitHub Actions",
 			"labels": ["github-actions", "dependencies"]
 		}
 	],

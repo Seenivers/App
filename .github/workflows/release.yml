@@ -14,6 +14,8 @@ jobs:
   semantic-release:
     name: Semantic Release
     runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check_asset_count.outputs.should_run }}
 
     permissions:
       contents: write
@@ -57,7 +59,7 @@ jobs:
 
           asset_count=$(gh release view --json assets --jq '.assets | length')
 
-          echo "ASSET_COUNT=${asset_count}" > $GITHUB_ENV
+          echo "asset_count=${asset_count}" >> $GITHUB_ENV
 
           echo '{
             "tag_name": "'"${tag_name}"'",
@@ -67,22 +69,27 @@ jobs:
             "draft": '"$draft"'
           }' > release_info.json
 
-      - name: Check Asset Count
-        run: |
-          if [[ "${{ env.ASSET_COUNT }}" -gt 3 ]]; then
-            echo "More than 3 assets found. Skipping Tauri Release."
-            exit 0
-          fi
-
       - name: Upload Release Details
         uses: actions/upload-artifact@v4
         with:
           name: release-info
           path: release_info.json
 
+      - name: Check Asset Count
+        id: check_asset_count
+        shell: bash
+        run: |
+          if [[ $asset_count -gt 3 ]]; then
+            echo "More than 3 assets found. Skipping Tauri Release. (${asset_count})"
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
   tauri-release:
     name: Tauri Release
     needs: semantic-release
+    if: needs.semantic-release.outputs.should_run == 'true'
 
     permissions:
       contents: write
@@ -122,7 +129,7 @@ jobs:
 
           body=$(printf '%s' "$body" | awk '{gsub(/"/, "\\\""); printf "%s\\n", $0}' | tr '\n' '\\' | sed 's/\\$//')
 
-          echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App ${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease}}" >> $GITHUB_ENV
+          echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App ${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v4
