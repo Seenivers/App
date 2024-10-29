@@ -80,7 +80,7 @@ jobs:
         shell: bash
         run: |
           if [[ $asset_count -gt 3 ]]; then
-            echo "More than 3 assets found. Skipping Tauri Release."
+            echo "More than 3 assets found. Skipping Tauri Release. (${asset_count})"
             echo "should_run=false" >> $GITHUB_OUTPUT
           else
             echo "should_run=true" >> $GITHUB_OUTPUT
