@@ -1,3 +1,10 @@
+## [0.7.1](https://github.com/Seenivers/App/compare/v0.7.0...v0.7.1) (2024-10-29)
+
+
+### Bug Fixes
+
+* **release:** correct release details formatting in environment variables ([df353c2](https://github.com/Seenivers/App/commit/df353c2714e56fb62ddcc646e7fa93ab2be40b90))
+
 # [0.7.0](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0) (2024-10-29)
 
 
