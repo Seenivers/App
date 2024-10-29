@@ -80,12 +80,8 @@ export class Store {
 	 */
 	private async create(): Promise<void | Error> {
 		if (!(await exists(this.fileName, { baseDir: BaseDirectory.AppConfig }))) {
-			try {
-				await create(this.fileName, { baseDir: BaseDirectory.AppConfig });
-				this.save();
-			} catch (error) {
-				throw error;
-			}
+			await create(this.fileName, { baseDir: BaseDirectory.AppConfig });
+			this.save();
 		}
 	}
 
