@@ -1,3 +1,10 @@
+# [0.7.0-next.2](https://github.com/Seenivers/App/compare/v0.7.0-next.1...v0.7.0-next.2) (2024-10-29)
+
+
+### Bug Fixes
+
+* **release:** correct asset count check in Tauri Release workflow ([d3fe762](https://github.com/Seenivers/App/commit/d3fe762cf01bc6982a7907c046d335e424529123))
+
 # [0.7.0-next.1](https://github.com/Seenivers/App/compare/v0.6.0...v0.7.0-next.1) (2024-10-29)
 
 
