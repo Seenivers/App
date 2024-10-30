@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/Seenivers/App/compare/v0.5.0...v0.5.1) (2024-10-30)
+
+
+### Bug Fixes
+
+* **release:** remove unnecessary escape sequence from body processing ([2d61cab](https://github.com/Seenivers/App/commit/2d61cabfc76df773fb3984a145483342b1b028f2))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-30)
 
 
