@@ -19,7 +19,10 @@
 	});
 
 	async function download() {
-		if (!$data.settings.online) alert('Du bist nicht mit dem Internet verbunden');
+		if (!$data.settings.online) {
+			alert('Du bist nicht mit dem Internet verbunden');
+			return;
+		}
 		if (update) {
 			downloadStarted = true;
 			downloadFinished = false;
