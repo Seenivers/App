@@ -13,7 +13,6 @@
 	let player: HTMLDivElement;
 	let videoElement: HTMLVideoElement;
 	let steuerElemente: boolean = false;
-	let lastExecutionTime: number = 0;
 	let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
 
 	function format(seconds: number) {
@@ -57,13 +56,11 @@
 		}
 	}
 
-	function elemente(player: MouseEvent) {
+	function elemente() {
 		// Aktiviert Steuerungs-Elemente
 		steuerElemente = true;
 
 		if (videoElement.ended || videoElement.paused) return;
-
-		const timeStamp = Math.round(player.timeStamp / 1000);
 
 		// Löscht den vorherigen Timer, falls vorhanden
 		if (timeoutHandle) clearTimeout(timeoutHandle);
@@ -72,9 +69,6 @@
 		timeoutHandle = setTimeout(() => {
 			steuerElemente = false;
 		}, 1000);
-
-		// Aktualisiert die letzte Zeit der Ereignisausführung
-		lastExecutionTime = timeStamp;
 	}
 
 	function save() {
@@ -104,7 +98,8 @@
 	bind:this={player}
 	on:mousemove={elemente}
 >
-	<!-- svelte-ignore a11y-media-has-caption https://github.com/sveltejs/svelte/issues/5967#issuecomment-775297424 -->
+	<!-- svelte-ignore a11y-media-has-caption -->
+	<!-- https://github.com/sveltejs/svelte/issues/5967#issuecomment-775297424 -->
 	<video
 		bind:duration
 		bind:currentTime

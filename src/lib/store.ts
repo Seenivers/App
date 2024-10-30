@@ -25,9 +25,9 @@ import {
 	mkdir
 } from '@tauri-apps/plugin-fs';
 
-export class Store {
+export class Store<T extends Record<string, unknown>> {
 	public readonly fileName: string;
-	public content: Record<string, any> = {};
+	public content: T = {} as T;
 	public baseDir: BaseDirectory;
 	private readonly file: string;
 
@@ -45,9 +45,9 @@ export class Store {
 	/**
 	 * Loads the content of the store from the file system.
 	 * If the file does not exist, it creates a new one and returns an empty object.
-	 * @returns {Promise<Record<string, any>>} The content of the store or an empty object.
+	 * @returns {Promise<T>} The content of the store or an empty object.
 	 */
-	async load(): Promise<Record<string, any>> {
+	async load(): Promise<T> {
 		// Gibt es App identifier (seenivers)
 		if (!(await exists('', { baseDir: BaseDirectory.AppConfig }))) {
 			await mkdir('', { baseDir: BaseDirectory.AppConfig, recursive: true });
@@ -60,16 +60,16 @@ export class Store {
 
 			// Überprüfe, ob der Inhalt leer ist oder nur Whitespace enthält
 			if (content.trim()) {
-				this.content = JSON.parse(content);
+				this.content = JSON.parse(content) as T;
 				return this.content;
 			} else {
 				// Falls die Datei leer ist, gib ein leeres Objekt zurück
-				this.content = {};
+				this.content = {} as T;
 				return this.content;
 			}
 		} else {
 			await this.create();
-			return {};
+			return {} as T;
 		}
 	}
 
@@ -81,7 +81,7 @@ export class Store {
 	private async create(): Promise<void | Error> {
 		if (!(await exists(this.fileName, { baseDir: BaseDirectory.AppConfig }))) {
 			await create(this.fileName, { baseDir: BaseDirectory.AppConfig });
-			this.save();
+			await this.save();
 		}
 	}
 

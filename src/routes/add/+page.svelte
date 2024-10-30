@@ -135,7 +135,7 @@
 			);
 			return;
 		}
-		const { name, primaryReleaseYear, page } = status[i].searchParams;
+		const { name, primaryReleaseYear } = status[i].searchParams;
 
 		// Perform TMDB search
 		const result = (

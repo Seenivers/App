@@ -19,23 +19,27 @@
 	});
 
 	async function download() {
-		if (!$data.settings.online) alert('Du bist nicht mit dem Internet verbunden');
+		if (!$data.settings.online) {
+			alert('Du bist nicht mit dem Internet verbunden');
+			return;
+		}
 		if (update) {
 			downloadStarted = true;
 			downloadFinished = false;
 			let downloaded = 0;
-			let contentLength = 0;
+			let contentLength: number | undefined = 0;
 
 			await update.downloadAndInstall((event) => {
 				switch (event.event) {
 					case 'Started':
-						// @ts-ignore
 						contentLength = event.data.contentLength;
 						console.log(`started downloading ${contentLength} bytes`);
 						break;
 					case 'Progress':
 						downloaded += event.data.chunkLength;
-						downloadProgress = Math.round((downloaded / contentLength) * 100);
+						if (contentLength) {
+							downloadProgress = Math.round((downloaded / contentLength) * 100);
+						}
 						console.log(`downloaded ${downloaded} from ${contentLength}`);
 						break;
 					case 'Finished':
