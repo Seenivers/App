@@ -13,7 +13,6 @@
 	let player: HTMLDivElement;
 	let videoElement: HTMLVideoElement;
 	let steuerElemente: boolean = false;
-	let lastExecutionTime: number = 0;
 	let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
 
 	function format(seconds: number) {
@@ -72,9 +71,6 @@
 		timeoutHandle = setTimeout(() => {
 			steuerElemente = false;
 		}, 1000);
-
-		// Aktualisiert die letzte Zeit der Ereignisausführung
-		lastExecutionTime = timeStamp;
 	}
 
 	function save() {
