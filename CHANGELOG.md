@@ -1,3 +1,28 @@
+## [0.5.1](https://github.com/Seenivers/App/compare/v0.5.0...v0.5.1) (2024-10-30)
+
+
+### Bug Fixes
+
+* **accessibility:** adjust svelte-ignore comment placement for a11y-media-has-caption issue ([83a1e58](https://github.com/Seenivers/App/commit/83a1e58bfb113f75b44a6da4e06e5a83810d9881))
+* **deps:** update dependency @tauri-apps/plugin-dialog to ^2.0.1 ([e72dd62](https://github.com/Seenivers/App/commit/e72dd6230c13123ccf6fd6399c376d78073e5088))
+* **deps:** update dependency @tauri-apps/plugin-fs to ^2.0.1 ([aec0973](https://github.com/Seenivers/App/commit/aec097309ef388318709707bbbf5c47a129c7945))
+* **deps:** update dependency @tauri-apps/plugin-http to ^2.0.1 ([54f6769](https://github.com/Seenivers/App/commit/54f67692512ada6ae0b7c2924b65a87fbaa62aeb))
+* **deps:** update rust crate log to 0.4.22 ([abb6e18](https://github.com/Seenivers/App/commit/abb6e18538b41998accc79271484bbc75d51b752))
+* **deps:** update rust crate serde to 1.0.213 ([d996a3b](https://github.com/Seenivers/App/commit/d996a3b0b0d4092df5e23b537d12201556359925))
+* **deps:** update rust crate serde to 1.0.214 ([c71e24e](https://github.com/Seenivers/App/commit/c71e24ef86099cba5676ff178db1dd7d29efa6f6))
+* **deps:** update rust crate serde_json to 1.0.132 ([628ad63](https://github.com/Seenivers/App/commit/628ad63a805531085bc832bb356187721fc2cb81))
+* **deps:** update rust crate tauri-plugin-dialog to 2.0.3 ([5d15603](https://github.com/Seenivers/App/commit/5d15603887b09b4b5901c3544a22f81367cbcd2a))
+* **deps:** update rust crate tauri-plugin-fs to 2.0.3 ([ab6bf2c](https://github.com/Seenivers/App/commit/ab6bf2c7baf51e1159b9f769b9eba48977d629e8))
+* **deps:** update rust crate tauri-plugin-http to 2.0.3 ([856dc3c](https://github.com/Seenivers/App/commit/856dc3cf2a01f3e00b4ad10e02d5e25863326695))
+* **deps:** update rust crate tauri-plugin-log to 2.0.1 ([2584981](https://github.com/Seenivers/App/commit/2584981ed365733ceef07142f681efba832a2f67))
+* **deps:** update rust crate tauri-plugin-process to 2.0.1 ([b74b619](https://github.com/Seenivers/App/commit/b74b619e4348c2188500f7da562ee76496fd17d6))
+* **deps:** update rust crate tauri-plugin-store to 2.1.0 ([fab307e](https://github.com/Seenivers/App/commit/fab307efd52a388ad46199d2d6595e1f0df0e514))
+* **deps:** update rust crate tauri-plugin-updater to 2.0.2 ([6eb1de1](https://github.com/Seenivers/App/commit/6eb1de152f4571b68e64f0c73f65b95195be81af))
+* **download:** add internet connection check with early return in download function ([0e4acc5](https://github.com/Seenivers/App/commit/0e4acc58dec89fb9105affb7feca59eee01e4ade))
+* **download:** remove "[@ts-ignore](https://github.com/ts-ignore)" by ensuring "contentLength" is always defined ([a2e77d6](https://github.com/Seenivers/App/commit/a2e77d6b3c803a12637c2a4da2117d359b82e449))
+* **types:** remove unused player parameter from elemente function ([2762b81](https://github.com/Seenivers/App/commit/2762b814f6a715afa6aaa043b956bba705548886))
+* **types:** replace any with generics in Store class for better type safety ([f9d0459](https://github.com/Seenivers/App/commit/f9d04592a4dfc8fdff5b4d7d16f1d19afef8b17f))
+
 # [0.5.0](https://github.com/Seenivers/App/compare/v0.4.1...v0.5.0) (2024-10-30)
 
 
