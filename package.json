@@ -18,7 +18,7 @@
 		"@semantic-release/changelog": "^6.0.3",
 		"@semantic-release/git": "^10.0.1",
 		"@sveltejs/adapter-static": "^3.0.4",
-		"@sveltejs/kit": "^2.7.0",
+		"@sveltejs/kit": "^2.7.3",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@tauri-apps/cli": "^2.0.4",
 		"@types/eslint": "^9.6.1",
