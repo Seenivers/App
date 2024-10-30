@@ -56,7 +56,7 @@
 		}
 	}
 
-	function elemente(player: MouseEvent) {
+	function elemente() {
 		// Aktiviert Steuerungs-Elemente
 		steuerElemente = true;
 
