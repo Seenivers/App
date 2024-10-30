@@ -98,7 +98,8 @@
 	bind:this={player}
 	on:mousemove={elemente}
 >
-	<!-- svelte-ignore a11y-media-has-caption https://github.com/sveltejs/svelte/issues/5967#issuecomment-775297424 -->
+	<!-- svelte-ignore a11y-media-has-caption -->
+	<!-- https://github.com/sveltejs/svelte/issues/5967#issuecomment-775297424 -->
 	<video
 		bind:duration
 		bind:currentTime
