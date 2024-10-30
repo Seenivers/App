@@ -62,8 +62,6 @@
 
 		if (videoElement.ended || videoElement.paused) return;
 
-		const timeStamp = Math.round(player.timeStamp / 1000);
-
 		// Löscht den vorherigen Timer, falls vorhanden
 		if (timeoutHandle) clearTimeout(timeoutHandle);
 
