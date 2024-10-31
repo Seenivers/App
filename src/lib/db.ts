@@ -1,10 +1,11 @@
 import { Store } from './store';
 import { writable } from 'svelte/store';
-import type { Data, Settings } from './types';
+import type { Data, Settings, Movie, Actor, Collection } from './types';
 
 // Initialize the Store instance
 const store = new Store('data.lib', 'AppConfig');
 
+// Funktion zum Speichern der Daten
 const save = async () => {
 	data.subscribe((data) => {
 		store.content = {
@@ -17,7 +18,7 @@ const save = async () => {
 	await store.save();
 };
 
-// Default settings
+// Standardwerte für die Einstellungen
 const defaultSettings: Settings = {
 	language: window.navigator.language,
 	online: window.navigator.onLine,
@@ -45,48 +46,65 @@ const defaultSettings: Settings = {
 // Initialize the writable store with a placeholder
 export const data = writable<Data>();
 
-// Function to load stored data or use default values
-async function initializeData() {
+// Typ für die Rückgabewerte der initializeData-Funktion
+type InitialData = {
+	settings: Settings;
+	movies: Movie[];
+	actors: Actor[];
+	collections: Collection[];
+	save: () => Promise<void>;
+};
+
+// Funktion zum Laden der gespeicherten Daten oder Verwendung der Standardwerte
+async function initializeData(): Promise<InitialData> {
 	const savedData = await store.load();
 
-	// Merge saved data with default settings
+	// Überprüfung, ob savedData die korrekten Typen hat
+	const settings = {
+		...defaultSettings,
+		...((savedData as { settings?: Partial<Settings> })?.settings || {})
+	};
+	const movies: Movie[] = (savedData?.movies || []) as Movie[];
+	const actors: Actor[] = (savedData?.actors || []) as Actor[];
+	const collections: Collection[] = (savedData?.collections || []) as Collection[];
+
 	return {
-		settings: { ...defaultSettings, ...savedData?.settings },
-		movies: savedData?.movies || [],
-		actors: savedData?.actors || [],
-		collections: savedData?.collections || [],
+		settings,
+		movies,
+		actors,
+		collections,
 		save
 	};
 }
 
-// Load data asynchronously and update the store once it's ready
+// Daten asynchron laden und den Store aktualisieren, sobald sie bereit sind
 (async () => {
 	const initialData = await initializeData();
 	data.set(initialData);
 })();
 
-// Monitor online status and update settings
+// Online-Status überwachen und Einstellungen aktualisieren
 const onlineHandler = () => {
 	data.update((currentData) => ({
 		...currentData,
-		settings: { ...currentData.settings, online: true } // Update online status
+		settings: { ...currentData.settings, online: true } // Online-Status aktualisieren
 	}));
 };
 
 const offlineHandler = () => {
 	data.update((currentData) => ({
 		...currentData,
-		settings: { ...currentData.settings, online: false } // Update online status
+		settings: { ...currentData.settings, online: false } // Online-Status aktualisieren
 	}));
 };
 
-// Add event listeners for online/offline status
+// Event-Listener für Online/Offline-Status hinzufügen
 window.addEventListener('online', onlineHandler);
 window.addEventListener('offline', offlineHandler);
 
-// Clean up subscription and event listeners when component is destroyed
+// Aufräumen der Abonnements und Event-Listener beim Zerstören der Komponente
 export async function cleanupData() {
-	// Remove event listeners
+	// Event-Listener entfernen
 	window.removeEventListener('online', onlineHandler);
 	window.removeEventListener('offline', offlineHandler);
 	data.subscribe((data) => {
