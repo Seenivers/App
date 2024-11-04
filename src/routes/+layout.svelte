@@ -14,6 +14,9 @@
 	{#if $data}
 		<slot />
 		<Toast />
+		{#if $data.settings.online}
+			<Updater />
+		{/if}
 	{:else}
 		<div class="flex items-center justify-center">
 			<div
@@ -21,5 +24,4 @@
 			/>
 		</div>
 	{/if}
-	<Updater />
 </div>
