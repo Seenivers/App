@@ -1,6 +1,7 @@
 import { Store } from './store';
 import { writable } from 'svelte/store';
 import type { Data, Settings, Movie, Actor, Collection } from './types';
+import { newToast } from './toast/toast';
 
 // Initialize the Store instance
 const store = new Store('data.lib', 'AppConfig');
@@ -85,6 +86,7 @@ async function initializeData(): Promise<InitialData> {
 
 // Online-Status überwachen und Einstellungen aktualisieren
 const onlineHandler = () => {
+	newToast('success', 'You are connected to the internet.');
 	data.update((currentData) => ({
 		...currentData,
 		settings: { ...currentData.settings, online: true } // Online-Status aktualisieren
@@ -92,6 +94,7 @@ const onlineHandler = () => {
 };
 
 const offlineHandler = () => {
+	newToast('success', 'You are not connected to the internet.');
 	data.update((currentData) => ({
 		...currentData,
 		settings: { ...currentData.settings, online: false } // Online-Status aktualisieren
