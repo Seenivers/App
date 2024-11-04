@@ -6,7 +6,7 @@ import { get } from 'svelte/store';
 
 const STATIC_KEY = '51baf525-2720-4c43-8d34-b759bb71ae88';
 let apiKey: string | null = null; // Initialisiere apiKey als null
-const language = data ? get(data).settings.language : window.navigator.language.split('-')[0]; // Setze standardmäßige Sprache
+const language = get(data) ? get(data).settings.language : window.navigator.language.split('-')[0]; // Setze standardmäßige Sprache
 
 async function newApiKey() {
 	const response = await fetch('https://seenivers.com/api/api-key', {
