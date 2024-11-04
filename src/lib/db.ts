@@ -1,5 +1,5 @@
 import { Store } from './store';
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import type { Data, Settings, Movie, Actor, Collection } from './types';
 
 // Initialize the Store instance
@@ -85,14 +85,14 @@ async function initializeData(): Promise<InitialData> {
 
 // Aufräumen der Abonnements und Event-Listener beim Zerstören der Komponente
 export async function cleanupData() {
-	const unsubscribe = data.subscribe((data) => {
-		store.content = {
-			settings: data.settings,
-			movies: data.movies,
-			actors: data.actors,
-			collections: data.collections
-		};
-	});
+	const dat = get(data);
+
+	store.content = {
+		settings: dat.settings,
+		movies: dat.movies,
+		actors: dat.actors,
+		collections: dat.collections
+	};
+
 	await store.save();
-	unsubscribe();
 }
