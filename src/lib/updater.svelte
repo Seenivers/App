@@ -3,6 +3,7 @@
 	import { check, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { data } from './db';
+	import { newToast } from './toast/toast';
 
 	let update: Update | null = null;
 	let downloadProgress = 0;
@@ -20,7 +21,7 @@
 
 	async function download() {
 		if (!$data.settings.online) {
-			alert('Du bist nicht mit dem Internet verbunden');
+			newToast('error', 'You are not connected to the internet.');
 			return;
 		}
 		if (update) {
