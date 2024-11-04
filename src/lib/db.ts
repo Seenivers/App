@@ -107,7 +107,7 @@ export async function cleanupData() {
 	// Event-Listener entfernen
 	window.removeEventListener('online', onlineHandler);
 	window.removeEventListener('offline', offlineHandler);
-	data.subscribe((data) => {
+	const unsubscribe = data.subscribe((data) => {
 		store.content = {
 			settings: data.settings,
 			movies: data.movies,
@@ -116,4 +116,5 @@ export async function cleanupData() {
 		};
 	});
 	await store.save();
+	unsubscribe();
 }
