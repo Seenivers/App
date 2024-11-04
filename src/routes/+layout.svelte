@@ -1,6 +1,6 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
-	import { cleanupData, data } from '$lib/db';
+	import { data } from '$lib/db';
 	import Updater from '$lib/updater.svelte';
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
@@ -11,7 +11,7 @@
 	});
 
 	onDestroy(() => {
-		cleanupData();
+		$data.save();
 		removeCustomEventListener();
 	});
 </script>

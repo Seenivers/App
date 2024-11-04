@@ -7,14 +7,15 @@ const store = new Store('data.lib', 'AppConfig');
 
 // Funktion zum Speichern der Daten
 const save = async () => {
-	data.subscribe((data) => {
-		store.content = {
-			settings: data.settings,
-			movies: data.movies,
-			actors: data.actors,
-			collections: data.collections
-		};
-	});
+	const dat = get(data);
+
+	store.content = {
+		settings: dat.settings,
+		movies: dat.movies,
+		actors: dat.actors,
+		collections: dat.collections
+	};
+
 	await store.save();
 };
 
@@ -66,17 +67,3 @@ async function initializeData(): Promise<InitialData> {
 	const initialData = await initializeData();
 	data.set(initialData);
 })();
-
-// Aufräumen der Abonnements und Event-Listener beim Zerstören der Komponente
-export async function cleanupData() {
-	const dat = get(data);
-
-	store.content = {
-		settings: dat.settings,
-		movies: dat.movies,
-		actors: dat.actors,
-		collections: dat.collections
-	};
-
-	await store.save();
-}
