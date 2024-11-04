@@ -1,12 +1,18 @@
 <script>
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { cleanupData, data } from '$lib/db';
 	import Updater from '$lib/updater.svelte';
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
+	import { addCustomEventListener, removeCustomEventListener } from '$lib/networkStatus';
+
+	onMount(async () => {
+		addCustomEventListener();
+	});
 
 	onDestroy(() => {
 		cleanupData();
+		removeCustomEventListener();
 	});
 </script>
 

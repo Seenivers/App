@@ -1,7 +1,6 @@
 import { Store } from './store';
 import { writable } from 'svelte/store';
 import type { Data, Settings, Movie, Actor, Collection } from './types';
-import { newToast } from './toast/toast';
 
 // Initialize the Store instance
 const store = new Store('data.lib', 'AppConfig');
@@ -84,32 +83,8 @@ async function initializeData(): Promise<InitialData> {
 	data.set(initialData);
 })();
 
-// Online-Status überwachen und Einstellungen aktualisieren
-const onlineHandler = () => {
-	newToast('success', 'You are connected to the internet.');
-	data.update((currentData) => ({
-		...currentData,
-		settings: { ...currentData.settings, online: true } // Online-Status aktualisieren
-	}));
-};
-
-const offlineHandler = () => {
-	newToast('success', 'You are not connected to the internet.');
-	data.update((currentData) => ({
-		...currentData,
-		settings: { ...currentData.settings, online: false } // Online-Status aktualisieren
-	}));
-};
-
-// Event-Listener für Online/Offline-Status hinzufügen
-window.addEventListener('online', onlineHandler);
-window.addEventListener('offline', offlineHandler);
-
 // Aufräumen der Abonnements und Event-Listener beim Zerstören der Komponente
 export async function cleanupData() {
-	// Event-Listener entfernen
-	window.removeEventListener('online', onlineHandler);
-	window.removeEventListener('offline', offlineHandler);
 	const unsubscribe = data.subscribe((data) => {
 		store.content = {
 			settings: data.settings,
