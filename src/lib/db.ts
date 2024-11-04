@@ -22,23 +22,7 @@ const save = async () => {
 const defaultSettings: Settings = {
 	language: window.navigator.language,
 	online: window.navigator.onLine,
-	keywords: [
-		'mp4',
-		'trailer',
-		'StreamKiste',
-		'tv',
-		'HD',
-		'HDTV',
-		'720p',
-		'1080p',
-		'4K',
-		'HDR',
-		'HDR10',
-		'HDR10+',
-		'stream',
-		'StreamKistetv',
-		'»'
-	],
+	keywords: ['mp4', 'tv', 'HD', 'HDTV', '720p', '1080p', '4K', 'HDR', 'HDR10', 'HDR10+', '4K+'],
 	adult: false,
 	toastPosition: { horizontal: 'end', vertical: 'bottom' }
 };
