@@ -150,11 +150,11 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
-<div class="navbar bg-base-100">
+<nav class="navbar bg-base-100">
 	<div class="flex-1">
 		<a href="add" class="btn btn-ghost">Hinzufügen</a>
 	</div>
-</div>
+</nav>
 
 <main class="flex-grow flex-col p-5">
 	<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
