@@ -1,6 +1,6 @@
 import { Store } from './store';
 import { get, writable } from 'svelte/store';
-import type { Data, Settings, Movie, Actor, Collection } from './types';
+import type { Data, Settings, oldMovie, oldActor, oldCollection } from './types';
 
 // Initialize the Store instance
 const store = new Store('data.lib', 'AppConfig');
@@ -34,9 +34,9 @@ export const data = writable<Data>();
 // Typ für die Rückgabewerte der initializeData-Funktion
 type InitialData = {
 	settings: Settings;
-	movies: Movie[];
-	actors: Actor[];
-	collections: Collection[];
+	movies: oldMovie[];
+	actors: oldActor[];
+	collections: oldCollection[];
 	save: () => Promise<void>;
 };
 
@@ -49,9 +49,9 @@ async function initializeData(): Promise<InitialData> {
 		...defaultSettings,
 		...((savedData as { settings?: Partial<Settings> })?.settings || {})
 	};
-	const movies: Movie[] = (savedData?.movies || []) as Movie[];
-	const actors: Actor[] = (savedData?.actors || []) as Actor[];
-	const collections: Collection[] = (savedData?.collections || []) as Collection[];
+	const movies: oldMovie[] = (savedData?.movies || []) as oldMovie[];
+	const actors: oldActor[] = (savedData?.actors || []) as oldActor[];
+	const collections: oldCollection[] = (savedData?.collections || []) as oldCollection[];
 
 	return {
 		settings,
