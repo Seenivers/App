@@ -3,7 +3,7 @@ export type Data = {
 	movies: oldMovie[];
 	actors: oldActor[];
 	collections: oldCollection[];
-	save: () => void;
+	save: () => Promise<void>;
 };
 
 export type Settings = {

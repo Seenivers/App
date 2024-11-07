@@ -31,17 +31,8 @@ const defaultSettings: Settings = {
 // Initialize the writable store with a placeholder
 export const data = writable<Data>();
 
-// Typ für die Rückgabewerte der initializeData-Funktion
-type InitialData = {
-	settings: Settings;
-	movies: oldMovie[];
-	actors: oldActor[];
-	collections: oldCollection[];
-	save: () => Promise<void>;
-};
-
 // Funktion zum Laden der gespeicherten Daten oder Verwendung der Standardwerte
-async function initializeData(): Promise<InitialData> {
+async function initializeData(): Promise<Data> {
 	const savedData = await store.load();
 
 	// Überprüfung, ob savedData die korrekten Typen hat
