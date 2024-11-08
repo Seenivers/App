@@ -7,6 +7,8 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint:es": "eslint .",
@@ -24,6 +26,7 @@
 		"@types/eslint": "^9.6.1",
 		"autoprefixer": "^10.4.20",
 		"daisyui": "^4.12.14",
+		"drizzle-kit": "^0.27.1",
 		"eslint": "^9.13.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.0",
@@ -49,6 +52,7 @@
 		"@tauri-apps/plugin-process": "^2.0.0",
 		"@tauri-apps/plugin-sql": "^2.0.0",
 		"@tauri-apps/plugin-updater": "^2.0.0",
+		"drizzle-orm": "^0.36.0",
 		"fuse.js": "^7.0.0"
 	}
 }
