@@ -5,9 +5,11 @@
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
 	import { addCustomEventListener, removeCustomEventListener } from '$lib/networkStatus';
+	import { migrate } from '$lib/db/migrate';
 
 	onMount(async () => {
 		addCustomEventListener();
+		await migrate();
 	});
 
 	onDestroy(() => {
