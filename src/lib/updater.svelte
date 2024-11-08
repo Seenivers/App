@@ -12,7 +12,7 @@
 	let modalOpen = false;
 
 	onMount(async () => {
-		if ($data && !$data.settings.online) return;
+		if ($data && !window.navigator.onLine) return;
 		update = await check();
 		if (update) {
 			modalOpen = true;
@@ -20,7 +20,7 @@
 	});
 
 	async function download() {
-		if (!$data.settings.online) {
+		if (!window.navigator.onLine) {
 			newToast('error', 'You are not connected to the internet.');
 			return;
 		}
@@ -81,7 +81,7 @@
 
 			<div class="mt-6 flex justify-end space-x-4">
 				{#if !downloadStarted}
-					<button class="btn btn-primary" disabled={!$data.settings.online} on:click={download}
+					<button class="btn btn-primary" disabled={!window.navigator.onLine} on:click={download}
 						>Update herunterladen</button
 					>
 				{:else if downloadFinished}

@@ -22,7 +22,7 @@
 	{#if $data}
 		<slot />
 		<Toast />
-		{#if $data.settings.online}
+		{#if window.navigator.onLine}
 			<Updater />
 		{/if}
 	{:else}

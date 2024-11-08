@@ -69,7 +69,7 @@
 	}
 
 	async function load(files: string[]) {
-		if (!files || !$data.settings.online) return;
+		if (!files || !window.navigator.onLine) return;
 
 		selected = null;
 
@@ -127,8 +127,8 @@
 
 	async function search(i: number) {
 		status[i].searchStatus = 'searching';
-		if (!$data.settings.online && tmdb) {
-			console.error(!$data.settings.online && tmdb);
+		if (!window.navigator.onLine && tmdb) {
+			console.error(!window.navigator.onLine && tmdb);
 			newToast(
 				'error',
 				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten'
@@ -165,8 +165,8 @@
 	}
 
 	async function addMovie(id: number, path: string) {
-		if (!$data.settings.online && tmdb) {
-			console.error(!$data.settings.online && tmdb);
+		if (!window.navigator.onLine && tmdb) {
+			console.error(!window.navigator.onLine && tmdb);
 			newToast(
 				'error',
 				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten'
@@ -248,7 +248,7 @@
 </nav>
 
 <main class="flex flex-col items-center p-5">
-	{#if !$data.settings.online}
+	{#if !window.navigator.onLine}
 		<div class="alert alert-error text-center">Du bist nicht mit dem Internet verbunden</div>
 	{:else if status && status.length > 0}
 		<div class="grid w-full gap-3">
@@ -269,12 +269,12 @@
 			<button
 				class="btn grow"
 				on:click={selectFile}
-				disabled={selected !== null || !$data.settings.online}>Film(e) auswählen</button
+				disabled={selected !== null || !window.navigator.onLine}>Film(e) auswählen</button
 			>
 			<button
 				class="btn grow"
 				on:click={selectFolder}
-				disabled={selected !== null || !$data.settings.online}>Ordner auswählen</button
+				disabled={selected !== null || !window.navigator.onLine}>Ordner auswählen</button
 			>
 		</div>
 	{/if}
