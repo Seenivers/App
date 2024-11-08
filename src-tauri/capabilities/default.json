@@ -21,6 +21,7 @@
 			"identifier": "http:default",
 			"allow": [{ "url": "https://seenivers.com" }]
 		},
-		"sql:default"
+		"sql:default",
+		"sql:allow-execute"
 	]
 }
