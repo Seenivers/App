@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1731350809957,
+      "tag": "0000_round_romulus",
+      "breakpoints": true
+    }
+  ]
+}
