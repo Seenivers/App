@@ -160,9 +160,6 @@
 <nav class="navbar bg-base-100">
 	<div class="flex-1">
 		<a href="add" class="btn btn-ghost">Hinzufügen</a>
-		{#if import.meta.env.DEV}
-			<a href="test" class="btn btn-ghost">TEST</a>
-		{/if}
 	</div>
 </nav>
 
