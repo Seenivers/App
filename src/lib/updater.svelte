@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { check, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
-	import { data } from './db';
 	import { newToast } from './toast/toast';
 
 	let update: Update | null = null;
@@ -12,7 +11,7 @@
 	let modalOpen = false;
 
 	onMount(async () => {
-		if ($data && !window.navigator.onLine) return;
+		if (!window.navigator.onLine) return;
 		update = await check();
 		if (update) {
 			modalOpen = true;
