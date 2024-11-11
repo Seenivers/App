@@ -3,6 +3,8 @@ import TMDB from '@blacktiger/tmdb';
 import { data } from './db';
 import { newToast } from './toast/toast';
 import { get } from 'svelte/store';
+import type { Movie } from './types/movie';
+import { settings } from './db/funktion';
 
 const STATIC_KEY = '51baf525-2720-4c43-8d34-b759bb71ae88';
 let apiKey: string | null = null; // Initialisiere apiKey als null
@@ -41,3 +43,15 @@ newApiKey().then((success) => {
 
 // Exportiere die tmdb-Instanz, wenn sie erfolgreich erstellt wurde
 export { tmdb };
+
+export async function getMovie(id: number, language: string = settings.language) {
+	const response = await fetch('https://seenivers.com/api/movie', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: `{"id":"${id}","language":"${language}"}`
+	});
+
+	return (await response.json()) as Movie;
+}
