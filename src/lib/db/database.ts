@@ -12,50 +12,56 @@ export const sqlitePromise = Database.load('sqlite:sqlite.db');
  */
 export let sqlite: Database;
 
-// Waits for the database to load, then assigns it to `sqlite`.
-sqlitePromise.then((db) => {
-	sqlite = db;
-});
-
 /**
  * The drizzle database instance, initialized only after the SQLite database is ready.
  */
-export const db = drizzle<typeof schema>(
-	async (sql, params, method) => {
-		if (!sqlite) {
-			throw new Error('SQLite database is not loaded yet');
-		}
+let dbInstance: ReturnType<typeof drizzle<typeof schema>> | undefined;
 
-		let rows: any = [];
-		let results = [];
+/**
+ * Initializes the `dbInstance` once `sqlite` is loaded.
+ * @returns The `dbInstance` after ensuring SQLite is loaded.
+ */
+export async function getDb() {
+	if (!sqlite) {
+		sqlite = await sqlitePromise;
+	}
+	if (!dbInstance) {
+		dbInstance = drizzle<typeof schema>(
+			async (sql, params, method) => {
+				if (!sqlite) {
+					throw new Error('SQLite database is not loaded yet');
+				}
 
-		// If the query is a SELECT, use the select method
-		if (isSelectQuery(sql)) {
-			rows = await sqlite.select(sql, params).catch((e) => {
-				console.error('SQL Error:', e);
-				return [];
-			});
-		} else {
-			// Otherwise, use the execute method
-			rows = await sqlite.execute(sql, params).catch((e) => {
-				console.error('SQL Error:', e);
-				return [];
-			});
-			return { rows: [] };
-		}
+				let rows: any = [];
+				let results = [];
 
-		rows = rows.map((row: any) => {
-			return Object.values(row);
-		});
+				// If the query is a SELECT, use the select method
+				if (isSelectQuery(sql)) {
+					rows = await sqlite.select(sql, params).catch((e) => {
+						console.error('SQL Error:', e);
+						return [];
+					});
+				} else {
+					// Otherwise, use the execute method
+					rows = await sqlite.execute(sql, params).catch((e) => {
+						console.error('SQL Error:', e);
+						return [];
+					});
+					return { rows: [] };
+				}
 
-		// If the method is "all", return all rows
-		results = method === 'all' ? rows : rows[0];
+				rows = rows.map((row: any) => Object.values(row));
 
-		return { rows: results };
-	},
-	// Pass the schema to the drizzle instance
-	{ schema: schema, logger: import.meta.env.DEV }
-);
+				// If the method is "all", return all rows
+				results = method === 'all' ? rows : rows[0];
+
+				return { rows: results };
+			},
+			{ schema: schema, logger: import.meta.env.DEV }
+		);
+	}
+	return dbInstance;
+}
 
 /**
  * Checks if the given SQL query is a SELECT query.
@@ -66,3 +72,5 @@ function isSelectQuery(sql: string): boolean {
 	const selectRegex = /^\s*SELECT\b/i;
 	return selectRegex.test(sql);
 }
+
+export const db = await getDb();
