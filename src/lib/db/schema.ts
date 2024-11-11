@@ -9,3 +9,5 @@ export const schema = {
 	actors,
 	collections
 };
+
+export { settings, movies, actors, collections };
