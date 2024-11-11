@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { data } from './db';
+	import { eq } from 'drizzle-orm';
+	import { db } from './db/database';
+	import { schema } from './db/schema';
 	import { Back, Before, Fullscreen, Loudness, Paused, PictureInPicture, Play } from './SVG/index';
 	import { newToast } from './toast/toast';
 
-	export let index: number;
+	export let id: number;
 	let duration: number;
 	export let src: string;
 	export let poster: string;
@@ -71,24 +73,25 @@
 		}, 1000);
 	}
 
-	function save() {
+	async function save() {
 		// Aktualisiert die aktuelle Wiedergabezeit
-		$data.movies[index].watchTime = Math.round(currentTime) - 2;
+		await db
+			.update(schema.movies)
+			.set({ watchTime: Math.round(currentTime) - 2 })
+			.where(eq(schema.movies.id, id));
+		// Math.round(currentTime) - 2;
 
 		// Setzt 'watched' auf true, wenn der Film zu 85 % gesehen wurde
-		if ($data.movies[index].watchTime > Math.round(0.85 * duration)) {
-			$data.movies[index].watched = true;
+		if (Math.round(currentTime / duration) > 0.85) {
+			await db.update(schema.movies).set({ watched: true }).where(eq(schema.movies.id, id));
 		}
-
-		$data.save();
 	}
 
-	function ended() {
+	async function ended() {
 		if (document.fullscreenElement) fullscreen();
 		steuerElemente = true;
-		$data.movies[index].watched = true;
-		$data.movies[index].watchTime = 0;
-		$data.save();
+		await db.update(schema.movies).set({ watched: true }).where(eq(schema.movies.id, id));
+		await db.update(schema.movies).set({ watchTime: 0 }).where(eq(schema.movies.id, id));
 	}
 </script>
 
@@ -108,8 +111,10 @@
 		bind:this={videoElement}
 		on:pause={save}
 		on:ended={ended}
-		on:loadedmetadata={() => {
-			videoElement.currentTime = $data.movies[index]?.watchTime;
+		on:loadedmetadata={async () => {
+			videoElement.currentTime = (
+				await db.select().from(schema.movies).where(eq(schema.movies.id, id))
+			)[0].watchTime;
 		}}
 		class="-z-50"
 		{src}
