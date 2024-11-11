@@ -1,25 +1,23 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
-	import { data } from '$lib/db';
 	import Updater from '$lib/updater.svelte';
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
 	import { addCustomEventListener, removeCustomEventListener } from '$lib/networkStatus';
-	import { migrate } from '$lib/db/migrate';
+	import { db } from '$lib/db/database';
+	import { settings } from '$lib/db/schema';
 
 	onMount(async () => {
 		addCustomEventListener();
-		await migrate();
 	});
 
 	onDestroy(() => {
-		$data.save();
 		removeCustomEventListener();
 	});
 </script>
 
 <div class="flex h-fit min-h-screen flex-col bg-base-300">
-	{#if $data}
+	{#if db && settings}
 		<slot />
 		<Toast />
 		{#if window.navigator.onLine}
