@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
-	import { data } from '$lib/db';
-	import { tmdb } from '$lib/tmdb';
+	import { getMovie, tmdb } from '$lib/tmdb';
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
 	import { newToast } from '$lib/toast/toast';
+	import { addMovie, isPathUnique, settings } from '$lib/db/funktion';
 
 	let selected: string | string[] | null = null;
 	let status: {
@@ -74,12 +74,16 @@
 		selected = null;
 
 		// Filter out already added movies
-		files = files.filter((path) => {
-			const lowerCasePath = path.toLowerCase();
-			return !$data.movies.some((movie) => movie.path.toLowerCase() === lowerCasePath);
-		});
+		const newFiles = (
+			await Promise.all(
+				files.map(async (path) => {
+					const unique = await isPathUnique(path);
+					return unique ? path : null;
+				})
+			)
+		).filter((path): path is string => path !== null);
 
-		if (files.length === 0) {
+		if (newFiles.length === 0) {
 			alert(
 				'Es sind keine Filme zum Hinzufügen vorhanden, da sie bereits in der Datenbank gespeichert sind.'
 			);
@@ -87,19 +91,21 @@
 		}
 
 		// Initialisiere den Suchstatus und die Parameter
-		status = files.map((path) => {
+		status = newFiles.map((path) => {
 			const name =
 				path
 					.split('\\')
 					.pop()
 					?.replace(/\.[^/.]+$/, '') || '';
+
 			const fileName = name
 				.split(/[.\s]+/)
-				.filter(
-					(word) =>
-						!$data.settings.keywords.map((k) => k.toLowerCase()).includes(word.toLowerCase())
-				)
+				.filter((word) => {
+					// Filtern von Keywords ohne async-Aktion
+					return !settings.keywords.map((k) => k.toLowerCase()).includes(word.toLowerCase());
+				})
 				.join(' ');
+
 			const yearMatch = fileName.match(/(\d{4})/);
 			const year = yearMatch ? yearMatch[1] : '';
 			const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*|(\d{4})/g, '').trim();
@@ -111,8 +117,8 @@
 					path,
 					name: cleanedFileName || name,
 					primaryReleaseYear: year,
-					includeAdult: $data.settings.adult,
-					language: $data.settings.language,
+					includeAdult: settings.adult,
+					language: settings.language,
 					page: 1
 				}
 			};
@@ -120,9 +126,6 @@
 
 		// Suche gleichzeitig
 		await Promise.all(status.map((_, i) => search(i)));
-
-		// Speichere in der Datenbank
-		$data.save();
 	}
 
 	async function search(i: number) {
@@ -140,8 +143,8 @@
 		// Perform TMDB search
 		const result = (
 			await tmdb.search.movie(name, {
-				language: $data.settings.language,
-				includeAdult: $data.settings.adult,
+				language: settings.language,
+				includeAdult: settings.adult,
 				primaryReleaseYear: primaryReleaseYear?.toString(),
 				page: 1
 			})
@@ -154,7 +157,7 @@
 
 			// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
 			if (status[i].searchStatus === 'foundOne' && !modal) {
-				addMovie(result[0].id, status[i].searchParams.path);
+				addNewMovie(result[0].id, status[i].searchParams.path);
 			}
 		} else if (result.length > 1) {
 			status[i].searchResults = result;
@@ -164,37 +167,23 @@
 		}
 	}
 
-	async function addMovie(id: number, path: string) {
+	async function addNewMovie(id: number, path: string) {
 		if (!window.navigator.onLine && tmdb) {
-			console.error(!window.navigator.onLine && tmdb);
-			newToast(
-				'error',
-				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten'
-			);
+			const message =
+				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten';
+			console.error(message);
+			newToast('error', message);
 			return;
 		}
-		const result = await tmdb.movie.details(id);
+		const result = await getMovie(id, settings.language);
 
-		$data.movies.push({
-			path: path,
-			watched: false,
-			watchTime: 0,
-			...result
-		});
+		addMovie({ id, path, tmdb: result });
 	}
 
 	// Ensure that only the selected movie is added
 	function selectMovie(modalID: number, movieIndex: number) {
-		const selectedMovie = status[modalID].searchResults[movieIndex];
-
-		// Remove previously added movie from auto-selection
-		$data.movies = $data.movies.filter((movie) => movie.path !== status[modalID].searchParams.path);
-
 		// Add the user-selected movie
-		addMovie(selectedMovie.id, status[modalID].searchParams.path);
-
-		// Save to database
-		$data.save();
+		addNewMovie(status[modalID].searchResults[movieIndex].id, status[modalID].searchParams.path);
 
 		status[modalID].searchStatus = 'foundOne';
 		modal = false; // Close the modal after selection
