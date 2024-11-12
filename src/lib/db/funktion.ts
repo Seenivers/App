@@ -62,7 +62,8 @@ export async function addMovie(data: typeof schema.movies.$inferInsert) {
 		.insert(schema.movies)
 		.values(data)
 		.catch((error) => {
-			console.error(error), newToast('error', `Add Movie: `, error);
+			console.error(error);
+			newToast('error', `Add Movie: `, error);
 		});
 }
 
@@ -71,7 +72,8 @@ export async function deleteMovie(id: number) {
 		.delete(schema.movies)
 		.where(eq(schema.movies.id, id))
 		.catch((error) => {
-			console.error(error), newToast('error', `Delete Movie: `, error);
+			console.error(error);
+			newToast('error', `Delete Movie: `, error);
 		});
 }
 
@@ -81,28 +83,37 @@ export async function updateMovie(id: number, data: typeof schema.movies.$inferI
 		.set(data)
 		.where(eq(schema.movies.id, id))
 		.catch((error) => {
-			console.error(error), newToast('error', `Update Movie: `, error);
+			console.error(error);
+			newToast('error', `Update Movie: `, error);
 		});
 }
 
 export async function getMovie(id: number) {
 	return await db.query.movies.findFirst({ where: eq(schema.movies.id, id) }).catch((error) => {
-		console.error(error), newToast('error', `Get Movie: `, error);
+		console.error(error);
+		newToast('error', `Get Movie: `, error);
 	});
 }
 
 export async function getAllMovies() {
-	try {
-		return await db.select().from(schema.movies);
-	} catch (error) {
-		console.error(error), newToast('error', `Get All Movies: `, error);
-	}
+	return await db
+		.select()
+		.from(schema.movies)
+		.catch((error) => {
+			console.error(error);
+			newToast('error', `Get All Movies: `, error);
+		});
 }
 
 export async function isPathUnique(path: string): Promise<boolean> {
-	const existingMovie = await db.query.movies.findFirst({
-		where: eq(schema.movies.path, path)
-	});
+	const existingMovie = await db.query.movies
+		.findFirst({
+			where: eq(schema.movies.path, path)
+		})
+		.catch((error) => {
+			console.error(error);
+			newToast('error', `Is Path Unique: `, error);
+		});
 
 	// Gibt `true` zurück, wenn kein Film mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
 	return !existingMovie;
