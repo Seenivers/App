@@ -3,7 +3,7 @@
 		"**/node_modules": true,
 		"**/.svelte-kit": true,
 		"**/build": true,
-        "**/package-lock.json": true,
-        "**/target": true
+		"**/package-lock.json": true,
+		"**/target": true
 	}
 }
