@@ -31,6 +31,7 @@
 	// Referenzen für das Such-Eingabefeld
 	let searchInput: HTMLInputElement;
 	let datalistItem: HTMLDataListElement;
+
 	// Funktion zum Filtern der Filme
 	async function filterMovies() {
 		if (!searchCriteria.title && !searchCriteria.genre && searchCriteria.isWatched === null) {
@@ -47,9 +48,12 @@
 				threshold: 0.4 // Anpassung des Schwellenwerts für unscharfe Übereinstimmungen
 			});
 
-			const results: FuseResult<any>[] = searchCriteria.title
+			// Präziserer Typ statt any
+			const results: FuseResult<typeof schema.movies.$inferSelect>[] = searchCriteria.title
 				? fuse.search(searchCriteria.title)
-				: matchedMovies.map((movie) => ({ item: movie }) as FuseResult<any>);
+				: matchedMovies.map(
+						(movie) => ({ item: movie }) as FuseResult<typeof schema.movies.$inferSelect>
+					);
 
 			matchedMovies = (
 				results.length ? results.map((result) => result.item) : matchedMovies
@@ -57,7 +61,7 @@
 				// Typ-Deklaration für Genre hinzufügen
 				const genreMatches =
 					searchCriteria.genre === null ||
-					movie.tmdb.genres.some((genre: { name: string }) =>
+					movie.tmdb.genres.some((genre) =>
 						genre.name.toLowerCase().includes(searchCriteria.genre?.toLowerCase() || '')
 					);
 
