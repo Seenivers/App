@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { placeholderURL, imageURL } from '$lib';
-	import { db } from '$lib/db/database';
 	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
 	import Fuse, { type FuseResult } from 'fuse.js';
-	import { eq } from 'drizzle-orm';
 	import { onMount } from 'svelte';
-	import { tmdb } from '$lib/tmdb';
 
 	// Typ für die Suchparameter
 	type SearchCriteria = {
