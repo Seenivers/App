@@ -1,6 +1,6 @@
 import { readDir, readTextFile } from '@tauri-apps/plugin-fs';
 import { resourceDir } from '@tauri-apps/api/path';
-import { sqlite, sqlitePromise } from './database';
+import { sqlite } from './database';
 
 /**
  * Executes database migrations.
@@ -8,11 +8,6 @@ import { sqlite, sqlitePromise } from './database';
  * @returns A promise that resolves when the migrations are complete.
  */
 export async function migrate() {
-	// Await the loading of the SQLite database instance.
-	await sqlitePromise.catch((error) => {
-		throw new Error(`Failed to load SQLite database: `, error.message);
-	});
-
 	const resourcePath = await resourceDir();
 	const files = await readDir(`${resourcePath}/migrations`);
 	let migrations = files.filter((file) => file.name?.endsWith('.sql'));
