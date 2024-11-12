@@ -30,7 +30,6 @@
 			path: string;
 			name: string;
 			includeAdult?: boolean;
-			language?: string;
 			primaryReleaseYear?: string | number;
 			page: number;
 		};
@@ -118,7 +117,6 @@
 					name: cleanedFileName || name,
 					primaryReleaseYear: year,
 					includeAdult: settings.adult,
-					language: settings.language,
 					page: 1
 				}
 			};
@@ -144,7 +142,7 @@
 		const result = (
 			await tmdb.search.movie(name, {
 				language: settings.language,
-				includeAdult: settings.adult,
+				includeAdult: status[i].searchParams.includeAdult,
 				primaryReleaseYear: primaryReleaseYear?.toString(),
 				page: 1
 			})
