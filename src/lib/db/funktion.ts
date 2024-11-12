@@ -14,7 +14,7 @@ async function initializeSettings() {
 	if (!loadedSettings) {
 		const settings = (await db.select().from(schema.settings).limit(1))[0];
 		if (!settings) {
-			await db.insert(schema.settings).values({ id: 1 });
+			await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
 			loadedSettings = (await db.select().from(schema.settings).limit(1))[0];
 		} else {
 			loadedSettings = settings;
