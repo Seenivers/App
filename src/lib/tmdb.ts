@@ -1,14 +1,11 @@
 import { fetch } from '@tauri-apps/plugin-http';
 import TMDB from '@blacktiger/tmdb';
-import { data } from './db';
 import { newToast } from './toast/toast';
-import { get } from 'svelte/store';
 import type { Movie } from './types/movie';
 import { settings } from './db/funktion';
 
 const STATIC_KEY = '51baf525-2720-4c43-8d34-b759bb71ae88';
 let apiKey: string | null = null; // Initialisiere apiKey als null
-const language = get(data) ? get(data).settings.language : window.navigator.language.split('-')[0]; // Setze standardmäßige Sprache
 
 async function newApiKey() {
 	const response = await fetch('https://seenivers.com/api/api-key', {
@@ -34,7 +31,7 @@ let tmdb: TMDB;
 // Stelle sicher, dass die Funktion aufgerufen wird
 newApiKey().then((success) => {
 	if (success && apiKey) {
-		tmdb = new TMDB(apiKey, language); // Initialisiere tmdb erst, wenn apiKey gesetzt ist
+		tmdb = new TMDB(apiKey, settings.language); // Initialisiere tmdb erst, wenn apiKey gesetzt ist
 	} else {
 		console.error('API-Key konnte nicht abgerufen werden.');
 		newToast('error', 'API-Key konnte nicht abgerufen werden.');
