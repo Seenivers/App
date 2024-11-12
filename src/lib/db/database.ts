@@ -3,14 +3,9 @@ import { schema } from '$lib/db/schema';
 import Database from '@tauri-apps/plugin-sql';
 
 /**
- * Asynchronously loads the SQLite database.
- */
-export const sqlitePromise = Database.load('sqlite:sqlite.db');
-
-/**
  * Exports the SQLite database instance as a promise.
  */
-export let sqlite: Database;
+export let sqlite: Database = await Database.load('sqlite:sqlite.db');
 
 /**
  * The drizzle database instance, initialized only after the SQLite database is ready.
@@ -22,9 +17,6 @@ let dbInstance: ReturnType<typeof drizzle<typeof schema>> | undefined;
  * @returns The `dbInstance` after ensuring SQLite is loaded.
  */
 export async function getDb() {
-	if (!sqlite) {
-		sqlite = await sqlitePromise;
-	}
 	if (!dbInstance) {
 		dbInstance = drizzle<typeof schema>(
 			async (sql, params, method) => {
