@@ -3,6 +3,9 @@ import { newToast } from '$lib/toast/toast';
 import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { migrate } from './migrate';
+import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
+import type { Data } from '$lib/types';
+import { getMovie as getMovieTmdb } from '$lib/tmdb';
 
 let loadedSettings: typeof schema.settings.$inferSelect | undefined;
 
@@ -11,15 +14,40 @@ let loadedSettings: typeof schema.settings.$inferSelect | undefined;
  */
 async function initializeSettings() {
 	await migrate();
+
 	if (!loadedSettings) {
-		const settings = (await db.select().from(schema.settings).limit(1))[0];
-		if (!settings) {
-			await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
-			loadedSettings = (await db.select().from(schema.settings).limit(1))[0];
-		} else {
-			loadedSettings = settings;
+		const settings = await db.select().from(schema.settings).limit(1);
+		loadedSettings = settings[0] ?? (await createDefaultSettings());
+	}
+
+	const dataLibExists = await exists('data.lib', { baseDir: BaseDirectory.AppConfig });
+	if (dataLibExists) {
+		const content = (await readTextFile('data.lib', { baseDir: BaseDirectory.AppConfig })).trim();
+
+		if (content) {
+			const data: Data = JSON.parse(content);
+
+			await Promise.all(
+				data.movies.map(async (movie) => {
+					const result = await getMovieTmdb(movie.id, loadedSettings?.language);
+					addMovie({
+						id: movie.id,
+						path: movie.path,
+						tmdb: result,
+						watched: movie.watched,
+						watchTime: movie.watchTime
+					});
+				})
+			);
+
+			await remove('data.lib', { baseDir: BaseDirectory.AppConfig });
 		}
 	}
+}
+
+async function createDefaultSettings() {
+	await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
+	return (await db.select().from(schema.settings).limit(1))[0];
 }
 
 await initializeSettings();
