@@ -31,7 +31,7 @@ let tmdb: TMDB;
 // Stelle sicher, dass die Funktion aufgerufen wird
 newApiKey().then((success) => {
 	if (success && apiKey) {
-		tmdb = new TMDB(apiKey, settings.language); // Initialisiere tmdb erst, wenn apiKey gesetzt ist
+		tmdb = new TMDB(apiKey, settings.language || window.navigator.language); // Initialisiere tmdb erst, wenn apiKey gesetzt ist
 	} else {
 		console.error('API-Key konnte nicht abgerufen werden.');
 		newToast('error', 'API-Key konnte nicht abgerufen werden.');
@@ -41,7 +41,10 @@ newApiKey().then((success) => {
 // Exportiere die tmdb-Instanz, wenn sie erfolgreich erstellt wurde
 export { tmdb };
 
-export async function getMovie(id: number, language: string = settings.language) {
+export async function getMovie(
+	id: number,
+	language: string = settings.language || window.navigator.language
+) {
 	const response = await fetch('https://seenivers.com/api/movie', {
 		method: 'POST',
 		headers: {
