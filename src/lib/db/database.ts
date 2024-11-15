@@ -6,7 +6,7 @@ import Database from '@tauri-apps/plugin-sql';
  * Exports the SQLite database instance as a promise.
  */
 export const sqlite: Database = await Database.load(
-	`sqlite:${import.meta.env.DEV ? 'DEV' : ''}-sqlite.db`
+	`sqlite:${import.meta.env.DEV ? 'DEV-' : ''}sqlite.db`
 );
 
 /**
