@@ -45,7 +45,7 @@ export async function migrate() {
 
 		const hasBeenRun = (hash: string) =>
 			dbMigrations.find((dbMigration) => {
-				return dbMigration?.hash === hash;
+				return dbMigration.hash === hash;
 			});
 
 		if (hash && hasBeenRun(hash) === undefined) {
