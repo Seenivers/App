@@ -3,7 +3,7 @@
 	import { db } from '../db/database';
 	import { schema } from '../db/schema';
 	import { Back, Before, Fullscreen, Loudness, Paused, PictureInPicture, Play } from '../SVG/index';
-	import { newToast } from '../toast/toast';
+	import { format, fullscreen, pictureInPicture } from '.';
 
 	export let id: number;
 	let duration: number;
@@ -16,47 +16,6 @@
 	let videoElement: HTMLVideoElement;
 	let steuerElemente: boolean = false;
 	let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
-
-	function format(seconds: number) {
-		if (isNaN(seconds)) return '...';
-
-		let hours = Math.floor(seconds / 60 / 60);
-		let minutes = Math.floor((seconds / 60) % 60);
-		seconds = Math.floor(seconds % 60);
-
-		// Format using padStart to add leading zeros
-		const formattedMinutes = minutes.toString().padStart(2, '0');
-		const formattedSeconds = seconds.toString().padStart(2, '0');
-
-		if (hours > 0) {
-			const formattedHours = hours.toString().padStart(2, '0');
-			return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-		} else {
-			return `${formattedMinutes}:${formattedSeconds}`;
-		}
-	}
-
-	function fullscreen() {
-		if (document.fullscreenElement) {
-			document.exitFullscreen().catch((err) => {
-				console.error(err);
-				newToast('error', 'Fehler beim Vollbildmodus verlassen.' + err);
-			});
-		} else {
-			player.requestFullscreen();
-		}
-	}
-
-	async function pictureInPicture() {
-		if (document.pictureInPictureElement) {
-			document.exitPictureInPicture().catch((err) => {
-				console.error(err);
-				newToast('error', 'Fehler beim Bild in Bild verlassen.' + err);
-			});
-		} else if (document.pictureInPictureEnabled) {
-			videoElement.requestPictureInPicture();
-		}
-	}
 
 	function elemente() {
 		// Aktiviert Steuerungs-Elemente
@@ -79,7 +38,6 @@
 			.update(schema.movies)
 			.set({ watchTime: Math.round(currentTime) - 2 })
 			.where(eq(schema.movies.id, id));
-		// Math.round(currentTime) - 2;
 
 		// Setzt 'watched' auf true, wenn der Film zu 85 % gesehen wurde
 		if (Math.round(currentTime / duration) > 0.85) {
@@ -88,7 +46,7 @@
 	}
 
 	async function ended() {
-		if (document.fullscreenElement) fullscreen();
+		if (document.fullscreenElement) fullscreen(player);
 		steuerElemente = true;
 		await db.update(schema.movies).set({ watched: true }).where(eq(schema.movies.id, id));
 		await db.update(schema.movies).set({ watchTime: 0 }).where(eq(schema.movies.id, id));
@@ -174,13 +132,21 @@
 						</label>
 					</button>
 					<!-- Bild in Bild -->
-					<button class="flex cursor-pointer items-center" on:click={pictureInPicture}>
+					<button
+						class="flex cursor-pointer items-center"
+						on:click={() => pictureInPicture(videoElement)}
+					>
 						<PictureInPicture />
 					</button>
 					<!-- Fullscreen -->
 					<button class="flex items-center">
 						<label class="swap">
-							<input type="checkbox" id="fullscreen" name="fullscreen" on:change={fullscreen} />
+							<input
+								type="checkbox"
+								id="fullscreen"
+								name="fullscreen"
+								on:change={() => fullscreen(player)}
+							/>
 							<Fullscreen />
 						</label>
 					</button>
