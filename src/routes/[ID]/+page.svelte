@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { exists, open } from '@tauri-apps/plugin-fs';
-	import Videoplayer from '$lib/videoplayer.svelte';
 	import { imageURL } from '$lib';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie } from '$lib/tmdb';
 	import { db } from '$lib/db/database';
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
+	import Videoplayer from '$lib/player/videoplayer.svelte';
 
 	const id = parseInt($page.params.ID);
 	let pathExists: boolean = false;

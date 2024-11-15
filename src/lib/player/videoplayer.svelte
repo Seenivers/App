@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { eq } from 'drizzle-orm';
-	import { db } from './db/database';
-	import { schema } from './db/schema';
-	import { Back, Before, Fullscreen, Loudness, Paused, PictureInPicture, Play } from './SVG/index';
-	import { newToast } from './toast/toast';
+	import { db } from '../db/database';
+	import { schema } from '../db/schema';
+	import { Back, Before, Fullscreen, Loudness, Paused, PictureInPicture, Play } from '../SVG/index';
+	import { newToast } from '../toast/toast';
 
 	export let id: number;
 	let duration: number;
