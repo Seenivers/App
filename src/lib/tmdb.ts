@@ -45,13 +45,18 @@ export async function getMovie(
 	id: number,
 	language: string = settings.language || window.navigator.language
 ) {
-	const response = await fetch('https://seenivers.com/api/movie', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: `{"id":"${id}","language":"${language}"}`
-	});
+	try {
+		const response = await fetch('https://seenivers.com/api/movie', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: `{"id":"${id}","language":"${language}"}`
+		});
 
-	return (await response.json()) as Movie;
+		return (await response.json()) as Movie;
+	} catch (error) {
+		console.error('Fehler beim Abrufen des Films.', error);
+		newToast('error', 'Fehler beim Abrufen des Films. ' + error);
+	}
 }
