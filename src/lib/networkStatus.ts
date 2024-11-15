@@ -10,7 +10,7 @@ export const offlineHandler = () => {
 };
 
 // Event-Listener für Online/Offline-Status hinzufügen
-export async function addCustomEventListener() {
+export function addCustomEventListener() {
 	window.addEventListener('online', onlineHandler);
 	window.addEventListener('offline', offlineHandler);
 }
