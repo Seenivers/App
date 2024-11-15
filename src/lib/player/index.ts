@@ -19,24 +19,24 @@ export function format(seconds: number) {
 	}
 }
 
-export function fullscreen(player: HTMLDivElement) {
+export async function fullscreen(player: HTMLDivElement) {
 	if (document.fullscreenElement) {
-		document.exitFullscreen().catch((err) => {
+		document.exitFullscreen().catch((err: unknown) => {
 			console.error(err);
 			newToast('error', 'Fehler beim Vollbildmodus verlassen.' + err);
 		});
 	} else {
-		player.requestFullscreen();
+		await player.requestFullscreen();
 	}
 }
 
 export async function pictureInPicture(videoElement: HTMLVideoElement) {
 	if (document.pictureInPictureElement) {
-		document.exitPictureInPicture().catch((err) => {
+		document.exitPictureInPicture().catch((err: unknown) => {
 			console.error(err);
 			newToast('error', 'Fehler beim Bild in Bild verlassen.' + err);
 		});
 	} else if (document.pictureInPictureEnabled) {
-		videoElement.requestPictureInPicture();
+		await videoElement.requestPictureInPicture();
 	}
 }
