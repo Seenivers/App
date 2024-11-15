@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { exists, open } from '@tauri-apps/plugin-fs';
+	import { exists } from '@tauri-apps/plugin-fs';
 	import { imageURL } from '$lib';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie } from '$lib/tmdb';
@@ -8,6 +8,7 @@
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
 	import Videoplayer from '$lib/player/videoplayer.svelte';
+	import { open } from '@tauri-apps/plugin-shell';
 
 	const id = parseInt($page.params.ID);
 	let pathExists: boolean = false;
@@ -39,19 +40,22 @@
 		await db.delete(schema.movies).where(eq(schema.movies.id, id));
 		window.location.href = '/';
 	}
+
+	async function openExternalPlayer() {
+		try {
+			// Öffne die Datei mit dem Standardplayer
+			await open(movieData.path);
+		} catch (error) {
+			console.error('Failed to open video with external player:', error);
+		}
+	}
 </script>
 
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100 p-2 md:p-4">
 	<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
-	<button
-		class="btn btn-sm my-2 md:btn-md"
-		on:click={async () => {
-			if (movieData) {
-				await open(movieData.path);
-			}
-		}}
-		disabled={!pathExists}>Starte Externen Player</button
+	<button class="btn btn-sm my-2 md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
+		>Starte Externen Player</button
 	>
 	<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 		<button class="btn btn-sm hover:btn-error md:btn-md" on:dblclick={removeElementById}
