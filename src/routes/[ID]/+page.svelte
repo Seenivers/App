@@ -1,47 +1,62 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { data } from '$lib/db';
-	import { exists, open } from '@tauri-apps/plugin-fs';
-	import Videoplayer from '$lib/videoplayer.svelte';
+	import { exists } from '@tauri-apps/plugin-fs';
 	import { imageURL } from '$lib';
 	import { convertFileSrc } from '@tauri-apps/api/core';
-	import { tmdb } from '$lib/tmdb';
+	import { getMovie } from '$lib/tmdb';
+	import { db } from '$lib/db/database';
+	import { eq } from 'drizzle-orm';
+	import { schema } from '$lib/db/schema';
+	import Videoplayer from '$lib/player/videoplayer.svelte';
+	import { open } from '@tauri-apps/plugin-shell';
 
-	const index: number = $data.movies.findIndex((item) => item.id === parseInt($page.params.ID));
+	const id = parseInt($page.params.ID);
 	let pathExists: boolean = false;
-	const checkPath = async () => {
-		pathExists = await exists($data.movies[index].path);
+	let watched: boolean = false;
+	let movieData: typeof schema.movies.$inferSelect;
+
+	const loadMovieData = async () => {
+		const movie = await db.select().from(schema.movies).where(eq(schema.movies.id, id));
+
+		if (movie.length > 0) {
+			movieData = movie[0];
+			pathExists = await exists(movieData.path);
+			watched = movieData.watched;
+		}
 	};
 
 	let modal = false;
 	let form: HTMLFormElement;
 
-	// Gibt es die Datei beim Laden des Skripts
-	checkPath();
+	// Lädt die Datei beim Laden des Skripts
+	loadMovieData();
 
-	function removeElementById() {
-		data.update((library) => {
-			return {
-				...library,
-				movies: library.movies.filter((item) => item.id !== index)
-			};
-		});
-		$data.save();
+	async function toggleWatchedStatus() {
+		watched = !watched;
+		await db.update(schema.movies).set({ watched }).where(eq(schema.movies.id, id));
+	}
+
+	async function removeElementById() {
+		await db.delete(schema.movies).where(eq(schema.movies.id, id));
 		window.location.href = '/';
+	}
+
+	async function openExternalPlayer() {
+		try {
+			// Öffne die Datei mit dem Standardplayer
+			await open(movieData.path);
+		} catch (error) {
+			console.error('Failed to open video with external player:', error);
+		}
 	}
 </script>
 
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100 p-2 md:p-4">
 	<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
-	<button
-		class="btn btn-sm my-2 md:btn-md"
-		on:click={async () => {
-			await open($data.movies[index].path);
-		}}
-		disabled
-		>Starte Externen Player
-	</button>
+	<button class="btn btn-sm my-2 md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
+		>Starte Externen Player</button
+	>
 	<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 		<button class="btn btn-sm hover:btn-error md:btn-md" on:dblclick={removeElementById}
 			>Löschen</button
@@ -53,41 +68,43 @@
 			modal = true;
 		}}>Bearbeiten</button
 	>
-	<button
-		class="btn btn-sm md:btn-md"
-		on:click={() => ($data.movies[index].watched = !$data.movies[index].watched)}
-	>
-		{$data.movies[index].watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
+	<button class="btn btn-sm md:btn-md" on:click={toggleWatchedStatus}>
+		{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 	</button>
 </nav>
 
 <!-- Main -->
 <main class="flex flex-col items-center p-3 md:p-5">
-	{#if $data}
+	{#if movieData}
 		<div class="mx-auto w-full max-w-full p-4 md:w-[80%] lg:w-[60%]">
-			<h1 class="mb-2 text-lg font-bold sm:text-xl md:text-2xl">{$data.movies[index].title}</h1>
-
-			{#if $data.movies[index].tagline}
+			<h1 class="mb-2 text-lg font-bold sm:text-xl md:text-2xl">{movieData.tmdb.title}</h1>
+			{#if movieData.tmdb.tagline}
 				<h2 class="mb-2 text-sm font-bold sm:text-base md:text-base">
-					{$data.movies[index].tagline}
+					{movieData.tmdb.tagline}
 				</h2>
 			{/if}
 
 			{#if pathExists}
 				<Videoplayer
-					src={convertFileSrc($data.movies[index].path)}
-					poster={imageURL + $data.movies[index].backdrop_path}
-					{index}
+					src={convertFileSrc(movieData.path)}
+					poster={imageURL + movieData.tmdb.backdrop_path}
+					{id}
 				/>
 			{:else}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
-				<p class="text-xs">{$data.movies[index].path}</p>
+				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
 			<br />
 
 			<div class="grid gap-3">
-				{#each [{ label: 'Stimmenanzahl', value: $data.movies[index].vote_count }, { label: 'Durchschnittliche Bewertung', value: $data.movies[index].vote_average ? `${Math.round($data.movies[index].vote_average * 10) / 10}/10` : null }, { label: 'Genres', value: $data.movies[index].genres?.map((g) => g.name) }, { label: 'Produktionsfirmen', value: $data.movies[index].production_companies?.map((c) => c.name) }, { label: 'Produktionsländer', value: $data.movies[index].production_countries?.map((c) => c.name) }, { label: 'Veröffentlichungsdatum', value: $data.movies[index].release_date ? new Date($data.movies[index].release_date).toLocaleDateString(window.navigator.language) : null }, { label: 'Laufzeit', value: $data.movies[index].runtime ? `${$data.movies[index].runtime} Minuten` : null }, { label: 'Beliebtheit', value: $data.movies[index].popularity }, { label: 'Budget', value: $data.movies[index].budget }, { label: 'Homepage', value: $data.movies[index].homepage }, { label: 'Originalsprache', value: $data.movies[index].original_language }, { label: 'Originaltitel', value: $data.movies[index].original_title }, { label: 'Einnahmen', value: $data.movies[index].revenue }, { label: 'Status', value: $data.movies[index].status }, { label: 'Handlung', value: $data.movies[index].overview }] as info}
+				{#each [{ label: 'Stimmenanzahl', value: movieData.tmdb.vote_count }, { label: 'Durchschnittliche Bewertung', value: movieData.tmdb.vote_average ? `${Math.round(movieData.tmdb.vote_average * 10) / 10}/10` : null }, { label: 'Genres', value: movieData.tmdb.genres
+								?.map((g) => g.name)
+								.join(', ') }, { label: 'Produktionsfirmen', value: movieData.tmdb.production_companies
+								?.map((c) => c.name)
+								.join(', ') }, { label: 'Produktionsländer', value: movieData.tmdb.production_countries
+								?.map((c) => c.name)
+								.join(', ') }, { label: 'Veröffentlichungsdatum', value: movieData.tmdb.release_date ? new Date(movieData.tmdb.release_date).toLocaleDateString(window.navigator.language) : null }, { label: 'Laufzeit', value: movieData.tmdb.runtime ? `${movieData.tmdb.runtime} Minuten` : null }, { label: 'Beliebtheit', value: movieData.tmdb.popularity }, { label: 'Budget', value: movieData.tmdb.budget }, { label: 'Homepage', value: movieData.tmdb.homepage }, { label: 'Originalsprache', value: movieData.tmdb.original_language }, { label: 'Originaltitel', value: movieData.tmdb.original_title }, { label: 'Einnahmen', value: movieData.tmdb.revenue }, { label: 'Status', value: movieData.tmdb.status }, { label: 'Handlung', value: movieData.tmdb.overview }] as info}
 					<div class="text-sm md:text-base">
 						<p class="font-bold">{info.label}:</p>
 						<p>{info.value || 'Keine Informationen verfügbar'}</p>
@@ -115,28 +132,22 @@
 
 		<h3 class="text-lg font-bold">Neue TMDB ID</h3>
 
-		<!-- Form Submission with Error Handling -->
 		<form
 			bind:this={form}
 			on:submit|preventDefault={async () => {
 				const newID = parseInt(form.newID.value);
 				try {
-					if (index !== -1 && newID && newID !== $data.movies[index].id) {
-						const result = await tmdb.movie.details(newID);
-						const newMovieData = { ...$data.movies[index], ...result };
+					if (id !== -1 && newID && newID !== movieData.id) {
+						const newMovieByTmdb = await getMovie(newID);
+						await db
+							.update(schema.movies)
+							.set({ id: newID, tmdb: newMovieByTmdb })
+							.where(eq(schema.movies.id, id));
 
-						data.update((library) => {
-							return {
-								...library,
-								movies: library.movies.map((movie, i) => (i === index ? newMovieData : movie))
-							};
-						});
-
-						$data.save();
 						modal = false;
 						window.location.href = newID.toString();
 					} else {
-						alert('Da ist wol etwas schief gelaufen');
+						alert('Da ist wohl etwas schief gelaufen');
 					}
 				} catch {
 					alert('Diese TMDB ID ist falsch');
@@ -147,7 +158,7 @@
 			<input
 				class="input input-bordered flex-grow"
 				type="number"
-				placeholder={$data.movies[index].id.toString()}
+				placeholder={movieData?.id?.toString() || ''}
 				name="newID"
 				required
 			/>

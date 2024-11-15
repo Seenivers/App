@@ -1,13 +1,15 @@
 <!-- https://daisyui.com/components/toast/ -->
 <script lang="ts">
-	import { data } from '$lib/db';
+	import { settings } from '$lib/db/funktion';
 	import type { AlertPositionHorizontally, AlertPositionVertically } from '../types';
 	import { messages } from './toast';
 
-	const positionHorizontally: AlertPositionHorizontally =
-		$data.settings.toastPosition.horizontal || 'end';
-	const positionVertically: AlertPositionVertically =
-		$data.settings.toastPosition.vertical || 'bottom';
+	const positionHorizontally: AlertPositionHorizontally = settings
+		? settings.toastPosition.horizontal
+		: 'end';
+	const positionVertically: AlertPositionVertically = settings
+		? settings.toastPosition.vertical
+		: 'bottom';
 </script>
 
 <!-- Toast messages rendering -->

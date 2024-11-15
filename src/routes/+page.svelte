@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { placeholderURL, imageURL } from '$lib';
-	import { data } from '$lib/db';
+	import { getAllMovies } from '$lib/db/funktion';
+	import { schema } from '$lib/db/schema';
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onMount } from 'svelte';
 
@@ -18,53 +19,57 @@
 		isWatched: null
 	};
 
-	// Initiale Anzeige aller Filme
-	let matchedMovies: typeof $data.movies = $data.movies;
+	// Lade die Filme und initialisiere die Fuse-Suche
+	let matchedMovies: (typeof schema.movies.$inferSelect)[] = [];
 	let isLoading = false;
 
-	// Fuse.js für die unscharfe Suche konfigurieren
-	const fuse = new Fuse($data.movies, {
-		keys: ['title', 'genres.name'],
-		threshold: 0.4 // Anpassung des Schwellenwerts für unscharfe Übereinstimmungen
-	});
+	// Funktion zum Laden der Filme
+	async function loadMovies() {
+		matchedMovies = (await getAllMovies()) || [];
+	}
 
 	// Referenzen für das Such-Eingabefeld
 	let searchInput: HTMLInputElement;
 	let datalistItem: HTMLDataListElement;
 
-	// Initiale Filterung ausführen
-	filterMovies();
-
 	// Funktion zum Filtern der Filme
-	function filterMovies() {
+	async function filterMovies() {
 		if (!searchCriteria.title && !searchCriteria.genre && searchCriteria.isWatched === null) {
 			// Zeigt alle Filme an, wenn keine Suchkriterien gesetzt sind
-			matchedMovies = $data.movies;
+			await loadMovies();
 			return;
 		}
 
 		// Ansonsten wird gefiltert
 		isLoading = true;
 		setTimeout(() => {
-			const results: FuseResult<(typeof $data.movies)[0]>[] = searchCriteria.title
+			const fuse = new Fuse(matchedMovies, {
+				keys: ['tmdb.title', 'tmdb.genres.name'],
+				threshold: 0.4 // Anpassung des Schwellenwerts für unscharfe Übereinstimmungen
+			});
+
+			// Präziserer Typ statt any
+			const results: FuseResult<typeof schema.movies.$inferSelect>[] = searchCriteria.title
 				? fuse.search(searchCriteria.title)
-				: $data.movies.map((movie) => ({ item: movie }) as FuseResult<(typeof $data.movies)[0]>);
+				: matchedMovies.map(
+						(movie) => ({ item: movie }) as FuseResult<typeof schema.movies.$inferSelect>
+					);
 
-			matchedMovies = (results.length ? results.map((result) => result.item) : $data.movies).filter(
-				(movie) => {
-					// Typ-Deklaration für Genre hinzufügen
-					const genreMatches =
-						searchCriteria.genre === null ||
-						movie.genres.some((genre: { name: string }) =>
-							genre.name.toLowerCase().includes(searchCriteria.genre?.toLowerCase() || '')
-						);
+			matchedMovies = (
+				results.length ? results.map((result) => result.item) : matchedMovies
+			).filter((movie) => {
+				// Typ-Deklaration für Genre hinzufügen
+				const genreMatches =
+					searchCriteria.genre === null ||
+					movie.tmdb.genres.some((genre) =>
+						genre.name.toLowerCase().includes(searchCriteria.genre?.toLowerCase() || '')
+					);
 
-					const watchedMatches =
-						searchCriteria.isWatched === null || movie.watched === searchCriteria.isWatched;
+				const watchedMatches =
+					searchCriteria.isWatched === null || movie.watched === searchCriteria.isWatched;
 
-					return genreMatches && watchedMatches;
-				}
-			);
+				return genreMatches && watchedMatches;
+			});
 			isLoading = false;
 		}, 300); // Setzt Debouncing mit 300 ms ein
 	}
@@ -77,7 +82,10 @@
 		}
 	}
 
-	onMount(() => {
+	// Initiale Daten und Setup
+	onMount(async () => {
+		await loadMovies();
+
 		searchInput.onfocus = function () {
 			datalistItem.style.display = 'block';
 			datalistItem.style.width = `${searchInput.offsetWidth}px`;
@@ -150,11 +158,11 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
-<div class="navbar bg-base-100">
+<nav class="navbar bg-base-100">
 	<div class="flex-1">
 		<a href="add" class="btn btn-ghost">Hinzufügen</a>
 	</div>
-</div>
+</nav>
 
 <main class="flex-grow flex-col p-5">
 	<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
@@ -170,7 +178,7 @@
 				class="absolute z-10 overflow-y-auto rounded-b-lg bg-base-100"
 				bind:this={datalistItem}
 			>
-				{#each Array.from(new Set($data.movies.map((movie) => movie.title))) as title}
+				{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
 					<option class="cursor-pointer px-2 hover:bg-base-content/20" value={title}>{title}</option
 					>
 				{/each}
@@ -178,7 +186,7 @@
 		</div>
 		<select class="join-item select select-bordered" bind:value={searchCriteria.genre}>
 			<option value={null}>Kein Filter</option>
-			{#each Array.from(new Set($data.movies.flatMap( (item) => item.genres.map((i) => i.name) ))) as genre}
+			{#each Array.from(new Set(matchedMovies.flatMap( (item) => item.tmdb.genres.map((i) => i.name) ))) as genre}
 				<option>{genre}</option>
 			{/each}
 		</select>
@@ -210,8 +218,8 @@
 				>
 					<figure class="relative px-2 pt-2">
 						<img
-							src={movie.poster_path ? imageURL + movie.poster_path : placeholderURL}
-							alt="Poster von {movie.title}"
+							src={movie.tmdb.poster_path ? imageURL + movie.tmdb.poster_path : placeholderURL}
+							alt="Poster von {movie.tmdb.title}"
 							class="rounded-xl"
 							draggable="false"
 						/>
@@ -220,7 +228,7 @@
 						{/if}
 					</figure>
 					<div class="card-body items-center py-2 text-center">
-						<p class="card-title">{movie.title}</p>
+						<p class="card-title">{movie.tmdb.title}</p>
 					</div>
 				</a>
 			{/each}

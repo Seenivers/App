@@ -1,9 +1,9 @@
 export type Data = {
 	settings: Settings;
-	movies: Movie[];
-	actors: Actor[];
-	collections: Collection[];
-	save: () => void;
+	movies: oldMovie[];
+	actors: oldActor[];
+	collections: oldCollection[];
+	save: () => Promise<void>;
 };
 
 export type Settings = {
@@ -27,7 +27,7 @@ export type AlertPositionVertically =
 	| 'middle' // align vertically to middle
 	| 'bottom'; // align vertically to bottom (default)
 
-export type Movie = {
+export type oldMovie = {
 	path: string;
 	watched: boolean;
 	watchTime: number;
@@ -75,7 +75,7 @@ export type Movie = {
 	vote_count: number;
 };
 
-export type Actor = {
+export type oldActor = {
 	adult: boolean;
 	also_known_as: string[];
 	biography: string;
@@ -100,7 +100,7 @@ export type Actor = {
 	profile_path: string;
 };
 
-export type Collection = {
+export type oldCollection = {
 	id: number;
 	name: string;
 	overview: string;

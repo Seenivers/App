@@ -1,19 +1,28 @@
 <script>
-	import { onDestroy } from 'svelte';
-	import { cleanupData, data } from '$lib/db';
+	import { onDestroy, onMount } from 'svelte';
 	import Updater from '$lib/updater.svelte';
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
+	import { addCustomEventListener, removeCustomEventListener } from '$lib/networkStatus';
+	import { db } from '$lib/db/database';
+	import { settings } from '$lib/db/schema';
+
+	onMount(async () => {
+		addCustomEventListener();
+	});
 
 	onDestroy(() => {
-		cleanupData();
+		removeCustomEventListener();
 	});
 </script>
 
 <div class="flex h-fit min-h-screen flex-col bg-base-300">
-	{#if $data}
+	{#if db && settings}
 		<slot />
 		<Toast />
+		{#if window.navigator.onLine}
+			<Updater />
+		{/if}
 	{:else}
 		<div class="flex items-center justify-center">
 			<div
@@ -21,5 +30,4 @@
 			/>
 		</div>
 	{/if}
-	<Updater />
 </div>

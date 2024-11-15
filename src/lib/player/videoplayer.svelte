@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { data } from './db';
-	import { Back, Before, Fullscreen, Loudness, Paused, PictureInPicture, Play } from './SVG/index';
-	import { newToast } from './toast/toast';
+	import { eq } from 'drizzle-orm';
+	import { db } from '../db/database';
+	import { schema } from '../db/schema';
+	import { Back, Before, Fullscreen, Loudness, Paused, PictureInPicture, Play } from '../SVG/index';
+	import { format, fullscreen, pictureInPicture } from '.';
 
-	export let index: number;
+	export let id: number;
 	let duration: number;
 	export let src: string;
 	export let poster: string;
@@ -15,80 +17,41 @@
 	let steuerElemente: boolean = false;
 	let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
 
-	function format(seconds: number) {
-		if (isNaN(seconds)) return '...';
-
-		let hours = Math.floor(seconds / 60 / 60);
-		let minutes = Math.floor((seconds / 60) % 60);
-		seconds = Math.floor(seconds % 60);
-
-		// Format using padStart to add leading zeros
-		const formattedMinutes = minutes.toString().padStart(2, '0');
-		const formattedSeconds = seconds.toString().padStart(2, '0');
-
-		if (hours > 0) {
-			const formattedHours = hours.toString().padStart(2, '0');
-			return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-		} else {
-			return `${formattedMinutes}:${formattedSeconds}`;
-		}
-	}
-
-	function fullscreen() {
-		if (document.fullscreenElement) {
-			document.exitFullscreen().catch((err) => {
-				console.error(err);
-				newToast('error', 'Fehler beim Vollbildmodus verlassen.' + err);
-			});
-		} else {
-			player.requestFullscreen();
-		}
-	}
-
-	async function pictureInPicture() {
-		if (document.pictureInPictureElement) {
-			document.exitPictureInPicture().catch((err) => {
-				console.error(err);
-				newToast('error', 'Fehler beim Bild in Bild verlassen.' + err);
-			});
-		} else if (document.pictureInPictureEnabled) {
-			videoElement.requestPictureInPicture();
-		}
-	}
-
 	function elemente() {
 		// Aktiviert Steuerungs-Elemente
 		steuerElemente = true;
 
-		if (videoElement.ended || videoElement.paused) return;
+		if (videoElement.ended || paused) return;
 
 		// Löscht den vorherigen Timer, falls vorhanden
 		if (timeoutHandle) clearTimeout(timeoutHandle);
 
 		// Setzt einen neuen Timer, der nach 3 Sekunden die Steuerungselemente deaktiviert
 		timeoutHandle = setTimeout(() => {
-			steuerElemente = false;
+			steuerElemente = paused;
 		}, 1000);
 	}
 
-	function save() {
+	async function save() {
 		// Aktualisiert die aktuelle Wiedergabezeit
-		$data.movies[index].watchTime = Math.round(currentTime) - 2;
+		await db
+			.update(schema.movies)
+			.set({ watchTime: Math.round(currentTime) - 2 })
+			.where(eq(schema.movies.id, id));
 
 		// Setzt 'watched' auf true, wenn der Film zu 85 % gesehen wurde
-		if ($data.movies[index].watchTime > Math.round(0.85 * duration)) {
-			$data.movies[index].watched = true;
+		if (Math.round(currentTime / duration) > 0.85) {
+			await db.update(schema.movies).set({ watched: true }).where(eq(schema.movies.id, id));
 		}
-
-		$data.save();
 	}
 
-	function ended() {
-		if (document.fullscreenElement) fullscreen();
+	async function ended() {
+		if (document.fullscreenElement) fullscreen(player);
 		steuerElemente = true;
-		$data.movies[index].watched = true;
-		$data.movies[index].watchTime = 0;
-		$data.save();
+		await db
+			.update(schema.movies)
+			.set({ watched: true, watchTime: 0 })
+			.where(eq(schema.movies.id, id));
 	}
 </script>
 
@@ -108,8 +71,13 @@
 		bind:this={videoElement}
 		on:pause={save}
 		on:ended={ended}
-		on:loadedmetadata={() => {
-			videoElement.currentTime = $data.movies[index]?.watchTime;
+		on:loadedmetadata={async () => {
+			const watchTime = (await db.select().from(schema.movies).where(eq(schema.movies.id, id)))[0]
+				.watchTime;
+
+			if (watchTime > 0) {
+				currentTime = watchTime;
+			}
 		}}
 		class="-z-50"
 		{src}
@@ -169,13 +137,21 @@
 						</label>
 					</button>
 					<!-- Bild in Bild -->
-					<button class="flex cursor-pointer items-center" on:click={pictureInPicture}>
+					<button
+						class="flex cursor-pointer items-center"
+						on:click={() => pictureInPicture(videoElement)}
+					>
 						<PictureInPicture />
 					</button>
 					<!-- Fullscreen -->
 					<button class="flex items-center">
 						<label class="swap">
-							<input type="checkbox" id="fullscreen" name="fullscreen" on:change={fullscreen} />
+							<input
+								type="checkbox"
+								id="fullscreen"
+								name="fullscreen"
+								on:change={() => fullscreen(player)}
+							/>
 							<Fullscreen />
 						</label>
 					</button>

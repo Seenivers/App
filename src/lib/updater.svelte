@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { check, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
-	import { data } from './db';
+	import { newToast } from './toast/toast';
 
 	let update: Update | null = null;
 	let downloadProgress = 0;
@@ -11,7 +11,7 @@
 	let modalOpen = false;
 
 	onMount(async () => {
-		if ($data && !$data.settings.online) return;
+		if (!window.navigator.onLine) return;
 		update = await check();
 		if (update) {
 			modalOpen = true;
@@ -19,8 +19,8 @@
 	});
 
 	async function download() {
-		if (!$data.settings.online) {
-			alert('Du bist nicht mit dem Internet verbunden');
+		if (!window.navigator.onLine) {
+			newToast('error', 'You are not connected to the internet.');
 			return;
 		}
 		if (update) {
@@ -80,7 +80,7 @@
 
 			<div class="mt-6 flex justify-end space-x-4">
 				{#if !downloadStarted}
-					<button class="btn btn-primary" disabled={!$data.settings.online} on:click={download}
+					<button class="btn btn-primary" disabled={!window.navigator.onLine} on:click={download}
 						>Update herunterladen</button
 					>
 				{:else if downloadFinished}
