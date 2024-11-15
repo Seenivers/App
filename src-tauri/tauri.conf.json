@@ -12,6 +12,7 @@
 		"windows": [
 			{
 				"title": "Seenivers",
+				"center": true,
 				"width": 1280,
 				"height": 720,
 				"resizable": true,
@@ -40,6 +41,10 @@
 	},
 	"bundle": {
 		"active": true,
+		"publisher": "Seenivers",
+		"shortDescription": "Seenivers is your personal hub for managing and enjoying movies and TV series. Track, stream, and stay updated—all in one app.",
+		"longDescription": "Seenivers is an all-in-one app for movie and TV enthusiasts. Easily manage your media collection, track what you've watched and what's next, maintain a wishlist, and play content either within the app or using an external player. Get notifications about new releases and enjoy your media offline whenever you want.",
+		"copyright": "Copyright © 2024 Seenivers.net, All rights reserved.",
 		"targets": "all",
 		"createUpdaterArtifacts": true,
 		"category": "Video",
@@ -51,7 +56,50 @@
 			"icons/128x128@2x.png",
 			"icons/icon.icns",
 			"icons/icon.ico"
-		]
+		],
+		"windows": {
+			"allowDowngrades": true,
+			"certificateThumbprint": null,
+			"digestAlgorithm": "sha256",
+			"nsis": {
+				"installMode": "currentUser",
+				"installerIcon": "icons/icon.ico"
+			},
+			"signCommand": null,
+			"timestampUrl": null,
+			"tsp": false,
+			"webviewInstallMode": {
+				"silent": true,
+				"type": "downloadBootstrapper"
+			},
+			"wix": null
+		},
+		"linux": {
+			"appimage": {
+				"bundleMediaFramework": false,
+				"files": {}
+			},
+			"deb": {
+				"files": {},
+				"section": "video"
+			},
+			"rpm": {
+				"epoch": 0,
+				"files": {},
+				"release": "1"
+			}
+		},
+		"macOS": {
+			"entitlements": null,
+			"files": {}
+		},
+		"android": {
+			"minSdkVersion": 24
+		},
+		"iOS": {
+			"minimumSystemVersion": "13.0",
+			"developmentTeam": "BlackTiger007"
+		}
 	},
 	"$schema": "../node_modules/@tauri-apps/cli/config.schema.json"
 }
