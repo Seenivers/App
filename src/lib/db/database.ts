@@ -5,7 +5,9 @@ import Database from '@tauri-apps/plugin-sql';
 /**
  * Exports the SQLite database instance as a promise.
  */
-export const sqlite: Database = await Database.load('sqlite:sqlite.db');
+export const sqlite: Database = await Database.load(
+	`sqlite:${import.meta.env.DEV ? 'DEV' : ''}-sqlite.db`
+);
 
 /**
  * The drizzle database instance, initialized only after the SQLite database is ready.
