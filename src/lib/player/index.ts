@@ -3,8 +3,8 @@ import { newToast } from '$lib/toast/toast';
 export function format(seconds: number) {
 	if (isNaN(seconds)) return '...';
 
-	let hours = Math.floor(seconds / 60 / 60);
-	let minutes = Math.floor((seconds / 60) % 60);
+	const hours = Math.floor(seconds / 60 / 60);
+	const minutes = Math.floor((seconds / 60) % 60);
 	seconds = Math.floor(seconds % 60);
 
 	// Format using padStart to add leading zeros
