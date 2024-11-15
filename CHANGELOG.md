@@ -1,3 +1,10 @@
+## [0.6.1](https://github.com/Seenivers/App/compare/v0.6.0...v0.6.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* **sqlite:** correct database file naming for DEV environment ([a19fd1c](https://github.com/Seenivers/App/commit/a19fd1cbf0ed21b52b00a4ffbbb63d2e471d1294))
+
 # [0.6.0](https://github.com/Seenivers/App/compare/v0.5.0...v0.6.0) (2024-11-15)
 
 ### Bug Fixes
