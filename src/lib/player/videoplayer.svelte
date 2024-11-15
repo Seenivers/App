@@ -21,14 +21,14 @@
 		// Aktiviert Steuerungs-Elemente
 		steuerElemente = true;
 
-		if (videoElement.ended || videoElement.paused) return;
+		if (videoElement.ended || paused) return;
 
 		// Löscht den vorherigen Timer, falls vorhanden
 		if (timeoutHandle) clearTimeout(timeoutHandle);
 
 		// Setzt einen neuen Timer, der nach 3 Sekunden die Steuerungselemente deaktiviert
 		timeoutHandle = setTimeout(() => {
-			steuerElemente = false;
+			steuerElemente = paused;
 		}, 1000);
 	}
 
@@ -48,8 +48,10 @@
 	async function ended() {
 		if (document.fullscreenElement) fullscreen(player);
 		steuerElemente = true;
-		await db.update(schema.movies).set({ watched: true }).where(eq(schema.movies.id, id));
-		await db.update(schema.movies).set({ watchTime: 0 }).where(eq(schema.movies.id, id));
+		await db
+			.update(schema.movies)
+			.set({ watched: true, watchTime: 0 })
+			.where(eq(schema.movies.id, id));
 	}
 </script>
 
@@ -70,9 +72,12 @@
 		on:pause={save}
 		on:ended={ended}
 		on:loadedmetadata={async () => {
-			videoElement.currentTime = (
-				await db.select().from(schema.movies).where(eq(schema.movies.id, id))
-			)[0].watchTime;
+			const watchTime = (await db.select().from(schema.movies).where(eq(schema.movies.id, id)))[0]
+				.watchTime;
+
+			if (watchTime > 0) {
+				currentTime = watchTime;
+			}
 		}}
 		class="-z-50"
 		{src}
