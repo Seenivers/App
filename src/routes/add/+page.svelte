@@ -1,39 +1,16 @@
 <script lang="ts">
 	import { open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
-	import { getMovie, tmdb } from '$lib/tmdb';
+	import { tmdb } from '$lib/tmdb';
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
 	import { newToast } from '$lib/toast/toast';
 	import { addMovie, isPathUnique, settings } from '$lib/db/funktion';
+	import { buttonClass, getIcon, getMovieDetails, searchMovies } from '$lib/add/index';
+	import type { MovieSearchStatus } from '$lib/add/types';
 
 	let selected: string | string[] | null = null;
-	let status: {
-		searchStatus: 'notStarted' | 'searching' | 'notFound' | 'foundOne' | 'foundMultiple';
-		searchResults: {
-			adult: boolean;
-			backdrop_path: string | null;
-			genre_ids: number[];
-			id: number;
-			original_language: string;
-			original_title: string;
-			overview: string;
-			popularity: number;
-			poster_path: string | null;
-			release_date: string;
-			title: string;
-			video: boolean;
-			vote_average: number;
-			vote_count: number;
-		}[];
-		searchParams: {
-			path: string;
-			name: string;
-			includeAdult?: boolean;
-			primaryReleaseYear?: string | number;
-			page: number;
-		};
-	}[] = [];
+	let status: MovieSearchStatus[] = [];
 
 	const extensions = ['mp4', 'mkv'];
 
@@ -139,14 +116,7 @@
 		const { name, primaryReleaseYear } = status[i].searchParams;
 
 		// Perform TMDB search
-		const result = (
-			await tmdb.search.movie(name, {
-				language: settings.language,
-				includeAdult: status[i].searchParams.includeAdult,
-				primaryReleaseYear: primaryReleaseYear?.toString(),
-				page: 1
-			})
-		).results;
+		const result = (await searchMovies(name, primaryReleaseYear)).results;
 
 		// Update status based on results
 		if (result.length === 1) {
@@ -173,9 +143,14 @@
 			newToast('error', message);
 			return;
 		}
-		const result = await getMovie(id, settings.language);
 
-		addMovie({ id, path, tmdb: result });
+		const result = await getMovieDetails(id);
+
+		if (result) {
+			addMovie({ id, path, tmdb: result });
+		} else {
+			newToast('error', 'Der Film konnte nicht geladen werden.');
+		}
 	}
 
 	// Ensure that only the selected movie is added
@@ -185,40 +160,6 @@
 
 		status[modalID].searchStatus = 'foundOne';
 		modal = false; // Close the modal after selection
-	}
-
-	function buttonClass(searchStatus: string) {
-		switch (searchStatus) {
-			case 'notStarted':
-				return 'btn-neutral';
-			case 'searching':
-				return 'btn-primary';
-			case 'notFound':
-				return 'btn-error';
-			case 'foundOne':
-				return 'btn-success';
-			case 'foundMultiple':
-				return 'btn-warning';
-			default:
-				return 'btn-neutral';
-		}
-	}
-
-	function getIcon(searchStatus: string) {
-		switch (searchStatus) {
-			case 'notStarted':
-				return '🔍'; // search icon
-			case 'searching':
-				return '⏳'; // loading icon
-			case 'notFound':
-				return '❌'; // not found icon
-			case 'foundOne':
-				return '✅'; // found one icon
-			case 'foundMultiple':
-				return '⚠️'; // multiple results icon
-			default:
-				return '🔍'; // default to search icon
-		}
 	}
 
 	function openModal(index: number) {
