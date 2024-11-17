@@ -1,13 +1,14 @@
-import { imageURL } from '$lib';
+import { imageURL, seeniversURL } from '$lib';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
 import { newToast } from './toast/toast';
+import { fetch } from '@tauri-apps/plugin-http';
 
 export async function downloadImage(url: string, filename: string) {
 	try {
 		// Abrufen des Bildes von deinem API-Endpunkt
-		const response = await fetch('http://localhost:5173/api/image?path=' + encodeURIComponent(url));
+		const response = await fetch(seeniversURL + '/api/image?path=' + encodeURIComponent(url));
 
 		// Überprüfen, ob der Abruf erfolgreich war
 		if (!response.ok) {

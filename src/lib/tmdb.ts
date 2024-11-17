@@ -3,12 +3,13 @@ import TMDB from '@blacktiger/tmdb';
 import { newToast } from './toast/toast';
 import type { Movie } from './types/movie';
 import { settings } from './db/funktion';
+import { seeniversURL } from '$lib';
 
 const STATIC_KEY = '51baf525-2720-4c43-8d34-b759bb71ae88';
 let apiKey: string | null = null; // Initialisiere apiKey als null
 
 async function newApiKey() {
-	const response = await fetch('https://seenivers.com/api/api-key', {
+	const response = await fetch(seeniversURL + '/api/api-key', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ staticKey: STATIC_KEY }) // Verwende JSON.stringify
