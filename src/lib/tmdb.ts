@@ -47,14 +47,25 @@ export async function getMovie(
 	language: string = settings.language || window.navigator.language
 ) {
 	try {
-		const response = await fetch('https://seenivers.com/api/movie', {
-			method: 'POST',
+		// Erstelle die URL mit den Query-Parametern id und language
+		const url = new URL(seeniversURL + '/api/movie');
+		url.searchParams.append('id', id.toString());
+		url.searchParams.append('language', language);
+
+		// Führe den GET-Request aus
+		const response = await fetch(url.toString(), {
+			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
-			},
-			body: `{"id":"${id}","language":"${language}"}`
+			}
 		});
 
+		// Überprüfe, ob die Antwort OK ist
+		if (!response.ok) {
+			throw new Error(`Fehler beim Abrufen des Films: ${response.statusText}`);
+		}
+
+		// Parst die JSON-Antwort und gibt das Ergebnis zurück
 		return (await response.json()) as Movie;
 	} catch (error) {
 		console.error('Fehler beim Abrufen des Films.', error);
