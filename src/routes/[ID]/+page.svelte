@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { exists } from '@tauri-apps/plugin-fs';
-	import { imageURL } from '$lib';
+	import { image } from '$lib/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie } from '$lib/tmdb';
 	import { db } from '$lib/db/database';
@@ -52,9 +52,9 @@
 </script>
 
 <!-- Navbar -->
-<nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100 p-2 md:p-4">
+<nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100">
 	<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
-	<button class="btn btn-sm my-2 md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
+	<button class="btn btn-sm md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
 		>Starte Externen Player</button
 	>
 	<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
@@ -85,11 +85,9 @@
 			{/if}
 
 			{#if pathExists}
-				<Videoplayer
-					src={convertFileSrc(movieData.path)}
-					poster={imageURL + movieData.tmdb.backdrop_path}
-					{id}
-				/>
+				{#await image(movieData.tmdb.backdrop_path) then poster}
+					<Videoplayer src={convertFileSrc(movieData.path)} {poster} {id} />
+				{/await}
 			{:else}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
