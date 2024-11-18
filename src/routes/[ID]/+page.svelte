@@ -95,7 +95,7 @@
 
 			<div class="my-4">
 				<h2 class="my-2 text-lg font-bold">Hauptdarsteller</h2>
-				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-neutral p-3">
+				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-base-100 p-3">
 					{#each movieData.tmdb.credits.cast as cast}
 						<button
 							class="carousel-item flex flex-col items-center"
