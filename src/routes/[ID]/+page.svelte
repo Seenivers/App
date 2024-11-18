@@ -79,7 +79,7 @@
 		<div class="mx-auto w-full max-w-full p-4 md:w-[80%] lg:w-[60%]">
 			<h1 class="mb-2 text-lg font-bold sm:text-xl md:text-2xl">{movieData.tmdb.title}</h1>
 			{#if movieData.tmdb.tagline}
-				<h2 class="mb-2 text-sm font-bold sm:text-base md:text-base">
+				<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
 					{movieData.tmdb.tagline}
 				</h2>
 			{/if}
@@ -95,13 +95,18 @@
 
 			<div class="my-4">
 				<h2 class="my-2 text-lg font-bold">Hauptdarsteller</h2>
-				<div class="carousel carousel-center w-full space-x-2 rounded-box bg-neutral p-4">
+				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-neutral p-3">
 					{#each movieData.tmdb.credits.cast as cast}
-						<div class="carousel-item">
+						<button
+							class="carousel-item flex flex-col items-center"
+							on:click={() => open('https://www.themoviedb.org/person/' + cast.id)}
+						>
 							{#await image(cast.profile_path) then src}
-								<img {src} alt={cast.name} class="max-w-56 rounded-box" />
+								<img {src} alt={cast.name} class="max-w-40 rounded-box sm:max-w-60" />
 							{/await}
-						</div>
+							<p class="text-center text-lg">{cast.name}</p>
+							<p class="text-base italic">{cast.character}</p>
+						</button>
 					{/each}
 				</div>
 			</div>
