@@ -9,7 +9,6 @@
 	import { schema } from '$lib/db/schema';
 	import Videoplayer from '$lib/player/videoplayer.svelte';
 	import { open } from '@tauri-apps/plugin-shell';
-	import { placeholderURL } from '$lib';
 
 	const id = parseInt($page.params.ID);
 	let pathExists: boolean = false;
@@ -99,7 +98,7 @@
 				<div class="carousel carousel-center w-full space-x-2 rounded-box bg-neutral p-4">
 					{#each movieData.tmdb.credits.cast as cast}
 						<div class="carousel-item">
-							{#await cast.profile_path ? image(cast.profile_path) : placeholderURL then src}
+							{#await image(cast.profile_path) then src}
 								<img {src} alt={cast.name} class="max-w-56 rounded-box" />
 							{/await}
 						</div>
