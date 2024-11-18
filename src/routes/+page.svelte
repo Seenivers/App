@@ -86,60 +86,62 @@
 	onMount(async () => {
 		await loadMovies();
 
-		searchInput.onfocus = function () {
-			datalistItem.style.display = 'block';
-			datalistItem.style.width = `${searchInput.offsetWidth}px`;
-			searchInput.style.borderBottomLeftRadius = '0';
-		};
-
-		// Datalist-Optionen verstecken
-		searchInput.onblur = function () {
-			// Kurze Verzögerung, um sicherzustellen, dass das Klicken auf ein Optionselement erkannt wird
-			setTimeout(() => {
-				datalistItem.style.display = 'none';
-				searchInput.style.borderBottomLeftRadius = '0.5rem';
-			}, 200);
-		};
-
-		// Datalist-Optionen behandeln
-		for (let option of datalistItem.options) {
-			option.onclick = () => {
-				searchCriteria.title = option.value;
-				datalistItem.style.display = 'none';
-				filterMovies();
-			};
-		}
-
-		searchInput.oninput = () => {
-			const text = searchCriteria.title.toUpperCase();
-			for (let option of datalistItem.options) {
-				option.style.display = option.value.toUpperCase().includes(text) ? 'block' : 'none';
-			}
-		};
-
 		let currentFocus = -1;
 
-		searchInput.onkeydown = (e: KeyboardEvent) => {
-			const optionsArray = Array.from(datalistItem.options);
-			switch (e.key) {
-				case 'ArrowDown':
-					currentFocus++;
-					addActive(optionsArray);
-					break;
-				case 'ArrowUp':
-					currentFocus--;
-					addActive(optionsArray);
-					break;
-				case 'Enter':
-					e.preventDefault();
-					if (currentFocus > -1 && currentFocus < optionsArray.length) {
-						optionsArray[currentFocus].click();
-					}
-					break;
-				default:
-					break;
+		if (matchedMovies.length >= 1) {
+			searchInput.onfocus = function () {
+				datalistItem.style.display = 'block';
+				datalistItem.style.width = `${searchInput.offsetWidth}px`;
+				searchInput.style.borderBottomLeftRadius = '0';
+			};
+
+			// Datalist-Optionen verstecken
+			searchInput.onblur = function () {
+				// Kurze Verzögerung, um sicherzustellen, dass das Klicken auf ein Optionselement erkannt wird
+				setTimeout(() => {
+					datalistItem.style.display = 'none';
+					searchInput.style.borderBottomLeftRadius = '0.5rem';
+				}, 200);
+			};
+
+			// Datalist-Optionen behandeln
+			for (let option of datalistItem.options) {
+				option.onclick = () => {
+					searchCriteria.title = option.value;
+					datalistItem.style.display = 'none';
+					filterMovies();
+				};
 			}
-		};
+
+			searchInput.oninput = () => {
+				const text = searchCriteria.title.toUpperCase();
+				for (let option of datalistItem.options) {
+					option.style.display = option.value.toUpperCase().includes(text) ? 'block' : 'none';
+				}
+			};
+
+			searchInput.onkeydown = (e: KeyboardEvent) => {
+				const optionsArray = Array.from(datalistItem.options);
+				switch (e.key) {
+					case 'ArrowDown':
+						currentFocus++;
+						addActive(optionsArray);
+						break;
+					case 'ArrowUp':
+						currentFocus--;
+						addActive(optionsArray);
+						break;
+					case 'Enter':
+						e.preventDefault();
+						if (currentFocus > -1 && currentFocus < optionsArray.length) {
+							optionsArray[currentFocus].click();
+						}
+						break;
+					default:
+						break;
+				}
+			};
+		}
 
 		function addActive(options: HTMLOptionElement[]) {
 			if (options.length === 0) return;
