@@ -3,6 +3,7 @@ import { settings } from '$lib/db/funktion';
 import type { Movie } from '$lib/types/movie';
 import { seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
+import { fetch } from '@tauri-apps/plugin-http';
 
 export function buttonClass(searchStatus: string) {
 	switch (searchStatus) {
