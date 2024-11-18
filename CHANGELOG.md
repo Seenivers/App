@@ -1,3 +1,18 @@
+# [0.8.0](https://github.com/Seenivers/App/compare/v0.7.0...v0.8.0) (2024-11-18)
+
+
+### Bug Fixes
+
+* **cors:** resolve CORS issue by switching to Tauri's HTTP fetch ([9c8fad1](https://github.com/Seenivers/App/commit/9c8fad1954d980e07c4cadc41762d20fb6eb5475))
+* **images:** replace placeholder URL with inline NoImage SVG ([eb1aa31](https://github.com/Seenivers/App/commit/eb1aa31cf7775ac4daccc8840315e26a51960c3a))
+* **search:** add check to prevent errors when matchedMovies is empty ([ca3516d](https://github.com/Seenivers/App/commit/ca3516de5d4dc80858ca3d3d6d60918d7fcda5fc))
+
+
+### Features
+
+* **images:** add NoImage SVG placeholder for missing images ([09d5000](https://github.com/Seenivers/App/commit/09d5000f36316e991724f718cc8e2c447b0150e4))
+* **search:** show search filters only when movies are matched ([922de4f](https://github.com/Seenivers/App/commit/922de4f2505ebf8725b041da266583a3c07f6945))
+
 # [0.7.0](https://github.com/Seenivers/App/compare/v0.6.1...v0.7.0) (2024-11-18)
 
 
