@@ -10,7 +10,7 @@
 	import Videoplayer from '$lib/player/videoplayer.svelte';
 	import { open } from '@tauri-apps/plugin-shell';
 
-	const id = parseInt($page.params.ID);
+	const id = parseInt($page.params.ID, 10);
 	let pathExists: boolean = false;
 	let watched: boolean = false;
 	let movieData: typeof schema.movies.$inferSelect;
@@ -149,7 +149,7 @@
 		<form
 			bind:this={form}
 			on:submit|preventDefault={async () => {
-				const newID = parseInt(form.newID.value);
+				const newID = parseInt(form.newID.value, 10);
 				try {
 					if (id !== -1 && newID && newID !== movieData.id) {
 						const newMovieByTmdb = await getMovie(newID);
