@@ -12,9 +12,13 @@
 		"windows": [
 			{
 				"title": "Seenivers",
+				"label": "main",
+				"tabbingIdentifier": "seenivers",
 				"center": true,
 				"width": 1280,
 				"height": 720,
+				"minHeight": 700,
+				"minWidth": 900,
 				"resizable": true,
 				"fullscreen": false
 			}
@@ -68,7 +72,8 @@
 			"digestAlgorithm": "sha256",
 			"nsis": {
 				"installMode": "currentUser",
-				"installerIcon": "icons/icon.ico"
+				"installerIcon": "icons/icon.ico",
+				"languages": ["English", "German", "Spanish", "French"]
 			},
 			"signCommand": null,
 			"timestampUrl": null,
