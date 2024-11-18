@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
-	import { tmdb } from '$lib/tmdb';
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
 	import { newToast } from '$lib/toast/toast';
@@ -105,8 +104,8 @@
 
 	async function search(i: number) {
 		status[i].searchStatus = 'searching';
-		if (!window.navigator.onLine && tmdb) {
-			console.error(!window.navigator.onLine && tmdb);
+		if (!window.navigator.onLine) {
+			console.error(!window.navigator.onLine);
 			newToast(
 				'error',
 				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten'
@@ -136,7 +135,7 @@
 	}
 
 	async function addNewMovie(id: number, path: string) {
-		if (!window.navigator.onLine && tmdb) {
+		if (!window.navigator.onLine) {
 			const message =
 				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten';
 			console.error(message);
