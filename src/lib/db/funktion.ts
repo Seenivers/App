@@ -30,6 +30,11 @@ async function initializeSettings() {
 			await Promise.all(
 				data.movies.map(async (movie) => {
 					const result = await getMovieTmdb(movie.id, loadedSettings?.language);
+
+					if (!result) {
+						throw new Error(`Movie with ID ${movie.id} could not be fetched.`);
+					}
+
 					addMovie({
 						id: movie.id,
 						path: movie.path,
