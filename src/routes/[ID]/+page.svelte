@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { exists } from '@tauri-apps/plugin-fs';
-	import { imageURL } from '$lib';
+	import { image } from '$lib/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie } from '$lib/tmdb';
 	import { db } from '$lib/db/database';
@@ -10,7 +10,7 @@
 	import Videoplayer from '$lib/player/videoplayer.svelte';
 	import { open } from '@tauri-apps/plugin-shell';
 
-	const id = parseInt($page.params.ID);
+	const id = parseInt($page.params.ID, 10);
 	let pathExists: boolean = false;
 	let watched: boolean = false;
 	let movieData: typeof schema.movies.$inferSelect;
@@ -52,9 +52,9 @@
 </script>
 
 <!-- Navbar -->
-<nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100 p-2 md:p-4">
+<nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100">
 	<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
-	<button class="btn btn-sm my-2 md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
+	<button class="btn btn-sm md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
 		>Starte Externen Player</button
 	>
 	<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
@@ -79,23 +79,37 @@
 		<div class="mx-auto w-full max-w-full p-4 md:w-[80%] lg:w-[60%]">
 			<h1 class="mb-2 text-lg font-bold sm:text-xl md:text-2xl">{movieData.tmdb.title}</h1>
 			{#if movieData.tmdb.tagline}
-				<h2 class="mb-2 text-sm font-bold sm:text-base md:text-base">
+				<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
 					{movieData.tmdb.tagline}
 				</h2>
 			{/if}
 
 			{#if pathExists}
-				<Videoplayer
-					src={convertFileSrc(movieData.path)}
-					poster={imageURL + movieData.tmdb.backdrop_path}
-					{id}
-				/>
+				{#await image(movieData.tmdb.backdrop_path) then poster}
+					<Videoplayer src={convertFileSrc(movieData.path)} {poster} {id} />
+				{/await}
 			{:else}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
-			<br />
+			<div class="my-4">
+				<h2 class="my-2 text-lg font-bold">Hauptdarsteller</h2>
+				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-neutral p-3">
+					{#each movieData.tmdb.credits.cast as cast}
+						<button
+							class="carousel-item flex flex-col items-center"
+							on:click={() => open('https://www.themoviedb.org/person/' + cast.id)}
+						>
+							{#await image(cast.profile_path) then src}
+								<img {src} alt={cast.name} class="max-w-40 rounded-box sm:max-w-60" />
+							{/await}
+							<p class="text-center text-lg">{cast.name}</p>
+							<p class="text-base italic">{cast.character}</p>
+						</button>
+					{/each}
+				</div>
+			</div>
 
 			<div class="grid gap-3">
 				{#each [{ label: 'Stimmenanzahl', value: movieData.tmdb.vote_count }, { label: 'Durchschnittliche Bewertung', value: movieData.tmdb.vote_average ? `${Math.round(movieData.tmdb.vote_average * 10) / 10}/10` : null }, { label: 'Genres', value: movieData.tmdb.genres
@@ -135,7 +149,7 @@
 		<form
 			bind:this={form}
 			on:submit|preventDefault={async () => {
-				const newID = parseInt(form.newID.value);
+				const newID = parseInt(form.newID.value, 10);
 				try {
 					if (id !== -1 && newID && newID !== movieData.id) {
 						const newMovieByTmdb = await getMovie(newID);

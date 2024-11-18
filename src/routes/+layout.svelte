@@ -20,7 +20,7 @@
 	{#if db && settings}
 		<slot />
 		<Toast />
-		{#if window.navigator.onLine}
+		{#if window.navigator.onLine && !import.meta.env.DEV}
 			<Updater />
 		{/if}
 	{:else}
