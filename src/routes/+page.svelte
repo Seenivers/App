@@ -165,46 +165,49 @@
 </nav>
 
 <main class="flex-grow flex-col p-5">
-	<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
-		<div>
-			<input
-				class="input join-item input-bordered"
-				placeholder="Titel"
-				bind:value={searchCriteria.title}
-				on:input={filterMovies}
-				bind:this={searchInput}
-			/>
-			<datalist
-				class="absolute z-10 overflow-y-auto rounded-b-lg bg-base-100"
-				bind:this={datalistItem}
-			>
-				{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
-					<option class="cursor-pointer px-2 hover:bg-base-content/20" value={title}>{title}</option
-					>
+	{#if matchedMovies.length >= 1}
+		<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
+			<div>
+				<input
+					class="input join-item input-bordered"
+					placeholder="Titel"
+					bind:value={searchCriteria.title}
+					on:input={filterMovies}
+					bind:this={searchInput}
+				/>
+				<datalist
+					class="absolute z-10 overflow-y-auto rounded-b-lg bg-base-100"
+					bind:this={datalistItem}
+				>
+					{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
+						<option class="cursor-pointer px-2 hover:bg-base-content/20" value={title}
+							>{title}</option
+						>
+					{/each}
+				</datalist>
+			</div>
+			<select class="join-item select select-bordered" bind:value={searchCriteria.genre}>
+				<option value={null}>Kein Filter</option>
+				{#each Array.from(new Set(matchedMovies.flatMap( (item) => item.tmdb.genres.map((i) => i.name) ))) as genre}
+					<option>{genre}</option>
 				{/each}
-			</datalist>
+			</select>
+			<select class="join-item select select-bordered" bind:value={searchCriteria.isWatched}>
+				<option value={null}>Alle Filme</option>
+				<option value={true}>Angeschaut</option>
+				<option value={false}>Nicht angeschaut</option>
+			</select>
+			<button
+				on:click={() => {
+					searchCriteria = { title: '', genre: null, isWatched: null };
+					filterMovies();
+				}}
+				class="btn join-item"
+			>
+				Filter zurücksetzen
+			</button>
 		</div>
-		<select class="join-item select select-bordered" bind:value={searchCriteria.genre}>
-			<option value={null}>Kein Filter</option>
-			{#each Array.from(new Set(matchedMovies.flatMap( (item) => item.tmdb.genres.map((i) => i.name) ))) as genre}
-				<option>{genre}</option>
-			{/each}
-		</select>
-		<select class="join-item select select-bordered" bind:value={searchCriteria.isWatched}>
-			<option value={null}>Alle Filme</option>
-			<option value={true}>Angeschaut</option>
-			<option value={false}>Nicht angeschaut</option>
-		</select>
-		<button
-			on:click={() => {
-				searchCriteria = { title: '', genre: null, isWatched: null };
-				filterMovies();
-			}}
-			class="btn join-item"
-		>
-			Filter zurücksetzen
-		</button>
-	</div>
+	{/if}
 
 	<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
 		{#if isLoading}
