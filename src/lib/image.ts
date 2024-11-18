@@ -1,4 +1,4 @@
-import { imageURL, seeniversURL } from '$lib';
+import { imageURL, placeholderURL, seeniversURL } from '$lib';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
@@ -30,7 +30,9 @@ export async function downloadImage(url: string, filename: string) {
 	}
 }
 
-export async function image(path: string) {
+export async function image(path: string | null | undefined) {
+	if (!path) return placeholderURL;
+
 	if (
 		!(await exists('images', {
 			baseDir: BaseDirectory.AppData
