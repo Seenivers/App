@@ -1,3 +1,26 @@
+# [0.7.0](https://github.com/Seenivers/App/compare/v0.6.1...v0.7.0) (2024-11-18)
+
+
+### Bug Fixes
+
+* **image-function:** handle null or undefined paths and return placeholder URL ([3d093cc](https://github.com/Seenivers/App/commit/3d093cc2e7218df41244ba3156716735c39558e6))
+* **init:** handle errors when fetching movie data during settings initialization ([ba86b25](https://github.com/Seenivers/App/commit/ba86b259cd3fead6db22cff8f3c24844f1ec165d))
+* **parsing:** specify radix parameter for parseInt to avoid unexpected results ([8fb42e7](https://github.com/Seenivers/App/commit/8fb42e71c92c6b24a7f88e58bcbc206ca36c7fae))
+
+
+### Features
+
+* **cast:** add clickable cast items with character names and links to TMDb profiles ([4368a37](https://github.com/Seenivers/App/commit/4368a3776e03d056214587d2401806fd61e9a4d5))
+* **images:** implement image downloading and caching mechanism ([2bb233c](https://github.com/Seenivers/App/commit/2bb233cd9514e55659e2b71c276e7b0820d8bd99))
+* **movie-details:** add cast carousel and placeholder for missing images ([85f7829](https://github.com/Seenivers/App/commit/85f78290a7f5f0a4789244321e347be7014f497f))
+* **navbar:** add dynamic image fetching for video player poster ([6a8e2d6](https://github.com/Seenivers/App/commit/6a8e2d64f7d37b3c5c0ac92bec6a8925ed2e80e7))
+* **network:** add condition to hide updater in development environment ([19c2a42](https://github.com/Seenivers/App/commit/19c2a42175131c80a68f885df2b85cbe6f0ad271))
+* **permission:** extend file system permissions and allow write access ([ab27774](https://github.com/Seenivers/App/commit/ab2777426c26bf5a9a3e78e71d119f7894e26372))
+* **security:** enhance CSP configuration and disable asset CSP modification ([dedd82f](https://github.com/Seenivers/App/commit/dedd82fc496ea0b8de21722646f73168ca6e05f6))
+* **tauri:** update config for improved window positioning and bundle details ([fa24d0a](https://github.com/Seenivers/App/commit/fa24d0adfa7a3d41753274e6cad8091a723c90b1))
+* **types:** add searchMovie.ts to define Search and Movie interfaces ([9dedcb3](https://github.com/Seenivers/App/commit/9dedcb3b5722888158bdfcca8ee74b7db952bfcf))
+* **urls:** add seeniversURL constant for app's base URL ([1ef8344](https://github.com/Seenivers/App/commit/1ef8344c3ec5cc750b2dda92f81b347512854a0a))
+
 ## [0.6.1](https://github.com/Seenivers/App/compare/v0.6.0...v0.6.1) (2024-11-15)
 
 
