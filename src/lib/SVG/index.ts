@@ -5,3 +5,4 @@ export { default as Loudness } from './loudness.svelte';
 export { default as Paused } from './paused.svelte';
 export { default as PictureInPicture } from './pictureInPicture.svelte';
 export { default as Play } from './play.svelte';
+export { NoImage } from './noImage';
