@@ -68,7 +68,7 @@ export async function addMovie(data: typeof schema.movies.$inferInsert) {
 		.values(data)
 		.catch((error) => {
 			console.error(error);
-			newToast('error', `Add Movie: `, error);
+			newToast('error', `Add Movie: ` + error);
 		});
 }
 
@@ -78,7 +78,7 @@ export async function deleteMovie(id: number) {
 		.where(eq(schema.movies.id, id))
 		.catch((error) => {
 			console.error(error);
-			newToast('error', `Delete Movie: `, error);
+			newToast('error', `Delete Movie: ` + error);
 		});
 }
 
@@ -89,14 +89,14 @@ export async function updateMovie(id: number, data: typeof schema.movies.$inferI
 		.where(eq(schema.movies.id, id))
 		.catch((error) => {
 			console.error(error);
-			newToast('error', `Update Movie: `, error);
+			newToast('error', `Update Movie: ` + error);
 		});
 }
 
 export async function getMovie(id: number) {
 	return await db.query.movies.findFirst({ where: eq(schema.movies.id, id) }).catch((error) => {
 		console.error(error);
-		newToast('error', `Get Movie: `, error);
+		newToast('error', `Get Movie: ` + error);
 	});
 }
 
@@ -106,7 +106,7 @@ export async function getAllMovies() {
 		.from(schema.movies)
 		.catch((error) => {
 			console.error(error);
-			newToast('error', `Get All Movies: `, error);
+			newToast('error', `Get All Movies: ` + error);
 		});
 }
 
@@ -117,7 +117,7 @@ export async function isPathUnique(path: string): Promise<boolean> {
 		})
 		.catch((error) => {
 			console.error(error);
-			newToast('error', `Is Path Unique: `, error);
+			newToast('error', `Is Path Unique: ` + error);
 		});
 
 	// Gibt `true` zurück, wenn kein Film mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)

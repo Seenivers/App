@@ -23,7 +23,7 @@ export async function fullscreen(player: HTMLDivElement) {
 	if (document.fullscreenElement) {
 		document.exitFullscreen().catch((err: unknown) => {
 			console.error(err);
-			newToast('error', 'Fehler beim Vollbildmodus verlassen.' + err);
+			newToast('error', 'Fehler beim Vollbildmodus verlassen. ' + err);
 		});
 	} else {
 		await player.requestFullscreen();
@@ -34,7 +34,7 @@ export async function pictureInPicture(videoElement: HTMLVideoElement) {
 	if (document.pictureInPictureElement) {
 		document.exitPictureInPicture().catch((err: unknown) => {
 			console.error(err);
-			newToast('error', 'Fehler beim Bild in Bild verlassen.' + err);
+			newToast('error', 'Fehler beim Bild in Bild verlassen. ' + err);
 		});
 	} else if (document.pictureInPictureEnabled) {
 		await videoElement.requestPictureInPicture();
