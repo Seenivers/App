@@ -8,5 +8,19 @@ export default {
 		extend: {}
 	},
 
-	plugins: [daisyui]
+	plugins: [daisyui],
+
+	safelist: [
+		'contents',
+		'toast-start',
+		'toast-center',
+		'toast-end',
+		'toast-top',
+		'toast-middle',
+		'toast-bottom',
+		'alert-info',
+		'alert-success',
+		'alert-warning',
+		'alert-error'
+	]
 } as Config;
