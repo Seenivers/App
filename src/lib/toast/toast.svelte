@@ -1,7 +1,7 @@
 <!-- https://daisyui.com/components/toast/ -->
 <script lang="ts">
 	import { settings } from '$lib/db/funktion';
-	import type { AlertPositionHorizontally, AlertPositionVertically } from '../types';
+	import type { AlertPositionHorizontally, AlertPositionVertically } from '$lib/types/settings';
 	import { messages } from './toast';
 
 	const positionHorizontally: AlertPositionHorizontally = settings
