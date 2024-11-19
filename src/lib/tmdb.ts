@@ -1,7 +1,7 @@
 import { fetch } from '@tauri-apps/plugin-http';
-import { newToast } from './toast/toast';
-import type { Movie } from './types/movie';
-import { settings } from './db/funktion';
+import { newToast } from '$lib/toast/toast';
+import type { Movie } from '$lib/types/movie';
+import { settings } from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
 
 export async function getMovie(
