@@ -63,7 +63,7 @@ export async function image(path: string | null | undefined) {
 		} catch (error: unknown) {
 			// Fehlerbehandlung
 			console.error('Error downloading or saving image:', error);
-			newToast('error', 'Image: ' + error);
+			newToast('error', `Image: ${error}`);
 			// Rückgabe der URL des Bildes als Fallback
 			return imageURL + path;
 		}
