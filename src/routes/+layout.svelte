@@ -7,6 +7,10 @@
 	import { db } from '$lib/db/database';
 	import { settings } from '$lib/db/schema';
 
+	oncontextmenu = (event: MouseEvent) => {
+		event.preventDefault();
+	};
+
 	onMount(async () => {
 		networkStatus();
 	});
