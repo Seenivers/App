@@ -1,18 +1,18 @@
-<script>
-	import { onDestroy, onMount } from 'svelte';
+<script lang="ts">
+	import { onMount } from 'svelte';
 	import Updater from '$lib/updater.svelte';
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
-	import { addCustomEventListener, removeCustomEventListener } from '$lib/networkStatus';
+	import { networkStatus } from '$lib/networkStatus';
 	import { db } from '$lib/db/database';
 	import { settings } from '$lib/db/schema';
 
-	onMount(async () => {
-		addCustomEventListener();
-	});
+	oncontextmenu = (event: MouseEvent) => {
+		event.preventDefault();
+	};
 
-	onDestroy(() => {
-		removeCustomEventListener();
+	onMount(async () => {
+		networkStatus();
 	});
 </script>
 

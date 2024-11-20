@@ -60,10 +60,10 @@ export async function image(path: string | null | undefined) {
 			// Bild herunterladen und speichern
 			await downloadImage(imageURL + path, path);
 			return filePath;
-		} catch (error: unknown) {
+		} catch (error) {
 			// Fehlerbehandlung
 			console.error('Error downloading or saving image:', error);
-			newToast('error', `Image: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			newToast('error', 'Image: ' + error);
 			// Rückgabe der URL des Bildes als Fallback
 			return imageURL + path;
 		}

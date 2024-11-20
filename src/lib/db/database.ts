@@ -26,7 +26,7 @@ export async function getDb() {
 					throw new Error('SQLite database is not loaded yet');
 				}
 
-				let rows: any = [];
+				let rows: any = []; // eslint-disable-line
 				let results = [];
 
 				// If the query is a SELECT, use the select method
@@ -44,7 +44,7 @@ export async function getDb() {
 					return { rows: [] };
 				}
 
-				rows = rows.map((row: any) => Object.values(row));
+				rows = rows.map((row: any) => Object.values(row)); // eslint-disable-line
 
 				// If the method is "all", return all rows
 				results = method === 'all' ? rows : rows[0];

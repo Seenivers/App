@@ -1,5 +1,5 @@
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import type { Settings } from '$lib/types';
+import type { Settings } from '$lib/types/settings';
 
 export const settings = sqliteTable('settings', {
 	id: int('id').primaryKey().default(1),
