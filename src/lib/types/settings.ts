@@ -1,4 +1,4 @@
-export type Settings = {
+export interface Settings {
 	language: string;
 	online: boolean;
 	keywords: string[];
@@ -7,7 +7,7 @@ export type Settings = {
 		horizontal: AlertPositionHorizontally;
 		vertical: AlertPositionVertically;
 	};
-};
+}
 
 export type AlertPositionHorizontally =
 	| 'start' // align horizontally to the left
