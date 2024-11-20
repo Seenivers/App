@@ -5,7 +5,7 @@ type AlertType = 'info' | 'success' | 'warning' | 'error';
 export const messages = writable<{ id: number; type: AlertType; text: string }[]>([]);
 let messageIdCounter = 0; // Counter for unique message IDs
 
-export function newToast(type: AlertType, text: string, duration: number = 30000) {
+export function newToast(type: AlertType, text: string, duration = 30000) {
 	// Füge zusätzliche Argumente an den Text an, falls vorhanden
 	const newMessage = { id: messageIdCounter++, type, text: text };
 
