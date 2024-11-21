@@ -1,23 +1,21 @@
 # [0.9.0](https://github.com/Seenivers/App/compare/v0.8.0...v0.9.0) (2024-11-20)
 
-
 ### Bug Fixes
 
-* **config:** enhance window properties and update installer languages in Tauri config ([e8575bc](https://github.com/Seenivers/App/commit/e8575bc7f85aacde3be6634aab81d053e007033f))
-* **image:** resolve invalid template literal type for error handling ([5a2a746](https://github.com/Seenivers/App/commit/5a2a746d44d9ba63ed97f73b35600f99416ae6e1))
-* **image:** resolve type error in error handling message ([3ae7c7b](https://github.com/Seenivers/App/commit/3ae7c7bb31f6a238ef6509f9416eaca986ca2549))
-* **prerender:** adjust prerender entries to include all routes and handle missing IDs ([142df43](https://github.com/Seenivers/App/commit/142df43c084b909cc517c0ae8261472183433821))
-* **release:** fetch latest commit to ensure correct version is used ([99b18fd](https://github.com/Seenivers/App/commit/99b18fd3e2e484b47c5ee6639efd5b900ab87c46))
-* **toast:** remove redundant type annotation for duration parameter ([a57e7bd](https://github.com/Seenivers/App/commit/a57e7bd4eec57b5fcb9f0212beee262f923c08d4))
-* **types:** convert Settings type to interface for consistency ([7409279](https://github.com/Seenivers/App/commit/7409279e8a669454d6b04a8625a598079c125713))
-
+- **config:** enhance window properties and update installer languages in Tauri config ([e8575bc](https://github.com/Seenivers/App/commit/e8575bc7f85aacde3be6634aab81d053e007033f))
+- **image:** resolve invalid template literal type for error handling ([5a2a746](https://github.com/Seenivers/App/commit/5a2a746d44d9ba63ed97f73b35600f99416ae6e1))
+- **image:** resolve type error in error handling message ([3ae7c7b](https://github.com/Seenivers/App/commit/3ae7c7bb31f6a238ef6509f9416eaca986ca2549))
+- **prerender:** adjust prerender entries to include all routes and handle missing IDs ([142df43](https://github.com/Seenivers/App/commit/142df43c084b909cc517c0ae8261472183433821))
+- **release:** fetch latest commit to ensure correct version is used ([99b18fd](https://github.com/Seenivers/App/commit/99b18fd3e2e484b47c5ee6639efd5b900ab87c46))
+- **toast:** remove redundant type annotation for duration parameter ([a57e7bd](https://github.com/Seenivers/App/commit/a57e7bd4eec57b5fcb9f0212beee262f923c08d4))
+- **types:** convert Settings type to interface for consistency ([7409279](https://github.com/Seenivers/App/commit/7409279e8a669454d6b04a8625a598079c125713))
 
 ### Features
 
-* **layout:** disable default context menu ([0f32310](https://github.com/Seenivers/App/commit/0f32310c8dddae84297d43d90edc494dbc58054a))
-* **settings:** add settings page and integrate it into the main navigation ([c72e08b](https://github.com/Seenivers/App/commit/c72e08bc85db0ed81a3dbc37a5e47aa0424557ec))
-* **toast:** add animations and optimize toast rendering ([23002b8](https://github.com/Seenivers/App/commit/23002b8f043df4aae5571e6a5b0b5b632816a3c0))
-* **toast:** increase default duration to 30 seconds ([e80309a](https://github.com/Seenivers/App/commit/e80309ac94dcd60972b1a5680bce7071139dfe47))
+- **layout:** disable default context menu ([0f32310](https://github.com/Seenivers/App/commit/0f32310c8dddae84297d43d90edc494dbc58054a))
+- **settings:** add settings page and integrate it into the main navigation ([c72e08b](https://github.com/Seenivers/App/commit/c72e08bc85db0ed81a3dbc37a5e47aa0424557ec))
+- **toast:** add animations and optimize toast rendering ([23002b8](https://github.com/Seenivers/App/commit/23002b8f043df4aae5571e6a5b0b5b632816a3c0))
+- **toast:** increase default duration to 30 seconds ([e80309a](https://github.com/Seenivers/App/commit/e80309ac94dcd60972b1a5680bce7071139dfe47))
 
 # [0.8.0](https://github.com/Seenivers/App/compare/v0.7.0...v0.8.0) (2024-11-18)
 
