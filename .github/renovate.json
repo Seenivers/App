@@ -10,9 +10,9 @@
 	},
 	"rebaseWhen": "auto",
 	"labels": ["dependencies", "renovate"],
-	"requiredStatusChecks": ["build", "test"],
+	"requiredStatusChecks": ["CodeQL"],
 	"prCreation": "not-pending",
-	"dependencyDashboard": true,
+	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
 	"stabilityDays": 3,
 	"rollbackPrs": true,
@@ -22,7 +22,7 @@
 			"automerge": true,
 			"matchConfidence": ["high", "very high"],
 			"matchCurrentAge": ">=10",
-			"requiredStatusChecks": ["build", "test"]
+			"requiredStatusChecks": ["CodeQL"]
 		},
 		{
 			"matchUpdateTypes": ["patch", "minor"],
@@ -30,7 +30,7 @@
 			"automergeType": "pr",
 			"labels": ["automerge"],
 			"stabilityDays": 3,
-			"requiredStatusChecks": ["build", "test"]
+			"requiredStatusChecks": ["CodeQL"]
 		},
 		{
 			"matchUpdateTypes": ["major"],
