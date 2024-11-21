@@ -2,26 +2,54 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:base"],
 	"baseBranches": ["next"],
-	"automerge": false,
+	"automerge": true,
+	"automergeType": "pr",
+	"vulnerabilityAlerts": {
+		"labels": ["security"],
+		"automerge": true
+	},
+	"rebaseWhen": "auto",
 	"labels": ["dependencies", "renovate"],
-	"packageRules": [
-		{
-			"matchPaths": ["package.json", "npm"],
-			"labels": ["npm", "dependencies"]
-		},
-		{
-			"matchPaths": ["Cargo.toml", "src-tauri/Cargo.toml"],
-			"labels": ["rust", "dependencies"]
-		},
-		{
-			"matchPaths": [".github/workflows/*.yml"],
-			"labels": ["github-actions", "dependencies"]
-		}
-	],
 	"requiredStatusChecks": ["build", "test"],
 	"prCreation": "not-pending",
 	"dependencyDashboard": true,
 	"rangeStrategy": "bump",
 	"stabilityDays": 3,
-	"rollbackPrs": true
+	"rollbackPrs": true,
+	"packageRules": [
+		{
+			"matchUpdateTypes": ["patch", "minor"],
+			"automerge": true,
+			"matchConfidence": ["high", "very high"],
+			"matchCurrentAge": "10",
+			"requiredStatusChecks": ["build", "test"]
+		},
+		{
+			"matchUpdateTypes": ["patch", "minor"],
+			"automerge": true,
+			"automergeType": "pr",
+			"labels": ["automerge"],
+			"stabilityDays": 3,
+			"requiredStatusChecks": ["build", "test"]
+		},
+		{
+			"matchUpdateTypes": ["major"],
+			"automerge": false,
+			"labels": ["major-update"]
+		},
+		{
+			"matchPaths": ["package.json", "npm"],
+			"labels": ["npm"]
+		},
+		{
+			"matchPaths": ["Cargo.toml", "src-tauri/Cargo.toml"],
+			"labels": ["rust"]
+		},
+		{
+			"matchPaths": [".github/workflows/*.yml"],
+			"labels": ["github-actions"]
+		}
+	],
+	"separateMajorMinor": true,
+	"updateNotScheduled": false
 }
