@@ -1,27 +1,26 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:base"],
+	"extends": ["config:recommended"],
 	"baseBranches": ["next"],
 	"automerge": false,
 	"labels": ["dependencies", "renovate"],
 	"packageRules": [
 		{
-			"matchPaths": ["package.json", "npm"],
+			"matchFileNames": ["package.json", "npm"],
 			"labels": ["npm", "dependencies"]
 		},
 		{
-			"matchPaths": ["Cargo.toml", "src-tauri/Cargo.toml"],
+			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
 			"labels": ["rust", "dependencies"]
 		},
 		{
-			"matchPaths": [".github/workflows/*.yml"],
+			"matchFileNames": [".github/workflows/*.yml"],
 			"labels": ["github-actions", "dependencies"]
 		}
 	],
-	"requiredStatusChecks": ["build", "test"],
 	"prCreation": "not-pending",
 	"dependencyDashboard": true,
 	"rangeStrategy": "bump",
-	"stabilityDays": 3,
+	"minimumReleaseAge": "3 days",
 	"rollbackPrs": true
 }
