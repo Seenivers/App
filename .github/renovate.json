@@ -21,7 +21,7 @@
 			"matchUpdateTypes": ["patch", "minor"],
 			"automerge": true,
 			"matchConfidence": ["high", "very high"],
-			"matchCurrentAge": "10",
+			"matchCurrentAge": ">=10",
 			"requiredStatusChecks": ["build", "test"]
 		},
 		{
