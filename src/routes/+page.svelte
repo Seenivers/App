@@ -175,6 +175,7 @@
 			<div>
 				<input
 					class="input join-item input-bordered"
+					name="title"
 					placeholder="Titel"
 					bind:value={searchCriteria.title}
 					on:input={filterMovies}
@@ -191,13 +192,21 @@
 					{/each}
 				</datalist>
 			</div>
-			<select class="join-item select select-bordered" bind:value={searchCriteria.genre}>
+			<select
+				class="join-item select select-bordered"
+				name="genre"
+				bind:value={searchCriteria.genre}
+			>
 				<option value={null}>Kein Filter</option>
 				{#each Array.from(new Set(matchedMovies.flatMap( (item) => item.tmdb.genres.map((i) => i.name) ))) as genre}
 					<option>{genre}</option>
 				{/each}
 			</select>
-			<select class="join-item select select-bordered" bind:value={searchCriteria.isWatched}>
+			<select
+				class="join-item select select-bordered"
+				name="isWatched"
+				bind:value={searchCriteria.isWatched}
+			>
 				<option value={null}>Alle Filme</option>
 				<option value={true}>Angeschaut</option>
 				<option value={false}>Nicht angeschaut</option>
