@@ -2,6 +2,7 @@
 	import { placeholderURL, imageURL } from '$lib';
 	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
+	import { image } from '$lib/image';
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onMount } from 'svelte';
 
@@ -225,12 +226,9 @@
 					class="card h-fit min-w-[15rem] max-w-[20rem] flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20"
 				>
 					<figure class="relative px-2 pt-2">
-						<img
-							src={movie.tmdb.poster_path ? imageURL + movie.tmdb.poster_path : placeholderURL}
-							alt="Poster von {movie.tmdb.title}"
-							class="rounded-xl"
-							draggable="false"
-						/>
+						{#await image(movie.tmdb.poster_path) then src}
+							<img {src} alt="Poster von {movie.tmdb.title}" class="rounded-xl" draggable="false" />
+						{/await}
 						{#if movie.watched}
 							<div class="badge badge-outline absolute left-3 top-3 bg-base-300">Angesehen</div>
 						{/if}
