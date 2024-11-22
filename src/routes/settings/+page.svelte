@@ -27,7 +27,7 @@
 </script>
 
 <nav class="navbar mb-4 bg-base-200 shadow-lg">
-	<div class="container mx-auto px-4">
+	<div class="px-4">
 		<div class="flex items-center justify-between gap-3">
 			<a href="/" class="btn btn-ghost text-lg font-semibold">Zurück</a>
 			<button class="btn btn-primary" on:click={saveSettings}>Speichern</button>
