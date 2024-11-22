@@ -1,5 +1,5 @@
 import { schema } from '$lib/db/schema';
-import { newToast } from '$lib/toast/toast';
+import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { migrate } from './migrate';
@@ -66,9 +66,8 @@ export async function addMovie(data: typeof schema.movies.$inferInsert) {
 	return await db
 		.insert(schema.movies)
 		.values(data)
-		.catch((error) => {
-			console.error(error);
-			newToast('error', `Add Movie: ` + error);
+		.catch((err) => {
+			error(`Add Movie: ` + err);
 		});
 }
 
@@ -76,9 +75,8 @@ export async function deleteMovie(id: number) {
 	return await db
 		.delete(schema.movies)
 		.where(eq(schema.movies.id, id))
-		.catch((error) => {
-			console.error(error);
-			newToast('error', `Delete Movie: ` + error);
+		.catch((err) => {
+			error(`Delete Movie: ` + err);
 		});
 }
 
@@ -87,16 +85,14 @@ export async function updateMovie(id: number, data: typeof schema.movies.$inferI
 		.update(schema.movies)
 		.set(data)
 		.where(eq(schema.movies.id, id))
-		.catch((error) => {
-			console.error(error);
-			newToast('error', `Update Movie: ` + error);
+		.catch((err) => {
+			error(`Update Movie: ` + err);
 		});
 }
 
 export async function getMovie(id: number) {
-	return await db.query.movies.findFirst({ where: eq(schema.movies.id, id) }).catch((error) => {
-		console.error(error);
-		newToast('error', `Get Movie: ` + error);
+	return await db.query.movies.findFirst({ where: eq(schema.movies.id, id) }).catch((err) => {
+		error(`Get Movie: ` + err);
 	});
 }
 
@@ -104,9 +100,8 @@ export async function getAllMovies() {
 	return await db
 		.select()
 		.from(schema.movies)
-		.catch((error) => {
-			console.error(error);
-			newToast('error', `Get All Movies: ` + error);
+		.catch((err) => {
+			error(`Get All Movies: ` + err);
 		});
 }
 
@@ -115,9 +110,8 @@ export async function isPathUnique(path: string): Promise<boolean> {
 		.findFirst({
 			where: eq(schema.movies.path, path)
 		})
-		.catch((error) => {
-			console.error(error);
-			newToast('error', `Is Path Unique: ` + error);
+		.catch((err) => {
+			error(`Is Path Unique: ` + err);
 		});
 
 	// Gibt `true` zurück, wenn kein Film mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)

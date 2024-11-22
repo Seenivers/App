@@ -26,6 +26,8 @@
 	});
 
 	onDestroy(() => {
+		trace('App closed');
+
 		logLogger();
 		logConsole();
 	});

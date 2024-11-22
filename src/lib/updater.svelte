@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { check, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
-	import { newToast } from './toast/toast';
+	import { debug, error } from '@tauri-apps/plugin-log';
 
 	let update: Update | null = null;
 	let downloadProgress = 0;
@@ -20,7 +20,7 @@
 
 	async function download() {
 		if (!window.navigator.onLine) {
-			newToast('error', 'You are not connected to the internet.');
+			error('You are not connected to the internet.');
 			return;
 		}
 		if (update) {
@@ -33,24 +33,24 @@
 				switch (event.event) {
 					case 'Started':
 						contentLength = event.data.contentLength;
-						console.log(`started downloading ${contentLength} bytes`);
+						debug(`started downloading ${contentLength} bytes`);
 						break;
 					case 'Progress':
 						downloaded += event.data.chunkLength;
 						if (contentLength) {
 							downloadProgress = Math.round((downloaded / contentLength) * 100);
 						}
-						console.log(`downloaded ${downloaded} from ${contentLength}`);
+						debug(`downloaded ${downloaded} from ${contentLength}`);
 						break;
 					case 'Finished':
 						downloadFinished = true;
 						downloadProgress = 100;
-						console.log('download finished');
+						debug('download finished');
 						break;
 				}
 			});
 
-			console.log('update installed');
+			debug('update installed');
 			await relaunch();
 		}
 	}

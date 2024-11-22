@@ -2,7 +2,7 @@ import { imageURL, placeholderURL, seeniversURL } from '$lib';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
-import { newToast } from './toast/toast';
+import { error } from '@tauri-apps/plugin-log';
 import { fetch } from '@tauri-apps/plugin-http';
 
 export async function downloadImage(url: string, filename: string) {
@@ -25,8 +25,7 @@ export async function downloadImage(url: string, filename: string) {
 		await newFile.write(new Uint8Array(await blob.arrayBuffer()));
 		await newFile.close();
 	} catch (err) {
-		console.error('Error saving image:', err);
-		newToast('error', 'Error saving image: ' + err);
+		error('Error saving image: ' + err);
 	}
 }
 
@@ -43,10 +42,9 @@ export async function image(path: string | null | undefined) {
 				recursive: true
 			});
 		}
-	} catch (error) {
+	} catch (err) {
 		// Fehler beim Überprüfen oder Erstellen des Ordners, gib den Platzhalter zurück
-		console.error('Error checking or creating images directory:', error);
-		newToast('error', 'Error with images directory: ' + error);
+		error('Error checking or creating images directory: ' + err);
 		return placeholderURL;
 	}
 
@@ -66,17 +64,15 @@ export async function image(path: string | null | undefined) {
 			try {
 				await downloadImage(imageURL + path, path);
 				return filePath;
-			} catch (error) {
+			} catch (err) {
 				// Fehler beim Herunterladen oder Speichern des Bildes, Platzhalter zurückgeben
-				console.error('Error downloading or saving image:', error);
-				newToast('error', 'Image: ' + error);
+				error('Error downloading or saving image: ' + err);
 				return placeholderURL;
 			}
 		}
-	} catch (error) {
+	} catch (err) {
 		// Allgemeiner Fehler beim Verarbeiten, Platzhalter zurückgeben
-		console.error('General error handling image:', error);
-		newToast('error', 'General error: ' + error);
+		error('General error handling image: ' + err);
 		return placeholderURL;
 	}
 }
