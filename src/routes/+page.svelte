@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { placeholderURL, imageURL } from '$lib';
 	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
 	import { image } from '$lib/image';
