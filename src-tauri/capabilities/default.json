@@ -24,6 +24,7 @@
 		},
 		"sql:default",
 		"sql:allow-execute",
-		"shell:default"
+		"shell:default",
+		"log:default"
 	]
 }

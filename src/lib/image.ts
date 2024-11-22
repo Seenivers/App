@@ -2,7 +2,7 @@ import { imageURL, placeholderURL, seeniversURL } from '$lib';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
-import { newToast } from './toast/toast';
+import { error } from '@tauri-apps/plugin-log';
 import { fetch } from '@tauri-apps/plugin-http';
 
 export async function downloadImage(url: string, filename: string) {
@@ -25,47 +25,54 @@ export async function downloadImage(url: string, filename: string) {
 		await newFile.write(new Uint8Array(await blob.arrayBuffer()));
 		await newFile.close();
 	} catch (err) {
-		console.error('Error saving image:', err);
-		newToast('error', 'Error saving image: ' + err);
+		error('Error saving image: ' + err);
 	}
 }
 
 export async function image(path: string | null | undefined) {
+	// Prüfe, ob ein Pfad existiert; falls nicht, gib den Platzhalter zurück
 	if (!path) return placeholderURL;
 
-	if (
-		!(await exists('images', {
-			baseDir: BaseDirectory.AppData
-		}))
-	) {
-		await mkdir('images', {
-			baseDir: BaseDirectory.AppData,
-			recursive: true
-		});
+	// Überprüfen, ob der 'images'-Ordner existiert; wenn nicht, erstelle ihn
+	try {
+		const imagesExist = await exists('images', { baseDir: BaseDirectory.AppData });
+		if (!imagesExist) {
+			await mkdir('images', {
+				baseDir: BaseDirectory.AppData,
+				recursive: true
+			});
+		}
+	} catch (err) {
+		// Fehler beim Überprüfen oder Erstellen des Ordners, gib den Platzhalter zurück
+		error('Error checking or creating images directory: ' + err);
+		return placeholderURL;
 	}
 
-	const filePath = convertFileSrc(await join(await appDataDir(), 'images', path)); // Sicherstellen, dass der Pfad korrekt ist
+	try {
+		const filePath = convertFileSrc(await join(await appDataDir(), 'images', path));
 
-	// Prüfen, ob das Bild bereits existiert
-	const imageExists = await exists('images/' + path, { baseDir: BaseDirectory.AppData });
+		// Prüfen, ob das Bild bereits existiert
+		const imageExists = await exists('images/' + path, { baseDir: BaseDirectory.AppData });
 
-	if (imageExists) {
-		// Wenn das Bild bereits existiert, gebe den Dateipfad zurück
-		return filePath;
-	} else {
-		// Andernfalls versuche, das Bild herunterzuladen und zu speichern
-		try {
-			if (!navigator.onLine) return imageURL + path;
-
-			// Bild herunterladen und speichern
-			await downloadImage(imageURL + path, path);
+		if (imageExists) {
+			// Wenn das Bild existiert, gebe den Dateipfad zurück
 			return filePath;
-		} catch (error) {
-			// Fehlerbehandlung
-			console.error('Error downloading or saving image:', error);
-			newToast('error', 'Image: ' + error);
-			// Rückgabe der URL des Bildes als Fallback
-			return imageURL + path;
+		} else {
+			// Bild herunterladen und speichern
+			if (!navigator.onLine) return placeholderURL;
+
+			try {
+				await downloadImage(imageURL + path, path);
+				return filePath;
+			} catch (err) {
+				// Fehler beim Herunterladen oder Speichern des Bildes, Platzhalter zurückgeben
+				error('Error downloading or saving image: ' + err);
+				return placeholderURL;
+			}
 		}
+	} catch (err) {
+		// Allgemeiner Fehler beim Verarbeiten, Platzhalter zurückgeben
+		error('General error handling image: ' + err);
+		return placeholderURL;
 	}
 }

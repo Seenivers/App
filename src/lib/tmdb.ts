@@ -1,5 +1,5 @@
 import { fetch } from '@tauri-apps/plugin-http';
-import { newToast } from '$lib/toast/toast';
+import { error } from '@tauri-apps/plugin-log';
 import type { Movie } from '$lib/types/movie';
 import { settings } from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
@@ -29,8 +29,7 @@ export async function getMovie(
 
 		// Parst die JSON-Antwort und gibt das Ergebnis zurück
 		return (await response.json()) as Movie;
-	} catch (error) {
-		console.error('Fehler beim Abrufen des Films.', error);
-		newToast('error', 'Fehler beim Abrufen des Films. ' + error);
+	} catch (err) {
+		error('Fehler beim Abrufen des Films: ' + err);
 	}
 }

@@ -1,14 +1,14 @@
 import type { Settings } from './types/settings';
 
-export type Data = {
+export interface Data {
 	settings: Settings;
 	movies: oldMovie[];
 	actors: oldActor[];
 	collections: oldCollection[];
 	save: () => Promise<void>;
-};
+}
 
-export type oldMovie = {
+export interface oldMovie {
 	path: string;
 	watched: boolean;
 	watchTime: number;
@@ -54,9 +54,9 @@ export type oldMovie = {
 	video: boolean;
 	vote_average: number;
 	vote_count: number;
-};
+}
 
-export type oldActor = {
+export interface oldActor {
 	adult: boolean;
 	also_known_as: string[];
 	biography: string;
@@ -79,9 +79,9 @@ export type oldActor = {
 	place_of_birth: string;
 	popularity: number;
 	profile_path: string;
-};
+}
 
-export type oldCollection = {
+export interface oldCollection {
 	id: number;
 	name: string;
 	overview: string;
@@ -106,4 +106,4 @@ export type oldCollection = {
 			vote_count: number;
 		}
 	];
-};
+}

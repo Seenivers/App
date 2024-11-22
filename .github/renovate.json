@@ -1,0 +1,55 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:recommended"],
+	"baseBranches": ["next"],
+	"automerge": true,
+	"automergeType": "pr",
+	"vulnerabilityAlerts": {
+		"labels": ["security"],
+		"automerge": true
+	},
+	"rebaseWhen": "auto",
+	"labels": ["dependencies", "renovate"],
+	"requiredStatusChecks": ["CodeQL"],
+	"prCreation": "not-pending",
+	"dependencyDashboard": false,
+	"rangeStrategy": "bump",
+	"schedule": "before 3am",
+	"stabilityDays": "3 days",
+	"rollbackPrs": true,
+	"packageRules": [
+		{
+			"matchUpdateTypes": ["patch", "minor"],
+			"automerge": true,
+			"matchCurrentAge": ">=10",
+			"requiredStatusChecks": ["CodeQL"]
+		},
+		{
+			"matchUpdateTypes": ["patch", "minor"],
+			"automerge": true,
+			"automergeType": "pr",
+			"labels": ["automerge"],
+			"stabilityDays": 3,
+			"requiredStatusChecks": ["CodeQL"]
+		},
+		{
+			"matchUpdateTypes": ["major"],
+			"automerge": false,
+			"labels": ["major-update"]
+		},
+		{
+			"matchFileNames": ["package.json", "npm"],
+			"labels": ["npm"]
+		},
+		{
+			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
+			"labels": ["rust"]
+		},
+		{
+			"matchFileNames": [".github/workflows/*.yml"],
+			"labels": ["github-actions"]
+		}
+	],
+	"separateMajorMinor": true,
+	"updateNotScheduled": false
+}

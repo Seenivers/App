@@ -9,6 +9,7 @@
 	import { schema } from '$lib/db/schema';
 	import Videoplayer from '$lib/player/videoplayer.svelte';
 	import { open } from '@tauri-apps/plugin-shell';
+	import { error } from '@tauri-apps/plugin-log';
 
 	const id = parseInt($page.params.ID, 10);
 	let pathExists: boolean = false;
@@ -45,8 +46,8 @@
 		try {
 			// Öffne die Datei mit dem Standardplayer
 			await open(movieData.path);
-		} catch (error) {
-			console.error('Failed to open video with external player:', error);
+		} catch (err) {
+			error('Failed to open video with external player: ' + err);
 		}
 	}
 </script>

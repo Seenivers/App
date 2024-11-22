@@ -3,7 +3,7 @@
 	import { videoDir } from '@tauri-apps/api/path';
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
-	import { newToast } from '$lib/toast/toast';
+	import { error } from '@tauri-apps/plugin-log';
 	import { addMovie, isPathUnique, settings } from '$lib/db/funktion';
 	import { buttonClass, getIcon, getMovieDetails, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/add/types';
@@ -105,10 +105,8 @@
 	async function search(i: number) {
 		status[i].searchStatus = 'searching';
 		if (!window.navigator.onLine) {
-			console.error(!window.navigator.onLine);
-			newToast(
-				'error',
-				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten'
+			error(
+				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der Api aufgetreten'
 			);
 			return;
 		}
@@ -136,10 +134,9 @@
 
 	async function addNewMovie(id: number, path: string) {
 		if (!window.navigator.onLine) {
-			const message =
-				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der TMDB Api aufgetreten';
-			console.error(message);
-			newToast('error', message);
+			error(
+				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der Api aufgetreten'
+			);
 			return;
 		}
 
@@ -148,7 +145,7 @@
 		if (result) {
 			addMovie({ id, path, tmdb: result });
 		} else {
-			newToast('error', 'Der Film konnte nicht geladen werden.');
+			error('Der Film konnte nicht geladen werden.');
 		}
 	}
 
