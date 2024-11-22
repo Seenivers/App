@@ -14,13 +14,13 @@
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
+	"schedule": "before 3am",
 	"stabilityDays": "3 days",
 	"rollbackPrs": true,
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"automerge": true,
-			"matchConfidence": ["high", "very high"],
 			"matchCurrentAge": ">=10",
 			"requiredStatusChecks": ["CodeQL"]
 		},
