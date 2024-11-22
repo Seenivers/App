@@ -4,6 +4,7 @@
 	import { schema } from '../db/schema';
 	import { Back, Before, Fullscreen, Loudness, Paused, PictureInPicture, Play } from '../SVG/index';
 	import { format, fullscreen, pictureInPicture } from '.';
+	import { onDestroy } from 'svelte';
 
 	export let id: number;
 	let duration: number;
@@ -53,6 +54,10 @@
 			.set({ watched: true, watchTime: 0 })
 			.where(eq(schema.movies.id, id));
 	}
+
+	onDestroy(async () => {
+		await save();
+	});
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
