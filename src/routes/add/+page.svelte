@@ -12,6 +12,7 @@
 	let selected: string | string[] | null = null;
 	let status: MovieSearchStatus[] = [];
 
+	const castImages = 4; // 5 Bilder laden
 	const extensions = ['mp4', 'mkv'];
 
 	let modal = false;
@@ -171,11 +172,9 @@
 					.map((actor) => actor.profile_path)
 					.filter((path) => path != null);
 
-				const images = 4; // 5 Bilder laden
-
 				try {
 					castImagePaths.forEach(async (path, i) => {
-						if (i > images) return;
+						if (i > castImages) return;
 						await image(path, 'actors', true);
 					});
 				} catch (err) {
