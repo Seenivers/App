@@ -7,6 +7,7 @@
 	import { addMovie, isPathUnique, settings } from '$lib/db/funktion';
 	import { buttonClass, getIcon, getMovieDetails, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/add/types';
+	import { image } from '$lib/image';
 
 	let selected: string | string[] | null = null;
 	let status: MovieSearchStatus[] = [];
@@ -144,6 +145,13 @@
 
 		if (result) {
 			addMovie({ id, path, tmdb: result });
+			await image(result.poster_path);
+
+			await Promise.all(
+				result.credits.cast.map(async (actor) => {
+					await image(actor.profile_path);
+				})
+			);
 		} else {
 			error('Der Film konnte nicht geladen werden.');
 		}
