@@ -229,7 +229,7 @@
 		{:else if matchedMovies.length >= 1}
 			{#each matchedMovies as movie}
 				<a
-					href={movie.id.toString()}
+					href={movie.id.toString() + '/movie'}
 					draggable="false"
 					class="card h-fit min-w-[15rem] max-w-[20rem] flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20"
 				>
