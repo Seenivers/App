@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { migrate } from './migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
-import type { Data } from '$lib/types';
+import type { oldData } from '$lib/types';
 import { getMovie as getMovieTmdb } from '$lib/tmdb';
 
 let loadedSettings: typeof schema.settings.$inferSelect | undefined;
@@ -25,7 +25,7 @@ async function initializeSettings() {
 		const content = (await readTextFile('data.lib', { baseDir: BaseDirectory.AppConfig })).trim();
 
 		if (content) {
-			const data: Data = JSON.parse(content);
+			const data: oldData = JSON.parse(content);
 
 			await Promise.all(
 				data.movies.map(async (movie) => {
