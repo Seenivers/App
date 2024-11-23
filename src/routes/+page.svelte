@@ -88,7 +88,7 @@
 
 		let currentFocus = -1;
 
-		if (matchedMovies.length >= 1) {
+		if (matchedMovies.length >= 1 && searchInput && datalistItem) {
 			searchInput.onfocus = function () {
 				datalistItem.style.display = 'block';
 				datalistItem.style.width = `${searchInput.offsetWidth}px`;
