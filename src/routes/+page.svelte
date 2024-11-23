@@ -234,7 +234,7 @@
 					class="card h-fit min-w-[15rem] max-w-[20rem] flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20"
 				>
 					<figure class="relative px-2 pt-2">
-						{#await image(movie.tmdb.poster_path) then src}
+						{#await image(movie.tmdb.poster_path, 'posters', true) then src}
 							<img {src} alt="Poster von {movie.tmdb.title}" class="rounded-xl" draggable="false" />
 						{/await}
 						{#if movie.watched}

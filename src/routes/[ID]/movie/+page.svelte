@@ -86,7 +86,7 @@
 			{/if}
 
 			{#if pathExists}
-				{#await image(movieData.tmdb.backdrop_path) then poster}
+				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					<Videoplayer src={convertFileSrc(movieData.path)} {poster} {id} />
 				{/await}
 			{:else}
@@ -102,7 +102,7 @@
 							class="carousel-item flex flex-col items-center"
 							on:click={() => open('https://www.themoviedb.org/person/' + cast.id)}
 						>
-							{#await image(cast.profile_path) then src}
+							{#await image(cast.profile_path, "actors") then src}
 								<img {src} alt={cast.name} class="max-w-40 rounded-box sm:max-w-60" />
 							{/await}
 							<p class="text-center text-lg">{cast.name}</p>

@@ -5,74 +5,83 @@ import { appDataDir, join } from '@tauri-apps/api/path';
 import { error } from '@tauri-apps/plugin-log';
 import { fetch } from '@tauri-apps/plugin-http';
 
-export async function downloadImage(url: string, filename: string) {
+/**
+ * Hilfsfunktion zum Erstellen eines Verzeichnisses, falls es nicht existiert.
+ */
+async function ensureDirectoryExists(folderPath: string) {
 	try {
-		// Abrufen des Bildes von deinem API-Endpunkt
-		const response = await fetch(seeniversURL + '/api/image?path=' + encodeURIComponent(url));
-
-		// Überprüfen, ob der Abruf erfolgreich war
-		if (!response.ok) {
-			throw new Error(`Failed to download image: ${response.statusText}`);
-		}
-
-		// Bild als Blob abrufen
-		const blob = await response.blob();
-
-		// Erstelle einen neuen Datei-Handle in AppData unter dem Verzeichnis "images"
-		const newFile = await create(`images/${filename}`, { baseDir: BaseDirectory.AppData });
-
-		// Schreibe das Bild in die Datei als Uint8Array
-		await newFile.write(new Uint8Array(await blob.arrayBuffer()));
-		await newFile.close();
-	} catch (err) {
-		error('Error saving image: ' + err);
-	}
-}
-
-export async function image(path: string | null | undefined) {
-	// Prüfe, ob ein Pfad existiert; falls nicht, gib den Platzhalter zurück
-	if (!path) return placeholderURL;
-
-	// Überprüfen, ob der 'images'-Ordner existiert; wenn nicht, erstelle ihn
-	try {
-		const imagesExist = await exists('images', { baseDir: BaseDirectory.AppData });
-		if (!imagesExist) {
-			await mkdir('images', {
+		const folderExists = await exists(folderPath, { baseDir: BaseDirectory.AppData });
+		if (!folderExists) {
+			await mkdir(folderPath, {
 				baseDir: BaseDirectory.AppData,
 				recursive: true
 			});
 		}
 	} catch (err) {
-		// Fehler beim Überprüfen oder Erstellen des Ordners, gib den Platzhalter zurück
-		error('Error checking or creating images directory: ' + err);
-		return placeholderURL;
+		error(`Error checking or creating directory: ${err}`);
+		return;
 	}
+}
+
+/**
+ * Funktion zum Herunterladen eines Bildes und Speichern unter AppData.
+ */
+export async function downloadImage(url: string, filename: string) {
+	try {
+		const response = await fetch(`${seeniversURL}/api/image?path=${encodeURIComponent(url)}`);
+
+		if (!response.ok) {
+			throw new Error(`Failed to download image: ${response.statusText}`);
+		}
+
+		const blob = await response.blob();
+		const newFile = await create(filename, { baseDir: BaseDirectory.AppData });
+
+		await newFile.write(new Uint8Array(await blob.arrayBuffer()));
+		await newFile.close();
+	} catch (err) {
+		error(`Error saving image: ${err}`);
+		return;
+	}
+}
+
+/**
+ * Funktion zum Verarbeiten eines Bildes.
+ */
+export async function image(
+	file: string | null | undefined,
+	path?: 'actors' | 'backdrops' | 'posters' | null,
+	download = false
+) {
+	// Prüfe, ob ein Dateiname vorhanden ist; falls nicht, gib den Platzhalter zurück
+	if (!file) return placeholderURL;
+
+	const folderPath = path ? `images/${path}` : 'images';
+	const filePath = `${folderPath}/${file}`;
 
 	try {
-		const filePath = convertFileSrc(await join(await appDataDir(), 'images', path));
+		// Stelle sicher, dass das Verzeichnis existiert
+		await ensureDirectoryExists(folderPath);
 
-		// Prüfen, ob das Bild bereits existiert
-		const imageExists = await exists('images/' + path, { baseDir: BaseDirectory.AppData });
+		// Überprüfen, ob die Bilddatei bereits existiert
+		const imageExists = await exists(filePath, { baseDir: BaseDirectory.AppData });
 
 		if (imageExists) {
-			// Wenn das Bild existiert, gebe den Dateipfad zurück
-			return filePath;
-		} else {
-			// Bild herunterladen und speichern
-			if (!navigator.onLine) return placeholderURL;
-
-			try {
-				await downloadImage(imageURL + path, path);
-				return filePath;
-			} catch (err) {
-				// Fehler beim Herunterladen oder Speichern des Bildes, Platzhalter zurückgeben
-				error('Error downloading or saving image: ' + err);
-				return placeholderURL;
-			}
+			// Rückgabe des konvertierten Dateipfads, falls das Bild existiert
+			return convertFileSrc(await join(await appDataDir(), filePath));
 		}
+
+		// Wenn das Bild heruntergeladen werden soll und eine Internetverbindung besteht
+		if (download && navigator.onLine) {
+			await downloadImage(`${imageURL}${file}`, filePath);
+			return convertFileSrc(await join(await appDataDir(), filePath));
+		}
+
+		// Rückgabe des Platzhalters, falls die Bedingungen nicht erfüllt sind
+		return placeholderURL;
 	} catch (err) {
 		// Allgemeiner Fehler beim Verarbeiten, Platzhalter zurückgeben
-		error('General error handling image: ' + err);
+		error(`General error handling image: ${err}`);
 		return placeholderURL;
 	}
 }
