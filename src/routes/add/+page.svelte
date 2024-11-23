@@ -99,8 +99,8 @@
 			};
 		});
 
-		// Suche gleichzeitig
-		await Promise.all(status.map((_, i) => search(i)));
+		// Suche
+		status.forEach(async (_, i) => await search(i));
 	}
 
 	async function search(i: number) {
@@ -141,20 +141,57 @@
 			return;
 		}
 
-		const result = await getMovieDetails(id);
+		try {
+			const result = await getMovieDetails(id);
 
-		if (result) {
-			addMovie({ id, path, tmdb: result });
-			await image(result.poster_path);
+			if (result) {
+				// Film zur DB hinzufügen
+				addMovie({ id, path, tmdb: result });
 
-			await Promise.all(
-				result.credits.cast.map(async (actor) => {
-					await image(actor.profile_path);
-				})
-			);
-		} else {
-			error('Der Film konnte nicht geladen werden.');
+				// Posterbild laden, falls verfügbar
+				if (result.poster_path) {
+					try {
+						await image(result.poster_path, 'posters', true);
+					} catch (err) {
+						error('Fehler beim Laden des Posters: ' + err);
+					}
+				}
+
+				// Hintergrundbild laden, falls verfügbar
+				if (result.backdrop_path) {
+					try {
+						await image(result.backdrop_path, 'backdrops', true);
+					} catch (err) {
+						error('Fehler beim Laden des Hintergrundbilds: ' + err);
+					}
+				}
+
+				// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
+				const castImagePaths = result.credits.cast
+					.map((actor) => actor.profile_path)
+					.filter((path) => path != null);
+
+				const images = 4; // 5 Bilder laden
+
+				try {
+					castImagePaths.forEach(async (path, i) => {
+						if (i > images) return;
+						await image(path, 'actors', true);
+					});
+				} catch (err) {
+					error('Fehler beim Laden der Schauspieler-Bilder: ' + err);
+					return;
+				}
+			} else {
+				error('Der Film konnte nicht geladen werden.');
+				return;
+			}
+		} catch (err) {
+			error('Fehler beim Abrufen der Filmdetails: ' + err);
+			return;
 		}
+
+		return Promise.resolve();
 	}
 
 	// Ensure that only the selected movie is added
