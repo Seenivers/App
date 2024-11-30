@@ -15,6 +15,13 @@
 			"when": 1731941080539,
 			"tag": "0001_thick_iron_man",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "6",
+			"when": 1732971438125,
+			"tag": "0002_curly_tombstone",
+			"breakpoints": true
 		}
 	]
 }
