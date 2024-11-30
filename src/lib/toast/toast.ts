@@ -17,7 +17,7 @@ const MAX_VISIBLE_MESSAGES = 20;
 const queue: Message[] = [];
 
 // Funktion zum Hinzufügen einer neuen Nachricht
-export function newToast(type: AlertType, text: string, duration = 3000) {
+export function newToast(type: AlertType, text: string, duration = 30000) {
 	const newMessage: Message = { id: messageIdCounter++, type, text, duration };
 
 	messages.update((currentMessages) => {
