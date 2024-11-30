@@ -147,7 +147,7 @@
 
 			if (result) {
 				// Film zur DB hinzufügen
-				addMovie({ id, path, tmdb: result });
+				addMovie({ id, path, tmdb: result, updated: new Date() });
 
 				// Posterbild laden, falls verfügbar
 				if (result.poster_path) {
