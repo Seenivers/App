@@ -68,20 +68,27 @@ export async function image(
 
 		if (imageExists) {
 			// Rückgabe des konvertierten Dateipfads, falls das Bild existiert
-			return convertFileSrc(await join(await appDataDir(), filePath));
+			const imageFilePath = await join(await appDataDir(), filePath);
+			return convertFileSrc(imageFilePath);
 		}
 
 		// Wenn das Bild heruntergeladen werden soll und eine Internetverbindung besteht
-		if (download && navigator.onLine) {
-			await downloadImage(`${imageURL}${file}`, filePath);
-			return convertFileSrc(await join(await appDataDir(), filePath));
+		if (navigator.onLine) {
+			if (download) {
+				await downloadImage(`${imageURL}${file}`, filePath);
+				const imageFilePath = await join(await appDataDir(), filePath);
+				return convertFileSrc(imageFilePath);
+			} else {
+				// Wenn der Download nicht gewünscht ist, einfach die URL zurückgeben
+				return imageURL + file;
+			}
 		}
 
-		// Rückgabe des Platzhalters, falls die Bedingungen nicht erfüllt sind
+		// Rückgabe des Platzhalters, falls keine Internetverbindung besteht
 		return placeholderURL;
 	} catch (err) {
-		// Allgemeiner Fehler beim Verarbeiten, Platzhalter zurückgeben
-		error(`General error handling image: ${err}`);
+		// Detaillierte Fehlerbehandlung
+		error(`Fehler bei der Bildverarbeitung: ${err}`);
 		return placeholderURL;
 	}
 }
