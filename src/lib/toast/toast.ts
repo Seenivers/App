@@ -27,7 +27,7 @@ export function newToast(type: AlertType, text: string, duration = 30000) {
 			return currentMessages;
 		} else {
 			// Neue Nachricht hinzufügen und Timeout starten
-			timeout(newMessage);
+			void timeout(newMessage);
 			return [...currentMessages, newMessage];
 		}
 	});
@@ -45,7 +45,7 @@ async function timeout(newMessage: Message) {
 			const nextMessage = queue.shift();
 			if (nextMessage) {
 				updatedMessages.push(nextMessage);
-				timeout(nextMessage);
+				void timeout(nextMessage);
 			}
 		}
 
