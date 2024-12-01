@@ -25,7 +25,6 @@ export function forwardConsole({ level, message }: RecordPayload) {
 			break;
 
 		default:
-			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 			throw new Error(`unknown log level ${level}`);
 	}
 }

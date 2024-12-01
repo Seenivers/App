@@ -2,18 +2,53 @@ import { writable } from 'svelte/store';
 
 type AlertType = 'info' | 'success' | 'warning' | 'error';
 
-export const messages = writable<{ id: number; type: AlertType; text: string }[]>([]);
-let messageIdCounter = 0; // Counter for unique message IDs
+interface Message {
+	id: number;
+	type: AlertType;
+	text: string;
+	duration: number;
+}
 
+export const messages = writable<Message[]>([]);
+let messageIdCounter = 0; // Zähler für eindeutige Nachrichten-IDs
+
+// Maximale Anzahl der gleichzeitig sichtbaren Nachrichten
+const MAX_VISIBLE_MESSAGES = 20;
+const queue: Message[] = [];
+
+// Funktion zum Hinzufügen einer neuen Nachricht
 export function newToast(type: AlertType, text: string, duration = 30000) {
-	// Füge zusätzliche Argumente an den Text an, falls vorhanden
-	const newMessage = { id: messageIdCounter++, type, text: text };
+	const newMessage: Message = { id: messageIdCounter++, type, text, duration };
 
-	// Füge die neue Nachricht mit einer eindeutigen ID hinzu
-	messages.update((messages) => [...messages, newMessage]);
+	messages.update((currentMessages) => {
+		if (currentMessages.length >= MAX_VISIBLE_MESSAGES) {
+			// Nachricht in die Warteschlange verschieben, wenn das Limit erreicht ist
+			queue.push(newMessage);
+			return currentMessages;
+		} else {
+			// Neue Nachricht hinzufügen und Timeout starten
+			timeout(newMessage);
+			return [...currentMessages, newMessage];
+		}
+	});
+}
 
-	// Automatisch nach x oder 5 Sekunden entfernen
-	setTimeout(() => {
-		messages.update((messages) => messages.filter((message) => message.id !== newMessage.id));
-	}, duration);
+// Funktion zum automatischen Entfernen der Nachricht nach der angegebenen Dauer
+async function timeout(newMessage: Message) {
+	await new Promise((resolve) => setTimeout(resolve, newMessage.duration));
+
+	messages.update((currentMessages) => {
+		const updatedMessages = currentMessages.filter((message) => message.id !== newMessage.id);
+
+		// Zeige die nächste Nachricht aus der Warteschlange, falls Platz frei ist
+		if (updatedMessages.length < MAX_VISIBLE_MESSAGES && queue.length > 0) {
+			const nextMessage = queue.shift();
+			if (nextMessage) {
+				updatedMessages.push(nextMessage);
+				timeout(nextMessage);
+			}
+		}
+
+		return updatedMessages;
+	});
 }

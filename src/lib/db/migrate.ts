@@ -42,7 +42,7 @@ export async function migrate() {
 
 		const dbMigrations = (await sqlite.select(
 			/*sql*/ `SELECT id, hash, created_at FROM "__drizzle_migrations" ORDER BY created_at DESC`
-		)) as unknown as { id: number; hash: string; created_at: number }[];
+		)) as { id: number; hash: string; created_at: number }[];
 
 		const hasBeenRun = (hash: string) =>
 			dbMigrations.find((dbMigration) => {
