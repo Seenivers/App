@@ -71,7 +71,7 @@ export interface Cast {
  * - `2`: Male - Männlich
  * - `3`: Non-binary - Nicht-binär
  */
-export enum Gender {
+export declare enum Gender {
 	Unknown = 0,
 	Female = 1,
 	Male = 2,
