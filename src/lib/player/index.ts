@@ -21,8 +21,12 @@ export function format(seconds: number) {
 
 export async function fullscreen(player: HTMLDivElement) {
 	if (document.fullscreenElement) {
-		document.exitFullscreen().catch((err) => {
-			error(err);
+		document.exitFullscreen().catch((err: unknown) => {
+			if (err instanceof Error) {
+				error(err.message); // Verwendet die Nachricht aus dem Error-Objekt
+			} else {
+				error('An unknown error occurred'); // Fallback für andere Typen
+			}
 		});
 	} else {
 		await player.requestFullscreen();
@@ -31,8 +35,12 @@ export async function fullscreen(player: HTMLDivElement) {
 
 export async function pictureInPicture(videoElement: HTMLVideoElement) {
 	if (document.pictureInPictureElement) {
-		document.exitPictureInPicture().catch((err) => {
-			error(err);
+		document.exitPictureInPicture().catch((err: unknown) => {
+			if (err instanceof Error) {
+				error(err.message); // Verwendet die Nachricht aus dem Error-Objekt
+			} else {
+				error('An unknown error occurred'); // Fallback für andere Typen
+			}
 		});
 	} else if (document.pictureInPictureEnabled) {
 		await videoElement.requestPictureInPicture();
