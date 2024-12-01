@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { exists } from '@tauri-apps/plugin-fs';
 	import { image } from '$lib/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
@@ -17,9 +16,20 @@
 	const id = data.id;
 	let pathExists: boolean = false;
 	let watched: boolean = false;
-	const movieData = data.movieData;
 	let modal = false;
 	let form: HTMLFormElement;
+	let movieData: typeof schema.movies.$inferSelect;
+	const loadMovieData = async () => {
+		const movie = await db.select().from(schema.movies).where(eq(schema.movies.id, id));
+		if (movie.length > 0) {
+			movieData = movie[0];
+			pathExists = await exists(movieData.path);
+			watched = movieData.watched;
+		}
+	};
+
+	// Lädt die Datei beim Laden des Skripts
+	loadMovieData();
 
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {

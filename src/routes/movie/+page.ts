@@ -1,9 +1,5 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { db } from '$lib/db/database';
-import { eq } from 'drizzle-orm';
-import { schema } from '$lib/db/schema';
-import { exists } from '@tauri-apps/plugin-fs';
 
 export const load = (async ({ url }) => {
 	const id: number = (() => {
@@ -18,12 +14,5 @@ export const load = (async ({ url }) => {
 		return parsedId;
 	})();
 
-	// Daten des Films laden
-	const movieData = (await db.select().from(schema.movies).where(eq(schema.movies.id, id)))[0];
-
-	if (!movieData) {
-		throw error(404, 'Movie not found in the database');
-	}
-
-	return { id, movieData };
+	return { id };
 }) satisfies PageLoad;
