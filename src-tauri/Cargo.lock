@@ -4871,9 +4871,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-sql"
-version = "2.0.1"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b8c2a0ec71c1f52ba6b3d67396f45be32f0e02996cab9114e44269e11640fc92"
+checksum = "eb7022ccbcd1799dcf7acb97805f1a5fc7f046b4cf67518296a2e8921bab613a"
 dependencies = [
  "futures-core",
  "indexmap 2.6.0",
