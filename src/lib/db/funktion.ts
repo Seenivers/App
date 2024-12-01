@@ -92,10 +92,14 @@ async function createDefaultSettings() {
 
 await initializeSettings();
 
+if (!loadedSettings) {
+	throw new Error('Settings is not defined');
+}
+
 /**
  * Exportiert die `settings`-Variable, die einmalig geladen und synchron zugänglich ist.
  */
-export const settings = loadedSettings!;
+export const settings = loadedSettings;
 
 updated();
 
