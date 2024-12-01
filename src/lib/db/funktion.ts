@@ -76,7 +76,6 @@ async function updated() {
 							.update(schema.movies)
 							.set({ tmdb: result, updated: currentDate })
 							.where(eq(schema.movies.id, movie.id));
-					} else {
 					}
 				}
 			}
