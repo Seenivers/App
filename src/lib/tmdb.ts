@@ -30,6 +30,11 @@ export async function getMovie(
 		// Parst die JSON-Antwort und gibt das Ergebnis zurück
 		return (await response.json()) as Movie;
 	} catch (err) {
-		error('Fehler beim Abrufen des Films: ' + err);
+		// Überprüfe, ob err ein Fehlerobjekt ist
+		if (err instanceof Error) {
+			error('Fehler beim Abrufen des Films: ' + err.message); // Verwende die Nachricht aus dem Error-Objekt
+		} else {
+			error('Ein unbekannter Fehler ist aufgetreten'); // Fallback, wenn es kein Error-Objekt ist
+		}
 	}
 }
