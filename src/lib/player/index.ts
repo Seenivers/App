@@ -1,4 +1,4 @@
-import { error } from '@tauri-apps/plugin-log';
+import { error as tauriError } from '@tauri-apps/plugin-log';
 
 export function format(seconds: number) {
 	if (isNaN(seconds)) return '...';
@@ -37,8 +37,8 @@ export async function pictureInPicture(videoElement: HTMLVideoElement) {
 
 function newError(err: unknown) {
 	if (err instanceof Error) {
-		error(err.message); // Verwendet die Nachricht aus dem Error-Objekt
+		tauriError(err.message); // Verwendet die Nachricht aus dem Error-Objekt
 	} else {
-		error('An unknown error occurred'); // Fallback für andere Typen
+		tauriError('An unknown error occurred'); // Fallback für andere Typen
 	}
 }
