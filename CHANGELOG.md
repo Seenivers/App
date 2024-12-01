@@ -1,18 +1,16 @@
 # [0.10.0](https://github.com/Seenivers/App/compare/v0.9.0...v0.10.0) (2024-11-22)
 
-
 ### Bug Fixes
 
-* **csp:** allow inline styles by adding 'unsafe-inline' to style-src ([c1caf1f](https://github.com/Seenivers/App/commit/c1caf1f81031b8651e5777e072fb9274645ab8e7))
-* **deps:** update tauri monorepo ([4fb880f](https://github.com/Seenivers/App/commit/4fb880f618998e41217311252df062b795bc631d))
-
+- **csp:** allow inline styles by adding 'unsafe-inline' to style-src ([c1caf1f](https://github.com/Seenivers/App/commit/c1caf1f81031b8651e5777e072fb9274645ab8e7))
+- **deps:** update tauri monorepo ([4fb880f](https://github.com/Seenivers/App/commit/4fb880f618998e41217311252df062b795bc631d))
 
 ### Features
 
-* **config:** add schedule to Renovate configuration and adjust automerge settings ([a450dad](https://github.com/Seenivers/App/commit/a450dadf1d4a28a4ad102b58de1a2d25857546ab))
-* **logging:** add console and logger integration in Svelte layout ([51e23d6](https://github.com/Seenivers/App/commit/51e23d65ba5645109d5d020c02224a0e017ee283))
-* **logging:** integrate advanced logging with @tauri-apps/plugin-log ([6301d3f](https://github.com/Seenivers/App/commit/6301d3fe458842b5a93e80592c37a92220670979))
-* **video-player:** add save function on component destroy to update playback state ([fe5d260](https://github.com/Seenivers/App/commit/fe5d26021a364bb60e3b853a2ffa1b9f872ce2ae))
+- **config:** add schedule to Renovate configuration and adjust automerge settings ([a450dad](https://github.com/Seenivers/App/commit/a450dadf1d4a28a4ad102b58de1a2d25857546ab))
+- **logging:** add console and logger integration in Svelte layout ([51e23d6](https://github.com/Seenivers/App/commit/51e23d65ba5645109d5d020c02224a0e017ee283))
+- **logging:** integrate advanced logging with @tauri-apps/plugin-log ([6301d3f](https://github.com/Seenivers/App/commit/6301d3fe458842b5a93e80592c37a92220670979))
+- **video-player:** add save function on component destroy to update playback state ([fe5d260](https://github.com/Seenivers/App/commit/fe5d26021a364bb60e3b853a2ffa1b9f872ce2ae))
 
 # [0.9.0](https://github.com/Seenivers/App/compare/v0.8.0...v0.9.0) (2024-11-20)
 
