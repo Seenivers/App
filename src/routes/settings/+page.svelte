@@ -4,6 +4,7 @@
 	import { eq } from 'drizzle-orm';
 	import { settings as dbSettings } from '$lib/db/funktion';
 	import { newToast } from '$lib/toast/toast';
+	import { app } from '@tauri-apps/api';
 
 	let settings: typeof schema.settings.$inferSelect = dbSettings;
 
@@ -35,7 +36,7 @@
 	</div>
 </nav>
 
-<main class="container mx-auto max-w-screen-md px-4 py-6">
+<main class="container mx-auto max-w-screen-md flex-grow flex-col px-4 py-6">
 	<div class="card bg-base-100 p-6 shadow-lg md:p-8">
 		<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -100,3 +101,11 @@
 		</div>
 	</div>
 </main>
+
+<footer class="footer footer-center bg-base-200 p-4 text-base-content">
+	<aside>
+		{#await app.getVersion() then version}
+			<p>v{version}</p>
+		{/await}
+	</aside>
+</footer>

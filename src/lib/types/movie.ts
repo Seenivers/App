@@ -48,7 +48,7 @@ export interface Credits {
 
 export interface Cast {
 	adult: boolean;
-	gender: number;
+	gender: Gender;
 	id: number;
 	known_for_department: Department;
 	name: string;
@@ -61,6 +61,21 @@ export interface Cast {
 	order?: number;
 	department?: Department;
 	job?: string;
+}
+
+/**
+ * Gender enumeration representing the following values:
+ *
+ * - `0`: Unknown - Geschlecht ist nicht angegeben oder unbekannt
+ * - `1`: Female - Weiblich
+ * - `2`: Male - Männlich
+ * - `3`: Non-binary - Nicht-binär
+ */
+export declare enum Gender {
+	Unknown = 0,
+	Female = 1,
+	Male = 2,
+	NonBinary = 3
 }
 
 export type Department =

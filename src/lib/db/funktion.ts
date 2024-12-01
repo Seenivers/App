@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { migrate } from './migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
-import type { Data } from '$lib/types';
+import type { oldData } from '$lib/types';
 import { getMovie as getMovieTmdb } from '$lib/tmdb';
 
 let loadedSettings: typeof schema.settings.$inferSelect | undefined;
@@ -25,7 +25,7 @@ async function initializeSettings() {
 		const content = (await readTextFile('data.lib', { baseDir: BaseDirectory.AppConfig })).trim();
 
 		if (content) {
-			const data: Data = JSON.parse(content);
+			const data: oldData = JSON.parse(content);
 
 			await Promise.all(
 				data.movies.map(async (movie) => {
@@ -50,6 +50,41 @@ async function initializeSettings() {
 	}
 }
 
+async function updated() {
+	try {
+		const movies = await getAllMovies();
+		if (movies && movies.length > 0) {
+			// Dauer in Millisekunden für 2 Wochen
+			const twoWeeksInMillis = 6.048e8 * 2;
+			// Aktuelles Datum einmalig berechnen
+			const currentDate = new Date();
+
+			// Filme nacheinander durchgehen
+			for (const movie of movies) {
+				// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
+				if (!movie.updated) {
+					await db
+						.update(schema.movies)
+						.set({ updated: currentDate })
+						.where(eq(schema.movies.id, movie.id));
+				} else {
+					// Überprüfen, ob das "updated"-Datum älter als 2 Wochen ist
+					const updatedDate = new Date(movie.updated);
+					if (updatedDate.getTime() + twoWeeksInMillis < currentDate.getTime()) {
+						const result = await getMovieTmdb(movie.id, loadedSettings?.language);
+						await db
+							.update(schema.movies)
+							.set({ tmdb: result, updated: currentDate })
+							.where(eq(schema.movies.id, movie.id));
+					}
+				}
+			}
+		}
+	} catch (err) {
+		console.error('Fehler beim Aktualisieren der Filme:', err);
+	}
+}
+
 async function createDefaultSettings() {
 	await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
 	return (await db.select().from(schema.settings).limit(1))[0];
@@ -61,6 +96,8 @@ await initializeSettings();
  * Exportiert die `settings`-Variable, die einmalig geladen und synchron zugänglich ist.
  */
 export const settings = loadedSettings!;
+
+updated();
 
 export async function addMovie(data: typeof schema.movies.$inferInsert) {
 	return await db

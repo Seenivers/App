@@ -88,7 +88,7 @@
 
 		let currentFocus = -1;
 
-		if (matchedMovies.length >= 1) {
+		if (matchedMovies.length >= 1 && searchInput && datalistItem) {
 			searchInput.onfocus = function () {
 				datalistItem.style.display = 'block';
 				datalistItem.style.width = `${searchInput.offsetWidth}px`;
@@ -175,6 +175,7 @@
 			<div>
 				<input
 					class="input join-item input-bordered"
+					name="title"
 					placeholder="Titel"
 					bind:value={searchCriteria.title}
 					on:input={filterMovies}
@@ -191,13 +192,21 @@
 					{/each}
 				</datalist>
 			</div>
-			<select class="join-item select select-bordered" bind:value={searchCriteria.genre}>
+			<select
+				class="join-item select select-bordered"
+				name="genre"
+				bind:value={searchCriteria.genre}
+			>
 				<option value={null}>Kein Filter</option>
 				{#each Array.from(new Set(matchedMovies.flatMap( (item) => item.tmdb.genres.map((i) => i.name) ))) as genre}
 					<option>{genre}</option>
 				{/each}
 			</select>
-			<select class="join-item select select-bordered" bind:value={searchCriteria.isWatched}>
+			<select
+				class="join-item select select-bordered"
+				name="isWatched"
+				bind:value={searchCriteria.isWatched}
+			>
 				<option value={null}>Alle Filme</option>
 				<option value={true}>Angeschaut</option>
 				<option value={false}>Nicht angeschaut</option>
@@ -220,12 +229,12 @@
 		{:else if matchedMovies.length >= 1}
 			{#each matchedMovies as movie}
 				<a
-					href={movie.id.toString()}
+					href={'./movie?id=' + movie.id.toString()}
 					draggable="false"
 					class="card h-fit min-w-[15rem] max-w-[20rem] flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20"
 				>
 					<figure class="relative px-2 pt-2">
-						{#await image(movie.tmdb.poster_path) then src}
+						{#await image(movie.tmdb.poster_path, 'posters', true) then src}
 							<img {src} alt="Poster von {movie.tmdb.title}" class="rounded-xl" draggable="false" />
 						{/await}
 						{#if movie.watched}
