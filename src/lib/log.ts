@@ -25,7 +25,7 @@ export function forwardConsole({ level, message }: RecordPayload) {
 			break;
 
 		default:
-			throw new Error(`unknown log level ${level}`);
+			throw new Error(`unknown log level ${String(level)}`);
 	}
 }
 
