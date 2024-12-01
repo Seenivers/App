@@ -7,10 +7,12 @@
 	import { addMovie, isPathUnique, settings } from '$lib/db/funktion';
 	import { buttonClass, getIcon, getMovieDetails, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/add/types';
+	import { image } from '$lib/image';
 
 	let selected: string | string[] | null = null;
 	let status: MovieSearchStatus[] = [];
 
+	const castImages = 4; // 5 Bilder laden
 	const extensions = ['mp4', 'mkv'];
 
 	let modal = false;
@@ -98,8 +100,8 @@
 			};
 		});
 
-		// Suche gleichzeitig
-		await Promise.all(status.map((_, i) => search(i)));
+		// Suche
+		status.forEach(async (_, i) => await search(i));
 	}
 
 	async function search(i: number) {
@@ -140,13 +142,55 @@
 			return;
 		}
 
-		const result = await getMovieDetails(id);
+		try {
+			const result = await getMovieDetails(id);
 
-		if (result) {
-			addMovie({ id, path, tmdb: result });
-		} else {
-			error('Der Film konnte nicht geladen werden.');
+			if (result) {
+				// Film zur DB hinzufügen
+				addMovie({ id, path, tmdb: result, updated: new Date() });
+
+				// Posterbild laden, falls verfügbar
+				if (result.poster_path) {
+					try {
+						await image(result.poster_path, 'posters', true);
+					} catch (err) {
+						error('Fehler beim Laden des Posters: ' + err);
+					}
+				}
+
+				// Hintergrundbild laden, falls verfügbar
+				if (result.backdrop_path) {
+					try {
+						await image(result.backdrop_path, 'backdrops', true);
+					} catch (err) {
+						error('Fehler beim Laden des Hintergrundbilds: ' + err);
+					}
+				}
+
+				// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
+				const castImagePaths = result.credits.cast
+					.map((actor) => actor.profile_path)
+					.filter((path) => path != null);
+
+				try {
+					castImagePaths.forEach(async (path, i) => {
+						if (i > castImages) return;
+						await image(path, 'actors', true);
+					});
+				} catch (err) {
+					error('Fehler beim Laden der Schauspieler-Bilder: ' + err);
+					return;
+				}
+			} else {
+				error('Der Film konnte nicht geladen werden.');
+				return;
+			}
+		} catch (err) {
+			error('Fehler beim Abrufen der Filmdetails: ' + err);
+			return;
 		}
+
+		return Promise.resolve();
 	}
 
 	// Ensure that only the selected movie is added
