@@ -140,7 +140,7 @@
 </main>
 
 <!-- Modal -->
-<dialog class="modal" open={modal}>
+<dialog class="modal backdrop-blur-sm" open={modal}>
 	<div class="modal-box">
 		<!-- Close Button -->
 		<form method="dialog">
