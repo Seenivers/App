@@ -9,28 +9,21 @@
 		"automerge": true
 	},
 	"rebaseWhen": "auto",
-	"labels": ["dependencies", "renovate"],
+	"labels": ["dependencies"],
 	"requiredStatusChecks": ["CodeQL"],
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
-	"schedule": "before 3am",
-	"stabilityDays": "3 days",
+	"schedule": ["before 3am"],
+	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"automerge": true,
-			"matchCurrentAge": ">=10",
-			"requiredStatusChecks": ["CodeQL"]
-		},
-		{
-			"matchUpdateTypes": ["patch", "minor"],
-			"automerge": true,
-			"automergeType": "pr",
-			"labels": ["automerge"],
-			"stabilityDays": 3,
-			"requiredStatusChecks": ["CodeQL"]
+			"requiredStatusChecks": ["CodeQL"],
+			"matchCurrentAge": "7 days",
+			"labels": ["automerge"]
 		},
 		{
 			"matchUpdateTypes": ["major"],
@@ -50,6 +43,5 @@
 			"labels": ["github-actions"]
 		}
 	],
-	"separateMajorMinor": true,
-	"updateNotScheduled": false
+	"separateMajorMinor": true
 }

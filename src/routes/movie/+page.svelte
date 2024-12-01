@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { exists } from '@tauri-apps/plugin-fs';
 	import { image } from '$lib/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
@@ -10,15 +9,18 @@
 	import Videoplayer from '$lib/player/videoplayer.svelte';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { error } from '@tauri-apps/plugin-log';
+	import type { PageData } from './$types';
 
-	const id = parseInt($page.params.ID, 10);
+	export let data: PageData;
+
+	const id = data.id;
 	let pathExists: boolean = false;
 	let watched: boolean = false;
+	let modal = false;
+	let form: HTMLFormElement;
 	let movieData: typeof schema.movies.$inferSelect;
-
 	const loadMovieData = async () => {
 		const movie = await db.select().from(schema.movies).where(eq(schema.movies.id, id));
-
 		if (movie.length > 0) {
 			movieData = movie[0];
 			pathExists = await exists(movieData.path);
@@ -26,22 +28,22 @@
 		}
 	};
 
-	let modal = false;
-	let form: HTMLFormElement;
-
 	// Lädt die Datei beim Laden des Skripts
 	loadMovieData();
 
+	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
 		watched = !watched;
 		await db.update(schema.movies).set({ watched }).where(eq(schema.movies.id, id));
 	}
 
+	// Entferne Film anhand der ID
 	async function removeElementById() {
 		await db.delete(schema.movies).where(eq(schema.movies.id, id));
 		window.location.href = '/';
 	}
 
+	// Öffne die Datei mit dem Standardplayer
 	async function openExternalPlayer() {
 		try {
 			// Öffne die Datei mit dem Standardplayer
@@ -86,7 +88,7 @@
 			{/if}
 
 			{#if pathExists}
-				{#await image(movieData.tmdb.backdrop_path) then poster}
+				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					<Videoplayer src={convertFileSrc(movieData.path)} {poster} {id} />
 				{/await}
 			{:else}
@@ -102,7 +104,7 @@
 							class="carousel-item flex flex-col items-center"
 							on:click={() => open('https://www.themoviedb.org/person/' + cast.id)}
 						>
-							{#await image(cast.profile_path) then src}
+							{#await image(cast.profile_path, 'actors') then src}
 								<img {src} alt={cast.name} class="max-w-40 rounded-box sm:max-w-60" />
 							{/await}
 							<p class="text-center text-lg">{cast.name}</p>
