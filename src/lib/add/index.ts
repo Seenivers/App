@@ -51,7 +51,7 @@ export async function searchMovies(
 	url.searchParams.append('name', name);
 	url.searchParams.append('language', settings.language);
 	url.searchParams.append('includeAdult', settings.adult.toString());
-	url.searchParams.append('primaryReleaseYear', primaryReleaseYear?.toString() || '');
+	url.searchParams.append('primaryReleaseYear', primaryReleaseYear?.toString() ?? '');
 	url.searchParams.append('page', page.toString());
 
 	const result = await fetch(url.toString());
