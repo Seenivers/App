@@ -35,7 +35,7 @@ async function initializeSettings() {
 						throw new Error(`Movie with ID ${movie.id} could not be fetched.`);
 					}
 
-					addMovie({
+					await addMovie({
 						id: movie.id,
 						path: movie.path,
 						tmdb: result,
