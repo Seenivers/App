@@ -158,3 +158,21 @@ export async function isPathUnique(path: string): Promise<boolean> {
 	// Gibt `true` zurück, wenn kein Film mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
 	return !existingMovie;
 }
+
+// Add Collection to db
+export async function addCollection(data: typeof schema.collections.$inferInsert) {
+	return await db
+		.insert(schema.collections)
+		.values(data)
+		.catch((err) => {
+			error(`Add Collection: ` + err);
+		});
+}
+
+export async function getCollection(id: number) {
+	return await db.query.collections
+		.findFirst({ where: eq(schema.collections.id, id) })
+		.catch((err) => {
+			error('Get Collection: ' + err);
+		});
+}
