@@ -4,10 +4,11 @@
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
 	import { error } from '@tauri-apps/plugin-log';
-	import { addMovie, isPathUnique, settings } from '$lib/db/funktion';
+	import { addCollection, addMovie, isPathUnique, settings } from '$lib/db/funktion';
 	import { buttonClass, getIcon, getMovieDetails, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/add/types';
 	import { image } from '$lib/image';
+	import { getCollection } from '$lib/tmdb';
 
 	let selected: string | string[] | null = null;
 	let status: MovieSearchStatus[] = [];
@@ -180,6 +181,20 @@
 						await image(result.backdrop_path, 'backdrops', true);
 					} catch (err) {
 						error('Fehler beim Laden des Hintergrundbilds: ' + err);
+					}
+				}
+
+				// Collektion hinzufügen
+				if (result.belongs_to_collection) {
+					try {
+						const collection = await getCollection(result.belongs_to_collection.id);
+
+						if (collection) {
+							// Collektion zur DB hinzufügen
+							await addCollection(collection);
+						}
+					} catch (err) {
+						error('Fehler beim hinzufügen der Collection: ' + err);
 					}
 				}
 
