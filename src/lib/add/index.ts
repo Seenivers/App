@@ -35,7 +35,7 @@ export function getIcon(searchStatus: string) {
 		case 'foundMultiple':
 			return '⚠️'; // multiple results icon
 		default:
-			return '🔍'; // default to search icon
+			return '❓'; // default to search icon
 	}
 }
 
