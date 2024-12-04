@@ -106,30 +106,46 @@
 
 	async function search(i: number) {
 		status[i].searchStatus = 'searching';
+
+		// Prüfe die Internetverbindung
 		if (!window.navigator.onLine) {
 			error(
-				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der Api aufgetreten'
+				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
 			);
+			status[i].searchStatus = 'notFound';
 			return;
 		}
+
 		const { name, primaryReleaseYear } = status[i].searchParams;
 
-		// Perform TMDB search
-		const result = (await searchMovies(name, primaryReleaseYear)).results;
+		try {
+			// TMDB-Suche durchführen
+			const result = (await searchMovies(name, primaryReleaseYear)).results;
 
-		// Update status based on results
-		if (result.length === 1) {
-			status[i].searchResults = result;
-			status[i].searchStatus = 'foundOne';
+			// Update status based on results
+			if (result.length === 1) {
+				status[i].searchResults = result;
+				status[i].searchStatus = 'foundOne';
 
-			// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
-			if (status[i].searchStatus === 'foundOne' && !modal) {
-				addNewMovie(result[0].id, status[i].searchParams.path);
+				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
+				if (!modal) {
+					addNewMovie(result[0].id, status[i].searchParams.path);
+				}
+			} else if (result.length > 1) {
+				status[i].searchResults = result;
+				status[i].searchStatus = 'foundMultiple';
+			} else {
+				status[i].searchResults = [];
+				status[i].searchStatus = 'notFound';
 			}
-		} else if (result.length > 1) {
-			status[i].searchResults = result;
-			status[i].searchStatus = 'foundMultiple';
-		} else {
+		} catch (err) {
+			// Fehlerbehandlung
+			if (err instanceof Error) {
+				error('Fehler bei der Suche: ' + err.message);
+			} else {
+				error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
+			}
+			status[i].searchResults = [];
 			status[i].searchStatus = 'notFound';
 		}
 	}
