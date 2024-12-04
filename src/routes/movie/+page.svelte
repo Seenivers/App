@@ -10,6 +10,7 @@
 	import { open } from '@tauri-apps/plugin-shell';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
+	import { getCollection } from '$lib/db/funktion';
 
 	export let data: PageData;
 
@@ -95,6 +96,29 @@
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
+
+			<div class="my-4">
+				{#if movieData.tmdb.belongs_to_collection?.id}
+					{#await getCollection(movieData.tmdb.belongs_to_collection.id) then value}
+						{#await image(value?.backdrop_path, 'backdrops', true) then image}
+							<div class="hero rounded-box" style="background-image: url({image.src});">
+								<div class="hero-overlay rounded-box bg-opacity-90"></div>
+								<div class="hero-content text-center text-neutral-content">
+									<div class="max-w-md">
+										<h2 class="mb-5 text-5xl font-bold">{value?.name}</h2>
+										<p class="mb-5">
+											{value?.overview}
+										</p>
+										<a href="./collection?id={value?.id}" class="btn btn-primary"
+											>Sammlung anzeigen</a
+										>
+									</div>
+								</div>
+							</div>
+						{/await}
+					{/await}
+				{/if}
+			</div>
 
 			<div class="my-4">
 				<h2 class="my-2 text-lg font-bold">Hauptdarsteller</h2>
