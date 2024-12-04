@@ -22,7 +22,6 @@
 			"matchUpdateTypes": ["patch", "minor"],
 			"automerge": true,
 			"requiredStatusChecks": ["CodeQL"],
-			"matchCurrentAge": "7 days",
 			"labels": ["automerge"]
 		},
 		{
