@@ -89,7 +89,7 @@
 
 			{#if pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
-					<Videoplayer src={convertFileSrc(movieData.path)} {poster} {id} />
+					<Videoplayer src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
 				{/await}
 			{:else}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
@@ -104,8 +104,15 @@
 							class="carousel-item flex flex-col items-center"
 							on:click={() => open('https://www.themoviedb.org/person/' + cast.id)}
 						>
-							{#await image(cast.profile_path, 'actors') then src}
-								<img {src} alt={cast.name} class="max-w-40 rounded-box sm:max-w-60" />
+							{#await image(cast.profile_path, 'actors') then { src, height, width }}
+								<img
+									{src}
+									{height}
+									{width}
+									alt={cast.name}
+									loading="lazy"
+									class="max-w-40 rounded-box sm:max-w-60"
+								/>
 							{/await}
 							<p class="text-center text-lg">{cast.name}</p>
 							<p class="text-base italic">{cast.character}</p>

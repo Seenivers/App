@@ -47,48 +47,69 @@ export async function downloadImage(url: string, filename: string) {
 
 /**
  * Funktion zum Verarbeiten eines Bildes.
+ * @param file Dateiname des Bildes.
+ * @param path Optionaler Pfad innerhalb des Bilderverzeichnisses ('actors', 'backdrops', 'posters').
+ * @param download Gibt an, ob das Bild heruntergeladen werden soll.
+ * @returns Ein Objekt mit der Bildquelle (`src`) und den Dimensionen (`width`, `height`).
  */
 export async function image(
 	file: string | null | undefined,
-	path?: 'actors' | 'backdrops' | 'posters' | null,
+	path: 'actors' | 'backdrops' | 'posters' | null = null,
 	download = false
-) {
-	// Prüfe, ob ein Dateiname vorhanden ist; falls nicht, gib den Platzhalter zurück
-	if (!file) return placeholderURL;
+): Promise<{ src: string; width: number; height: number }> {
+	const resolveImageSource = async (src: string) => {
+		const { width, height } = await fetchImageDimensions(src);
+		return { src, width, height };
+	};
+
+	// Rückgabe des Platzhalters, falls kein Dateiname vorhanden
+	if (!file) return resolveImageSource(placeholderURL);
 
 	const folderPath = path ? `images/${path}` : 'images';
 	const filePath = `${folderPath}/${file}`;
 
 	try {
-		// Stelle sicher, dass das Verzeichnis existiert
+		// Verzeichnis sicherstellen
 		await ensureDirectoryExists(folderPath);
 
-		// Überprüfen, ob die Bilddatei bereits existiert
-		const imageExists = await exists(filePath, { baseDir: BaseDirectory.AppData });
-
-		if (imageExists) {
-			// Rückgabe des konvertierten Dateipfads, falls das Bild existiert
-			const imageFilePath = await join(await appDataDir(), filePath);
-			return convertFileSrc(imageFilePath);
+		// Bildpfad überprüfen oder herunterladen
+		if (await exists(filePath, { baseDir: BaseDirectory.AppData })) {
+			const localPath = await join(await appDataDir(), filePath);
+			return resolveImageSource(convertFileSrc(localPath));
 		}
 
-		// Wenn das Bild heruntergeladen werden soll und eine Internetverbindung besteht
 		if (navigator.onLine) {
+			const remoteSrc = `${imageURL}${file}`;
+
 			if (download) {
-				await downloadImage(`${imageURL}${file}`, filePath);
-				const imageFilePath = await join(await appDataDir(), filePath);
-				return convertFileSrc(imageFilePath);
-			} else {
-				// Wenn der Download nicht gewünscht ist, einfach die URL zurückgeben
-				return imageURL + file;
+				await downloadImage(remoteSrc, filePath);
+				const localPath = await join(await appDataDir(), filePath);
+				return resolveImageSource(convertFileSrc(localPath));
 			}
+
+			return resolveImageSource(remoteSrc);
 		}
 
-		// Rückgabe des Platzhalters, falls keine Internetverbindung besteht
-		return placeholderURL;
+		// Platzhalter für Offline-Modus
+		return resolveImageSource(placeholderURL);
 	} catch (err) {
-		// Detaillierte Fehlerbehandlung
 		error(`Fehler bei der Bildverarbeitung: ${err}`);
-		return placeholderURL;
+		return resolveImageSource(placeholderURL);
 	}
+}
+
+/**
+ * Ermittelt die Dimensionen eines Bildes.
+ * @param src Die Quelle des Bildes (URL oder lokaler Pfad).
+ * @returns Ein Objekt mit `width` und `height` des Bildes.
+ */
+export async function fetchImageDimensions(
+	src: string
+): Promise<{ width: number; height: number }> {
+	return new Promise((resolve, reject) => {
+		const img = new Image();
+		img.onload = () => resolve({ width: img.width, height: img.height });
+		img.onerror = (err) => reject(`Bild konnte nicht geladen werden: ${err}`);
+		img.src = src;
+	});
 }
