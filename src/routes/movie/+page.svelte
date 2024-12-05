@@ -78,10 +78,10 @@
 </nav>
 
 <!-- Main -->
-<main class="flex flex-col items-center p-3 md:p-5">
+<main>
 	{#if movieData}
-		<div class="mx-auto w-full max-w-full p-4 md:w-[80%] lg:w-[60%]">
-			<h1 class="mb-2 text-lg font-bold sm:text-xl md:text-2xl">{movieData.tmdb.title}</h1>
+		<div class="mx-auto w-full py-5 md:w-[80%] lg:w-[70%]">
+			<h1 class="text-x1 mb-2 font-bold sm:text-2xl md:text-3xl">{movieData.tmdb.title}</h1>
 			{#if movieData.tmdb.tagline}
 				<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
 					{movieData.tmdb.tagline}
@@ -105,8 +105,8 @@
 								<div class="hero-overlay rounded-box bg-opacity-90"></div>
 								<div class="hero-content text-center text-neutral-content">
 									<div class="max-w-md">
-										<h2 class="mb-5 text-5xl font-bold">{value?.name}</h2>
-										<p class="mb-5">
+										<h2 class="mb-5 text-3xl font-bold">{value?.name}</h2>
+										<p class="mb-5 text-lg">
 											{value?.overview}
 										</p>
 										<a href="./collection?id={value?.id}" class="btn btn-primary"
@@ -121,7 +121,7 @@
 			</div>
 
 			<div class="my-4">
-				<h2 class="my-2 text-lg font-bold">Hauptdarsteller</h2>
+				<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
 				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-base-100 p-3">
 					{#each movieData.tmdb.credits.cast as cast}
 						<button
