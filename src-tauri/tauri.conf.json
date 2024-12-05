@@ -69,15 +69,14 @@
 		],
 		"windows": {
 			"allowDowngrades": true,
-			"certificateThumbprint": null,
+			"certificateThumbprint": "96D84340162D56AAC42E6A02F1FE096A79737B11",
 			"digestAlgorithm": "sha256",
+			"timestampUrl": "http://timestamp.digicert.com",
 			"nsis": {
 				"installMode": "currentUser",
 				"installerIcon": "icons/icon.ico",
 				"languages": ["English", "German", "Spanish", "French"]
 			},
-			"signCommand": null,
-			"timestampUrl": null,
 			"tsp": false,
 			"webviewInstallMode": {
 				"silent": true,
