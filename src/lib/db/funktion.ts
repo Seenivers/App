@@ -7,6 +7,10 @@ import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-
 import type { oldData } from '$lib/types';
 import { getMovie as getMovieTmdb } from '$lib/tmdb';
 
+const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
+const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
+const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
+
 let loadedSettings: typeof schema.settings.$inferSelect | undefined;
 
 /**
@@ -54,8 +58,6 @@ async function updated() {
 	try {
 		const movies = await getAllMovies();
 		if (movies && movies.length > 0) {
-			// Dauer in Millisekunden für 2 Wochen
-			const twoWeeksInMillis = 6.048e8 * 2;
 			// Aktuelles Datum einmalig berechnen
 			const currentDate = new Date();
 
@@ -68,9 +70,9 @@ async function updated() {
 						.set({ updated: currentDate })
 						.where(eq(schema.movies.id, movie.id));
 				} else {
-					// Überprüfen, ob das "updated"-Datum älter als 2 Wochen ist
+					// Überprüfen, ob das "updated"-Datum älter als die definierte Zeitspanne ist
 					const updatedDate = new Date(movie.updated);
-					if (updatedDate.getTime() + twoWeeksInMillis < currentDate.getTime()) {
+					if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
 						const result = await getMovieTmdb(movie.id, loadedSettings?.language);
 						await db
 							.update(schema.movies)
