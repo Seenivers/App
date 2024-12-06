@@ -10,6 +10,7 @@
 	import { open } from '@tauri-apps/plugin-shell';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
+	import { getCollection } from '$lib/db/funktion';
 
 	export let data: PageData;
 
@@ -77,10 +78,10 @@
 </nav>
 
 <!-- Main -->
-<main class="flex flex-col items-center p-3 md:p-5">
+<main>
 	{#if movieData}
-		<div class="mx-auto w-full max-w-full p-4 md:w-[80%] lg:w-[60%]">
-			<h1 class="mb-2 text-lg font-bold sm:text-xl md:text-2xl">{movieData.tmdb.title}</h1>
+		<div class="mx-auto w-full py-5 md:w-[80%] lg:w-[70%]">
+			<h1 class="text-x1 mb-2 font-bold sm:text-2xl md:text-3xl">{movieData.tmdb.title}</h1>
 			{#if movieData.tmdb.tagline}
 				<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
 					{movieData.tmdb.tagline}
@@ -89,7 +90,7 @@
 
 			{#if pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
-					<Videoplayer src={convertFileSrc(movieData.path)} {poster} {id} />
+					<Videoplayer src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
 				{/await}
 			{:else}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
@@ -97,15 +98,45 @@
 			{/if}
 
 			<div class="my-4">
-				<h2 class="my-2 text-lg font-bold">Hauptdarsteller</h2>
+				{#if movieData.tmdb.belongs_to_collection?.id}
+					{#await getCollection(movieData.tmdb.belongs_to_collection.id) then value}
+						{#await image(value?.backdrop_path, 'backdrops', true) then image}
+							<div class="hero rounded-box" style="background-image: url({image.src});">
+								<div class="hero-overlay rounded-box bg-opacity-90"></div>
+								<div class="hero-content text-center text-neutral-content">
+									<div class="max-w-md">
+										<h2 class="mb-5 text-3xl font-bold">{value?.name}</h2>
+										<p class="mb-5 text-lg">
+											{value?.overview}
+										</p>
+										<a href="./collection?id={value?.id}" class="btn btn-primary"
+											>Sammlung anzeigen</a
+										>
+									</div>
+								</div>
+							</div>
+						{/await}
+					{/await}
+				{/if}
+			</div>
+
+			<div class="my-4">
+				<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
 				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-base-100 p-3">
 					{#each movieData.tmdb.credits.cast as cast}
 						<button
 							class="carousel-item flex flex-col items-center"
 							on:click={() => open('https://www.themoviedb.org/person/' + cast.id)}
 						>
-							{#await image(cast.profile_path, 'actors') then src}
-								<img {src} alt={cast.name} class="max-w-40 rounded-box sm:max-w-60" />
+							{#await image(cast.profile_path, 'actors') then { src, height, width }}
+								<img
+									{src}
+									{height}
+									{width}
+									alt={cast.name}
+									loading="lazy"
+									class="max-w-40 rounded-box sm:max-w-60"
+								/>
 							{/await}
 							<p class="text-center text-lg">{cast.name}</p>
 							<p class="text-base italic">{cast.character}</p>
@@ -140,7 +171,7 @@
 </main>
 
 <!-- Modal -->
-<dialog class="modal" open={modal}>
+<dialog class="modal backdrop-blur-sm" open={modal}>
 	<div class="modal-box">
 		<!-- Close Button -->
 		<form method="dialog">

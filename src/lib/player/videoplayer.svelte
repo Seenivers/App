@@ -34,11 +34,11 @@
 	}
 
 	async function save() {
+		// Berechnet die aktuelle Wiedergabezeit, mindestens 0
+		const watchTime = Math.max(0, Math.round(currentTime) - 2);
+
 		// Aktualisiert die aktuelle Wiedergabezeit
-		await db
-			.update(schema.movies)
-			.set({ watchTime: Math.round(currentTime) - 2 })
-			.where(eq(schema.movies.id, id));
+		await db.update(schema.movies).set({ watchTime }).where(eq(schema.movies.id, id));
 
 		// Setzt 'watched' auf true, wenn der Film zu 85 % gesehen wurde
 		if (Math.round(currentTime / duration) > 0.85) {

@@ -19,7 +19,7 @@ let dbInstance: ReturnType<typeof drizzle<typeof schema>> | undefined;
  * Initializes the `dbInstance` once `sqlite` is loaded.
  * @returns The `dbInstance` after ensuring SQLite is loaded.
  */
-export async function getDb() {
+export function getDb() {
 	if (!dbInstance) {
 		dbInstance = drizzle<typeof schema>(
 			async (sql, params, method) => {

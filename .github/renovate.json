@@ -3,7 +3,6 @@
 	"extends": ["config:recommended"],
 	"baseBranches": ["next"],
 	"automerge": true,
-	"automergeType": "pr",
 	"vulnerabilityAlerts": {
 		"labels": ["security"],
 		"automerge": true
@@ -15,6 +14,7 @@
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
 	"schedule": ["before 3am"],
+	"automergeSchedule": ["before 3am"],
 	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
 	"packageRules": [
@@ -22,24 +22,21 @@
 			"matchUpdateTypes": ["patch", "minor"],
 			"automerge": true,
 			"requiredStatusChecks": ["CodeQL"],
-			"matchCurrentAge": "7 days",
 			"labels": ["automerge"]
 		},
 		{
-			"matchUpdateTypes": ["major"],
-			"automerge": false,
-			"labels": ["major-update"]
-		},
-		{
-			"matchFileNames": ["package.json", "npm"],
+			"matchPackageNames": ["npm"],
+			"automerge": true,
 			"labels": ["npm"]
 		},
 		{
-			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
+			"matchPackageNames": ["cargo"],
+			"automerge": true,
 			"labels": ["rust"]
 		},
 		{
-			"matchFileNames": [".github/workflows/*.yml"],
+			"matchPackageNames": ["github-actions"],
+			"automerge": false,
 			"labels": ["github-actions"]
 		}
 	],

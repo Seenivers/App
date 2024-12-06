@@ -35,7 +35,7 @@ async function initializeSettings() {
 						throw new Error(`Movie with ID ${movie.id} could not be fetched.`);
 					}
 
-					addMovie({
+					await addMovie({
 						id: movie.id,
 						path: movie.path,
 						tmdb: result,
@@ -92,10 +92,14 @@ async function createDefaultSettings() {
 
 await initializeSettings();
 
+if (!loadedSettings) {
+	throw new Error('Settings is not defined');
+}
+
 /**
  * Exportiert die `settings`-Variable, die einmalig geladen und synchron zugänglich ist.
  */
-export const settings = loadedSettings!;
+export const settings = loadedSettings;
 
 updated();
 
@@ -153,4 +157,22 @@ export async function isPathUnique(path: string): Promise<boolean> {
 
 	// Gibt `true` zurück, wenn kein Film mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
 	return !existingMovie;
+}
+
+// Add Collection to db
+export async function addCollection(data: typeof schema.collections.$inferInsert) {
+	return await db
+		.insert(schema.collections)
+		.values(data)
+		.catch((err) => {
+			error(`Add Collection: ` + err);
+		});
+}
+
+export async function getCollection(id: number) {
+	return await db.query.collections
+		.findFirst({ where: eq(schema.collections.id, id) })
+		.catch((err) => {
+			error('Get Collection: ' + err);
+		});
 }

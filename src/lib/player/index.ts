@@ -1,4 +1,4 @@
-import { error } from '@tauri-apps/plugin-log';
+import { error as tauriError } from '@tauri-apps/plugin-log';
 
 export function format(seconds: number) {
 	if (isNaN(seconds)) return '...';
@@ -21,9 +21,7 @@ export function format(seconds: number) {
 
 export async function fullscreen(player: HTMLDivElement) {
 	if (document.fullscreenElement) {
-		document.exitFullscreen().catch((err) => {
-			error(err);
-		});
+		document.exitFullscreen().catch(newError);
 	} else {
 		await player.requestFullscreen();
 	}
@@ -31,10 +29,16 @@ export async function fullscreen(player: HTMLDivElement) {
 
 export async function pictureInPicture(videoElement: HTMLVideoElement) {
 	if (document.pictureInPictureElement) {
-		document.exitPictureInPicture().catch((err) => {
-			error(err);
-		});
+		document.exitPictureInPicture().catch(newError);
 	} else if (document.pictureInPictureEnabled) {
 		await videoElement.requestPictureInPicture();
+	}
+}
+
+function newError(err: unknown) {
+	if (err instanceof Error) {
+		tauriError(err.message); // Verwendet die Nachricht aus dem Error-Objekt
+	} else {
+		tauriError('An unknown error occurred'); // Fallback für andere Typen
 	}
 }

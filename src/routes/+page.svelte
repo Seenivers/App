@@ -186,9 +186,9 @@
 					bind:this={datalistItem}
 				>
 					{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
-						<option class="cursor-pointer px-2 hover:bg-base-content/20" value={title}
-							>{title}</option
-						>
+						<option class="cursor-pointer px-2 hover:bg-base-content/20" value={title}>
+							{title}
+						</option>
 					{/each}
 				</datalist>
 			</div>
@@ -234,8 +234,17 @@
 					class="card h-fit min-w-[15rem] max-w-[20rem] flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20"
 				>
 					<figure class="relative px-2 pt-2">
-						{#await image(movie.tmdb.poster_path, 'posters', true) then src}
-							<img {src} alt="Poster von {movie.tmdb.title}" class="rounded-xl" draggable="false" />
+						{#await image(movie.tmdb.poster_path, 'posters', true) then { src, width, height }}
+							<img
+								{src}
+								{width}
+								{height}
+								class="rounded-xl"
+								alt="Poster von {movie.tmdb.title}"
+								draggable="false"
+								decoding="async"
+								loading="lazy"
+							/>
 						{/await}
 						{#if movie.watched}
 							<div class="badge badge-outline absolute left-3 top-3 bg-base-300">Angesehen</div>

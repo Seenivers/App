@@ -1,29 +1,27 @@
 # [0.11.0](https://github.com/Seenivers/App/compare/v0.10.0...v0.11.0) (2024-12-01)
 
-
 ### Bug Fixes
 
-* **db:** remove empty block to resolve no-empty linting error ([644870e](https://github.com/Seenivers/App/commit/644870ee4700135e5c27eb8a44782227b3647743))
-* **dependencies:** update tauri-plugin-sql to v2.0.1 in Cargo.toml ([96c5833](https://github.com/Seenivers/App/commit/96c58335e7c79775de178310982cd6892f0459e1))
-* **gender:** declare enum to avoid unused variable warning ([54dadad](https://github.com/Seenivers/App/commit/54dadad4806ec1a7f8f5dd446c0e187e2adef7f6))
-* **loader:** remove unnecessary async modifier to comply with require-await rule ([f539691](https://github.com/Seenivers/App/commit/f539691136b9331fb2e5ad0ea0ab84d9c9db0331))
-* **page:** avoid window undefined error by moving movie data loading to page.svelte ([43ea851](https://github.com/Seenivers/App/commit/43ea851a21699431e6a12100fd8c6ec26ae42ffe))
-* resolve floating promises by using `void` to ignore unhandled promises in timeout function ([91639e8](https://github.com/Seenivers/App/commit/91639e821bdc67e3bc762648e559e9db76979cab))
-* **schema:** replace [@ts-ignore](https://github.com/ts-ignore) with [@ts-expect-error](https://github.com/ts-expect-error) to comply with linting rules ([e1d1d36](https://github.com/Seenivers/App/commit/e1d1d3628ac44beae1663d762b8e8306ac008fec))
-* **toast-duration:** increase default duration of new messages to 30 seconds ([5b509b3](https://github.com/Seenivers/App/commit/5b509b307b57d875188b03de512f3c20a3cfae8b))
-
+- **db:** remove empty block to resolve no-empty linting error ([644870e](https://github.com/Seenivers/App/commit/644870ee4700135e5c27eb8a44782227b3647743))
+- **dependencies:** update tauri-plugin-sql to v2.0.1 in Cargo.toml ([96c5833](https://github.com/Seenivers/App/commit/96c58335e7c79775de178310982cd6892f0459e1))
+- **gender:** declare enum to avoid unused variable warning ([54dadad](https://github.com/Seenivers/App/commit/54dadad4806ec1a7f8f5dd446c0e187e2adef7f6))
+- **loader:** remove unnecessary async modifier to comply with require-await rule ([f539691](https://github.com/Seenivers/App/commit/f539691136b9331fb2e5ad0ea0ab84d9c9db0331))
+- **page:** avoid window undefined error by moving movie data loading to page.svelte ([43ea851](https://github.com/Seenivers/App/commit/43ea851a21699431e6a12100fd8c6ec26ae42ffe))
+- resolve floating promises by using `void` to ignore unhandled promises in timeout function ([91639e8](https://github.com/Seenivers/App/commit/91639e821bdc67e3bc762648e559e9db76979cab))
+- **schema:** replace [@ts-ignore](https://github.com/ts-ignore) with [@ts-expect-error](https://github.com/ts-expect-error) to comply with linting rules ([e1d1d36](https://github.com/Seenivers/App/commit/e1d1d3628ac44beae1663d762b8e8306ac008fec))
+- **toast-duration:** increase default duration of new messages to 30 seconds ([5b509b3](https://github.com/Seenivers/App/commit/5b509b307b57d875188b03de512f3c20a3cfae8b))
 
 ### Features
 
-* **add-movie:** add 'updated' timestamp when adding a new movie ([3325290](https://github.com/Seenivers/App/commit/33252907966f64edf4270053edfdcbe379963764))
-* **config:** enable automerge for Renovate and adjust stability days ([7e744ef](https://github.com/Seenivers/App/commit/7e744ef061301aeb64c9b4d55ed6b8c8bdd497c1))
-* **db:** add updated timestamp column to movies table ([8dbbb55](https://github.com/Seenivers/App/commit/8dbbb551023bdca78d8f74ea0f6a7c161e681633))
-* **filters:** add name attributes to input and select fields for better identification ([d8bf7eb](https://github.com/Seenivers/App/commit/d8bf7eb7065d15f7e86bd879cfd81dfc7f176053))
-* **image:** improve image processing with enhanced error handling and flexible download options ([29a6e29](https://github.com/Seenivers/App/commit/29a6e294f6ce83b59da17b055907a52ef1737623))
-* **movie-update:** add periodic movie updates based on 'updated' field ([8922377](https://github.com/Seenivers/App/commit/89223774e6604b50bbcd48b7d66d3f30a28d4c2f))
-* **movie:** add image loading for movie poster and cast profiles when adding a new movie ([ade1379](https://github.com/Seenivers/App/commit/ade13797a58080e50a48671312eb1f759c5333a4))
-* **ui:** add app version to settings footer ([2d09885](https://github.com/Seenivers/App/commit/2d09885435f81c52c61d2966ffccdeb24d3457c4))
-* **ui:** improve datalist behavior by adding null checks for search input and datalist items ([8475bef](https://github.com/Seenivers/App/commit/8475bef9bb7947a48d3a0b1add4a43915b86b966))
+- **add-movie:** add 'updated' timestamp when adding a new movie ([3325290](https://github.com/Seenivers/App/commit/33252907966f64edf4270053edfdcbe379963764))
+- **config:** enable automerge for Renovate and adjust stability days ([7e744ef](https://github.com/Seenivers/App/commit/7e744ef061301aeb64c9b4d55ed6b8c8bdd497c1))
+- **db:** add updated timestamp column to movies table ([8dbbb55](https://github.com/Seenivers/App/commit/8dbbb551023bdca78d8f74ea0f6a7c161e681633))
+- **filters:** add name attributes to input and select fields for better identification ([d8bf7eb](https://github.com/Seenivers/App/commit/d8bf7eb7065d15f7e86bd879cfd81dfc7f176053))
+- **image:** improve image processing with enhanced error handling and flexible download options ([29a6e29](https://github.com/Seenivers/App/commit/29a6e294f6ce83b59da17b055907a52ef1737623))
+- **movie-update:** add periodic movie updates based on 'updated' field ([8922377](https://github.com/Seenivers/App/commit/89223774e6604b50bbcd48b7d66d3f30a28d4c2f))
+- **movie:** add image loading for movie poster and cast profiles when adding a new movie ([ade1379](https://github.com/Seenivers/App/commit/ade13797a58080e50a48671312eb1f759c5333a4))
+- **ui:** add app version to settings footer ([2d09885](https://github.com/Seenivers/App/commit/2d09885435f81c52c61d2966ffccdeb24d3457c4))
+- **ui:** improve datalist behavior by adding null checks for search input and datalist items ([8475bef](https://github.com/Seenivers/App/commit/8475bef9bb7947a48d3a0b1add4a43915b86b966))
 
 # [0.10.0](https://github.com/Seenivers/App/compare/v0.9.0...v0.10.0) (2024-11-22)
 
