@@ -153,9 +153,7 @@
 
 	async function addNewMovie(id: number, path: string) {
 		if (!window.navigator.onLine) {
-			error(
-				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der Api aufgetreten'
-			);
+			error('Sie sind nicht mit dem Internet verbunden.');
 			return;
 		}
 
