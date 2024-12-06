@@ -1,0 +1,31 @@
+.body > h1 {
+	@apply my-5 text-3xl font-bold text-primary;
+}
+
+.body > h2 {
+	@apply my-4 text-2xl font-semibold text-secondary;
+}
+
+.body > h3 {
+	@apply mb-2 mt-4 text-xl font-semibold text-secondary;
+}
+
+.body > ul {
+	@apply my-2 list-disc space-y-2 pl-6;
+}
+
+.body > ul > li {
+	@apply text-sm;
+}
+
+.body > ul > li a {
+	@apply text-blue-500 hover:underline;
+}
+
+.body > ul > li code {
+	@apply rounded bg-base-300 px-1;
+}
+
+.body > ul > li strong {
+	@apply font-semibold;
+}

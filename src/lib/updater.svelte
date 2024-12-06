@@ -3,6 +3,8 @@
 	import { check, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { debug, error } from '@tauri-apps/plugin-log';
+	import { marked } from 'marked';
+	import '$lib/md.css';
 
 	let update: Update | null = null;
 	let downloadProgress = 0;
@@ -12,7 +14,9 @@
 
 	onMount(async () => {
 		if (!window.navigator.onLine) return;
+
 		update = await check();
+
 		if (update) {
 			modalOpen = true;
 		}
@@ -63,32 +67,37 @@
 			on:click={() => (modalOpen = false)}>✕</button
 		>
 
-		{#if update !== null}
-			<h2 class="mb-2 text-3xl font-semibold">Eine neue Version ist verfügbar</h2>
-			<p class="text-lg font-semibold">Version {update.version}</p>
-			<p class="mt-1 whitespace-pre-line text-sm">{update.body}</p>
+		{#if update !== null && update.body}
+			{#await marked.parse(update.body) then body}
+				<h2 class="mb-2 text-3xl font-semibold">Eine neue Version ist verfügbar</h2>
+				<h3 class="text-2xl font-semibold">Version {update.version}</h3>
+				<div class="body my-3 h-[40rem] overflow-y-scroll rounded-md bg-base-200 px-3">
+					{@html body ? body : 'Siehe Changelog'}
+				</div>
 
-			<div class="mt-4">
-				{#if downloadStarted && !downloadFinished}
-					<p class="mb-2">Downloadfortschritt: {downloadProgress}%</p>
-					<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
-					></progress>
-				{:else if downloadFinished}
-					<p class="mt-4 text-lg font-semibold text-success">Update abgeschlossen!</p>
-				{/if}
-			</div>
+				<div class="mt-4">
+					{#if downloadStarted && !downloadFinished}
+						<p class="mb-2">Downloadfortschritt: {downloadProgress}%</p>
+						<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
+						></progress>
+					{:else if downloadFinished}
+						<p class="mt-4 text-lg font-semibold text-success">Update abgeschlossen!</p>
+					{/if}
+				</div>
 
-			<div class="mt-6 flex justify-end space-x-4">
-				{#if !downloadStarted}
-					<button class="btn btn-primary" disabled={!window.navigator.onLine} on:click={download}
-						>Update herunterladen</button
-					>
-				{:else if downloadFinished}
-					<button class="btn btn-secondary" on:click={() => (modalOpen = false)}>Schließen</button>
-				{:else}
-					<button class="btn btn-disabled" disabled>Herunterladen...</button>
-				{/if}
-			</div>
+				<div class="mt-6 flex justify-end space-x-4">
+					{#if !downloadStarted}
+						<button class="btn btn-primary" disabled={!window.navigator.onLine} on:click={download}
+							>Update herunterladen</button
+						>
+					{:else if downloadFinished}
+						<button class="btn btn-secondary" on:click={() => (modalOpen = false)}>Schließen</button
+						>
+					{:else}
+						<button class="btn btn-disabled" disabled>Herunterladen...</button>
+					{/if}
+				</div>
+			{/await}
 		{/if}
 	</div>
 </dialog>
