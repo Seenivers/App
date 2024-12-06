@@ -6,18 +6,15 @@
 	import { fly } from 'svelte/transition';
 	import { cubicOut, cubicIn } from 'svelte/easing';
 
-	// Set default positions, falls keine Einstellungen verfügbar sind
-	const positionHorizontally: AlertPositionHorizontally = settings
-		? settings.toastPosition.horizontal
-		: 'end';
-	const positionVertically: AlertPositionVertically = settings
-		? settings.toastPosition.vertical
-		: 'bottom';
+	// Default-Werte setzen, falls Einstellungen nicht verfügbar sind
+	const positionHorizontally: AlertPositionHorizontally =
+		settings?.toastPosition.horizontal || 'end';
+	const positionVertically: AlertPositionVertically = settings?.toastPosition.vertical || 'bottom';
 </script>
 
 <!-- Toast Container -->
 <div
-	class={`toast z-50 toast-${positionHorizontally} toast-${positionVertically} max-h-[33vh] min-w-36 max-w-[33vw] overflow-y-auto`}
+	class={`toast z-50 toast-${positionHorizontally} toast-${positionVertically} max-h-[33vh] min-w-[9rem] max-w-[33vw] overflow-y-auto`}
 >
 	{#each $messages as { type, text }}
 		<div
