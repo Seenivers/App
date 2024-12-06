@@ -13,6 +13,11 @@ const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für d
 
 let loadedSettings: typeof schema.settings.$inferSelect | undefined;
 
+async function createDefaultSettings() {
+	await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
+	return (await db.select().from(schema.settings).limit(1))[0];
+}
+
 /**
  * Initialisiert die Settings nur einmal und speichert sie in `loadedSettings`.
  */
@@ -54,7 +59,7 @@ async function initializeSettings() {
 	}
 }
 
-async function updated() {
+async function updateMovies() {
 	try {
 		const movies = await getAllMovies();
 		if (movies && movies.length > 0) {
@@ -87,11 +92,6 @@ async function updated() {
 	}
 }
 
-async function createDefaultSettings() {
-	await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
-	return (await db.select().from(schema.settings).limit(1))[0];
-}
-
 await initializeSettings();
 
 if (!loadedSettings) {
@@ -103,7 +103,7 @@ if (!loadedSettings) {
  */
 export const settings = loadedSettings;
 
-updated();
+updateMovies();
 
 export async function addMovie(data: typeof schema.movies.$inferInsert) {
 	return await db
