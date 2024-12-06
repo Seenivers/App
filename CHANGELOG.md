@@ -1,3 +1,11 @@
+## [0.12.1](https://github.com/Seenivers/App/compare/v0.12.0...v0.12.1) (2024-12-06)
+
+
+### Bug Fixes
+
+* **ci:** remove signing of migration files to avoid errors with .sql files ([f4d5de6](https://github.com/Seenivers/App/commit/f4d5de6bae051979788ebe019b248f5aa8c0d542))
+* **windows:** update certificate thumbprint for signing ([3747195](https://github.com/Seenivers/App/commit/3747195606b4e3b66ff0e6e09c8ac0084da4e1d9))
+
 # [0.12.0](https://github.com/Seenivers/App/compare/v0.11.0...v0.12.0) (2024-12-06)
 
 
