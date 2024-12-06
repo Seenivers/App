@@ -24,7 +24,7 @@ serde = { version = "1.0.215", features = ["derive"] }
 log = "0.4.22"
 tauri = { version = "2.1.1", features = ["protocol-asset"] }
 tauri-plugin-log = "2.0.3"
-tauri-plugin-dialog = "2.0.3"
+tauri-plugin-dialog = "2.0.4"
 tauri-plugin-fs = "2.0.3"
 tauri-plugin-store = "2.1.0"
 tauri-plugin-http = "2.0.4"
