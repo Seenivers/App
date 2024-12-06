@@ -1,34 +1,34 @@
 {
-  "version": "7",
-  "dialect": "sqlite",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "6",
-      "when": 1731350809957,
-      "tag": "0000_round_romulus",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1731941080539,
-      "tag": "0001_thick_iron_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1732971438125,
-      "tag": "0002_curly_tombstone",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1733344191529,
-      "tag": "0003_eager_hemingway",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "sqlite",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "6",
+			"when": 1731350809957,
+			"tag": "0000_round_romulus",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "6",
+			"when": 1731941080539,
+			"tag": "0001_thick_iron_man",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "6",
+			"when": 1732971438125,
+			"tag": "0002_curly_tombstone",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "6",
+			"when": 1733344191529,
+			"tag": "0003_eager_hemingway",
+			"breakpoints": true
+		}
+	]
 }
