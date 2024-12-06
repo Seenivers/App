@@ -61,7 +61,7 @@
 </script>
 
 <dialog class="modal backdrop-blur-sm" open={modalOpen}>
-	<div class="modal-box max-w-3xl">
+	<div class="modal-box mx-4 w-full max-w-xl sm:w-auto sm:max-w-3xl">
 		<button
 			class="btn btn-circle btn-sm absolute right-2 top-2"
 			on:click={() => (modalOpen = false)}>✕</button
@@ -69,8 +69,8 @@
 
 		{#if update !== null && update.body}
 			{#await marked.parse(update.body) then body}
-				<h2 class="mb-2 text-3xl font-semibold">Eine neue Version ist verfügbar</h2>
-				<h3 class="text-2xl font-semibold">Version {update.version}</h3>
+				<h2 class="mb-2 text-xl font-semibold sm:text-3xl">Eine neue Version ist verfügbar</h2>
+				<h3 class="text-lg font-semibold sm:text-2xl">Version {update.version}</h3>
 				<div class="body my-3 h-[40rem] overflow-y-scroll rounded-md bg-base-200 px-3">
 					{@html body ? body : 'Siehe Changelog'}
 				</div>
@@ -85,7 +85,7 @@
 					{/if}
 				</div>
 
-				<div class="mt-6 flex justify-end space-x-4">
+				<div class="mt-6 flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 					{#if !downloadStarted}
 						<button class="btn btn-primary" disabled={!window.navigator.onLine} on:click={download}
 							>Update herunterladen</button
