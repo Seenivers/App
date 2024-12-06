@@ -3,7 +3,6 @@
 	"extends": ["config:recommended"],
 	"baseBranches": ["next"],
 	"automerge": true,
-	"automergeType": "pr",
 	"vulnerabilityAlerts": {
 		"labels": ["security"],
 		"automerge": true
@@ -25,20 +24,18 @@
 			"labels": ["automerge"]
 		},
 		{
-			"matchUpdateTypes": ["major"],
-			"automerge": false,
-			"labels": ["major-update"]
-		},
-		{
-			"matchFileNames": ["package.json", "npm"],
+			"matchPackageNames": ["npm"],
+			"automerge": true,
 			"labels": ["npm"]
 		},
 		{
-			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
+			"matchPackageNames": ["cargo"],
+			"automerge": true,
 			"labels": ["rust"]
 		},
 		{
-			"matchFileNames": [".github/workflows/*.yml"],
+			"matchPackageNames": ["github-actions"],
+			"automerge": false,
 			"labels": ["github-actions"]
 		}
 	],
