@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { afterUpdate, onMount } from 'svelte';
 	import { check, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { debug, error } from '@tauri-apps/plugin-log';
 	import { marked } from 'marked';
 	import '$lib/md.css';
+	import { open } from '@tauri-apps/plugin-shell';
 
 	let update: Update | null = null;
 	let downloadProgress = 0;
@@ -21,6 +22,28 @@
 			modalOpen = true;
 		}
 	});
+
+	// Nachdem der HTML-Inhalt gerendert wurde, werden alle Links abgefangen
+	afterUpdate(() => {
+		if (update) {
+			// Alle Links im body finden und die Funktion openLink darauf anwenden
+			const links = document.querySelectorAll('.body a');
+			links.forEach((link) => {
+				link.addEventListener('click', openLink);
+			});
+		}
+	});
+
+	// Funktion zum Abfangen des Klicks auf Links
+	function openLink(event: Event) {
+		event.preventDefault(); // Verhindere das Standard-Verhalten des Links
+		if (event.target instanceof HTMLAnchorElement) {
+			const URL = event.target.getAttribute('href');
+			if (URL) {
+				open(URL);
+			}
+		}
+	}
 
 	async function download() {
 		if (!window.navigator.onLine) {
