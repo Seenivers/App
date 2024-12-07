@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { migrate } from './migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
-import type { oldData } from '$lib/types';
+import type { OldData } from '$lib/types';
 import { getMovie as getMovieTmdb, getCollection as getCollectionTmdb } from '$lib/tmdb';
 
 const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
@@ -34,7 +34,7 @@ async function initializeSettings() {
 		const content = (await readTextFile('data.lib', { baseDir: BaseDirectory.AppConfig })).trim();
 
 		if (content) {
-			const data: oldData = JSON.parse(content);
+			const data: OldData = JSON.parse(content);
 
 			await Promise.all(
 				data.movies.map(async (movie) => {

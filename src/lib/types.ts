@@ -1,8 +1,8 @@
-export interface oldData {
-	movies: oldMovie[];
+export interface OldData {
+	movies: OldMovie[];
 }
 
-interface oldMovie {
+interface OldMovie {
 	path: string;
 	watched: boolean;
 	watchTime: number;
