@@ -4,7 +4,7 @@
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { debug, error } from '@tauri-apps/plugin-log';
 	import { marked } from 'marked';
-	import '$lib/md.css';
+	import '$lib/css/md.css';
 	import { open } from '@tauri-apps/plugin-shell';
 
 	let update: Update | null = null;
