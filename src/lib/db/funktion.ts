@@ -85,6 +85,20 @@ async function updateMovies() {
 							.where(eq(schema.movies.id, movie.id));
 					}
 				}
+
+				// Füge Collection hinzu, wenn nicht vorhanden
+				if (movie.tmdb.belongs_to_collection) {
+					const collection = await getCollection(movie.tmdb.belongs_to_collection.id);
+					if (!collection) {
+						const result = await getCollectionTmdb(
+							movie.tmdb.belongs_to_collection.id,
+							loadedSettings?.language
+						);
+						if (result) {
+							await addCollection({ ...result, updated: new Date() });
+						}
+					}
+				}
 			}
 		}
 	} catch (err) {
