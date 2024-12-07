@@ -37,9 +37,9 @@ export async function migrate() {
 		error('Failed to create migration table: ' + err);
 	});
 
-	const dbMigrations = (await sqlite.select(
+	const dbMigrations: { id: number; hash: string; created_at: number }[] = await sqlite.select(
 		/*sql*/ `SELECT id, hash, created_at FROM "__drizzle_migrations" ORDER BY created_at DESC`
-	)) as { id: number; hash: string; created_at: number }[];
+	);
 
 	for (const migration of migrations) {
 		const hash = migration.name?.replace('.sql', '');
