@@ -5,7 +5,7 @@ import { db } from './database';
 import { migrate } from './migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { oldData } from '$lib/types';
-import { getMovie as getMovieTmdb } from '$lib/tmdb';
+import { getMovie as getMovieTmdb, getCollection as getCollectionTmdb } from '$lib/tmdb';
 
 const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
@@ -106,6 +106,41 @@ async function updateMovies() {
 	}
 }
 
+async function updateCollection() {
+	try {
+		const collections = await getAllCollections();
+		if (collections && collections.length > 0) {
+			// Aktuelles Datum einmalig berechnen
+			const currentDate = new Date();
+
+			// Filme nacheinander durchgehen
+			for (const collection of collections) {
+				// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
+				if (!collection.updated) {
+					await db
+						.update(schema.collections)
+						.set({ updated: currentDate })
+						.where(eq(schema.collections.id, collection.id));
+				} else {
+					// Überprüfen, ob das "updated"-Datum älter als die definierte Zeitspanne ist
+					const updatedDate = new Date(collection.updated);
+					if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
+						const result = await getCollectionTmdb(collection.id, loadedSettings?.language);
+						if (result) {
+							await db
+								.update(schema.collections)
+								.set({ ...result, updated: currentDate })
+								.where(eq(schema.collections.id, collection.id));
+						}
+					}
+				}
+			}
+		}
+	} catch (err) {
+		console.error('Fehler beim Aktualisieren der Collections:', err);
+	}
+}
+
 await initializeSettings();
 
 if (!loadedSettings) {
@@ -118,6 +153,7 @@ if (!loadedSettings) {
 export const settings = loadedSettings;
 
 updateMovies();
+updateCollection();
 
 export async function addMovie(data: typeof schema.movies.$inferInsert) {
 	return await db
