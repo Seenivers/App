@@ -1,5 +1,5 @@
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import type { Movie } from '$lib/types/collection';
+import type { Movie } from '$lib/types/searchMovie';
 
 export const collections = sqliteTable('collection', {
 	id: int('id').notNull().primaryKey().unique(),
