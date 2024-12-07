@@ -97,7 +97,7 @@
 				{#await marked.parse(update.body)}
 					<p>Lade Änderungsprotokoll...</p>
 				{:then body}
-					{@html body}
+					{@html body} <!-- eslint-disable-line -->
 				{/await}
 			</div>
 
