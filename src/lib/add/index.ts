@@ -62,6 +62,6 @@ export async function searchMovies(
 /**
  * Holt einen Film von TMDB basierend auf seiner ID.
  */
-export async function getMovieDetails(id: number): Promise<Movie | undefined> {
+export async function getMovieDetails(id: number) {
 	return await getMovie(id, settings.language);
 }
