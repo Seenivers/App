@@ -192,3 +192,12 @@ export async function getCollection(id: number) {
 			error('Get Collection: ' + err);
 		});
 }
+
+export async function getAllCollections() {
+	return await db
+		.select()
+		.from(schema.collections)
+		.catch((err) => {
+			error('Get All Collections: ' + err);
+		});
+}
