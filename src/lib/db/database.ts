@@ -27,7 +27,7 @@ export function getDb() {
 					throw new Error('SQLite database is not loaded yet');
 				}
 
-				let results: any = [];
+				let results: any = []; // eslint-disable-line
 
 				// If the query is a SELECT, use the select method
 				if (isSelectQuery(sql)) {
