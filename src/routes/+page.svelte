@@ -171,7 +171,10 @@
 </nav>
 
 <main class="flex-grow flex-col p-5">
-	{#if matchedMovies.length >= 1}
+	{#if isLoading}
+		<p>Lädt...</p>
+	{:else if matchedMovies.length >= 1}
+		<!-- Suche -->
 		<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
 			<div>
 				<input
@@ -223,6 +226,7 @@
 			</button>
 		</div>
 
+		<!-- Skalierung -->
 		<div class="mt-5 flex flex-1 justify-end">
 			<div class="join join-vertical lg:join-horizontal">
 				<!-- Klein -->
@@ -280,12 +284,9 @@
 				</button>
 			</div>
 		</div>
-	{/if}
 
-	<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
-		{#if isLoading}
-			<p>Lädt...</p>
-		{:else if matchedMovies.length >= 1}
+		<!-- Filme -->
+		<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
 			{#each matchedMovies as movie}
 				<a
 					href={'./movie?id=' + movie.id.toString()}
@@ -319,8 +320,8 @@
 					</div>
 				</a>
 			{/each}
-		{:else}
-			<p>Du hast noch keine Filme hinzugefügt</p>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<p>Du hast noch keine Filme hinzugefügt</p>
+	{/if}
 </main>
