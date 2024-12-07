@@ -109,7 +109,7 @@ export async function fetchImageDimensions(
 	return new Promise((resolve, reject) => {
 		const img = new Image();
 		img.onload = () => resolve({ width: img.width, height: img.height });
-		img.onerror = (err) => reject(`Bild konnte nicht geladen werden: ${err}`);
+		img.onerror = (err) => reject(new Error(`Bild konnte nicht geladen werden: ${err}`));
 		img.src = src;
 	});
 }
