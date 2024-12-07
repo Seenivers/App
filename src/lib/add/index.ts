@@ -50,7 +50,7 @@ export async function searchMovies(
 	const url = new URL(seeniversURL + '/api/movie/search');
 	url.searchParams.append('name', name);
 	url.searchParams.append('language', settings.language);
-	url.searchParams.append('includeAdult', settings.adult.toString());
+	url.searchParams.append('includeAdult', String(settings.adult));
 	url.searchParams.append('primaryReleaseYear', primaryReleaseYear?.toString() ?? '');
 	url.searchParams.append('page', page.toString());
 
