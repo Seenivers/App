@@ -79,23 +79,25 @@ async function updateMovies() {
 					const updatedDate = new Date(movie.updated);
 					if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
 						const result = await getMovieTmdb(movie.id, loadedSettings?.language);
-						await db
-							.update(schema.movies)
-							.set({ tmdb: result, updated: currentDate })
-							.where(eq(schema.movies.id, movie.id));
-					}
-				}
-
-				// Füge Collection hinzu, wenn nicht vorhanden
-				if (movie.tmdb.belongs_to_collection) {
-					const collection = await getCollection(movie.tmdb.belongs_to_collection.id);
-					if (!collection) {
-						const result = await getCollectionTmdb(
-							movie.tmdb.belongs_to_collection.id,
-							loadedSettings?.language
-						);
 						if (result) {
-							await addCollection({ ...result, updated: new Date() });
+							await db
+								.update(schema.movies)
+								.set({ tmdb: result, updated: currentDate })
+								.where(eq(schema.movies.id, movie.id));
+						}
+					}
+
+					// Füge Collection hinzu, wenn nicht vorhanden
+					if (movie.tmdb.belongs_to_collection) {
+						const collection = await getCollection(movie.tmdb.belongs_to_collection.id);
+						if (!collection) {
+							const result = await getCollectionTmdb(
+								movie.tmdb.belongs_to_collection.id,
+								loadedSettings?.language
+							);
+							if (result) {
+								await addCollection({ ...result, updated: new Date() });
+							}
 						}
 					}
 				}
