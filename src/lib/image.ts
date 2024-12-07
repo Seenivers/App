@@ -108,7 +108,9 @@ export async function fetchImageDimensions(
 ): Promise<{ width: number; height: number }> {
 	return new Promise((resolve, reject) => {
 		const img = new Image();
-		img.onload = () => resolve({ width: img.width, height: img.height });
+		img.onload = () => {
+			resolve({ width: img.width, height: img.height });
+		};
 		img.onerror = (err) => {
 			const errorMessage = err instanceof Error ? err.message : JSON.stringify(err);
 			reject(new Error('Bild konnte nicht geladen werden: ' + errorMessage));
