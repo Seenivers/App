@@ -3,7 +3,7 @@ import { error } from '@tauri-apps/plugin-log';
 import type { Movie } from '$lib/types/movie';
 import { settings } from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
-import type { CollectionDetails } from './types/collection';
+import type { CollectionDetails } from '$lib/types/collection';
 
 async function fetchData<T>(endpoint: string, id: number, language: string) {
 	try {

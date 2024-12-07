@@ -1,6 +1,6 @@
 import { readDir, readFile } from '@tauri-apps/plugin-fs';
 import { resourceDir } from '@tauri-apps/api/path';
-import { sqlite } from './database';
+import { sqlite } from '$lib/db/database';
 import { error, info } from '@tauri-apps/plugin-log';
 
 /**

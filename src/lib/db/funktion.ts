@@ -1,8 +1,8 @@
 import { schema } from '$lib/db/schema';
 import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
-import { db } from './database';
-import { migrate } from './migrate';
+import { db } from '$lib/db/database';
+import { migrate } from '$lib/db/migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types';
 import { getMovie as getMovieTmdb, getCollection as getCollectionTmdb } from '$lib/tmdb';

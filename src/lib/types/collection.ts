@@ -1,4 +1,4 @@
-import type { Movie } from './searchMovie';
+import type { Movie } from '$lib/types/searchMovie';
 
 export interface Collection {
 	id: number;

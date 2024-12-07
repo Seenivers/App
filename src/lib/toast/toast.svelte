@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { settings } from '$lib/db/funktion';
 	import type { AlertPositionHorizontally, AlertPositionVertically } from '$lib/types/settings';
-	import { messages } from './toast';
+	import { messages } from '$lib/toast/toast';
 	import { fly } from 'svelte/transition';
 	import { cubicOut, cubicIn } from 'svelte/easing';
 
