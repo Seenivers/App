@@ -59,45 +59,59 @@ async function initializeSettings() {
 	}
 }
 
+async function updateEntity(
+	entity: typeof schema.movies.$inferSelect | typeof schema.collections.$inferSelect,
+	entityType: 'movies' | 'collections'
+) {
+	try {
+		const currentDate = new Date();
+
+		// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
+		if (!entity.updated) {
+			await db
+				.update(schema[entityType])
+				.set({ updated: currentDate })
+				.where(eq(schema[entityType].id, entity.id));
+		} else {
+			// Überprüfen, ob das "updated"-Datum älter als die definierte Zeitspanne ist
+			const updatedDate = new Date(entity.updated);
+			if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
+				const result =
+					entityType === 'movies'
+						? await getMovieTmdb(entity.id, loadedSettings?.language)
+						: await getCollectionTmdb(entity.id, loadedSettings?.language);
+
+				if (result) {
+					await db
+						.update(schema[entityType])
+						.set({ ...result, updated: currentDate })
+						.where(eq(schema[entityType].id, entity.id));
+				}
+			}
+		}
+	} catch (err) {
+		console.error(`Fehler beim Aktualisieren der ${entityType.slice(0, -1)}s:`, err);
+	}
+}
+
 async function updateMovies() {
 	try {
 		const movies = await getAllMovies();
 		if (movies && movies.length > 0) {
-			// Aktuelles Datum einmalig berechnen
-			const currentDate = new Date();
-
 			// Filme nacheinander durchgehen
 			for (const movie of movies) {
-				// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
-				if (!movie.updated) {
-					await db
-						.update(schema.movies)
-						.set({ updated: currentDate })
-						.where(eq(schema.movies.id, movie.id));
-				} else {
-					// Überprüfen, ob das "updated"-Datum älter als die definierte Zeitspanne ist
-					const updatedDate = new Date(movie.updated);
-					if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
-						const result = await getMovieTmdb(movie.id, loadedSettings?.language);
+				// Aktualisiere Filme, wenn nötig
+				await updateEntity(movie, 'movies');
+				// Füge Collection hinzu, wenn nicht vorhanden
+				if (movie.tmdb.belongs_to_collection) {
+					const collection = await getCollection(movie.tmdb.belongs_to_collection.id);
+					if (!collection) {
+						const result = await getCollectionTmdb(
+							movie.tmdb.belongs_to_collection.id,
+							loadedSettings?.language
+						);
 						if (result) {
-							await db
-								.update(schema.movies)
-								.set({ tmdb: result, updated: currentDate })
-								.where(eq(schema.movies.id, movie.id));
-						}
-					}
-
-					// Füge Collection hinzu, wenn nicht vorhanden
-					if (movie.tmdb.belongs_to_collection) {
-						const collection = await getCollection(movie.tmdb.belongs_to_collection.id);
-						if (!collection) {
-							const result = await getCollectionTmdb(
-								movie.tmdb.belongs_to_collection.id,
-								loadedSettings?.language
-							);
-							if (result) {
-								await addCollection({ ...result, updated: new Date() });
-							}
+							await addCollection({ ...result, updated: new Date() });
 						}
 					}
 				}
@@ -108,34 +122,14 @@ async function updateMovies() {
 	}
 }
 
-async function updateCollection() {
+async function updateCollections() {
 	try {
 		const collections = await getAllCollections();
 		if (collections && collections.length > 0) {
-			// Aktuelles Datum einmalig berechnen
-			const currentDate = new Date();
-
-			// Filme nacheinander durchgehen
+			// Collectionen nacheinander durchgehen
 			for (const collection of collections) {
-				// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
-				if (!collection.updated) {
-					await db
-						.update(schema.collections)
-						.set({ updated: currentDate })
-						.where(eq(schema.collections.id, collection.id));
-				} else {
-					// Überprüfen, ob das "updated"-Datum älter als die definierte Zeitspanne ist
-					const updatedDate = new Date(collection.updated);
-					if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
-						const result = await getCollectionTmdb(collection.id, loadedSettings?.language);
-						if (result) {
-							await db
-								.update(schema.collections)
-								.set({ ...result, updated: currentDate })
-								.where(eq(schema.collections.id, collection.id));
-						}
-					}
-				}
+				// Aktualisiere Collection, wenn nötig
+				await updateEntity(collection, 'collections');
 			}
 		}
 	} catch (err) {
@@ -155,7 +149,7 @@ if (!loadedSettings) {
 export const settings = loadedSettings;
 
 updateMovies();
-updateCollection();
+updateCollections();
 
 export async function addMovie(data: typeof schema.movies.$inferInsert) {
 	return await db
