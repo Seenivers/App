@@ -130,7 +130,7 @@
 
 				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
 				if (!modal) {
-					addNewMovie(result[0].id, status[i].searchParams.path);
+					await addNewMovie(result[0].id, status[i].searchParams.path);
 				}
 			} else if (result.length > 1) {
 				status[i].searchResults = result;
