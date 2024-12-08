@@ -2,7 +2,7 @@ import { imageURL, placeholderURL, seeniversURL } from '$lib';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
-import { error } from '@tauri-apps/plugin-log';
+import { debug, error } from '@tauri-apps/plugin-log';
 import { fetch } from '@tauri-apps/plugin-http';
 
 /**
@@ -112,9 +112,11 @@ export async function fetchImageDimensions(
 			resolve({ width: img.width, height: img.height });
 		};
 		img.onerror = (err) => {
-			const errorMessage = err instanceof Error ? err.message : JSON.stringify(err);
-			reject(new Error('Bild konnte nicht geladen werden: ' + errorMessage));
+			const errorDetails =
+				err instanceof ErrorEvent ? `Message: ${err.message}, URL: ${src}` : JSON.stringify(err);
+			reject(new Error(`Bild konnte nicht geladen werden. Details: ${errorDetails}`));
 		};
+		debug('Lade Bild von Quelle: ' + src);
 		img.src = src;
 	});
 }
