@@ -84,46 +84,62 @@ export async function image(
 	file: string | null | undefined,
 	path: 'actors' | 'backdrops' | 'posters' | null = null,
 	download = false
-): Promise<{ src: string; width: number; height: number }> {
+) {
 	const resolveImageSource = async (src: string) => {
-		const { width, height } = await fetchImageDimensions(src);
+		const { width, height } = await fetchImageDimensions(src).catch((err) => {
+			error(`Fehler beim Abrufen der Bildabmessungen: ${err}`);
+			return { width: 300, height: 450 }; // Rückfallwerte
+		});
 		return { src, width, height };
 	};
 
 	// Rückgabe des Platzhalters, falls kein Dateiname vorhanden
-	if (!file) return resolveImageSource(placeholderURL);
+	if (!file) {
+		return resolveImageSource(placeholderURL);
+	}
 
 	const folderPath = path ? `images/${path}` : 'images';
 	const filePath = `${folderPath}/${file}`;
 
-	try {
-		// Verzeichnis sicherstellen
-		await ensureDirectoryExists(folderPath);
+	// Verzeichnis sicherstellen
+	await ensureDirectoryExists(folderPath).catch((err) => {
+		error(`Fehler beim Erstellen des Verzeichnisses '${folderPath}': ${err}`);
+	});
 
-		// Bildpfad überprüfen oder herunterladen
-		if (await exists(filePath, { baseDir: BaseDirectory.AppData })) {
-			const localPath = await join(await appDataDir(), filePath);
+	// Bildpfad überprüfen oder herunterladen
+	if (
+		await exists(filePath, { baseDir: BaseDirectory.AppData }).catch((err) => {
+			error(`Fehler bei der Überprüfung des Bildpfads '${filePath}': ${err}`);
+			return false;
+		})
+	) {
+		let localPath = await join(await appDataDir(), filePath).catch((err) => {
+			error(`Fehler beim Zusammenfügen des lokalen Pfads: ${err}`);
+		});
+
+		if (localPath) {
 			return resolveImageSource(convertFileSrc(localPath));
+		} else {
+			return resolveImageSource(placeholderURL);
 		}
-
-		if (navigator.onLine) {
-			const remoteSrc = `${imageURL}${file}`;
-
-			if (download) {
-				await downloadImage(remoteSrc, filePath);
-				const localPath = await join(await appDataDir(), filePath);
-				return resolveImageSource(convertFileSrc(localPath));
-			}
-
-			return resolveImageSource(remoteSrc);
-		}
-
-		// Platzhalter für Offline-Modus
-		return resolveImageSource(placeholderURL);
-	} catch (err) {
-		error(`Fehler bei der Bildverarbeitung: ${err}`);
-		return resolveImageSource(placeholderURL);
 	}
+
+	if (navigator.onLine) {
+		const remoteSrc = `${imageURL}${file}`;
+
+		if (download) {
+			// Nur starten, kein `await`, da Rückgabe direkt erfolgen soll
+			downloadImage(remoteSrc, filePath).catch((err) => {
+				error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err}`);
+			});
+		}
+
+		// Remote-URL ohne Verarbeitung zurückgeben
+		return resolveImageSource(remoteSrc);
+	}
+
+	// Platzhalter für Offline-Modus
+	return resolveImageSource(placeholderURL);
 }
 
 /**
