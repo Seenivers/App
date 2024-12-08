@@ -9,8 +9,12 @@
 	import type { MovieSearchStatus } from '$lib/add/types';
 	import { image } from '$lib/image';
 	import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
+	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 
-	let selected: string | string[] | null = null;
+	export let data: PageData;
+
+	let selected: string | string[] | null = data.paths.length > 0 ? data.paths : null;
 	let status: MovieSearchStatus[] = [];
 
 	const castImages = 4; // 5 Bilder laden
@@ -18,6 +22,10 @@
 
 	let modal = false;
 	let modalID = 0;
+
+	onMount(async () => {
+		if (selected && Array.isArray(selected)) load(selected);
+	});
 
 	// Handle file selection
 	async function selectFile() {
