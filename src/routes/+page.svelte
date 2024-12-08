@@ -162,10 +162,10 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <nav class="navbar flex justify-between bg-base-100">
-	<div>
+	<div class="gap-1">
 		<a href="./add" class="btn btn-ghost">Hinzufügen</a>
 	</div>
-	<div>
+	<div class="gap-1">
 		<a href="./settings" class="btn btn-ghost">Settings</a>
 	</div>
 </nav>
