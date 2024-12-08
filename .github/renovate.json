@@ -1,10 +1,8 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:recommended"],
-	"automerge": true,
 	"vulnerabilityAlerts": {
-		"labels": ["security"],
-		"automerge": true
+		"labels": ["security"]
 	},
 	"rebaseWhen": "auto",
 	"labels": ["dependencies"],
@@ -12,29 +10,24 @@
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
-	"schedule": ["before 3am"],
-	"automergeSchedule": ["before 3am"],
+	"schedule": ["before 5am"],
 	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["patch", "minor"],
-			"automerge": true,
-			"requiredStatusChecks": ["CodeQL"],
-			"labels": ["automerge"]
+			"requiredStatusChecks": ["CodeQL"]
 		},
 		{
-			"matchPackageNames": ["npm"],
-			"automerge": true,
-			"labels": ["npm"]
+			"matchFileNames": ["package.json", "npm"],
+			"labels": ["npm", "javascript"]
 		},
 		{
-			"matchPackageNames": ["cargo"],
-			"automerge": true,
+			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
 			"labels": ["rust"]
 		},
 		{
-			"matchPackageNames": ["github-actions"],
+			"matchFileNames": [".github/workflows/*.yml"],
 			"automerge": false,
 			"labels": ["github-actions"]
 		}
