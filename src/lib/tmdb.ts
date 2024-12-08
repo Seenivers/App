@@ -6,34 +6,46 @@ import { seeniversURL } from '$lib';
 import type { CollectionDetails } from '$lib/types/collection';
 
 async function fetchData<T>(endpoint: string, id: number, language: string) {
-	try {
-		// Erstelle die URL mit den Query-Parametern id und language
-		const url = new URL(endpoint, seeniversURL);
-		url.searchParams.set('id', id.toString());
-		url.searchParams.set('language', language);
+	// Erstelle die URL mit den Query-Parametern id und language
+	const url = new URL(endpoint, seeniversURL);
+	url.searchParams.set('id', id.toString());
+	url.searchParams.set('language', language);
 
-		// Führe den GET-Request aus
-		const response = await fetch(url.toString(), {
+	// Führe den GET-Request aus
+	let response: Response;
+	try {
+		response = await fetch(url, {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json' }
 		});
-
-		// Überprüfe, ob die Antwort OK ist
-		if (!response.ok) {
-			const errorMessage = await response.text(); // Hole den Text der Fehlermeldung
-			throw new Error(
-				`Fehler beim Abrufen von ${endpoint} (Status: ${response.status}): ${errorMessage}`
-			);
-		}
-
-		// Versuche, die JSON-Antwort zu parsen
-		const data = await response.json();
-		return data as T;
 	} catch (err) {
-		// Fehlerbehandlung mit detaillierterer Ausgabe
-		const errorMessage =
-			err instanceof Error ? err.message : 'Ein unbekannter Fehler ist aufgetreten';
-		error(`Fehler: ${errorMessage}`);
+		// Fehlerbehandlung für den Fetch-Aufruf
+		const errorMessage = `Fehler beim Abrufen von ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
+		error(errorMessage);
+		throw new Error(errorMessage); // Fehler weiterwerfen
+	}
+
+	// Überprüfe den HTTP-Status der Antwort
+	if (!response.ok) {
+		// Optional: Versuche, die Fehlermeldung aus der Antwort zu lesen
+		let errorMessage = `Fehler beim Abrufen von ${endpoint} (Status: ${response.status})`;
+		try {
+			const responseText = await response.text();
+			if (responseText) errorMessage += `: ${responseText}`;
+		} catch {
+			errorMessage += ' (Fehler beim Lesen der Fehlermeldung)';
+		}
+		error(errorMessage);
+		throw new Error(errorMessage); // Fehler weiterwerfen
+	}
+
+	// Versuche, die JSON-Antwort zu parsen
+	try {
+		return (await response.json()) as T;
+	} catch (err) {
+		const errorMessage = `Fehler beim Parsen der JSON-Antwort von ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
+		error(errorMessage);
+		throw new Error(errorMessage); // Fehler weiterwerfen
 	}
 }
 
