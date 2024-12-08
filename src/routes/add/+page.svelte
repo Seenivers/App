@@ -8,7 +8,7 @@
 	import { buttonClass, getIcon, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/add/types';
 	import { image } from '$lib/image';
-	import { getCollection, getMovie as getMovieTmdb } from '$lib/tmdb';
+	import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
 
 	let selected: string | string[] | null = null;
 	let status: MovieSearchStatus[] = [];
@@ -185,7 +185,7 @@
 				// Collektion hinzufügen
 				if (result.belongs_to_collection) {
 					try {
-						const collection = await getCollection(result.belongs_to_collection.id);
+						const collection = await getCollectionTmdb(result.belongs_to_collection.id);
 
 						if (collection) {
 							// Collektion zur DB hinzufügen
