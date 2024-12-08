@@ -5,5 +5,9 @@
 		"**/build": true,
 		"**/package-lock.json": true,
 		"**/target": true
+	},
+	"sonarlint.connectedMode.project": {
+		"connectionId": "seenivers",
+		"projectKey": "Seenivers_App"
 	}
 }

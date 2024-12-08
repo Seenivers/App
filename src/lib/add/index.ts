@@ -1,6 +1,5 @@
 import { getMovie } from '$lib/tmdb';
 import { settings } from '$lib/db/funktion';
-import type { Movie } from '$lib/types/movie';
 import { seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
 import { fetch } from '@tauri-apps/plugin-http';
@@ -50,7 +49,7 @@ export async function searchMovies(
 	const url = new URL(seeniversURL + '/api/movie/search');
 	url.searchParams.append('name', name);
 	url.searchParams.append('language', settings.language);
-	url.searchParams.append('includeAdult', settings.adult.toString());
+	url.searchParams.append('includeAdult', String(settings.adult));
 	url.searchParams.append('primaryReleaseYear', primaryReleaseYear?.toString() ?? '');
 	url.searchParams.append('page', page.toString());
 
@@ -62,6 +61,6 @@ export async function searchMovies(
 /**
  * Holt einen Film von TMDB basierend auf seiner ID.
  */
-export async function getMovieDetails(id: number): Promise<Movie | undefined> {
+export async function getMovieDetails(id: number) {
 	return await getMovie(id, settings.language);
 }

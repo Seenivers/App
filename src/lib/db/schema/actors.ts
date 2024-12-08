@@ -2,7 +2,7 @@ import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // https://developer.themoviedb.org/reference/person-details
 export const actors = sqliteTable('actors', {
-	id: int('id').notNull().primaryKey(),
+	id: int('id').notNull().primaryKey().unique(),
 	name: text('name').notNull(),
 	profile_path: text('profile_path'),
 	biography: text('biography').notNull(),
@@ -15,5 +15,7 @@ export const actors = sqliteTable('actors', {
 	homepage: text('homepage'),
 	popularity: int('popularity'),
 	imdb_id: text('imdb_id').notNull(),
-	place_of_birth: int('place_of_birth', { mode: 'timestamp' })
+	place_of_birth: int('place_of_birth', { mode: 'timestamp' }),
+	// @ts-expect-error "0" ist in Unix-Format vorhanden und daher ist es das gleiche wie Type "Date"
+	updated: int('updated', { mode: 'timestamp' }).notNull().default(0)
 });

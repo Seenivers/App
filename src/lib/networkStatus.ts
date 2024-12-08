@@ -1,4 +1,4 @@
-import { newToast } from './toast/toast';
+import { newToast } from '$lib/toast/toast';
 import { trace } from '@tauri-apps/plugin-log';
 
 // Online-Status überwachen und Einstellungen aktualisieren

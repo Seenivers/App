@@ -27,30 +27,28 @@ export function getDb() {
 					throw new Error('SQLite database is not loaded yet');
 				}
 
-				let rows: any = []; // eslint-disable-line
-				let results = [];
+				let results: any = []; // eslint-disable-line
 
 				// If the query is a SELECT, use the select method
 				if (isSelectQuery(sql)) {
-					rows = await sqlite.select(sql, params).catch((e) => {
+					results = await sqlite.select(sql, params).catch((e) => {
 						error('SQL Error: ' + e);
 						return [];
 					});
 				} else {
 					// Otherwise, use the execute method
-					rows = await sqlite.execute(sql, params).catch((e) => {
+					await sqlite.execute(sql, params).catch((e) => {
 						error('SQL Error: ' + e);
 						return [];
 					});
 					return { rows: [] };
 				}
 
-				rows = rows.map((row: any) => Object.values(row)); // eslint-disable-line
+				// Map results to arrays if necessary
+				results = results.map((row: any) => Object.values(row)); // eslint-disable-line
 
 				// If the method is "all", return all rows
-				results = method === 'all' ? rows : rows[0];
-
-				return { rows: results };
+				return { rows: method === 'all' ? results : results[0] };
 			},
 			{ schema: schema, logger: import.meta.env.DEV }
 		);

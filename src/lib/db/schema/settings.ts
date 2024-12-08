@@ -2,7 +2,7 @@ import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import type { Settings } from '$lib/types/settings';
 
 export const settings = sqliteTable('settings', {
-	id: int('id').primaryKey().default(1),
+	id: int('id').primaryKey().default(1).unique().notNull(),
 	language: text('language').notNull().default('en'),
 	keywords: text('keywords', { mode: 'json' })
 		.notNull()

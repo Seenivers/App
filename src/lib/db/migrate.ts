@@ -1,6 +1,6 @@
-import { readDir, readTextFile } from '@tauri-apps/plugin-fs';
+import { readDir, readFile } from '@tauri-apps/plugin-fs';
 import { resourceDir } from '@tauri-apps/api/path';
-import { sqlite } from './database';
+import { sqlite } from '$lib/db/database';
 import { error, info } from '@tauri-apps/plugin-log';
 
 /**
@@ -37,12 +37,12 @@ export async function migrate() {
 		error('Failed to create migration table: ' + err);
 	});
 
+	const dbMigrations: { id: number; hash: string; created_at: number }[] = await sqlite.select(
+		/*sql*/ `SELECT id, hash, created_at FROM "__drizzle_migrations" ORDER BY created_at DESC`
+	);
+
 	for (const migration of migrations) {
 		const hash = migration.name?.replace('.sql', '');
-
-		const dbMigrations = (await sqlite.select(
-			/*sql*/ `SELECT id, hash, created_at FROM "__drizzle_migrations" ORDER BY created_at DESC`
-		)) as { id: number; hash: string; created_at: number }[];
 
 		const hasBeenRun = (hash: string) =>
 			dbMigrations.find((dbMigration) => {
@@ -50,11 +50,14 @@ export async function migrate() {
 			});
 
 		if (hash && hasBeenRun(hash) === undefined) {
-			const sql = await readTextFile(`${resourcePath}/migrations/${migration.name}`);
+			// Lese die Datei als Uint8Array und konvertiere sie in einen ArrayBuffer
+			const fileData: Uint8Array = await readFile(`${resourcePath}/migrations/${migration.name}`);
+			const sql = arrayBufferToString(fileData.buffer);
 
 			await sqlite.execute(sql, []).catch((err) => {
 				error(`Failed to execute migration ${hash}: ` + err);
 			});
+
 			await sqlite
 				.execute(/*sql*/ `INSERT INTO "__drizzle_migrations" (hash, created_at) VALUES ($1, $2)`, [
 					hash,
@@ -68,4 +71,15 @@ export async function migrate() {
 
 	info('Migrations complete');
 	return Promise.resolve();
+}
+
+/**
+ * Converts an ArrayBuffer to a UTF-8 string.
+ *
+ * @param buffer - The ArrayBuffer to convert.
+ * @returns The decoded string.
+ */
+function arrayBufferToString(buffer: ArrayBuffer): string {
+	const decoder = new TextDecoder('utf-8');
+	return decoder.decode(buffer);
 }

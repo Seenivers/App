@@ -22,6 +22,7 @@
 	// Lade die Filme und initialisiere die Fuse-Suche
 	let matchedMovies: (typeof schema.movies.$inferSelect)[] = [];
 	let isLoading = false;
+	let CARDSCALE: 1 | 2 | 3 = 2;
 
 	// Funktion zum Laden der Filme
 	async function loadMovies() {
@@ -170,7 +171,10 @@
 </nav>
 
 <main class="flex-grow flex-col p-5">
-	{#if matchedMovies.length >= 1}
+	{#if isLoading}
+		<p>Lädt...</p>
+	{:else if matchedMovies.length >= 1}
+		<!-- Suche -->
 		<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
 			<div>
 				<input
@@ -221,17 +225,78 @@
 				Filter zurücksetzen
 			</button>
 		</div>
-	{/if}
 
-	<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
-		{#if isLoading}
-			<p>Lädt...</p>
-		{:else if matchedMovies.length >= 1}
+		<!-- Skalierung -->
+		<div class="mt-5 flex flex-1 justify-end">
+			<div class="join join-vertical lg:join-horizontal">
+				<!-- Klein -->
+				<button
+					class="btn join-item flex items-center gap-2"
+					on:click={() => {
+						CARDSCALE = 1;
+					}}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<circle cx="12" cy="12" r="4" />
+					</svg>
+					<span class="hidden lg:inline">Klein</span>
+				</button>
+
+				<!-- Mittel -->
+				<button
+					class="btn join-item flex items-center gap-2"
+					on:click={() => {
+						CARDSCALE = 2;
+					}}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<circle cx="12" cy="12" r="6" />
+					</svg>
+					<span class="hidden lg:inline">Mittel</span>
+				</button>
+
+				<!-- Groß -->
+				<button
+					class="btn join-item flex items-center gap-2"
+					on:click={() => {
+						CARDSCALE = 3;
+					}}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-7 w-7"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<circle cx="12" cy="12" r="8" />
+					</svg>
+					<span class="hidden lg:inline">Groß</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Filme -->
+		<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
 			{#each matchedMovies as movie}
 				<a
 					href={'./movie?id=' + movie.id.toString()}
 					draggable="false"
-					class="card h-fit min-w-[15rem] max-w-[20rem] flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20"
+					class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
+				{CARDSCALE === 1
+						? 'min-w-[8rem] max-w-[12rem]'
+						: CARDSCALE === 2
+							? 'min-w-[12rem] max-w-[18rem]'
+							: 'min-w-[16rem] max-w-[24rem]'}"
 				>
 					<figure class="relative px-2 pt-2">
 						{#await image(movie.tmdb.poster_path, 'posters', true) then { src, width, height }}
@@ -255,8 +320,8 @@
 					</div>
 				</a>
 			{/each}
-		{:else}
-			<p>Du hast noch keine Filme hinzugefügt</p>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<p>Du hast noch keine Filme hinzugefügt</p>
+	{/if}
 </main>

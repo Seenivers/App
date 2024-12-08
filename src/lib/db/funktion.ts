@@ -1,13 +1,22 @@
 import { schema } from '$lib/db/schema';
 import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
-import { db } from './database';
-import { migrate } from './migrate';
+import { db } from '$lib/db/database';
+import { migrate } from '$lib/db/migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
-import type { oldData } from '$lib/types';
-import { getMovie as getMovieTmdb } from '$lib/tmdb';
+import type { OldData } from '$lib/types';
+import { getMovie as getMovieTmdb, getCollection as getCollectionTmdb } from '$lib/tmdb';
+
+const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
+const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
+const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
 
 let loadedSettings: typeof schema.settings.$inferSelect | undefined;
+
+async function createDefaultSettings() {
+	await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
+	return (await db.select().from(schema.settings).limit(1))[0];
+}
 
 /**
  * Initialisiert die Settings nur einmal und speichert sie in `loadedSettings`.
@@ -25,7 +34,7 @@ async function initializeSettings() {
 		const content = (await readTextFile('data.lib', { baseDir: BaseDirectory.AppConfig })).trim();
 
 		if (content) {
-			const data: oldData = JSON.parse(content);
+			const data: OldData = JSON.parse(content);
 
 			await Promise.all(
 				data.movies.map(async (movie) => {
@@ -50,32 +59,60 @@ async function initializeSettings() {
 	}
 }
 
-async function updated() {
+async function updateEntity(
+	entity: typeof schema.movies.$inferSelect | typeof schema.collections.$inferSelect,
+	entityType: 'movies' | 'collections'
+) {
+	try {
+		const currentDate = new Date();
+
+		// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
+		if (!entity.updated) {
+			await db
+				.update(schema[entityType])
+				.set({ updated: currentDate })
+				.where(eq(schema[entityType].id, entity.id));
+		} else {
+			// Überprüfen, ob das "updated"-Datum älter als die definierte Zeitspanne ist
+			const updatedDate = new Date(entity.updated);
+			if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
+				const result =
+					entityType === 'movies'
+						? await getMovieTmdb(entity.id, loadedSettings?.language)
+						: await getCollectionTmdb(entity.id, loadedSettings?.language);
+
+				if (result) {
+					await db
+						.update(schema[entityType])
+						.set({ ...result, updated: currentDate })
+						.where(eq(schema[entityType].id, entity.id));
+				}
+			}
+		}
+	} catch (err) {
+		console.error(`Fehler beim Aktualisieren der ${entityType.slice(0, -1)}s:`, err);
+	}
+}
+
+async function updateMovies() {
 	try {
 		const movies = await getAllMovies();
 		if (movies && movies.length > 0) {
-			// Dauer in Millisekunden für 2 Wochen
-			const twoWeeksInMillis = 6.048e8 * 2;
-			// Aktuelles Datum einmalig berechnen
-			const currentDate = new Date();
-
 			// Filme nacheinander durchgehen
 			for (const movie of movies) {
-				// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
-				if (!movie.updated) {
-					await db
-						.update(schema.movies)
-						.set({ updated: currentDate })
-						.where(eq(schema.movies.id, movie.id));
-				} else {
-					// Überprüfen, ob das "updated"-Datum älter als 2 Wochen ist
-					const updatedDate = new Date(movie.updated);
-					if (updatedDate.getTime() + twoWeeksInMillis < currentDate.getTime()) {
-						const result = await getMovieTmdb(movie.id, loadedSettings?.language);
-						await db
-							.update(schema.movies)
-							.set({ tmdb: result, updated: currentDate })
-							.where(eq(schema.movies.id, movie.id));
+				// Aktualisiere Filme, wenn nötig
+				await updateEntity(movie, 'movies');
+				// Füge Collection hinzu, wenn nicht vorhanden
+				if (movie.tmdb.belongs_to_collection) {
+					const collection = await getCollection(movie.tmdb.belongs_to_collection.id);
+					if (!collection) {
+						const result = await getCollectionTmdb(
+							movie.tmdb.belongs_to_collection.id,
+							loadedSettings?.language
+						);
+						if (result) {
+							await addCollection({ ...result, updated: new Date() });
+						}
 					}
 				}
 			}
@@ -85,9 +122,19 @@ async function updated() {
 	}
 }
 
-async function createDefaultSettings() {
-	await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
-	return (await db.select().from(schema.settings).limit(1))[0];
+async function updateCollections() {
+	try {
+		const collections = await getAllCollections();
+		if (collections && collections.length > 0) {
+			// Collectionen nacheinander durchgehen
+			for (const collection of collections) {
+				// Aktualisiere Collection, wenn nötig
+				await updateEntity(collection, 'collections');
+			}
+		}
+	} catch (err) {
+		console.error('Fehler beim Aktualisieren der Collections:', err);
+	}
 }
 
 await initializeSettings();
@@ -101,7 +148,8 @@ if (!loadedSettings) {
  */
 export const settings = loadedSettings;
 
-updated();
+updateMovies();
+updateCollections();
 
 export async function addMovie(data: typeof schema.movies.$inferInsert) {
 	return await db
@@ -174,5 +222,14 @@ export async function getCollection(id: number) {
 		.findFirst({ where: eq(schema.collections.id, id) })
 		.catch((err) => {
 			error('Get Collection: ' + err);
+		});
+}
+
+export async function getAllCollections() {
+	return await db
+		.select()
+		.from(schema.collections)
+		.catch((err) => {
+			error('Get All Collections: ' + err);
 		});
 }
