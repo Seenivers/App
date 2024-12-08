@@ -57,10 +57,3 @@ export async function searchMovies(
 
 	return (await result.json()) as Search<SearchMovie>;
 }
-
-/**
- * Holt einen Film von TMDB basierend auf seiner ID.
- */
-export async function getMovieDetails(id: number) {
-	return await getMovie(id, settings.language);
-}
