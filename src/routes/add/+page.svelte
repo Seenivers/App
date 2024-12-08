@@ -5,10 +5,10 @@
 	import { imageURL, placeholderURL } from '$lib';
 	import { error } from '@tauri-apps/plugin-log';
 	import { addCollection, addMovie, isPathUnique, settings } from '$lib/db/funktion';
-	import { buttonClass, getIcon, getMovieDetails, searchMovies } from '$lib/add/index';
+	import { buttonClass, getIcon, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/add/types';
 	import { image } from '$lib/image';
-	import { getCollection } from '$lib/tmdb';
+	import { getCollection, getMovie as getMovieTmdb } from '$lib/tmdb';
 
 	let selected: string | string[] | null = null;
 	let status: MovieSearchStatus[] = [];
@@ -158,7 +158,7 @@
 		}
 
 		try {
-			const result = await getMovieDetails(id);
+			const result = await getMovieTmdb(id);
 
 			if (result) {
 				// Film zur DB hinzufügen
