@@ -52,7 +52,7 @@
 		"@tauri-apps/plugin-log": "^2.0.1",
 		"@tauri-apps/plugin-process": "^2.0.0",
 		"@tauri-apps/plugin-shell": "^2.0.1",
-		"@tauri-apps/plugin-sql": "^2.0.0",
+		"@tauri-apps/plugin-sql": "^2.0.2",
 		"@tauri-apps/plugin-updater": "^2.0.0",
 		"drizzle-orm": "^0.36.0",
 		"fuse.js": "^7.0.0"
