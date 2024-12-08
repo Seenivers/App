@@ -1,3 +1,48 @@
+# [0.13.0](https://github.com/Seenivers/App/compare/v0.12.1...v0.13.0) (2024-12-08)
+
+
+### Bug Fixes
+
+* add <title> tag to ensure title is present on page ([09bfa6c](https://github.com/Seenivers/App/commit/09bfa6c6531705d7efb615ea348c186d82774486))
+* add braces to arrow function to resolve void expression issue ([7e62617](https://github.com/Seenivers/App/commit/7e62617e00bb8cc4194f4f7cac9277f36b4c1685))
+* add eslint-disable-line to ignore 'any' type warning in database.ts ([c365eeb](https://github.com/Seenivers/App/commit/c365eeb2b1caaa3dc11db8c10922c30715e4d863))
+* add SonarLint project configuration to .vscode/settings.json ([9fe09d6](https://github.com/Seenivers/App/commit/9fe09d612c98a4978114838cd0de78a4a9749aaa))
+* change Promise rejection to use Error object for better error handling ([d8be583](https://github.com/Seenivers/App/commit/d8be58390b21539366eb467d91a4fd34245859b8))
+* **deps:** update dependency @tauri-apps/plugin-fs to ^2.0.2 ([5e42c04](https://github.com/Seenivers/App/commit/5e42c0452bdb9574fef832040101a1b1ad3d1025))
+* **deps:** update dependency @tauri-apps/plugin-fs to ^2.0.3 ([d134721](https://github.com/Seenivers/App/commit/d134721516a00b59f91e04182ce4d871729e53bf))
+* **deps:** update dependency drizzle-orm to ^0.36.4 ([0f3b066](https://github.com/Seenivers/App/commit/0f3b066ce9d100dd5c4eeadea88878ac776b1309))
+* **deps:** update dependency drizzle-orm to ^0.37.0 ([311939b](https://github.com/Seenivers/App/commit/311939b55e224c86f2eed4ee2e89f503258bd982))
+* **deps:** update rust crate tauri-plugin-fs to 2.1.0 ([60a8fca](https://github.com/Seenivers/App/commit/60a8fcaf45f5ac3bb34771720d7ec40258ddcce4))
+* **deps:** update rust crate tauri-plugin-shell to 2.0.2 ([705d978](https://github.com/Seenivers/App/commit/705d97841d80a94a4289239782890dab9428d29c))
+* disable Svelte XSS warning for safe HTML rendering ([331acbc](https://github.com/Seenivers/App/commit/331acbc01794084caa2aea3fcec365d01abeb250))
+* ensure movie data is updated only if new result is available ([ba11f80](https://github.com/Seenivers/App/commit/ba11f808b985374b236dea32c8565e283c6f04d9))
+* ensure proper type conversion for unsafe arguments in searchMovies ([6a9f03d](https://github.com/Seenivers/App/commit/6a9f03d9bd9d6b748f74a99a2fd1ae2e6389ecf0))
+* handle error object properly in image fetch by stringifying non-Error objects ([4167f53](https://github.com/Seenivers/App/commit/4167f5375c8017788f3c6f98856dd12ec20442e2))
+* refactor class names to follow naming convention (typescript:S101) ([143663a](https://github.com/Seenivers/App/commit/143663ac99c2dcb415e5f0cbb933ee7d12c7f0c4))
+* remove redundant cast and non-null assertion in dbMigrations assignment ([e7cba21](https://github.com/Seenivers/App/commit/e7cba2178e12628f482478314c47682b0ece0c86))
+* remove redundant union type overriding in getMovieDetails ([c7adeb0](https://github.com/Seenivers/App/commit/c7adeb0e8c511545c819b221fa49dabfb9d2ae05))
+* remove unnecessary import of Movie type from '$lib/types/movie' ([c814618](https://github.com/Seenivers/App/commit/c814618ffb227880c0c62c581976ce2e4f19f1a8))
+* remove unused 'readTextFile' import to resolve linting error ([58d714d](https://github.com/Seenivers/App/commit/58d714d5d7eb6befbc1c16320fd5362f8be949ff))
+* remove unused assignment of 'rows' in getDb function (typescript:S1854) ([15e6a53](https://github.com/Seenivers/App/commit/15e6a531f28e159a67e8c0611718afdf318bbca8))
+* resolved migration execution issue caused by ArrayBuffer instead of string ([cfb2487](https://github.com/Seenivers/App/commit/cfb24874f16c56aefa44db4deafbb8e5e4c02de7))
+* update dependabot.yml to conform with specification by using update groups ([93aeafa](https://github.com/Seenivers/App/commit/93aeafa04f8ed2686d7e7440fafdeaed5f58e541))
+* update import for Movie type to reflect changes in type location ([9d90983](https://github.com/Seenivers/App/commit/9d90983dd85247fc6ee477a6c463aa8f3e0ca8ec))
+* **update modal:** update German text for update modal and download progress ([eaafcd5](https://github.com/Seenivers/App/commit/eaafcd55697206bcfd98fbdd9ca223185a23dafe))
+* **update:** improve update modal and download process logic ([172645b](https://github.com/Seenivers/App/commit/172645b9f7f5d2ced9127baebdb453673c1f7ba0))
+
+
+### Features
+
+* **db:** update drizzle schema and apply database migrations ([3cc66d6](https://github.com/Seenivers/App/commit/3cc66d660c99a9066d161fcd34feb9b901917541))
+* **deps:** add marked for markdown parsing ([63308ca](https://github.com/Seenivers/App/commit/63308ca71641e6834230eec35af2c31eb3e90f25))
+* **getAllCollections:** add function to retrieve all collections from the database ([4091592](https://github.com/Seenivers/App/commit/4091592b4e490b0cc940c3f0827694caecaad051))
+* **homepage:** add scalable elements with adjustable sizes for optimal space usage ([e681dfc](https://github.com/Seenivers/App/commit/e681dfc3eded28948a58349d57de95cbfbe5a9a4))
+* **modal:** improve responsiveness and layout for smaller screens ([bd14c86](https://github.com/Seenivers/App/commit/bd14c869f030173a6565105f6d5640721f60fd4d))
+* **update-modal:** open external links in browser from changelog ([58f628c](https://github.com/Seenivers/App/commit/58f628c3ade3a2d92713b4529675b7df87d8e5ed))
+* **updateCollection:** add function to update collections based on the defined time span ([72974de](https://github.com/Seenivers/App/commit/72974de9dc591e94ddb69f24339d0fc2f832198d))
+* **updateMovies:** extend update logic for movies to include collections ([5f87d7c](https://github.com/Seenivers/App/commit/5f87d7cdd249a8b2cbcd62fa31c9676af437641e))
+* **updater:** add Markdown support for update descriptions ([72f2dc5](https://github.com/Seenivers/App/commit/72f2dc5a7a52433fbdad1ae3725f114618639f6a))
+
 ## [0.12.1](https://github.com/Seenivers/App/compare/v0.12.0...v0.12.1) (2024-12-06)
 
 ### Bug Fixes
