@@ -24,25 +24,53 @@ async function ensureDirectoryExists(folderPath: string) {
 }
 
 /**
- * Funktion zum Herunterladen eines Bildes und Speichern unter AppData.
+ * Downloads an image from a URL and saves it in the AppData directory.
+ * @param url The URL of the image.
+ * @param filename The filename under which the image should be saved.
  */
 export async function downloadImage(url: string, filename: string) {
-	try {
-		const response = await fetch(`${seeniversURL}/api/image?path=${encodeURIComponent(url)}`);
-
-		if (!response.ok) {
-			throw new Error(`Failed to download image: ${response.statusText}`);
+	// Bild herunterladen
+	const response = await fetch(`${seeniversURL}/api/image?path=${encodeURIComponent(url)}`).catch(
+		(err) => {
+			error(`Fehler beim Abrufen des Bildes von ${url}: ${err}`);
+			return null;
 		}
+	);
 
-		const blob = await response.blob();
-		const newFile = await create(filename, { baseDir: BaseDirectory.AppData });
-
-		await newFile.write(new Uint8Array(await blob.arrayBuffer()));
-		await newFile.close();
-	} catch (err) {
-		error(`Error saving image: ${err}`);
+	if (!response || !response.ok) {
+		error(`Fehler beim Herunterladen des Bildes: ${response?.statusText || 'Unbekannter Fehler'}`);
 		return;
 	}
+
+	// Blob aus der Antwort holen
+	const blob = await response.blob().catch((err) => {
+		error(`Fehler beim Verarbeiten der Bilddaten: ${err}`);
+		return null;
+	});
+	if (!blob) return;
+
+	// Datei erstellen
+	const newFile = await create(filename, { baseDir: BaseDirectory.AppData }).catch((err) => {
+		error(`Fehler beim Erstellen der Datei ${filename}: ${err}`);
+		return null;
+	});
+	if (!newFile) return;
+
+	// Bilddaten schreiben
+	const arrayBuffer = await blob.arrayBuffer().catch((err) => {
+		error(`Fehler beim Umwandeln des Bildes in ein ArrayBuffer: ${err}`);
+		return null;
+	});
+	if (!arrayBuffer) return;
+
+	await newFile.write(new Uint8Array(arrayBuffer)).catch((err) => {
+		error(`Fehler beim Schreiben der Bilddaten in die Datei ${filename}: ${err}`);
+	});
+
+	// Datei schließen
+	await newFile.close().catch((err) => {
+		error(`Fehler beim Schließen der Datei ${filename}: ${err}`);
+	});
 }
 
 /**
