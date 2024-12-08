@@ -231,12 +231,15 @@
 	}
 
 	// Ensure that only the selected movie is added
-	function selectMovie(modalID: number, movieIndex: number) {
-		// Add the user-selected movie
-		addNewMovie(status[modalID].searchResults[movieIndex].id, status[modalID].searchParams.path);
-
-		status[modalID].searchStatus = 'foundOne';
+	async function selectMovie(modalID: number, movieIndex: number) {
 		modal = false; // Close the modal after selection
+		status[modalID].searchStatus = 'foundOne';
+
+		// Add the user-selected movie
+		await addNewMovie(
+			status[modalID].searchResults[movieIndex].id,
+			status[modalID].searchParams.path
+		);
 	}
 
 	function openModal(index: number) {
@@ -354,7 +357,9 @@
 					{#each status[modalID].searchResults as result, i}
 						<button
 							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
-							on:click={() => selectMovie(modalID, i)}
+							on:click={async () => {
+								await selectMovie(modalID, i);
+							}}
 						>
 							<img
 								src={result.poster_path ? imageURL + result.poster_path : placeholderURL}
