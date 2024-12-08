@@ -160,74 +160,65 @@
 	}
 
 	async function addNewMovie(id: number, path: string) {
+		// Überprüfen, ob der Benutzer online ist
 		if (!window.navigator.onLine) {
 			error('Sie sind nicht mit dem Internet verbunden.');
 			return;
 		}
 
-		try {
-			const result = await getMovieTmdb(id);
-
-			if (result) {
-				// Film zur DB hinzufügen
-				addMovie({ id, path, tmdb: result, updated: new Date() });
-
-				// Posterbild laden, falls verfügbar
-				if (result.poster_path) {
-					try {
-						await image(result.poster_path, 'posters', true);
-					} catch (err) {
-						error('Fehler beim Laden des Posters: ' + err);
-					}
-				}
-
-				// Hintergrundbild laden, falls verfügbar
-				if (result.backdrop_path) {
-					try {
-						await image(result.backdrop_path, 'backdrops', true);
-					} catch (err) {
-						error('Fehler beim Laden des Hintergrundbilds: ' + err);
-					}
-				}
-
-				// Collektion hinzufügen
-				if (result.belongs_to_collection) {
-					try {
-						const collection = await getCollectionTmdb(result.belongs_to_collection.id);
-
-						if (collection) {
-							// Collektion zur DB hinzufügen
-							await addCollection(collection);
-						}
-					} catch (err) {
-						error('Fehler beim hinzufügen der Collection: ' + err);
-					}
-				}
-
-				// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
-				const castImagePaths = result.credits.cast
-					.map((actor) => actor.profile_path)
-					.filter((path) => path != null);
-
-				try {
-					castImagePaths.forEach(async (path, i) => {
-						if (i > castImages) return;
-						await image(path, 'actors', true);
-					});
-				} catch (err) {
-					error('Fehler beim Laden der Schauspieler-Bilder: ' + err);
-					return;
-				}
-			} else {
-				error('Der Film konnte nicht geladen werden.');
-				return;
-			}
-		} catch (err) {
-			error('Fehler beim Abrufen der Filmdetails: ' + err);
+		if (!id) {
+			error('Es muss eine Valide ID angegeben werden.');
 			return;
 		}
 
+		// Hole die Filmdetails
+		const result = await getMovieTmdb(id);
+
+		// Film zur DB hinzufügen
+		await addMovie({ id, path, tmdb: result, updated: new Date() });
+
+		// Posterbild laden, falls verfügbar
+		if (result.poster_path) {
+			await loadImageWithErrorHandling(result.poster_path, 'posters');
+		}
+
+		// Hintergrundbild laden, falls verfügbar
+		if (result.backdrop_path) {
+			await loadImageWithErrorHandling(result.backdrop_path, 'backdrops');
+		}
+
+		// Collection hinzufügen, falls vorhanden
+		if (result.belongs_to_collection && result.belongs_to_collection.id) {
+			const collection = await getCollectionTmdb(result.belongs_to_collection.id);
+			if (collection) {
+				await addCollection({ ...collection, updated: new Date() });
+			}
+		}
+
+		// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
+		const castImagePaths = result.credits.cast
+			.map((actor) => actor.profile_path)
+			.filter((path) => path != null);
+
+		// Bilder für Schauspieler laden
+		for (let i = 0; i < castImagePaths.length || i <= castImages; i++) {
+			const path = castImagePaths[i];
+			await loadImageWithErrorHandling(path, 'actors');
+		}
+
 		return Promise.resolve();
+	}
+
+	// Hilfsfunktion zum Laden von Bildern mit Fehlerbehandlung
+	async function loadImageWithErrorHandling(
+		path: string,
+		folder: 'actors' | 'backdrops' | 'posters' | null
+	) {
+		try {
+			await image(path, folder, true);
+		} catch (err) {
+			error(`Fehler beim Laden von ${folder}-Bild: ${err}`);
+		}
 	}
 
 	// Ensure that only the selected movie is added
