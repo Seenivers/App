@@ -160,7 +160,6 @@ export async function fetchImageDimensions(
 				err instanceof ErrorEvent ? `Message: ${err.message}, URL: ${src}` : JSON.stringify(err);
 			reject(new Error(`Bild konnte nicht geladen werden. Details: ${errorDetails}`));
 		};
-		debug('Lade Bild von Quelle: ' + src);
 		img.src = src;
 	});
 }
