@@ -90,7 +90,7 @@ async function updateEntity(
 			}
 		}
 	} catch (err) {
-		console.error(`Fehler beim Aktualisieren der ${entityType.slice(0, -1)}s:`, err);
+		error(`Fehler beim Aktualisieren der ${entityType}: ` + err);
 	}
 }
 
@@ -118,7 +118,7 @@ async function updateMovies() {
 			}
 		}
 	} catch (err) {
-		console.error('Fehler beim Aktualisieren der Filme:', err);
+		error('Fehler beim Aktualisieren der Filme: ' + err);
 	}
 }
 
@@ -133,7 +133,7 @@ async function updateCollections() {
 			}
 		}
 	} catch (err) {
-		console.error('Fehler beim Aktualisieren der Collections:', err);
+		error('Fehler beim Aktualisieren der Collections: ' + err);
 	}
 }
 
