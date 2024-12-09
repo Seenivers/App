@@ -80,6 +80,8 @@
 		if (event.ctrlKey && event.key === 'f') {
 			event.preventDefault();
 			searchInput.focus();
+		} else if (event.ctrlKey && event.key === 'p') {
+			event.preventDefault();
 		}
 	}
 
