@@ -244,6 +244,7 @@
 				<!-- Klein -->
 				<button
 					class="btn join-item flex items-center gap-2"
+					class:btn-active={CARDSCALE === 1}
 					on:click={() => {
 						CARDSCALE = 1;
 					}}
@@ -262,6 +263,7 @@
 				<!-- Mittel -->
 				<button
 					class="btn join-item flex items-center gap-2"
+					class:btn-active={CARDSCALE === 2}
 					on:click={() => {
 						CARDSCALE = 2;
 					}}
@@ -280,6 +282,7 @@
 				<!-- Groß -->
 				<button
 					class="btn join-item flex items-center gap-2"
+					class:btn-active={CARDSCALE === 3}
 					on:click={() => {
 						CARDSCALE = 3;
 					}}
