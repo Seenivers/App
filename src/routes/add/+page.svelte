@@ -62,12 +62,14 @@
 
 		selected = null;
 
-		// Filter out already added movies
+		// Filtere nur die Dateien, die nicht bereits im Status enthalten sind
 		const newFiles = (
 			await Promise.all(
 				files.map(async (path) => {
+					// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
 					const unique = await isPathUnique(path);
-					return unique ? path : null;
+					const existsInStatus = status.some((item) => item.searchParams.path === path);
+					return unique && !existsInStatus ? path : null;
 				})
 			)
 		).filter((path): path is string => path !== null);
@@ -79,8 +81,8 @@
 			return;
 		}
 
-		// Initialisiere den Suchstatus und die Parameter
-		status = newFiles.map((path) => {
+		// Füge die neuen Dateien dem Status hinzu
+		newFiles.forEach((path) => {
 			const name =
 				path
 					.split('\\')
@@ -99,7 +101,7 @@
 			const year = yearMatch ? yearMatch[1] : '';
 			const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*|(\d{4})/g, '').trim();
 
-			return {
+			status.push({
 				searchStatus: 'notStarted',
 				searchResults: [],
 				searchParams: {
@@ -109,11 +111,17 @@
 					includeAdult: settings.adult,
 					page: 1
 				}
-			};
+			});
 		});
 
-		// Suche
-		status.forEach(async (_, i) => await search(i));
+		// Suche nur für neue Filme durchführen
+		const newFileIndexes = status
+			.map((movie, index) => (newFiles.includes(movie.searchParams.path) ? index : -1))
+			.filter((index) => index !== -1); // Nur Indizes der neuen Filme
+
+		for (const index of newFileIndexes) {
+			await search(index);
+		}
 	}
 
 	async function search(i: number) {
