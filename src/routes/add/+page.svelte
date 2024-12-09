@@ -13,7 +13,6 @@
 		searchMovies
 	} from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/types/add';
-
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import Dnd from '$lib/add/dnd.svelte';
@@ -216,7 +215,7 @@
 	{#if !window.navigator.onLine}
 		<div class="alert alert-error text-center">Du bist nicht mit dem Internet verbunden</div>
 	{:else}
-		<div class="flex w-3/4 gap-5">
+		<div class="mb-5 flex w-3/4 gap-5">
 			<button class="btn grow" on:click={selectFile} disabled={!window.navigator.onLine}
 				>Film(e) auswählen</button
 			>
