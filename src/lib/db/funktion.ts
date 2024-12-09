@@ -15,7 +15,8 @@ const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für d
 let loadedSettings: typeof schema.settings.$inferSelect | undefined;
 
 async function createDefaultSettings() {
-	await db.insert(schema.settings).values({ id: 1, language: window.navigator.language });
+	const language = navigator.language.substring(0, 2);
+	await db.insert(schema.settings).values({ id: 1, language });
 	return (await db.select().from(schema.settings).limit(1))[0];
 }
 
