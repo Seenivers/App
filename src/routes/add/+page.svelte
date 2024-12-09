@@ -272,7 +272,16 @@
 <main class="z-0 flex flex-col items-center p-5">
 	{#if !window.navigator.onLine}
 		<div class="alert alert-error text-center">Du bist nicht mit dem Internet verbunden</div>
-	{:else if status && status.length > 0}
+	{:else}
+		<div class="flex w-3/4 gap-5">
+			<button class="btn grow" on:click={selectFile} disabled={!window.navigator.onLine}
+				>Film(e) auswählen</button
+			>
+			<button class="btn grow" on:click={selectFolder} disabled={!window.navigator.onLine}
+				>Ordner auswählen</button
+			>
+		</div>
+
 		<div class="grid w-full gap-3">
 			{#each status as item, index}
 				<div class="flex justify-between rounded-md bg-base-200 p-3">
@@ -285,15 +294,6 @@
 					</button>
 				</div>
 			{/each}
-		</div>
-	{:else}
-		<div class="flex w-3/4 gap-5">
-			<button class="btn grow" on:click={selectFile} disabled={!window.navigator.onLine}
-				>Film(e) auswählen</button
-			>
-			<button class="btn grow" on:click={selectFolder} disabled={!window.navigator.onLine}
-				>Ordner auswählen</button
-			>
 		</div>
 	{/if}
 </main>
