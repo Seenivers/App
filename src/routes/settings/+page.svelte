@@ -8,7 +8,15 @@
 
 	let settings: typeof schema.settings.$inferSelect = dbSettings;
 
-	// Einstellungen aktualisieren
+	// Automatisch Vorschläge aus navigator.languages generieren
+	const languageSuggestions = Array.from(
+		new Set(navigator.languages.map((lang) => lang.split('-')[0]))
+	);
+
+	// Standard-Sprache auswählen
+	settings.language = settings.language || languageSuggestions[0] || 'en'; // Fallback auf Englisch
+
+	// Einstellungen in der Datenbank aktualisieren
 	async function updateSettings(newSettings: typeof schema.settings.$inferSelect) {
 		await db.update(schema.settings).set(newSettings).where(eq(schema.settings.id, 1));
 	}
@@ -19,6 +27,7 @@
 		newToast('info', 'Einstellungen gespeichert!');
 	}
 
+	// Schlüsselwörter verarbeiten
 	function handleInput(event: Event) {
 		const target = event.currentTarget as HTMLTextAreaElement | null;
 		if (target) {
@@ -47,8 +56,9 @@
 					<span class="label-text font-semibold">Sprache</span>
 				</div>
 				<select class="select select-bordered w-full" bind:value={settings.language}>
-					<option value="en">Englisch</option>
-					<option value="de">Deutsch</option>
+					{#each languageSuggestions as lang}
+						<option value={lang}>{lang}</option>
+					{/each}
 				</select>
 			</label>
 
