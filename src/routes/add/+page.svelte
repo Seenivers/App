@@ -37,7 +37,13 @@
 			defaultPath: await videoDir(),
 			filters: [{ name: 'Video', extensions }]
 		});
-		if (files && Array.isArray(files) && files.length > 0) load(files);
+
+		if (files) {
+			// Filter and map in a single loop using the provided extensions
+			const validFiles = getValidFileNames(files, extensions);
+
+			if (validFiles && Array.isArray(validFiles) && validFiles.length > 0) load(validFiles);
+		}
 	}
 
 	// Handle folder selection
