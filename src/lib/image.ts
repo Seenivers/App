@@ -73,6 +73,15 @@ export async function downloadImage(url: string, filename: string) {
 	});
 }
 
+const resolveImageSource = async (src: string) => {
+	const { width, height } = await fetchImageDimensions(src).catch((err) => {
+		error(`Fehler beim Abrufen der Bildabmessungen: ${err}`);
+		// Rückfallwerte, falls das Bild nicht geladen werden kann
+		return { width: 300, height: 450 };
+	});
+	return { src, width, height };
+};
+
 /**
  * Funktion zum Verarbeiten eines Bildes.
  * @param file Dateiname des Bildes.
@@ -85,15 +94,6 @@ export async function image(
 	path: 'actors' | 'backdrops' | 'posters' | null = null,
 	download = false
 ) {
-	const resolveImageSource = async (src: string) => {
-		const { width, height } = await fetchImageDimensions(src).catch((err) => {
-			error(`Fehler beim Abrufen der Bildabmessungen: ${err}`);
-			// Rückfallwerte, falls das Bild nicht geladen werden kann
-			return { width: 300, height: 450 };
-		});
-		return { src, width, height };
-	};
-
 	// Rückgabe des Platzhalters, falls kein Dateiname vorhanden
 	if (!file) {
 		return resolveImageSource(placeholderURL);
