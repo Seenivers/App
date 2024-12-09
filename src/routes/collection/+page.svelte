@@ -108,9 +108,11 @@
 										<p class="font-semibold italic">{movie.original_title}</p>
 									{/if}
 									<p>
-										{new Date(movie.release_date).toLocaleDateString(
-											settings ? settings.language : window.navigator.language
-										)}
+										{movie.release_date
+											? new Date(movie.release_date).toLocaleDateString(
+													settings ? settings.language : window.navigator.language
+												)
+											: 'Kein Datum vorhanden'}
 									</p>
 									<p>{movie.overview}</p>
 								</div>
