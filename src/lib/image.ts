@@ -115,14 +115,20 @@ export async function image(
 			return false; // Rückgabe von false im Fehlerfall
 		}))
 	) {
-		// Wenn das Bild nicht existiert und der Download aktiviert ist, versuche es herunterzuladen
-		if (navigator.onLine && download) {
+		if (navigator.onLine) {
 			const remoteSrc = `${imageURL}${file}`;
 
-			// Fehlerbehandlung für den Download-Prozess
-			await downloadImage(remoteSrc, filePath).catch((err) => {
-				error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err}`);
-			});
+			// Wenn das Bild nicht existiert und der Download aktiviert ist, versuche es herunterzuladen
+			if (download) {
+				// Fehlerbehandlung für den Download-Prozess
+				await downloadImage(remoteSrc, filePath).catch((err) => {
+					error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err}`);
+				});
+			} else {
+				return resolveImageSource(remoteSrc);
+			}
+		} else {
+			return resolveImageSource(placeholderURL);
 		}
 	}
 
@@ -163,6 +169,7 @@ export async function fetchImageDimensions(
 					await remove(decodedPath);
 				} catch (removeError) {
 					error(`Fehler beim Verarbeiten des Pfads zum Entfernen des Bildes: ${removeError}`);
+					console.log(src, { width: img.width, height: img.height });
 				}
 				return resolve({ width: 300, height: 450 });
 			} else {
