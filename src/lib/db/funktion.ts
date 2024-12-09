@@ -208,7 +208,7 @@ export async function isPathUnique(path: string): Promise<boolean> {
 	return !existingMovie;
 }
 
-export async function isMovieNameUnique(tmdb: Movie): Promise<boolean> {
+export async function isMovieUnique(tmdb: Movie): Promise<boolean> {
 	const existingMovie = await db.query.movies
 		.findFirst({
 			where: eq(schema.movies.tmdb, tmdb)
