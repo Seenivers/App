@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 </script>
 
-<body class="flex flex-grow flex-col justify-center">
+<main class="flex flex-grow flex-col justify-center">
 	<div class="hero">
 		<div class="hero-content text-center">
 			<div class="max-w-md">
@@ -13,4 +13,4 @@
 			</div>
 		</div>
 	</div>
-</body>
+</main>
