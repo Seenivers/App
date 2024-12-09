@@ -15,7 +15,6 @@
 
 	export let data: PageData;
 
-	let selected: string | string[] | null = data.paths.length > 0 ? data.paths : null;
 	let status: MovieSearchStatus[] = [];
 
 	const castImages = 4; // 5 Bilder laden
@@ -25,32 +24,32 @@
 	let modalID = 0;
 
 	onMount(async () => {
-		if (selected && Array.isArray(selected)) {
-			load(selected);
+		if (data.paths.length > 0 && Array.isArray(data.paths)) {
+			load(data.paths);
 		}
 	});
 
 	// Handle file selection
 	async function selectFile() {
-		selected = await open({
+		const files = await open({
 			multiple: true,
 			directory: false,
 			defaultPath: await videoDir(),
 			filters: [{ name: 'Video', extensions }]
 		});
-		if (Array.isArray(selected)) load(selected);
+		if (files && Array.isArray(files) && files.length > 0) load(files);
 	}
 
 	// Handle folder selection
 	async function selectFolder() {
-		selected = await open({
+		const folder = await open({
 			multiple: false,
 			directory: true,
 			defaultPath: await videoDir()
 		});
 
-		if (selected) {
-			let entries = await readDir(selected);
+		if (folder) {
+			const entries = await readDir(folder);
 			const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
 
 			// Filter and map in a single loop
@@ -59,7 +58,7 @@
 					const fileExtension = entry.name.split('.').pop()?.toLowerCase();
 					return fileExtension && supportedExtensions.has(fileExtension);
 				})
-				.map((entry) => `${selected}\\${entry.name}`);
+				.map((entry) => `${folder}\\${entry.name}`);
 
 			// Load the valid files
 			load(validFiles);
@@ -68,8 +67,6 @@
 
 	async function load(files: string[]) {
 		if (!files || !window.navigator.onLine) return;
-
-		selected = null;
 
 		// Filtere nur die Dateien, die nicht bereits im Status enthalten sind
 		const newFiles = (
@@ -291,15 +288,11 @@
 		</div>
 	{:else}
 		<div class="flex w-3/4 gap-5">
-			<button
-				class="btn grow"
-				on:click={selectFile}
-				disabled={selected !== null || !window.navigator.onLine}>Film(e) auswählen</button
+			<button class="btn grow" on:click={selectFile} disabled={!window.navigator.onLine}
+				>Film(e) auswählen</button
 			>
-			<button
-				class="btn grow"
-				on:click={selectFolder}
-				disabled={selected !== null || !window.navigator.onLine}>Ordner auswählen</button
+			<button class="btn grow" on:click={selectFolder} disabled={!window.navigator.onLine}
+				>Ordner auswählen</button
 			>
 		</div>
 	{/if}
