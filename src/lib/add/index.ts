@@ -1,4 +1,3 @@
-import { getMovie } from '$lib/tmdb';
 import { settings } from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
