@@ -58,24 +58,35 @@
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
 	<div class="gap-1">
-		<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
+		<button
+			class="btn btn-sm md:btn-md"
+			on:click={() =>
+				window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
+			>{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}</button
+		>
 	</div>
 	<div class="gap-1">
 		<button class="btn btn-sm md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
 			>Starte Externen Player</button
 		>
-		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
-			<button class="btn btn-sm hover:btn-error md:btn-md" on:dblclick={removeElementById}
-				>Löschen</button
+		<div
+			class={pathExists ? 'tooltip tooltip-bottom' : ''}
+			data-tip={pathExists ? 'Doppel klicken zum löschen' : ''}
+		>
+			<button
+				class="btn btn-sm hover:btn-error md:btn-md"
+				on:dblclick={removeElementById}
+				disabled={!movieData}>Löschen</button
 			>
 		</div>
 		<button
 			class="btn btn-sm md:btn-md"
+			disabled={!movieData}
 			on:click={() => {
 				modal = true;
 			}}>Bearbeiten</button
 		>
-		<button class="btn btn-sm md:btn-md" on:click={toggleWatchedStatus}>
+		<button class="btn btn-sm md:btn-md" on:click={toggleWatchedStatus} disabled={!movieData}>
 			{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 		</button>
 	</div>
