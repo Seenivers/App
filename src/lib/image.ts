@@ -1,6 +1,6 @@
 import { imageURL, placeholderURL, seeniversURL } from '$lib';
 import { convertFileSrc } from '@tauri-apps/api/core';
-import { BaseDirectory, create, exists, mkdir } from '@tauri-apps/plugin-fs';
+import { BaseDirectory, create, exists, mkdir, remove } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
 import { debug, error } from '@tauri-apps/plugin-log';
 import { fetch } from '@tauri-apps/plugin-http';
@@ -88,7 +88,8 @@ export async function image(
 	const resolveImageSource = async (src: string) => {
 		const { width, height } = await fetchImageDimensions(src).catch((err) => {
 			error(`Fehler beim Abrufen der Bildabmessungen: ${err}`);
-			return { width: 300, height: 450 }; // Rückfallwerte
+			// Rückfallwerte, falls das Bild nicht geladen werden kann
+			return { width: 300, height: 450 };
 		});
 		return { src, width, height };
 	};
@@ -155,10 +156,22 @@ export async function fetchImageDimensions(
 		img.onload = () => {
 			resolve({ width: img.width, height: img.height });
 		};
-		img.onerror = (err) => {
-			const errorDetails =
-				err instanceof ErrorEvent ? `Message: ${err.message}, URL: ${src}` : JSON.stringify(err);
-			reject(new Error(`Bild konnte nicht geladen werden. Details: ${errorDetails}`));
+		img.onerror = async (err) => {
+			// Wenn das Bild geladen wurde, aber keine gültigen Dimensionen hat (z.B. 0x0), dann Lösche Bild
+			if (img.width === 0 || img.height === 0) {
+				try {
+					// Entkodiere den Pfad, bevor du versuchst, das Bild zu entfernen
+					const decodedPath = decodeURIComponent(src.replace('http://asset.localhost/', ''));
+					await remove(decodedPath);
+				} catch (removeError) {
+					error(`Fehler beim Verarbeiten des Pfads zum Entfernen des Bildes: ${removeError}`);
+				}
+				return resolve({ width: 300, height: 450 });
+			} else {
+				const errorDetails =
+					err instanceof ErrorEvent ? `Message: ${err.message}, URL: ${src}` : JSON.stringify(err);
+				reject(new Error(`Bild konnte nicht geladen werden. Details: ${errorDetails}`));
+			}
 		};
 		img.src = src;
 	});
