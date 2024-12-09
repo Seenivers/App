@@ -5,7 +5,7 @@
 	import { imageURL, placeholderURL } from '$lib';
 	import { error } from '@tauri-apps/plugin-log';
 	import { addCollection, addMovie, isMovieUnique, isPathUnique, settings } from '$lib/db/funktion';
-	import { buttonClass, getIcon, searchMovies } from '$lib/add/index';
+	import { buttonClass, getIcon, getValidFileNames, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/types/add';
 	import { image } from '$lib/image';
 	import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
@@ -50,18 +50,14 @@
 
 		if (folder) {
 			const entries = await readDir(folder);
-			const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
 
-			// Filter and map in a single loop
-			const validFiles = entries
-				.filter((entry) => {
-					const fileExtension = entry.name.split('.').pop()?.toLowerCase();
-					return fileExtension && supportedExtensions.has(fileExtension);
-				})
-				.map((entry) => `${folder}\\${entry.name}`);
+			// Filter and map in a single loop using the provided extensions
+			const validFiles = getValidFileNames(
+				entries.map((entry) => `${folder}\\${entry.name}`),
+				extensions
+			);
 
-			// Load the valid files
-			load(validFiles);
+			if (validFiles && Array.isArray(validFiles) && validFiles.length > 0) load(validFiles);
 		}
 	}
 
