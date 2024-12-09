@@ -336,7 +336,15 @@
 						{/if}
 					</figure>
 					<div class="card-body items-center py-2 text-center">
-						<p class="card-title">{movie.tmdb.title}</p>
+						<p
+							class="card-title {CARDSCALE === 1
+								? 'text-base'
+								: CARDSCALE === 2
+									? 'text-lg'
+									: 'text-2xl'}"
+						>
+							{movie.tmdb.title}
+						</p>
 					</div>
 				</a>
 			{/each}
