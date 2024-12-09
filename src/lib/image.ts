@@ -85,8 +85,8 @@ const resolveImageSource = async (src: string) => {
 /**
  * Funktion zum Verarbeiten eines Bildes.
  * @param file Dateiname des Bildes.
- * @param path Optionaler Pfad innerhalb des Bilderverzeichnisses ('actors', 'backdrops', 'posters').
- * @param download Gibt an, ob das Bild heruntergeladen werden soll.
+ * @param path Optionaler Pfad innerhalb des Bilderverzeichnisses ('actors', 'backdrops', 'posters'). Wenn null, wird das Standardverzeichnis 'images' verwendet.
+ * @param download Gibt an, ob das Bild heruntergeladen werden soll, wenn es lokal nicht gefunden wird.
  * @returns Ein Objekt mit der Bildquelle (`src`) und den Dimensionen (`width`, `height`).
  */
 export async function image(
@@ -99,48 +99,46 @@ export async function image(
 		return resolveImageSource(placeholderURL);
 	}
 
+	// Verzeichnisstruktur basierend auf dem optionalen `path`-Parameter
 	const folderPath = path ? `images/${path}` : 'images';
 	const filePath = `${folderPath}/${file}`;
 
-	// Verzeichnis sicherstellen
+	// Verzeichnis sicherstellen (im Fehlerfall wird eine Fehlermeldung geloggt)
 	await ensureDirectoryExists(folderPath).catch((err) => {
 		error(`Fehler beim Erstellen des Verzeichnisses '${folderPath}': ${err}`);
 	});
 
-	// Bildpfad überprüfen oder herunterladen
+	// Überprüfen, ob das Bild lokal vorhanden ist oder heruntergeladen werden muss
 	if (
-		await exists(filePath, { baseDir: BaseDirectory.AppData }).catch((err) => {
+		!(await exists(filePath, { baseDir: BaseDirectory.AppData }).catch((err) => {
 			error(`Fehler bei der Überprüfung des Bildpfads '${filePath}': ${err}`);
-			return false;
-		})
+			return false; // Rückgabe von false im Fehlerfall
+		}))
 	) {
-		let localPath = await join(await appDataDir(), filePath).catch((err) => {
-			error(`Fehler beim Zusammenfügen des lokalen Pfads: ${err}`);
-		});
+		// Wenn das Bild nicht existiert und der Download aktiviert ist, versuche es herunterzuladen
+		if (navigator.onLine && download) {
+			const remoteSrc = `${imageURL}${file}`;
 
-		if (localPath) {
-			return resolveImageSource(convertFileSrc(localPath));
-		} else {
-			return resolveImageSource(placeholderURL);
-		}
-	}
-
-	if (navigator.onLine) {
-		const remoteSrc = `${imageURL}${file}`;
-
-		if (download) {
-			// Nur starten, kein `await`, da Rückgabe direkt erfolgen soll
-			downloadImage(remoteSrc, filePath).catch((err) => {
+			// Fehlerbehandlung für den Download-Prozess
+			await downloadImage(remoteSrc, filePath).catch((err) => {
 				error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err}`);
 			});
 		}
-
-		// Remote-URL ohne Verarbeitung zurückgeben
-		return resolveImageSource(remoteSrc);
 	}
 
-	// Platzhalter für Offline-Modus
-	return resolveImageSource(placeholderURL);
+	// Lokalen Pfad zusammenfügen und Bildquelle auflösen
+	let localPath = await join(await appDataDir(), filePath).catch((err) => {
+		// Fehlerbehandlung für das Zusammenfügen des lokalen Pfads
+		error(`Fehler beim Zusammenfügen des lokalen Pfads: ${err}`);
+		return null; // Rückgabe von null im Fehlerfall
+	});
+
+	// Wenn ein lokaler Pfad vorhanden ist, Bildquelle auflösen, andernfalls Platzhalter verwenden
+	if (localPath) {
+		return resolveImageSource(convertFileSrc(localPath));
+	} else {
+		return resolveImageSource(placeholderURL);
+	}
 }
 
 /**
