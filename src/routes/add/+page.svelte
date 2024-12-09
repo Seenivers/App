@@ -48,12 +48,21 @@
 			directory: true,
 			defaultPath: await videoDir()
 		});
+
 		if (selected) {
 			let entries = await readDir(selected);
-			const test = entries
-				.filter((entry) => entry.name.toLowerCase().endsWith('.mp4'))
+			const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
+
+			// Filter and map in a single loop
+			const validFiles = entries
+				.filter((entry) => {
+					const fileExtension = entry.name.split('.').pop()?.toLowerCase();
+					return fileExtension && supportedExtensions.has(fileExtension);
+				})
 				.map((entry) => `${selected}\\${entry.name}`);
-			load(test);
+
+			// Load the valid files
+			load(validFiles);
 		}
 	}
 
