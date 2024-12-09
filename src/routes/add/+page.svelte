@@ -4,7 +4,7 @@
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
 	import { error } from '@tauri-apps/plugin-log';
-	import { addCollection, addMovie, isPathUnique, settings } from '$lib/db/funktion';
+	import { addCollection, addMovie, isMovieUnique, isPathUnique, settings } from '$lib/db/funktion';
 	import { buttonClass, getIcon, searchMovies } from '$lib/add/index';
 	import type { MovieSearchStatus } from '$lib/add/types';
 	import { image } from '$lib/image';
@@ -194,38 +194,39 @@
 		// Hole die Filmdetails
 		const result = await getMovieTmdb(id);
 
-		// Film zur DB hinzufügen
-		await addMovie({ id, path, tmdb: result, updated: new Date() });
+		if (await isMovieUnique(result)) {
+			// Film zur DB hinzufügen
+			await addMovie({ id, path, tmdb: result, updated: new Date() });
 
-		// Posterbild laden, falls verfügbar
-		if (result.poster_path) {
-			await loadImageWithErrorHandling(result.poster_path, 'posters');
-		}
+			// Posterbild laden, falls verfügbar
+			if (result.poster_path) {
+				await loadImageWithErrorHandling(result.poster_path, 'posters');
+			}
 
-		// Hintergrundbild laden, falls verfügbar
-		if (result.backdrop_path) {
-			await loadImageWithErrorHandling(result.backdrop_path, 'backdrops');
-		}
+			// Hintergrundbild laden, falls verfügbar
+			if (result.backdrop_path) {
+				await loadImageWithErrorHandling(result.backdrop_path, 'backdrops');
+			}
 
-		// Collection hinzufügen, falls vorhanden
-		if (result.belongs_to_collection && result.belongs_to_collection.id) {
-			const collection = await getCollectionTmdb(result.belongs_to_collection.id);
-			if (collection) {
-				await addCollection({ ...collection, updated: new Date() });
+			// Collection hinzufügen, falls vorhanden
+			if (result.belongs_to_collection && result.belongs_to_collection.id) {
+				const collection = await getCollectionTmdb(result.belongs_to_collection.id);
+				if (collection) {
+					await addCollection({ ...collection, updated: new Date() });
+				}
+			}
+
+			// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
+			const castImagePaths = result.credits.cast
+				.map((actor) => actor.profile_path)
+				.filter((path) => path != null);
+
+			// Bilder für Schauspieler laden
+			for (let i = 0; i < castImagePaths.length || i <= castImages; i++) {
+				const path = castImagePaths[i];
+				await loadImageWithErrorHandling(path, 'actors');
 			}
 		}
-
-		// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
-		const castImagePaths = result.credits.cast
-			.map((actor) => actor.profile_path)
-			.filter((path) => path != null);
-
-		// Bilder für Schauspieler laden
-		for (let i = 0; i < castImagePaths.length || i <= castImages; i++) {
-			const path = castImagePaths[i];
-			await loadImageWithErrorHandling(path, 'actors');
-		}
-
 		return Promise.resolve();
 	}
 
