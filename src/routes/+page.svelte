@@ -175,7 +175,8 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
-<nav class="navbar flex justify-between bg-base-100">
+<!-- Navbar -->
+<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
 	<div class="gap-1">
 		<a href="./add" class="btn btn-ghost">Hinzufügen</a>
 	</div>
@@ -184,7 +185,7 @@
 	</div>
 </nav>
 
-<main class="flex-grow flex-col p-5">
+<main class="z-0 flex-grow flex-col p-5">
 	{#if matchedMovies.length >= 1}
 		<!-- Suche -->
 		<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
@@ -239,7 +240,7 @@
 		</div>
 
 		<!-- Skalierung -->
-		<div class="mt-5 flex flex-1 justify-end">
+		<div class="z-0 mt-5 flex flex-1 justify-end">
 			<div class="join join-vertical lg:join-horizontal">
 				<!-- Klein -->
 				<button

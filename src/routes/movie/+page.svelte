@@ -56,29 +56,33 @@
 </script>
 
 <!-- Navbar -->
-<nav class="navbar sticky top-0 z-50 flex-wrap gap-3 bg-base-100">
-	<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
-	<button class="btn btn-sm md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
-		>Starte Externen Player</button
-	>
-	<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
-		<button class="btn btn-sm hover:btn-error md:btn-md" on:dblclick={removeElementById}
-			>Löschen</button
-		>
+<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
+	<div class="gap-1">
+		<a href="/" class="btn btn-sm md:btn-md">Zurück</a>
 	</div>
-	<button
-		class="btn btn-sm md:btn-md"
-		on:click={() => {
-			modal = true;
-		}}>Bearbeiten</button
-	>
-	<button class="btn btn-sm md:btn-md" on:click={toggleWatchedStatus}>
-		{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
-	</button>
+	<div class="gap-1">
+		<button class="btn btn-sm md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
+			>Starte Externen Player</button
+		>
+		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+			<button class="btn btn-sm hover:btn-error md:btn-md" on:dblclick={removeElementById}
+				>Löschen</button
+			>
+		</div>
+		<button
+			class="btn btn-sm md:btn-md"
+			on:click={() => {
+				modal = true;
+			}}>Bearbeiten</button
+		>
+		<button class="btn btn-sm md:btn-md" on:click={toggleWatchedStatus}>
+			{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
+		</button>
+	</div>
 </nav>
 
 <!-- Main -->
-<main>
+<main class="z-0">
 	{#if movieData}
 		<div class="mx-auto w-full py-5 md:w-[80%] lg:w-[70%]">
 			<h1 class="text-x1 mb-2 font-bold sm:text-2xl md:text-3xl">{movieData.tmdb.title}</h1>

@@ -262,14 +262,17 @@
 
 <Dnd {load} {extensions} />
 
-<!-- Responsive Design and Layout -->
-<nav class="navbar bg-base-100">
-	<div class="flex-1">
+<!-- Navbar -->
+<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
+	<div class="gap-1">
 		<a href="/" class="btn btn-ghost">Zurück</a>
+	</div>
+	<div class="gap-1">
+		<!-- Platzhalter -->
 	</div>
 </nav>
 
-<main class="flex flex-col items-center p-5">
+<main class="z-0 flex flex-col items-center p-5">
 	{#if !window.navigator.onLine}
 		<div class="alert alert-error text-center">Du bist nicht mit dem Internet verbunden</div>
 	{:else if status && status.length > 0}

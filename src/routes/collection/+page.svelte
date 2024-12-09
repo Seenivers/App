@@ -10,18 +10,23 @@
 </script>
 
 <!-- Navbar -->
-<nav class="navbar bg-base-100 p-2 md:p-4">
-	<button
-		class="btn btn-sm md:btn-md"
-		on:click={() =>
-			window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
-	>
-		{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}
-	</button>
+<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
+	<div class="gap-1">
+		<button
+			class="btn btn-sm md:btn-md"
+			on:click={() =>
+				window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
+		>
+			{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}
+		</button>
+	</div>
+	<div class="gap-1">
+		<!-- Platzhalter -->
+	</div>
 </nav>
 
 <!-- Main -->
-<main class="flex flex-col items-center p-3 md:p-5">
+<main class="z-0 flex flex-col items-center p-3 md:p-5">
 	{#await getCollection(id) then collection}
 		{#if collection}
 			<div class="mx-auto w-full max-w-full">

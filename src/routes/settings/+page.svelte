@@ -27,16 +27,17 @@
 	}
 </script>
 
-<nav class="navbar mb-4 bg-base-200 shadow-lg">
-	<div class="px-4">
-		<div class="flex items-center justify-between gap-3">
-			<a href="/" class="btn btn-ghost text-lg font-semibold">Zurück</a>
-			<button class="btn btn-primary" on:click={saveSettings}>Speichern</button>
-		</div>
+<!-- Navbar -->
+<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
+	<div class="gap-1">
+		<a href="./add" class="btn btn-ghost">Hinzufügen</a>
+	</div>
+	<div class="gap-1">
+		<button class="btn btn-primary" on:click={saveSettings}>Speichern</button>
 	</div>
 </nav>
 
-<main class="container mx-auto max-w-screen-md flex-grow flex-col px-4 py-6">
+<main class="container z-0 mx-auto max-w-screen-md flex-grow flex-col px-4 py-6">
 	<div class="card bg-base-100 p-6 shadow-lg md:p-8">
 		<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
