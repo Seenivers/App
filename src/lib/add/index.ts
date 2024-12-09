@@ -56,3 +56,12 @@ export async function searchMovies(
 
 	return (await result.json()) as Search<SearchMovie>;
 }
+
+export function getValidFileNames(filePaths: string[], validExtensions: string[]) {
+	const supportedExtensions = new Set(validExtensions.map((ext) => ext.toLowerCase()));
+
+	return filePaths.filter((path) => {
+		const fileExtension = path.split('.').pop()?.toLowerCase();
+		return fileExtension && supportedExtensions.has(fileExtension);
+	});
+}
