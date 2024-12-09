@@ -39,7 +39,7 @@
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
 	<div class="gap-1">
-		<a href="./add" class="btn btn-ghost">Hinzufügen</a>
+		<a href="./" class="btn btn-ghost">Zurück</a>
 	</div>
 	<div class="gap-1">
 		<button class="btn btn-primary" on:click={saveSettings}>Speichern</button>
