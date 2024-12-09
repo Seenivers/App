@@ -6,7 +6,7 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import { addCollection, addMovie, isMovieUnique, isPathUnique, settings } from '$lib/db/funktion';
 	import { buttonClass, getIcon, searchMovies } from '$lib/add/index';
-	import type { MovieSearchStatus } from '$lib/add/types';
+	import type { MovieSearchStatus } from '$lib/types/add';
 	import { image } from '$lib/image';
 	import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
 	import type { PageData } from './$types';
