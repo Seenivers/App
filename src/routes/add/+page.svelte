@@ -10,7 +10,10 @@
 	import { image } from '$lib/image';
 	import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { listen } from '@tauri-apps/api/event';
+	import type { UnlistenFn } from '@tauri-apps/api/event';
+	import type { DropPayload } from '$lib/types/add';
 
 	export let data: PageData;
 
@@ -23,8 +26,45 @@
 	let modal = false;
 	let modalID = 0;
 
+	let isDraggingOver = false;
+	let handleDrop: UnlistenFn;
+	let handleDragEnter: UnlistenFn;
+	let handleDragLeave: UnlistenFn;
+
 	onMount(async () => {
-		if (selected && Array.isArray(selected)) load(selected);
+		if (selected && Array.isArray(selected)) {
+			load(selected);
+		}
+
+		const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
+
+		handleDrop = await listen<DropPayload>('tauri://drag-drop', (event) => {
+			isDraggingOver = false;
+			const files = event.payload.paths.filter((path) => {
+				const fileExtension = path.split('.').pop()?.toLowerCase();
+				return fileExtension && supportedExtensions.has(fileExtension);
+			});
+
+			if (files.length > 0) {
+				load(files);
+			}
+		});
+
+		handleDragEnter = await listen<DropPayload>(
+			'tauri://drag-enter',
+			() => (isDraggingOver = true)
+		);
+		handleDragLeave = await listen<DropPayload>(
+			'tauri://drag-leave',
+			() => (isDraggingOver = false)
+		);
+	});
+
+	// Bereinigen der Event-Listener bei Zerstörung der Komponente
+	onDestroy(() => {
+		handleDrop();
+		handleDragEnter();
+		handleDragLeave();
 	});
 
 	// Handle file selection
@@ -374,3 +414,15 @@
 		<button>close</button>
 	</form>
 </dialog>
+
+{#if isDraggingOver}
+	<div class="fixed inset-0 z-40 flex items-center justify-center p-5 backdrop-blur-sm">
+		<div
+			class="flex h-full w-full flex-col items-center justify-center rounded-lg border-4 border-dashed border-base-content bg-opacity-50 shadow-lg"
+		>
+			<p class="text-lg font-semibold text-base-content">
+				Zieh eine Datei hierher, um sie hinzufügen
+			</p>
+		</div>
+	</div>
+{/if}
