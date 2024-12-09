@@ -6,6 +6,7 @@ import { migrate } from '$lib/db/migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types';
 import { getMovie as getMovieTmdb, getCollection as getCollectionTmdb } from '$lib/tmdb';
+import type { Movie } from '$lib/types/movie';
 
 const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
@@ -198,6 +199,19 @@ export async function isPathUnique(path: string): Promise<boolean> {
 	const existingMovie = await db.query.movies
 		.findFirst({
 			where: eq(schema.movies.path, path)
+		})
+		.catch((err) => {
+			error(`Is Path Unique: ` + err);
+		});
+
+	// Gibt `true` zurück, wenn kein Film mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
+	return !existingMovie;
+}
+
+export async function isMovieNameUnique(tmdb: Movie): Promise<boolean> {
+	const existingMovie = await db.query.movies
+		.findFirst({
+			where: eq(schema.movies.tmdb, tmdb)
 		})
 		.catch((err) => {
 			error(`Is Path Unique: ` + err);
