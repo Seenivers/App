@@ -185,9 +185,7 @@
 </nav>
 
 <main class="flex-grow flex-col p-5">
-	{#if isLoading}
-		<p>Lädt...</p>
-	{:else if matchedMovies.length >= 1}
+	{#if matchedMovies.length >= 1}
 		<!-- Suche -->
 		<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
 			<div>
@@ -298,7 +296,11 @@
 				</button>
 			</div>
 		</div>
+	{/if}
 
+	{#if isLoading}
+		<p>Lädt...</p>
+	{:else if matchedMovies.length >= 1}
 		<!-- Filme -->
 		<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
 			{#each matchedMovies as movie}
