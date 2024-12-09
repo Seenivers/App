@@ -103,24 +103,21 @@ export async function image(
 	const folderPath = path ? `images/${path}` : 'images';
 	const filePath = `${folderPath}/${file}`;
 
-	// Verzeichnis sicherstellen (im Fehlerfall wird eine Fehlermeldung geloggt)
-	await ensureDirectoryExists(folderPath).catch((err) => {
+	// Sicherstellen, dass das Verzeichnis existiert
+	try {
+		await ensureDirectoryExists(folderPath);
+	} catch (err) {
 		error(`Fehler beim Erstellen des Verzeichnisses '${folderPath}': ${err}`);
-	});
+	}
 
 	// Überprüfen, ob das Bild lokal vorhanden ist oder heruntergeladen werden muss
-	if (
-		!(await exists(filePath, { baseDir: BaseDirectory.AppData }).catch((err) => {
-			error(`Fehler bei der Überprüfung des Bildpfads '${filePath}': ${err}`);
-			return false; // Rückgabe von false im Fehlerfall
-		}))
-	) {
+	const imageExists = await checkImageExistence(filePath);
+	if (!imageExists) {
 		if (navigator.onLine) {
 			const remoteSrc = `${imageURL}${file}`;
 
 			// Wenn das Bild nicht existiert und der Download aktiviert ist, versuche es herunterzuladen
 			if (download) {
-				// Fehlerbehandlung für den Download-Prozess
 				await downloadImage(remoteSrc, filePath).catch((err) => {
 					error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err}`);
 				});
@@ -132,19 +129,29 @@ export async function image(
 		}
 	}
 
-	// Lokalen Pfad zusammenfügen und Bildquelle auflösen
-	let localPath = await join(await appDataDir(), filePath).catch((err) => {
-		// Fehlerbehandlung für das Zusammenfügen des lokalen Pfads
-		error(`Fehler beim Zusammenfügen des lokalen Pfads: ${err}`);
-		return null; // Rückgabe von null im Fehlerfall
-	});
+	// Lokalen Pfad auflösen und Bildquelle zurückgeben
+	return resolveImageFromLocal(filePath);
+}
 
-	// Wenn ein lokaler Pfad vorhanden ist, Bildquelle auflösen, andernfalls Platzhalter verwenden
-	if (localPath) {
-		return resolveImageSource(convertFileSrc(localPath));
-	} else {
-		return resolveImageSource(placeholderURL);
+async function checkImageExistence(filePath: string): Promise<boolean> {
+	try {
+		return await exists(filePath, { baseDir: BaseDirectory.AppData });
+	} catch (err) {
+		error(`Fehler bei der Überprüfung des Bildpfads '${filePath}': ${err}`);
+		return false;
 	}
+}
+
+async function resolveImageFromLocal(filePath: string) {
+	try {
+		const localPath = await join(await appDataDir(), filePath);
+		if (localPath) {
+			return resolveImageSource(convertFileSrc(localPath));
+		}
+	} catch (err) {
+		error(`Fehler beim Zusammenfügen des lokalen Pfads: ${err}`);
+	}
+	return resolveImageSource(placeholderURL);
 }
 
 /**
