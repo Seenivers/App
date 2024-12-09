@@ -82,6 +82,18 @@
 			searchInput.focus();
 		} else if (event.ctrlKey && event.key === 'p') {
 			event.preventDefault();
+		} else if (event.ctrlKey && event.key === '+') {
+			event.preventDefault();
+			CARDSCALE += 1;
+			if (CARDSCALE > 3) {
+				CARDSCALE = 1;
+			}
+		} else if (event.ctrlKey && event.key === '-') {
+			event.preventDefault();
+			CARDSCALE -= 1;
+			if (CARDSCALE < 1) {
+				CARDSCALE = 3;
+			}
 		}
 	}
 
