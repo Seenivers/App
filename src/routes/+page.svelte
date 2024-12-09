@@ -194,6 +194,7 @@
 					class="input join-item input-bordered"
 					name="title"
 					placeholder="Titel"
+					autocomplete="off"
 					bind:value={searchCriteria.title}
 					on:input={filterMovies}
 					bind:this={searchInput}
