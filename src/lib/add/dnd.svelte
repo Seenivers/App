@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { listen } from '@tauri-apps/api/event';
-	import { exists, readDir, BaseDirectory } from '@tauri-apps/plugin-fs';
+	import { readDir } from '@tauri-apps/plugin-fs';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import type { DropPayload } from '$lib/types/add';
+	import { error } from '@tauri-apps/plugin-log';
 
 	let isDraggingOver = false;
 	let handleDrop: UnlistenFn;
@@ -17,31 +18,30 @@
 		const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
 
 		handleDrop = await listen<DropPayload>('tauri://drag-drop', async (event) => {
-			console.log(event.payload);
-
 			isDraggingOver = false;
 			const files: string[] = [];
 
 			// Loop through the dropped paths
 			for (const path of event.payload.paths) {
-				// Check if the path is a file or a directory
-				const isDir = await exists(path, { baseDir: BaseDirectory.AppLocalData });
+				// Check if the path has a file extension
+				const fileExtension = path.split('.').pop()?.toLowerCase();
 
-				if (isDir) {
-					// If it's a directory, read its contents
-					const entries = await readDir(path);
-					// Filter and collect only the files with supported extensions
-					entries.forEach((entry) => {
-						const fileExtension = entry.name.split('.').pop()?.toLowerCase();
-						if (fileExtension && supportedExtensions.has(fileExtension)) {
-							files.push(`${path}\\${entry.name}`);
-						}
-					});
+				if (fileExtension && supportedExtensions.has(fileExtension)) {
+					// If it's a file with a supported extension, add it to the list
+					files.push(path);
 				} else {
-					// If it's a file, directly check its extension and add it if supported
-					const fileExtension = path.split('.').pop()?.toLowerCase();
-					if (fileExtension && supportedExtensions.has(fileExtension)) {
-						files.push(path);
+					// If it's a directory or doesn't have a file extension, try reading its contents
+					try {
+						const entries = await readDir(path);
+						// Filter and collect only the files with supported extensions
+						entries.forEach((entry) => {
+							const entryExtension = entry.name.split('.').pop()?.toLowerCase();
+							if (entryExtension && supportedExtensions.has(entryExtension)) {
+								files.push(`${path}\\${entry.name}`);
+							}
+						});
+					} catch (err) {
+						error('Fehler beim Lesen des Verzeichnisses: ' + err);
 					}
 				}
 			}
