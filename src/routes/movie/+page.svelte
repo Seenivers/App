@@ -165,11 +165,8 @@
 			</div>
 		</div>
 	{:else}
-		<div class="flex h-full w-full justify-center">
-			<div class="grid gap-8">
-				<p class="text-4xl md:text-5xl">Keine Daten</p>
-				<a href="/" class="btn btn-lg text-2xl">Zurück</a>
-			</div>
+		<div class="flex justify-center p-5">
+			<p class="text-4xl md:text-5xl">Keine Daten gefunden</p>
 		</div>
 	{/if}
 </main>
