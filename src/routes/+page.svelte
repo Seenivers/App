@@ -200,7 +200,7 @@
 					bind:this={searchInput}
 				/>
 				<datalist
-					class="absolute z-10 overflow-y-auto rounded-b-lg bg-base-100"
+					class="absolute z-10 max-h-96 overflow-y-auto rounded-b-lg bg-base-100"
 					bind:this={datalistItem}
 				>
 					{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
