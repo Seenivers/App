@@ -326,6 +326,11 @@
 						</button>
 					{/each}
 				</div>
+			{:else if status[modalID].searchStatus === 'notStarted'}
+				<p class="text-center">
+					Es wurde noch nicht nach einem Film gesucht. Bitte klicken Sie auf "Suchen" wenn Sie den
+					Film Hinzufügen wollen.
+				</p>
 			{:else}
 				<p class="text-center text-error">Keine Ergebnisse gefunden.</p>
 			{/if}
