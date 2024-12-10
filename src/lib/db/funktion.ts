@@ -100,27 +100,29 @@ async function updateMovies() {
 	try {
 		const movies = await getAllMovies();
 		if (movies && movies.length > 0) {
-			// Filme nacheinander durchgehen
 			for (const movie of movies) {
-				// Aktualisiere Filme, wenn nötig
-				await updateEntity(movie, 'movies');
-				// Füge Collection hinzu, wenn nicht vorhanden
-				if (movie.tmdb.belongs_to_collection) {
-					const collection = await getCollection(movie.tmdb.belongs_to_collection.id);
-					if (!collection) {
-						const result = await getCollectionTmdb(
-							movie.tmdb.belongs_to_collection.id,
-							loadedSettings?.language
-						);
-						if (result) {
-							await addCollection({ ...result, updated: new Date() });
-						}
-					}
-				}
+				await updateMovieIfNeeded(movie);
 			}
 		}
 	} catch (err) {
 		error('Fehler beim Aktualisieren der Filme: ' + err);
+	}
+}
+
+async function updateMovieIfNeeded(movie: typeof schema.movies.$inferSelect) {
+	await updateEntity(movie, 'movies');
+	if (movie.tmdb.belongs_to_collection) {
+		await processCollection(movie.tmdb.belongs_to_collection.id);
+	}
+}
+
+async function processCollection(collectionId: number) {
+	const collection = await getCollection(collectionId);
+	if (!collection) {
+		const result = await getCollectionTmdb(collectionId, loadedSettings?.language);
+		if (result) {
+			await addCollection({ ...result, updated: new Date() });
+		}
 	}
 }
 
