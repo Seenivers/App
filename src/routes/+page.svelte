@@ -2,6 +2,7 @@
 	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
 	import { image } from '$lib/image';
+	import type { Cardscale } from '$lib/types/add';
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onMount } from 'svelte';
 
@@ -22,7 +23,23 @@
 	// Lade die Filme und initialisiere die Fuse-Suche
 	let matchedMovies: (typeof schema.movies.$inferSelect)[] = [];
 	let isLoading = false;
-	let CARDSCALE: 1 | 2 | 3 = 2;
+	let CARDSCALE: Cardscale = {
+		aktiv: 2,
+		sizes: [
+			{
+				number: 1,
+				size: 'Small'
+			},
+			{
+				number: 2,
+				size: 'Medium'
+			},
+			{
+				number: 3,
+				size: 'Large'
+			}
+		]
+	};
 
 	// Funktion zum Laden der Filme
 	async function loadMovies() {
@@ -84,15 +101,15 @@
 			event.preventDefault();
 		} else if (event.ctrlKey && event.key === '+') {
 			event.preventDefault();
-			CARDSCALE += 1;
-			if (CARDSCALE > 3) {
-				CARDSCALE = 1;
+			CARDSCALE.aktiv += 1;
+			if (CARDSCALE.aktiv > 3) {
+				CARDSCALE.aktiv = 1;
 			}
 		} else if (event.ctrlKey && event.key === '-') {
 			event.preventDefault();
-			CARDSCALE -= 1;
-			if (CARDSCALE < 1) {
-				CARDSCALE = 3;
+			CARDSCALE.aktiv -= 1;
+			if (CARDSCALE.aktiv < 1) {
+				CARDSCALE.aktiv = 3;
 			}
 		}
 	}
@@ -240,65 +257,32 @@
 			</button>
 		</div>
 
-		<!-- Skalierung -->
+		<!-- Scaling -->
 		<div class="z-0 mt-5 flex flex-1 justify-end">
 			<div class="join join-vertical lg:join-horizontal">
-				<!-- Klein -->
-				<button
-					class="btn join-item flex items-center gap-2"
-					class:btn-active={CARDSCALE === 1}
-					on:click={() => {
-						CARDSCALE = 1;
-					}}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-5 w-5"
-						viewBox="0 0 24 24"
-						fill="currentColor"
-					>
-						<circle cx="12" cy="12" r="4" />
-					</svg>
-					<span class="hidden lg:inline">Klein</span>
-				</button>
+				{#each CARDSCALE.sizes as { number, size }}
+					{@const r = 4 + 2 * number}
 
-				<!-- Mittel -->
-				<button
-					class="btn join-item flex items-center gap-2"
-					class:btn-active={CARDSCALE === 2}
-					on:click={() => {
-						CARDSCALE = 2;
-					}}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-6 w-6"
-						viewBox="0 0 24 24"
-						fill="currentColor"
+					<button
+						class="btn join-item flex items-center gap-2"
+						class:btn-active={CARDSCALE.aktiv === number}
+						on:click={() => {
+							CARDSCALE.aktiv = number;
+						}}
 					>
-						<circle cx="12" cy="12" r="6" />
-					</svg>
-					<span class="hidden lg:inline">Mittel</span>
-				</button>
-
-				<!-- Groß -->
-				<button
-					class="btn join-item flex items-center gap-2"
-					class:btn-active={CARDSCALE === 3}
-					on:click={() => {
-						CARDSCALE = 3;
-					}}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-7 w-7"
-						viewBox="0 0 24 24"
-						fill="currentColor"
-					>
-						<circle cx="12" cy="12" r="8" />
-					</svg>
-					<span class="hidden lg:inline">Groß</span>
-				</button>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-5 w-5"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+						>
+							<circle cx="12" cy="12" {r} />
+						</svg>
+						<span class="hidden lg:inline">
+							{size}
+						</span>
+					</button>
+				{/each}
 			</div>
 		</div>
 	{/if}
@@ -313,9 +297,9 @@
 					href={'./movie?id=' + movie.id.toString()}
 					draggable="false"
 					class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
-				{CARDSCALE === 1
+				{CARDSCALE.aktiv === 1
 						? 'min-w-[8rem] max-w-[12rem]'
-						: CARDSCALE === 2
+						: CARDSCALE.aktiv === 2
 							? 'min-w-[12rem] max-w-[18rem]'
 							: 'min-w-[16rem] max-w-[24rem]'}"
 				>
@@ -338,9 +322,9 @@
 					</figure>
 					<div class="card-body items-center py-2 text-center">
 						<p
-							class="card-title {CARDSCALE === 1
+							class="card-title {CARDSCALE.aktiv === 1
 								? 'text-base'
-								: CARDSCALE === 2
+								: CARDSCALE.aktiv === 2
 									? 'text-lg'
 									: 'text-2xl'}"
 						>
