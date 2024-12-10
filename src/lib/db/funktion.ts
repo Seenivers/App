@@ -249,3 +249,16 @@ export async function getAllCollections() {
 			error('Get All Collections: ' + err);
 		});
 }
+
+/**
+ * Überprüft, ob eine Sammlung mit der angegebenen `id` einzigartig in der Datenbank ist.
+ * Gibt `true` zurück, wenn keine Sammlung mit dieser ID existiert (d.h., die Sammlung ist einzigartig),
+ * andernfalls `false`.
+ *
+ * @param id - Die ID der Sammlung, die überprüft werden soll.
+ * @returns Ein `Promise`, das `true` zurückgibt, wenn die Sammlung einzigartig ist (noch nicht vorhanden), andernfalls `false`.
+ */
+export async function isCollectionIDUnique(id: number): Promise<boolean> {
+	const existingCollection = await getCollection(id);
+	return !existingCollection;
+}
