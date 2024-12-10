@@ -14,6 +14,7 @@
 		"fs:allow-remove",
 		"fs:allow-open",
 		"fs:allow-write",
+		"fs:allow-stat",
 		{
 			"identifier": "fs:scope",
 			"allow": [{ "path": "$APPDATA" }, { "path": "$APPDATA/**" }, { "path": "*/**" }]

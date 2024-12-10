@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { listen } from '@tauri-apps/api/event';
-	import { readDir } from '@tauri-apps/plugin-fs';
+	import { readDir, stat } from '@tauri-apps/plugin-fs';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import type { DropPayload } from '$lib/types/add';
 	import { error } from '@tauri-apps/plugin-log';
@@ -21,34 +21,51 @@
 			isDraggingOver = false;
 			const files: string[] = [];
 
-			// Loop through the dropped paths
+			// Durchlaufe alle übergebenen Pfade
 			for (const path of event.payload.paths) {
-				// Check if the path has a file extension
-				const fileExtension = path.split('.').pop()?.toLowerCase();
+				let metadata;
 
-				if (fileExtension && supportedExtensions.has(fileExtension)) {
-					// If it's a file with a supported extension, add it to the list
-					files.push(path);
-				} else {
-					// If it's a directory or doesn't have a file extension, try reading its contents
+				try {
+					// Hole die Metadaten des Pfads
+					metadata = await stat(path);
+				} catch (err) {
+					error(`Fehler beim Abrufen der Metadaten für den Pfad ${path}: ${err}`);
+					continue; // Überspringe diesen Pfad bei Fehlern
+				}
+
+				if (metadata.isFile) {
+					// Überprüfe, ob die Datei eine unterstützte Erweiterung hat
+					const fileExtension = path.split('.').pop()?.toLowerCase();
+					if (fileExtension && supportedExtensions.has(fileExtension)) {
+						files.push(path);
+					}
+				} else if (metadata.isDirectory) {
 					try {
+						// Lese die Inhalte des Verzeichnisses
 						const entries = await readDir(path);
-						// Filter and collect only the files with supported extensions
+
+						// Filtere und füge unterstützte Dateien hinzu
 						entries.forEach((entry) => {
-							const entryExtension = entry.name.split('.').pop()?.toLowerCase();
-							if (entryExtension && supportedExtensions.has(entryExtension)) {
-								files.push(`${path}\\${entry.name}`);
+							if (entry.name) {
+								const entryExtension = entry.name.split('.').pop()?.toLowerCase();
+								if (entryExtension && supportedExtensions.has(entryExtension)) {
+									files.push(`${path}/${entry.name}`);
+								}
 							}
 						});
 					} catch (err) {
-						error('Fehler beim Lesen des Verzeichnisses: ' + err);
+						error(`Fehler beim Lesen des Verzeichnisses ${path}: ${err}`);
 					}
+				} else {
+					error(`Der Pfad ${path} ist weder eine Datei noch ein Verzeichnis.`);
 				}
 			}
 
-			// If valid files are found, pass them to the load function
+			// Wenn gültige Dateien gefunden wurden, übergebe sie an die Ladefunktion
 			if (files.length > 0) {
 				load(files);
+			} else {
+				alert('Keine Dateien zum Hinzufügen gefunden.');
 			}
 		});
 
