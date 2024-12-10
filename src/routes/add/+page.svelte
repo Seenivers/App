@@ -136,8 +136,6 @@
 	}
 
 	async function search(i: number) {
-		if (status[i].searchStatus !== 'notStarted' && status[i].searchStatus !== 'searching') return;
-
 		// Prüfe die Internetverbindung
 		if (!window.navigator.onLine) {
 			error(
