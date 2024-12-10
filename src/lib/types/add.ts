@@ -1,10 +1,10 @@
-export type DropPayload = {
+export interface DropPayload {
 	paths: string[];
 	position: {
 		x: number;
 		y: number;
 	};
-};
+}
 
 export type SearchStatus = 'notStarted' | 'searching' | 'notFound' | 'foundOne' | 'foundMultiple';
 
