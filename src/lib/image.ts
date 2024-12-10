@@ -29,47 +29,47 @@ async function ensureDirectoryExists(folderPath: string) {
  * @param filename The filename under which the image should be saved.
  */
 export async function downloadImage(url: string, filename: string) {
-	// Bild herunterladen
+	// Download the image
 	const response = await fetch(`${seeniversURL}/api/image?path=${encodeURIComponent(url)}`).catch(
 		(err) => {
-			error(`Fehler beim Abrufen des Bildes von ${url}: ${err}`);
+			error(`Error fetching image from ${url}: ${err}`);
 			return null;
 		}
 	);
 
 	if (!response?.ok) {
-		error(`Fehler beim Herunterladen des Bildes: ${response?.statusText || 'Unbekannter Fehler'}`);
+		error(`Error downloading image: ${response?.statusText || 'Unknown error'}`);
 		return;
 	}
 
-	// Blob aus der Antwort holen
+	// Retrieve the Blob from the response
 	const blob = await response.blob().catch((err) => {
-		error(`Fehler beim Verarbeiten der Bilddaten: ${err}`);
+		error(`Error processing image data: ${err}`);
 		return null;
 	});
 	if (!blob) return;
 
-	// Datei erstellen
+	// Create the file
 	const newFile = await create(filename, { baseDir: BaseDirectory.AppData }).catch((err) => {
-		error(`Fehler beim Erstellen der Datei ${filename}: ${err}`);
+		error(`Error creating file ${filename}: ${err}`);
 		return null;
 	});
 	if (!newFile) return;
 
-	// Bilddaten schreiben
+	// Write the image data to the file
 	const arrayBuffer = await blob.arrayBuffer().catch((err) => {
-		error(`Fehler beim Umwandeln des Bildes in ein ArrayBuffer: ${err}`);
+		error(`Error converting image to arrayBuffer: ${err}`);
 		return null;
 	});
 	if (!arrayBuffer) return;
 
 	await newFile.write(new Uint8Array(arrayBuffer)).catch((err) => {
-		error(`Fehler beim Schreiben der Bilddaten in die Datei ${filename}: ${err}`);
+		error(`Error writing image data to file ${filename}: ${err}`);
 	});
 
-	// Datei schließen
+	// Close the file
 	await newFile.close().catch((err) => {
-		error(`Fehler beim Schließen der Datei ${filename}: ${err}`);
+		error(`Error closing file ${filename}: ${err}`);
 	});
 }
 
