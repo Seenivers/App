@@ -21,22 +21,24 @@ let dbInstance: ReturnType<typeof drizzle<typeof schema>> | undefined;
  */
 export async function getDb() {
 	if (!dbInstance) {
+		// Stelle sicher, dass SQLite geladen ist, bevor die Datenbankinstanz erstellt wird
+		if (!sqlite) {
+			throw new Error('SQLite database is not loaded yet');
+		}
+
+		// Initialisiere dbInstance mit der asynchronen Callback-Funktion
 		dbInstance = drizzle<typeof schema>(
 			async (sql, params, method) => {
-				if (!sqlite) {
-					throw new Error('SQLite database is not loaded yet');
-				}
-
 				let results: any = []; // eslint-disable-line
 
-				// If the query is a SELECT, use the select method
+				// Wenn die Abfrage ein SELECT ist, nutze die select-Methode
 				if (isSelectQuery(sql)) {
 					results = await sqlite.select(sql, params).catch((e) => {
 						error('SQL Error: ' + e);
 						return [];
 					});
 				} else {
-					// Otherwise, use the execute method
+					// Ansonsten, nutze die execute-Methode
 					await sqlite.execute(sql, params).catch((e) => {
 						error('SQL Error: ' + e);
 						return [];
@@ -44,10 +46,10 @@ export async function getDb() {
 					return { rows: [] };
 				}
 
-				// Map results to arrays if necessary
+				// Falls notwendig, mappe die Ergebnisse auf Arrays
 				results = results.map((row: any) => Object.values(row)); // eslint-disable-line
 
-				// If the method is "all", return all rows
+				// Wenn die Methode "all" ist, gebe alle Zeilen zurück
 				return { rows: method === 'all' ? results : results[0] };
 			},
 			{ schema: schema, logger: import.meta.env.DEV }
