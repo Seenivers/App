@@ -1,4 +1,4 @@
-import { addCollection, addMovie, isMovieUnique, settings } from '$lib/db/funktion';
+import { addCollection, addMovie, isMovieIDUnique, settings } from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
 import { fetch } from '@tauri-apps/plugin-http';
@@ -86,7 +86,7 @@ export async function addNewMovie(id: number, path: string) {
 	// Hole die Filmdetails
 	const result = await getMovieTmdb(id);
 
-	if (await isMovieUnique(result)) {
+	if (await isMovieIDUnique(result.id)) {
 		// Film zur DB hinzufügen
 		await addMovie({ id, path, tmdb: result, updated: new Date() });
 

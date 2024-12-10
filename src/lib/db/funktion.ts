@@ -6,7 +6,6 @@ import { migrate } from '$lib/db/migrate';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types';
 import { getMovie as getMovieTmdb, getCollection as getCollectionTmdb } from '$lib/tmdb';
-import type { Movie } from '$lib/types/movie';
 
 const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
@@ -212,23 +211,16 @@ export async function isPathUnique(path: string): Promise<boolean> {
 }
 
 /**
- * Überprüft, ob der angegebene Film (`tmdb`) einzigartig in der Datenbank ist.
- * Sucht nach einem Film, der mit den gleichen TMDB-Daten übereinstimmt.
- * Gibt `true` zurück, wenn kein Film mit denselben Daten gefunden wurde (d.h., der Film ist einzigartig),
+ * Überprüft, ob ein Film mit der angegebenen `id` einzigartig in der Datenbank ist.
+ * Gibt `true` zurück, wenn der Film mit dieser ID noch nicht existiert (d.h., der Film ist einzigartig),
  * andernfalls `false`.
  *
- * @param tmdb - Der Film, der überprüft werden soll.
- * @returns Ein `Promise`, das `true` zurückgibt, wenn der Film einzigartig ist, andernfalls `false`.
+ * @param id - Die ID des Films, der überprüft werden soll.
+ * @returns Ein `Promise`, das `true` zurückgibt, wenn der Film einzigartig ist (noch nicht vorhanden), andernfalls `false`.
  */
-export async function isMovieUnique(tmdb: Movie): Promise<boolean> {
-	const existingMovie = await db.query.movies
-		.findFirst({
-			where: eq(schema.movies.tmdb, tmdb)
-		})
-		.catch((err) => {
-			error(`Is Path Unique: ` + err);
-		});
-	return !existingMovie;
+export async function isMovieIDUnique(id: number): Promise<boolean> {
+	const existingMovie = await getMovie(id);
+	return !existingMovie; // Gibt true zurück, wenn der Film nicht existiert, andernfalls false
 }
 
 // Add Collection to db
