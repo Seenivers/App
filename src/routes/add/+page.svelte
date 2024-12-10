@@ -136,7 +136,7 @@
 	}
 
 	async function search(i: number) {
-		status[i].searchStatus = 'searching';
+		if (status[i].searchStatus !== 'notStarted' && status[i].searchStatus !== 'searching') return;
 
 		// Prüfe die Internetverbindung
 		if (!window.navigator.onLine) {
@@ -146,6 +146,8 @@
 			status[i].searchStatus = 'notFound';
 			return;
 		}
+
+		status[i].searchStatus = 'searching';
 
 		const { name, primaryReleaseYear } = status[i].searchParams;
 
