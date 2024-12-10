@@ -211,6 +211,15 @@ export async function isPathUnique(path: string): Promise<boolean> {
 	return !existingMovie;
 }
 
+/**
+ * Überprüft, ob der angegebene Film (`tmdb`) einzigartig in der Datenbank ist.
+ * Sucht nach einem Film, der mit den gleichen TMDB-Daten übereinstimmt.
+ * Gibt `true` zurück, wenn kein Film mit denselben Daten gefunden wurde (d.h., der Film ist einzigartig),
+ * andernfalls `false`.
+ *
+ * @param tmdb - Der Film, der überprüft werden soll.
+ * @returns Ein `Promise`, das `true` zurückgibt, wenn der Film einzigartig ist, andernfalls `false`.
+ */
 export async function isMovieUnique(tmdb: Movie): Promise<boolean> {
 	const existingMovie = await db.query.movies
 		.findFirst({
@@ -219,8 +228,6 @@ export async function isMovieUnique(tmdb: Movie): Promise<boolean> {
 		.catch((err) => {
 			error(`Is Path Unique: ` + err);
 		});
-
-	// Gibt `true` zurück, wenn kein Film mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
 	return !existingMovie;
 }
 
