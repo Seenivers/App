@@ -38,3 +38,11 @@ export interface MovieSearchStatus {
 	searchResults: SearchResult[];
 	searchParams: SearchParams;
 }
+
+export interface Cardscale {
+	aktiv: 1 | 2 | 3;
+	sizes: {
+		number: 1 | 2 | 3;
+		size: 'Small' | 'Medium' | 'Large';
+	}[];
+}
