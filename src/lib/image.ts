@@ -37,7 +37,7 @@ export async function downloadImage(url: string, filename: string) {
 		}
 	);
 
-	if (!response || !response.ok) {
+	if (!response?.ok) {
 		error(`Fehler beim Herunterladen des Bildes: ${response?.statusText || 'Unbekannter Fehler'}`);
 		return;
 	}
