@@ -47,7 +47,7 @@
 									class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 								/>
 							{/await}
-							<div class="text-center lg:text-left">
+							<div class="text-center text-slate-300 lg:text-left">
 								<h1 class="text-4xl font-bold md:text-5xl">{collection.name}</h1>
 								<p class="py-6 text-lg md:text-2xl">{collection.overview}</p>
 							</div>
