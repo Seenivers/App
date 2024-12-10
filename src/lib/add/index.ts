@@ -101,7 +101,7 @@ export async function addNewMovie(id: number, path: string) {
 		}
 
 		// Collection hinzufügen, falls vorhanden
-		if (result.belongs_to_collection && result.belongs_to_collection.id) {
+		if (result.belongs_to_collection?.id) {
 			const collection = await getCollectionTmdb(result.belongs_to_collection.id);
 			if (collection) {
 				await addCollection({ ...collection, updated: new Date() });
