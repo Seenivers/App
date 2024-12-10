@@ -1,4 +1,10 @@
-import { addCollection, addMovie, isMovieIDUnique, settings } from '$lib/db/funktion';
+import {
+	addCollection,
+	addMovie,
+	isCollectionIDUnique,
+	isMovieIDUnique,
+	settings
+} from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
 import { fetch } from '@tauri-apps/plugin-http';
@@ -101,7 +107,10 @@ export async function addNewMovie(id: number, path: string) {
 		}
 
 		// Collection hinzufügen, falls vorhanden
-		if (result.belongs_to_collection?.id) {
+		if (
+			result.belongs_to_collection?.id &&
+			(await isCollectionIDUnique(result.belongs_to_collection?.id))
+		) {
 			const collection = await getCollectionTmdb(result.belongs_to_collection.id);
 			if (collection) {
 				await addCollection({ ...collection, updated: new Date() });
