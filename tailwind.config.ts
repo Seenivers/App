@@ -5,7 +5,14 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
-		extend: {}
+		extend: {
+			minHeight: {
+				unset: 'unset'
+			},
+			minWidth: {
+				unset: 'unset'
+			}
+		}
 	},
 
 	plugins: [daisyui],
