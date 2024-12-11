@@ -14,6 +14,8 @@ import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
 import type { schema } from '$lib/db/schema';
+import { status } from '$lib/stores';
+import { get } from 'svelte/store';
 
 export function buttonClass(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
@@ -225,4 +227,67 @@ export function findNewFileIndexes(newFiles: string[], status: MovieSearchContex
 	return status
 		.map((movie, index) => (newFiles.includes(movie.options.path) ? index : -1))
 		.filter((index) => index !== -1); // Nur Indexes der neuen Filme
+}
+
+export async function searchMovieStatus(
+	i: number,
+	modal: boolean,
+	searchMovies: Function,
+	addNewMovie: Function
+) {
+	// Prüfe die Internetverbindung
+	if (!window.navigator.onLine) {
+		error(
+			'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
+		);
+		status.update((currentStatus) => {
+			currentStatus[i].state = 'notFound';
+			return [...currentStatus]; // Rückgabe einer neuen Kopie, damit Svelte den Store erkennt
+		});
+		return;
+	}
+
+	status.update((currentStatus) => {
+		currentStatus[i].state = 'searching';
+		return [...currentStatus]; // Rückgabe einer neuen Kopie, damit Svelte den Store erkennt
+	});
+
+	const { query, primaryReleaseYear } = get(status)[i].options;
+
+	try {
+		// TMDB-Suche durchführen
+		const result = (await searchMovies(query, primaryReleaseYear)).results;
+
+		// Update status based on results
+		status.update((currentStatus) => {
+			if (result.length === 1) {
+				currentStatus[i].results = result;
+				currentStatus[i].state = 'foundOne';
+
+				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
+				if (!modal) {
+					addNewMovie(result[0].id, currentStatus[i].options.path);
+				}
+			} else if (result.length > 1) {
+				currentStatus[i].results = result;
+				currentStatus[i].state = 'foundMultiple';
+			} else {
+				currentStatus[i].results = [];
+				currentStatus[i].state = 'notFound';
+			}
+			return [...currentStatus]; // Rückgabe einer neuen Kopie
+		});
+	} catch (err) {
+		// Fehlerbehandlung
+		if (err instanceof Error) {
+			error('Fehler bei der Suche: ' + err.message);
+		} else {
+			error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
+		}
+		status.update((currentStatus) => {
+			currentStatus[i].results = [];
+			currentStatus[i].state = 'notFound';
+			return [...currentStatus]; // Rückgabe einer neuen Kopie
+		});
+	}
 }
