@@ -41,6 +41,8 @@ export function getIcon(searchStatus: string) {
 			return '✅'; // found one icon
 		case 'foundMultiple':
 			return '⚠️'; // multiple results icon
+		case 'downloading':
+			return '📥'; // downloading icon
 		default:
 			return '❓'; // default to search icon
 	}
