@@ -201,7 +201,7 @@
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
 	<div class="gap-1">
-		<a href="/" class="btn btn-ghost">Zurück</a>
+		<a href="/" class="btn btn-ghost">Zurück zur Startseite</a>
 	</div>
 	<div class="gap-1">
 		<!-- Platzhalter -->
@@ -210,23 +210,25 @@
 
 <main class="z-0 flex flex-col items-center p-5">
 	{#if !window.navigator.onLine}
-		<div class="alert alert-error text-center">Du bist nicht mit dem Internet verbunden</div>
+		<div class="alert alert-error text-center">
+			Du bist momentan nicht mit dem Internet verbunden.
+		</div>
 	{:else}
 		<div class="mb-5 flex w-3/4 gap-5">
-			<button class="btn grow" on:click={selectFile} disabled={!window.navigator.onLine}
-				>Film(e) auswählen</button
-			>
-			<button class="btn grow" on:click={selectFolder} disabled={!window.navigator.onLine}
-				>Ordner auswählen</button
-			>
+			<button class="btn grow" on:click={selectFile} disabled={!window.navigator.onLine}>
+				Filme auswählen
+			</button>
+			<button class="btn grow" on:click={selectFolder} disabled={!window.navigator.onLine}>
+				Ordner auswählen
+			</button>
 		</div>
 
 		<div class="grid w-full gap-3">
 			{#each status as item, index}
 				<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
 					<span>
-						<p class="text-lg">Film Name: {item.options.query}</p>
-						<p class="text-sm">Datei: {item.options.path}</p>
+						<p class="text-lg">Filmtitel: {item.options.query}</p>
+						<p class="text-sm">Dateipfad: {item.options.path}</p>
 					</span>
 					<button
 						class="btn bg-opacity-50 {buttonClass(status[index].state)}"
@@ -243,9 +245,9 @@
 <!-- Modal -->
 <dialog class="modal backdrop-blur-sm" open={modal}>
 	<div class="modal-box max-w-3xl">
-		<button class="btn btn-circle btn-sm absolute right-2 top-2" on:click={() => (modal = false)}
-			>✕</button
-		>
+		<button class="btn btn-circle btn-sm absolute right-2 top-2" on:click={() => (modal = false)}>
+			✕
+		</button>
 		{#if modalID !== null && status[modalID]}
 			<h2 class="line-clamp-1 py-1 text-3xl">
 				{status[modalID].options.path.split('\\').pop()}
@@ -258,7 +260,7 @@
 				class="my-3 grid gap-3"
 			>
 				<label class="input input-bordered flex items-center gap-2">
-					Filmname:
+					Filmtitel:
 					<input
 						type="text"
 						class="grow"
@@ -280,9 +282,9 @@
 					/>
 					<span class="badge badge-info">Optional</span>
 				</label>
-				<button type="submit" class="btn grow" disabled={status[modalID].state === 'searching'}
-					>Suchen</button
-				>
+				<button type="submit" class="btn grow" disabled={status[modalID].state === 'searching'}>
+					Suchen
+				</button>
 			</form>
 
 			<hr class="my-3 border-2 border-base-content" />
@@ -293,7 +295,7 @@
 				>
 					<h2 class="mb-2 text-2xl font-semibold">Suche läuft...</h2>
 					<p class="mb-4 text-sm text-gray-600">
-						Bitte warten Sie, während wir nach Filmen suchen.
+						Wir durchsuchen gerade die Datenbank nach dem Film.
 					</p>
 					<div class="mb-4 flex items-center justify-center">
 						<div
@@ -319,22 +321,22 @@
 							<div class="px-3 text-left">
 								<p><strong>{result.title}</strong></p>
 								<p class="text-sm text-gray-500">Veröffentlichungsdatum: {result.release_date}</p>
-								<p class=" text-gray-400">{result.overview}</p>
+								<p class="text-gray-400">{result.overview}</p>
 							</div>
 						</button>
 					{/each}
 				</div>
 			{:else if status[modalID].state === 'notStarted'}
 				<p class="text-center">
-					Es wurde noch nicht nach einem Film gesucht. Bitte klicken Sie auf "Suchen" wenn Sie den
-					Film Hinzufügen wollen.
+					Es wurde noch nicht nach einem Film gesucht. Bitte klicken Sie auf "Suchen", wenn Sie den
+					Film hinzufügen möchten.
 				</p>
 			{:else}
-				<p class="text-center text-error">Keine Ergebnisse gefunden.</p>
+				<p class="text-center text-error">Es wurden keine Ergebnisse gefunden.</p>
 			{/if}
 		{/if}
 	</div>
 	<form method="dialog" class="modal-backdrop" on:submit|preventDefault={() => (modal = false)}>
-		<button>close</button>
+		<button>Schließen</button>
 	</form>
 </dialog>
