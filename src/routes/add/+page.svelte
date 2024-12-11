@@ -223,8 +223,11 @@
 
 		<div class="grid w-full gap-3">
 			{#each status as item, index}
-				<div class="flex justify-between rounded-md bg-base-200 p-3">
-					<span>Name: {item.options.query}</span>
+				<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
+					<span>
+						<p class="text-lg">Film Name: {item.options.query}</p>
+						<p class="text-sm">Datei: {item.options.path}</p>
+					</span>
 					<button
 						class="btn bg-opacity-50 {buttonClass(status[index].state)}"
 						on:click={() => openModal(index)}
