@@ -2,13 +2,10 @@
 	import { open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
 	import { readDir } from '@tauri-apps/plugin-fs';
-	import { settings } from '$lib/db/funktion';
 	import {
-		addNewFilesToStatus,
+		addNewFiles,
 		addNewMovie,
 		buttonClass,
-		filterNewFiles,
-		findNewFileIndexes,
 		getIcon,
 		getValidFileNames,
 		searchMovies,
@@ -31,7 +28,7 @@
 
 	onMount(async () => {
 		if (data.paths.length > 0 && Array.isArray(data.paths)) {
-			load(data.paths);
+			await load(data.paths); // ensure load is called once during mount
 		}
 	});
 
@@ -45,10 +42,9 @@
 		});
 
 		if (files) {
-			// Filter and map in a single loop using the provided extensions
+			// Filter and load valid files
 			const validFiles = getValidFileNames(files, extensions);
-
-			if (validFiles && Array.isArray(validFiles) && validFiles.length > 0) load(validFiles);
+			if (validFiles.length > 0) await load(validFiles);
 		}
 	}
 
@@ -63,13 +59,13 @@
 		if (folder) {
 			const entries = await readDir(folder);
 
-			// Filter and map in a single loop using the provided extensions
+			// Filter valid files
 			const validFiles = getValidFileNames(
 				entries.map((entry) => `${folder}\\${entry.name}`),
 				extensions
 			);
 
-			if (validFiles && Array.isArray(validFiles) && validFiles.length > 0) load(validFiles);
+			if (validFiles.length > 0) await load(validFiles);
 		}
 	}
 
@@ -78,24 +74,9 @@
 
 		loading = true;
 
-		// Filtere nur die Dateien, die nicht bereits im Status enthalten sind
-		const newFiles = await filterNewFiles(files, $status); // Verwende den Store
+		// Rufe die Funktion zum Hinzufügen neuer Dateien auf
+		await addNewFiles(files, modal, searchMovies, addNewMovie);
 
-		if (newFiles.length === 0) {
-			alert(
-				'Es sind keine Filme zum Hinzufügen vorhanden, da sie bereits in der Datenbank gespeichert sind.'
-			);
-			return;
-		}
-
-		addNewFilesToStatus(newFiles, $status, settings); // Update den Store
-
-		// Suche nur für neue Filme durchführen
-		const newFileIndexes = findNewFileIndexes(newFiles, $status);
-
-		for (const index of newFileIndexes) {
-			await searchMovieStatus(index, modal, searchMovies, addNewMovie);
-		}
 		loading = false;
 	}
 
