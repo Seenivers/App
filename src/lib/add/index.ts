@@ -12,7 +12,7 @@ import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$l
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
 
-const castImages = 4; // 5 Bilder laden
+let castImages = 5; // 5 Bilder laden
 
 export function buttonClass(searchStatus: string) {
 	switch (searchStatus) {
@@ -85,7 +85,7 @@ export async function addNewMovie(id: number, path: string) {
 	}
 
 	if (!id) {
-		error('Es muss eine Valide ID angegeben werden.');
+		error('Es muss eine valide ID angegeben werden.');
 		return Promise.resolve();
 	}
 
@@ -122,12 +122,17 @@ export async function addNewMovie(id: number, path: string) {
 			.map((actor) => actor.profile_path)
 			.filter((path) => path != null);
 
+		// `castImages` bestimmen: 0 bedeutet alle Bilder laden
+		const imagesToLoad =
+			castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
+
 		// Bilder für Schauspieler laden
-		for (let i = 0; i < castImagePaths.length || i <= castImages; i++) {
+		for (let i = 0; i < imagesToLoad; i++) {
 			const path = castImagePaths[i];
 			await loadImageWithErrorHandling(path, 'actors');
 		}
 	}
+
 	return Promise.resolve();
 }
 
