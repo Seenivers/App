@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { open } from '@tauri-apps/plugin-dialog';
-	import { videoDir } from '@tauri-apps/api/path';
+	import { join, videoDir } from '@tauri-apps/api/path';
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import {
 		addNewFiles,
 		addNewMovie,
 		buttonClass,
 		getIcon,
-		getValidFileNames,
 		searchMovies,
 		searchMovieStatus
 	} from '$lib/add/index';
@@ -26,7 +25,9 @@
 
 	onMount(async () => {
 		if (data.paths.length > 0 && Array.isArray(data.paths)) {
-			// Stelle sicher, dass load nur einmal aufgerufen wird
+			// Neue Dateien hinzufügen
+			await addNewFiles(data.paths);
+			// Danach Suche starten
 			await load();
 		}
 	});
@@ -40,16 +41,11 @@
 			filters: [{ name: 'Video', extensions }]
 		});
 
-		if (files) {
-			// Filter und Lade gültige Dateien
-			const validFiles = getValidFileNames(files, extensions);
-
-			if (validFiles.length > 0) {
-				// Neue Dateien hinzufügen
-				await addNewFiles(validFiles);
-				// Danach Suche starten
-				await load();
-			}
+		if (files && files.length > 0) {
+			// Neue Dateien hinzufügen
+			await addNewFiles(files);
+			// Danach Suche starten
+			await load();
 		}
 	}
 
@@ -64,15 +60,11 @@
 		if (folder) {
 			const entries = await readDir(folder);
 
-			// Filter für gültige Dateien
-			const validFiles = getValidFileNames(
-				entries.map((entry) => `${folder}\\${entry.name}`),
-				extensions
-			);
+			const pfads = await Promise.all(entries.map(async (entry) => await join(folder, entry.name)));
 
-			if (validFiles.length > 0) {
+			if (pfads && pfads.length > 0) {
 				// Neue Dateien hinzufügen
-				await addNewFiles(validFiles);
+				await addNewFiles(pfads);
 				// Danach Suche starten
 				await load();
 			}
