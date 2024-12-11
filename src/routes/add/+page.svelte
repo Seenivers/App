@@ -12,14 +12,14 @@
 		getValidFileNames,
 		searchMovies
 	} from '$lib/add/index';
-	import type { MovieSearchStatus } from '$lib/types/add';
+	import type { MovieSearchContext } from '$lib/types/add';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import Dnd from '$lib/add/dnd.svelte';
 
 	export let data: PageData;
 
-	let status: MovieSearchStatus[] = [];
+	let status: MovieSearchContext[] = [];
 
 	const extensions = ['mp4', 'mkv'];
 
@@ -79,7 +79,7 @@
 				files.map(async (path) => {
 					// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
 					const unique = await isPathUnique(path);
-					const existsInStatus = status.some((item) => item.searchParams.path === path);
+					const existsInStatus = status.some((item) => item.options.path === path);
 					return unique && !existsInStatus ? path : null;
 				})
 			)
@@ -113,11 +113,11 @@
 			const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*|(\d{4})/g, '').trim();
 
 			status.push({
-				searchStatus: 'notStarted',
-				searchResults: [],
-				searchParams: {
+				state: 'notStarted',
+				results: [],
+				options: {
 					path,
-					name: cleanedFileName || name,
+					query: cleanedFileName || name,
 					primaryReleaseYear: year,
 					includeAdult: settings.adult,
 					page: 1
@@ -127,7 +127,7 @@
 
 		// Suche nur für neue Filme durchführen
 		const newFileIndexes = status
-			.map((movie, index) => (newFiles.includes(movie.searchParams.path) ? index : -1))
+			.map((movie, index) => (newFiles.includes(movie.options.path) ? index : -1))
 			.filter((index) => index !== -1); // Nur Indizes der neuen Filme
 
 		for (const index of newFileIndexes) {
@@ -141,33 +141,33 @@
 			error(
 				'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
 			);
-			status[i].searchStatus = 'notFound';
+			status[i].state = 'notFound';
 			return;
 		}
 
-		status[i].searchStatus = 'searching';
+		status[i].state = 'searching';
 
-		const { name, primaryReleaseYear } = status[i].searchParams;
+		const { query, primaryReleaseYear } = status[i].options;
 
 		try {
 			// TMDB-Suche durchführen
-			const result = (await searchMovies(name, primaryReleaseYear)).results;
+			const result = (await searchMovies(query, primaryReleaseYear)).results;
 
 			// Update status based on results
 			if (result.length === 1) {
-				status[i].searchResults = result;
-				status[i].searchStatus = 'foundOne';
+				status[i].results = result;
+				status[i].state = 'foundOne';
 
 				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
 				if (!modal) {
-					await addNewMovie(result[0].id, status[i].searchParams.path);
+					await addNewMovie(result[0].id, status[i].options.path);
 				}
 			} else if (result.length > 1) {
-				status[i].searchResults = result;
-				status[i].searchStatus = 'foundMultiple';
+				status[i].results = result;
+				status[i].state = 'foundMultiple';
 			} else {
-				status[i].searchResults = [];
-				status[i].searchStatus = 'notFound';
+				status[i].results = [];
+				status[i].state = 'notFound';
 			}
 		} catch (err) {
 			// Fehlerbehandlung
@@ -176,21 +176,18 @@
 			} else {
 				error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
 			}
-			status[i].searchResults = [];
-			status[i].searchStatus = 'notFound';
+			status[i].results = [];
+			status[i].state = 'notFound';
 		}
 	}
 
 	// Ensure that only the selected movie is added
 	async function selectMovie(modalID: number, movieIndex: number) {
 		modal = false; // Close the modal after selection
-		status[modalID].searchStatus = 'foundOne';
+		status[modalID].state = 'foundOne';
 
 		// Add the user-selected movie
-		await addNewMovie(
-			status[modalID].searchResults[movieIndex].id,
-			status[modalID].searchParams.path
-		);
+		await addNewMovie(status[modalID].results[movieIndex].id, status[modalID].options.path);
 	}
 
 	function openModal(index: number) {
@@ -227,12 +224,12 @@
 		<div class="grid w-full gap-3">
 			{#each status as item, index}
 				<div class="flex justify-between rounded-md bg-base-200 p-3">
-					<span>Name: {item.searchParams.name}</span>
+					<span>Name: {item.options.query}</span>
 					<button
-						class="btn bg-opacity-50 {buttonClass(status[index].searchStatus)}"
+						class="btn bg-opacity-50 {buttonClass(status[index].state)}"
 						on:click={() => openModal(index)}
 					>
-						{getIcon(status[index].searchStatus)}
+						{getIcon(status[index].state)}
 					</button>
 				</div>
 			{/each}
@@ -248,7 +245,7 @@
 		>
 		{#if modalID !== null && status[modalID]}
 			<h2 class="line-clamp-1 py-1 text-3xl">
-				{status[modalID].searchParams.path.split('\\').pop()}
+				{status[modalID].options.path.split('\\').pop()}
 			</h2>
 
 			<form
@@ -263,9 +260,9 @@
 						type="text"
 						class="grow"
 						minlength="2"
-						disabled={status[modalID].searchStatus === 'searching'}
+						disabled={status[modalID].state === 'searching'}
 						required
-						bind:value={status[modalID].searchParams.name}
+						bind:value={status[modalID].options.query}
 					/>
 				</label>
 				<label class="input input-bordered flex items-center gap-2">
@@ -275,21 +272,19 @@
 						class="grow"
 						minlength="4"
 						maxlength="4"
-						disabled={status[modalID].searchStatus === 'searching'}
-						bind:value={status[modalID].searchParams.primaryReleaseYear}
+						disabled={status[modalID].state === 'searching'}
+						bind:value={status[modalID].options.primaryReleaseYear}
 					/>
 					<span class="badge badge-info">Optional</span>
 				</label>
-				<button
-					type="submit"
-					class="btn grow"
-					disabled={status[modalID].searchStatus === 'searching'}>Suchen</button
+				<button type="submit" class="btn grow" disabled={status[modalID].state === 'searching'}
+					>Suchen</button
 				>
 			</form>
 
 			<hr class="my-3 border-2 border-base-content" />
 
-			{#if status[modalID].searchStatus === 'searching'}
+			{#if status[modalID].state === 'searching'}
 				<div
 					class="mx-auto flex max-w-md flex-col items-center rounded-lg bg-base-200 p-5 shadow-md"
 				>
@@ -304,9 +299,9 @@
 					</div>
 					<button class="btn btn-secondary w-full" disabled> Suchen... </button>
 				</div>
-			{:else if modalID !== null && status[modalID]?.searchResults?.length > 0}
+			{:else if modalID !== null && status[modalID]?.results?.length > 0}
 				<div class="grid gap-4">
-					{#each status[modalID].searchResults as result, i}
+					{#each status[modalID].results as result, i}
 						<button
 							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
 							on:click={async () => {
@@ -326,7 +321,7 @@
 						</button>
 					{/each}
 				</div>
-			{:else if status[modalID].searchStatus === 'notStarted'}
+			{:else if status[modalID].state === 'notStarted'}
 				<p class="text-center">
 					Es wurde noch nicht nach einem Film gesucht. Bitte klicken Sie auf "Suchen" wenn Sie den
 					Film Hinzufügen wollen.

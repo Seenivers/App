@@ -6,7 +6,7 @@ export interface DropPayload {
 	};
 }
 
-export type SearchStatus =
+export type MovieSearchState =
 	| 'notStarted'
 	| 'searching'
 	| 'notFound'
@@ -14,7 +14,7 @@ export type SearchStatus =
 	| 'foundMultiple'
 	| 'downloading';
 
-export interface SearchResult {
+export interface MovieResult {
 	adult: boolean;
 	backdrop_path: string | null;
 	genre_ids: number[];
@@ -31,18 +31,18 @@ export interface SearchResult {
 	vote_count: number;
 }
 
-export interface SearchParams {
+export interface SearchOptions {
 	path: string;
-	name: string;
+	query: string;
 	includeAdult?: boolean;
 	primaryReleaseYear?: string | number;
 	page: number;
 }
 
-export interface MovieSearchStatus {
-	searchStatus: SearchStatus;
-	searchResults: SearchResult[];
-	searchParams: SearchParams;
+export interface MovieSearchContext {
+	state: MovieSearchState;
+	results: MovieResult[];
+	options: SearchOptions;
 }
 
 export interface Cardscale {
