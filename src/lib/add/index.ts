@@ -5,14 +5,12 @@ import {
 	isMovieIDUnique,
 	settings
 } from '$lib/db/funktion';
-import { seeniversURL } from '$lib';
+import { castImages, seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
 import { fetch } from '@tauri-apps/plugin-http';
 import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
-
-let castImages = 5; // 5 Bilder laden
 
 export function buttonClass(searchStatus: string) {
 	switch (searchStatus) {
@@ -124,6 +122,7 @@ export async function addNewMovie(id: number, path: string) {
 
 		// `castImages` bestimmen: 0 bedeutet alle Bilder laden
 		const imagesToLoad =
+			// @ts-expect-error castImages wird später über die Settings verarbeitet
 			castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
 
 		// Bilder für Schauspieler laden
