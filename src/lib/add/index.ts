@@ -11,8 +11,9 @@ import { fetch } from '@tauri-apps/plugin-http';
 import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
+import type {  MovieSearchState } from '$lib/types/add';
 
-export function buttonClass(searchStatus: string) {
+export function buttonClass(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
 		case 'notStarted':
 			return 'btn-neutral';
@@ -29,7 +30,7 @@ export function buttonClass(searchStatus: string) {
 	}
 }
 
-export function getIcon(searchStatus: string) {
+export function getIcon(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
 		case 'notStarted':
 			return '🔍'; // search icon
