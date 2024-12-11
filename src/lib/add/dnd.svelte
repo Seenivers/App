@@ -5,13 +5,14 @@
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import type { DropPayload } from '$lib/types/add';
 	import { error } from '@tauri-apps/plugin-log';
+	import { addNewFiles } from '$lib/add/index';
 
 	let isDraggingOver = false;
 	let handleDrop: UnlistenFn;
 	let handleDragEnter: UnlistenFn;
 	let handleDragLeave: UnlistenFn;
 
-	export let load: (files: string[]) => void;
+	export let load: () => void;
 	export let extensions: string[];
 
 	onMount(async () => {
@@ -63,7 +64,10 @@
 
 			// Wenn gültige Dateien gefunden wurden, übergebe sie an die Ladefunktion
 			if (files.length > 0) {
-				load(files);
+				// Neue Dateien hinzufügen
+				await addNewFiles(files);
+				// Danach Suche starten
+				await load();
 			} else {
 				alert('Keine Dateien zum Hinzufügen gefunden.');
 			}
