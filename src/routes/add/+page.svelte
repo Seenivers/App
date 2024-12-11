@@ -14,12 +14,10 @@
 	import { status } from '$lib/stores';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import { imageURL, placeholderURL } from '$lib';
+	import { extensions, imageURL, placeholderURL } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
 
 	export let data: PageData;
-
-	const extensions = ['mp4', 'mkv'];
 
 	let modal = false;
 	let modalID = 0;
