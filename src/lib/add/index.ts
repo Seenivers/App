@@ -6,7 +6,7 @@ import {
 	isPathUnique,
 	settings
 } from '$lib/db/funktion';
-import { castImages, seeniversURL } from '$lib';
+import { castImages, extensions, seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
 import { fetch } from '@tauri-apps/plugin-http';
 import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
@@ -298,14 +298,25 @@ export async function searchMovieStatus(
 }
 
 /**
- * Fügt neue Filme zum Status hinzu.
+ * Fügt neue Filme zum Status hinzu, nachdem sie validiert wurden.
  * @param files - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
  */
 export async function addNewFiles(files: string[]) {
 	const currentStatus = get(status); // Hole den aktuellen Wert des writable Store
 
+	// Filtere und validiere die Dateien
+	const validFiles = files.filter((file) => {
+		const fileExtension = file.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
+		return extensions.includes(fileExtension || ''); // Überprüfe, ob die Erweiterung gültig ist
+	});
+
+	if (validFiles.length === 0) {
+		alert('Keine gültigen Dateien gefunden.');
+		return;
+	}
+
 	// Filtere neue Dateien, die noch nicht im Status enthalten sind
-	const newFiles = await filterNewFiles(files, currentStatus);
+	const newFiles = await filterNewFiles(validFiles, currentStatus);
 
 	if (newFiles.length === 0) {
 		alert('Keine neuen Filme zum Hinzufügen gefunden.');
