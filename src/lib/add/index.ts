@@ -3,6 +3,7 @@ import {
 	addMovie,
 	isCollectionIDUnique,
 	isMovieIDUnique,
+	isPathUnique,
 	settings
 } from '$lib/db/funktion';
 import { castImages, seeniversURL } from '$lib';
@@ -11,7 +12,8 @@ import { fetch } from '@tauri-apps/plugin-http';
 import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
-import type {  MovieSearchState } from '$lib/types/add';
+import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
+import type { schema } from '$lib/db/schema';
 
 export function buttonClass(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
@@ -148,4 +150,79 @@ async function loadImageWithErrorHandling(
 	} catch (err) {
 		error(`Fehler beim Laden von ${folder}-Bild: ${err}`);
 	}
+}
+
+/**
+ * Filtert nur die Dateien, die nicht bereits im Status enthalten sind und einzigartig sind.
+ *
+ * @param files - Die Liste der zu überprüfenden Dateipfade.
+ * @param status - Der aktuelle Status, der bereits vorhandene Dateipfade enthält.
+ * @returns Ein Array von Dateipfaden, die einzigartig sind und noch nicht im Status enthalten sind.
+ */
+export async function filterNewFiles(files: string[], status: MovieSearchContext[]) {
+	// Filtere nur die Dateien, die nicht bereits im Status enthalten sind
+	const newFiles = (
+		await Promise.all(
+			files.map(async (path) => {
+				// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
+				const unique = await isPathUnique(path);
+				const existsInStatus = status.some((item) => item.options.path === path);
+				return unique && !existsInStatus ? path : null;
+			})
+		)
+	).filter((path): path is string => path !== null);
+
+	return newFiles;
+}
+
+/**
+ * Fügt die neuen Dateien dem Status hinzu.
+ *
+ * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
+ * @param status - Der aktuelle Status, in dem die neuen Dateien hinzugefügt werden.
+ * @param settings - Die aktuellen Einstellungen (z. B. Keywords, Adult-Filter).
+ */
+export function addNewFilesToStatus(
+	newFiles: string[],
+	status: MovieSearchContext[],
+	settings: typeof schema.settings.$inferSelect
+) {
+	newFiles.forEach((path) => {
+		const name =
+			path
+				.split('\\')
+				.pop()
+				?.replace(/\.[^/.]+$/, '') || '';
+
+		const fileName = name
+			.split(/[.\s]+/)
+			.filter((word) => {
+				// Filtern von Keywords ohne async-Aktion
+				return !settings.keywords.map((k) => k.toLowerCase()).includes(word.toLowerCase());
+			})
+			.join(' ');
+
+		const yearMatch = fileName.match(/(\d{4})/);
+		const year = yearMatch ? yearMatch[1] : '';
+		const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*|(\d{4})/g, '').trim();
+
+		status.push({
+			state: 'notStarted',
+			results: [],
+			options: {
+				path,
+				query: cleanedFileName || name,
+				primaryReleaseYear: year,
+				includeAdult: settings.adult,
+				page: 1
+			}
+		});
+	});
+}
+
+// Exportierte Funktion, um die Indizes der neuen Filme zu finden
+export function findNewFileIndexes(newFiles: string[], status: MovieSearchContext[]): number[] {
+	return status
+		.map((movie, index) => (newFiles.includes(movie.options.path) ? index : -1))
+		.filter((index) => index !== -1); // Nur Indexes der neuen Filme
 }

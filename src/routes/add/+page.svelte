@@ -4,10 +4,13 @@
 	import { readDir } from '@tauri-apps/plugin-fs';
 	import { imageURL, placeholderURL } from '$lib';
 	import { error } from '@tauri-apps/plugin-log';
-	import { isPathUnique, settings } from '$lib/db/funktion';
+	import { settings } from '$lib/db/funktion';
 	import {
+		addNewFilesToStatus,
 		addNewMovie,
 		buttonClass,
+		filterNewFiles,
+		findNewFileIndexes,
 		getIcon,
 		getValidFileNames,
 		searchMovies
@@ -25,6 +28,8 @@
 
 	let modal = false;
 	let modalID = 0;
+
+	let loading = false;
 
 	onMount(async () => {
 		if (data.paths.length > 0 && Array.isArray(data.paths)) {
@@ -71,19 +76,12 @@
 	}
 
 	async function load(files: string[]) {
-		if (!files || !window.navigator.onLine) return;
+		if (loading || !files || !window.navigator.onLine) return;
+
+		loading = true;
 
 		// Filtere nur die Dateien, die nicht bereits im Status enthalten sind
-		const newFiles = (
-			await Promise.all(
-				files.map(async (path) => {
-					// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
-					const unique = await isPathUnique(path);
-					const existsInStatus = status.some((item) => item.options.path === path);
-					return unique && !existsInStatus ? path : null;
-				})
-			)
-		).filter((path): path is string => path !== null);
+		const newFiles = await filterNewFiles(files, status);
 
 		if (newFiles.length === 0) {
 			alert(
@@ -92,47 +90,15 @@
 			return;
 		}
 
-		// Füge die neuen Dateien dem Status hinzu
-		newFiles.forEach((path) => {
-			const name =
-				path
-					.split('\\')
-					.pop()
-					?.replace(/\.[^/.]+$/, '') || '';
-
-			const fileName = name
-				.split(/[.\s]+/)
-				.filter((word) => {
-					// Filtern von Keywords ohne async-Aktion
-					return !settings.keywords.map((k) => k.toLowerCase()).includes(word.toLowerCase());
-				})
-				.join(' ');
-
-			const yearMatch = fileName.match(/(\d{4})/);
-			const year = yearMatch ? yearMatch[1] : '';
-			const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*|(\d{4})/g, '').trim();
-
-			status.push({
-				state: 'notStarted',
-				results: [],
-				options: {
-					path,
-					query: cleanedFileName || name,
-					primaryReleaseYear: year,
-					includeAdult: settings.adult,
-					page: 1
-				}
-			});
-		});
+		addNewFilesToStatus(newFiles, status, settings);
 
 		// Suche nur für neue Filme durchführen
-		const newFileIndexes = status
-			.map((movie, index) => (newFiles.includes(movie.options.path) ? index : -1))
-			.filter((index) => index !== -1); // Nur Indizes der neuen Filme
+		const newFileIndexes = findNewFileIndexes(newFiles, status);
 
 		for (const index of newFileIndexes) {
 			await search(index);
 		}
+		loading = false;
 	}
 
 	async function search(i: number) {
