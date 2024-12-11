@@ -6,7 +6,13 @@ export interface DropPayload {
 	};
 }
 
-export type SearchStatus = 'notStarted' | 'searching' | 'notFound' | 'foundOne' | 'foundMultiple';
+export type SearchStatus =
+	| 'notStarted'
+	| 'searching'
+	| 'notFound'
+	| 'foundOne'
+	| 'foundMultiple'
+	| 'downloading';
 
 export interface SearchResult {
 	adult: boolean;
