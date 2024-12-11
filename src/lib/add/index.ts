@@ -94,6 +94,11 @@ export async function addNewMovie(id: number, path: string) {
 		return Promise.resolve();
 	}
 
+	if (!path) {
+		error('Es muss ein valider Pfad angegeben werden.');
+		return Promise.resolve();
+	}
+
 	// Hole die Filmdetails
 	const result = await getMovieTmdb(id);
 
