@@ -28,7 +28,8 @@
 
 	onMount(async () => {
 		if (data.paths.length > 0 && Array.isArray(data.paths)) {
-			await load(data.paths); // ensure load is called once during mount
+			// Stelle sicher, dass load nur einmal aufgerufen wird
+			await load();
 		}
 	});
 
@@ -42,9 +43,15 @@
 		});
 
 		if (files) {
-			// Filter and load valid files
+			// Filter und Lade gültige Dateien
 			const validFiles = getValidFileNames(files, extensions);
-			if (validFiles.length > 0) await load(validFiles);
+
+			if (validFiles.length > 0) {
+				// Neue Dateien hinzufügen
+				await addNewFiles(validFiles);
+				// Danach Suche starten
+				await load();
+			}
 		}
 	}
 
@@ -59,33 +66,49 @@
 		if (folder) {
 			const entries = await readDir(folder);
 
-			// Filter valid files
+			// Filter für gültige Dateien
 			const validFiles = getValidFileNames(
 				entries.map((entry) => `${folder}\\${entry.name}`),
 				extensions
 			);
 
-			if (validFiles.length > 0) await load(validFiles);
+			if (validFiles.length > 0) {
+				// Neue Dateien hinzufügen
+				await addNewFiles(validFiles);
+				// Danach Suche starten
+				await load();
+			}
 		}
 	}
 
-	async function load(files: string[]) {
-		if (loading || !files || !window.navigator.onLine) return;
+	// Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
+	async function load() {
+		if (loading || !window.navigator.onLine) return;
 
 		loading = true;
 
-		// Rufe die Funktion zum Hinzufügen neuer Dateien auf
-		await addNewFiles(files, modal, searchMovies, addNewMovie);
+		// Überprüfe nach dem Hinzufügen der Dateien den Status der Einträge
+		// Wenn noch Einträge mit dem Status "notStarted" existieren, starte die Suche für diese Filme
+		const notStartedEntries = $status.filter((entry) => entry.state === 'notStarted');
 
+		for (const entry of notStartedEntries) {
+			// Nutze die 'path' Eigenschaft aus 'options' als Identifikator
+			const entryIndex = $status.findIndex((e) => e.options.path === entry.options.path);
+			if (entryIndex !== -1) {
+				// Rufe 'searchMovieStatus' mit dem Index des Eintrags auf
+				await searchMovieStatus(entryIndex, modal, searchMovies, addNewMovie);
+			}
+		}
 		loading = false;
+		if ($status.some((entry) => entry.state === 'notStarted')) load();
 	}
 
-	// Ensure that only the selected movie is added
+	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
 	async function selectMovie(modalID: number, movieIndex: number) {
-		modal = false; // Close the modal after selection
+		modal = false; // Schließe das Modal nach Auswahl
 		$status[modalID].state = 'foundOne';
 
-		// Add the user-selected movie
+		// Füge den vom Benutzer ausgewählten Film hinzu
 		await addNewMovie($status[modalID].results[movieIndex].id, $status[modalID].options.path);
 	}
 
@@ -95,7 +118,7 @@
 	}
 </script>
 
-<Dnd {load} {extensions} />
+<!-- <Dnd {load} {extensions} /> -->
 
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">

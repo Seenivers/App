@@ -293,18 +293,10 @@ export async function searchMovieStatus(
 }
 
 /**
- * Fügt neue Filme hinzu und startet die Filmsuche.
+ * Fügt neue Filme zum Status hinzu.
  * @param files - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
- * @param modal - Gibt an, ob der Modal geöffnet ist (für manuelle Filmauswahl).
- * @param searchMovies - Die Funktion, um Filme über die API zu suchen.
- * @param addNewMovie - Die Funktion, um den neuen Film hinzuzufügen.
  */
-export async function addNewFiles(
-	files: string[],
-	modal: boolean,
-	searchMovies: Function,
-	addNewMovie: Function
-) {
+export async function addNewFiles(files: string[]) {
 	const currentStatus = get(status); // Hole den aktuellen Wert des writable Store
 
 	// Filtere neue Dateien, die noch nicht im Status enthalten sind
@@ -315,13 +307,6 @@ export async function addNewFiles(
 		return;
 	}
 
-	// Füge neue Dateien zum Status hinzu
+	// Füge neue Filme zum Status hinzu
 	addNewFilesToStatus(newFiles, currentStatus, settings);
-
-	// Führe die Filmsuche für die neuen Dateien durch
-	const newFileIndexes = findNewFileIndexes(newFiles, currentStatus);
-
-	for (const index of newFileIndexes) {
-		await searchMovieStatus(index, modal, searchMovies, addNewMovie);
-	}
 }
