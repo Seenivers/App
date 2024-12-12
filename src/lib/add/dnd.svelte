@@ -8,9 +8,9 @@
 	import { addNewFiles } from '$lib/add/index';
 
 	let isDraggingOver = false;
-	let handleDrop: UnlistenFn;
-	let handleDragEnter: UnlistenFn;
-	let handleDragLeave: UnlistenFn;
+	let handleDrop: UnlistenFn | undefined;
+	let handleDragEnter: UnlistenFn | undefined;
+	let handleDragLeave: UnlistenFn | undefined;
 
 	export let load: () => Promise<void>;
 	export let extensions: string[];
@@ -86,9 +86,9 @@
 
 	// Clean up the event listeners when the component is destroyed
 	onDestroy(() => {
-		handleDrop();
-		handleDragEnter();
-		handleDragLeave();
+		if (handleDrop) handleDrop();
+		if (handleDragEnter) handleDragEnter();
+		if (handleDragLeave) handleDragLeave();
 	});
 </script>
 
