@@ -6,6 +6,7 @@
 	import type { DropPayload } from '$lib/types/add';
 	import { error } from '@tauri-apps/plugin-log';
 	import { addNewFiles } from '$lib/add/index';
+	import { join } from '@tauri-apps/api/path';
 
 	let isDraggingOver = false;
 	let handleDrop: UnlistenFn | undefined;
@@ -46,14 +47,16 @@
 						const entries = await readDir(path);
 
 						// Filtere und füge unterstützte Dateien hinzu
-						entries.forEach((entry) => {
+						for (const entry of entries) {
 							if (entry.name) {
 								const entryExtension = entry.name.split('.').pop()?.toLowerCase();
 								if (entryExtension && supportedExtensions.has(entryExtension)) {
-									files.push(`${path}/${entry.name}`);
+									// Verwende join innerhalb der for...of-Schleife und warte auf die Rückgabe
+									const joinedPath = await join(path, entry.name);
+									files.push(joinedPath);
 								}
 							}
-						});
+						}
 					} catch (err) {
 						error(`Fehler beim Lesen des Verzeichnisses ${path}: ${err}`);
 					}
