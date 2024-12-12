@@ -14,7 +14,7 @@ import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
 import type { schema } from '$lib/db/schema';
-import { status } from '$lib/stores';
+import { isOnline, status } from '$lib/stores';
 import { get } from 'svelte/store';
 
 export function buttonClass(searchStatus: MovieSearchState) {
@@ -89,7 +89,7 @@ let downloadQueue: Array<{ id: number; path: string }> = []; // Warteschlange f�
 
 export async function addNewMovie(id: number, path: string) {
 	// Überprüfen, ob der Benutzer online ist
-	if (!window.navigator.onLine) {
+	if (!get(isOnline)) {
 		error('Sie sind nicht mit dem Internet verbunden.');
 		return Promise.resolve();
 	}
@@ -302,7 +302,7 @@ export async function searchMovieStatus(
 	addNewMovie: (id: number, path: string) => Promise<void>
 ) {
 	// Prüfe die Internetverbindung
-	if (!window.navigator.onLine) {
+	if (!get(isOnline)) {
 		error(
 			'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
 		);

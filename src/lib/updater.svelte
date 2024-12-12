@@ -6,6 +6,7 @@
 	import { marked } from 'marked';
 	import '$lib/css/md.css';
 	import { open } from '@tauri-apps/plugin-shell';
+	import { isOnline } from './stores';
 
 	let update: Update | null = null;
 	let downloadProgress = 0;
@@ -14,7 +15,7 @@
 	let modalOpen = false;
 
 	onMount(async () => {
-		if (!window.navigator.onLine) return;
+		if (!$isOnline) return;
 
 		update = await check();
 
@@ -46,7 +47,7 @@
 	}
 
 	async function download() {
-		if (!window.navigator.onLine) {
+		if (!$isOnline) {
 			error('You are not connected to the internet.');
 			return;
 		}
@@ -115,7 +116,7 @@
 
 			<div class="mt-6 flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 				{#if update && !downloadStarted}
-					<button class="btn btn-primary" disabled={!window.navigator.onLine} on:click={download}
+					<button class="btn btn-primary" disabled={!$isOnline} on:click={download}
 						>Update herunterladen</button
 					>
 				{:else if update && downloadFinished}

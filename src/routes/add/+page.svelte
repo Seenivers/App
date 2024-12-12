@@ -10,7 +10,7 @@
 		searchMovies,
 		searchMovieStatus
 	} from '$lib/add/index';
-	import { status } from '$lib/stores';
+	import { isOnline, status } from '$lib/stores';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { clearResultsOnLeave, extensions, imageURL, placeholderURL } from '$lib';
@@ -93,7 +93,7 @@
 
 	// Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
 	async function load() {
-		if (loading || !window.navigator.onLine) return;
+		if (loading || !$isOnline) return;
 
 		loading = true;
 
@@ -152,30 +152,26 @@
 </nav>
 
 <main class="z-0 flex flex-col items-center p-5">
-	{#if !window.navigator.onLine}
+	{#if !$isOnline}
 		<div class="alert alert-error text-center">
 			Du bist momentan nicht mit dem Internet verbunden.
 		</div>
 	{:else}
 		<div class="mb-5 flex w-3/4 gap-5">
-			<button class="btn grow" on:click={selectFile} disabled={!window.navigator.onLine}>
+			<button class="btn grow" on:click={selectFile} disabled={!$isOnline}>
 				Filme auswählen
 			</button>
-			<button class="btn grow" on:click={selectFolder} disabled={!window.navigator.onLine}>
+			<button class="btn grow" on:click={selectFolder} disabled={!$isOnline}>
 				Ordner auswählen
 			</button>
 			<button
 				class="btn hover:btn-error"
 				on:click={() => status.set([])}
-				disabled={!window.navigator.onLine || $status.length === 0}
+				disabled={!$isOnline || $status.length === 0}
 			>
 				Alles entfernen
 			</button>
-			<select
-				class="select"
-				bind:value={filter}
-				disabled={!window.navigator.onLine || $status.length === 0}
-			>
+			<select class="select" bind:value={filter} disabled={!$isOnline || $status.length === 0}>
 				<option value={null} selected disabled={$status.length === 0}>Kein Filter</option>
 				<option value="wait" disabled={counts.wait === 0}>
 					Warteschlange ({counts.wait})

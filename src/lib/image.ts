@@ -4,6 +4,8 @@ import { BaseDirectory, create, exists, mkdir, remove } from '@tauri-apps/plugin
 import { appDataDir, join } from '@tauri-apps/api/path';
 import { error } from '@tauri-apps/plugin-log';
 import { fetch } from '@tauri-apps/plugin-http';
+import { isOnline } from './stores';
+import { get } from 'svelte/store';
 
 /**
  * Hilfsfunktion zum Erstellen eines Verzeichnisses, falls es nicht existiert.
@@ -113,7 +115,7 @@ export async function image(
 	// Überprüfen, ob das Bild lokal vorhanden ist oder heruntergeladen werden muss
 	const imageExists = await checkImageExistence(filePath);
 	if (!imageExists) {
-		if (navigator.onLine) {
+		if (get(isOnline)) {
 			const remoteSrc = `${imageURL}${file}`;
 
 			// Wenn das Bild nicht existiert und der Download aktiviert ist, versuche es herunterzuladen

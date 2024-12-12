@@ -9,6 +9,7 @@
 	import { attachConsole, attachLogger, trace } from '@tauri-apps/plugin-log';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/log';
+	import { isOnline } from '$lib/stores';
 
 	oncontextmenu = (event: MouseEvent) => {
 		event.preventDefault();
@@ -37,7 +38,7 @@
 	{#if db && settings}
 		<slot />
 		<Toast />
-		{#if window.navigator.onLine && !import.meta.env.DEV}
+		{#if $isOnline && !import.meta.env.DEV}
 			<Updater />
 		{/if}
 	{:else}
