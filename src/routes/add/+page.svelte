@@ -303,7 +303,5 @@
 			{/if}
 		{/if}
 	</div>
-	<form method="dialog" class="modal-backdrop" on:submit|preventDefault={() => (modal = false)}>
-		<button>Schließen</button>
-	</form>
+	<button class="modal-backdrop" on:click={() => (modal = false)}>Schließen</button>
 </dialog>
