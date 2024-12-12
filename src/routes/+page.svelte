@@ -4,7 +4,7 @@
 	import { image } from '$lib/image';
 	import type { Cardscale } from '$lib/types/add';
 	import Fuse, { type FuseResult } from 'fuse.js';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	// Typ für die Suchparameter
 	type SearchCriteria = {
@@ -92,7 +92,16 @@
 		}, 300); // Setzt Debouncing mit 300 ms ein
 	}
 
-	// Funktion zum Abfangen der Strg+F-Kombination
+	function updateCardScale(change: number) {
+		CARDSCALE.aktiv += change;
+		if (CARDSCALE.aktiv > 3) {
+			CARDSCALE.aktiv = 1;
+		} else if (CARDSCALE.aktiv < 1) {
+			CARDSCALE.aktiv = 3;
+		}
+		console.log(`CARDSCALE geändert: ${CARDSCALE.aktiv}`);
+	}
+
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.ctrlKey && event.key === 'f') {
 			event.preventDefault();
@@ -101,15 +110,20 @@
 			event.preventDefault();
 		} else if (event.ctrlKey && event.key === '+') {
 			event.preventDefault();
-			CARDSCALE.aktiv += 1;
-			if (CARDSCALE.aktiv > 3) {
-				CARDSCALE.aktiv = 1;
-			}
+			updateCardScale(1);
 		} else if (event.ctrlKey && event.key === '-') {
 			event.preventDefault();
-			CARDSCALE.aktiv -= 1;
-			if (CARDSCALE.aktiv < 1) {
-				CARDSCALE.aktiv = 3;
+			updateCardScale(-1);
+		}
+	}
+
+	function handleWheel(event: WheelEvent) {
+		if (event.ctrlKey) {
+			event.preventDefault();
+			if (event.deltaY < 0) {
+				updateCardScale(1);
+			} else if (event.deltaY > 0) {
+				updateCardScale(-1);
 			}
 		}
 	}
@@ -117,6 +131,9 @@
 	// Initiale Daten und Setup
 	onMount(async () => {
 		await loadMovies();
+
+		// Füge das Wheel-Event mit { passive: false } hinzu
+		window.addEventListener('wheel', handleWheel, { passive: false });
 
 		let currentFocus = -1;
 
@@ -187,6 +204,10 @@
 		function removeActive(options: HTMLOptionElement[]) {
 			options.forEach((option) => option.classList.remove('active'));
 		}
+	});
+
+	onDestroy(() => {
+		window.removeEventListener('wheel', handleWheel);
 	});
 </script>
 
