@@ -98,7 +98,6 @@
 	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
 	async function selectMovie(modalID: number, movieIndex: number) {
 		modal = false; // Schließe das Modal nach Auswahl
-		$status[modalID].state = 'foundOne';
 
 		// Füge den vom Benutzer ausgewählten Film hinzu
 		await addNewMovie($status[modalID].results[movieIndex].id, $status[modalID].options.path);
