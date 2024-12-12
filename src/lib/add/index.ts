@@ -268,7 +268,7 @@ export function addNewFilesToStatus(
 
 		const yearMatch = /(\d{4})/.exec(fileName);
 		const year = yearMatch ? yearMatch[1] : '';
-		const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*/g, '').trim();
+		const cleanedFileName = fileName.replace(/\s*\(?\d{4}\)?\s*/g, '').trim();
 
 		status.push({
 			state: 'wait',
