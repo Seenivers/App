@@ -27,7 +27,7 @@ tauri-plugin-log = "2.0.3"
 tauri-plugin-dialog = "2.2.0"
 tauri-plugin-fs = "2.1.0"
 tauri-plugin-http = "2.2.0"
-tauri-plugin-process = "2.0.1"
+tauri-plugin-process = "2.2.0"
 tauri-plugin-sql = { version = "2.2.0", features = ["sqlite"] }
 tauri-plugin-shell = "2.0.2"
 
