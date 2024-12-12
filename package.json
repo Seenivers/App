@@ -54,7 +54,7 @@
 		"@tauri-apps/plugin-shell": "^2.2.0",
 		"@tauri-apps/plugin-sql": "^2.2.0",
 		"@tauri-apps/plugin-updater": "^2.3.0",
-		"drizzle-orm": "^0.37.0",
+		"drizzle-orm": "^0.38.1",
 		"fuse.js": "^7.0.0",
 		"marked": "^15.0.3"
 	}
