@@ -289,6 +289,8 @@ export async function searchMovieStatus(
 				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
 				if (!modal) {
 					addNewMovie(result[0].id, currentStatus[i].options.path);
+				} else {
+					currentStatus[i].state = 'foundOne';
 				}
 			} else if (result.length > 1) {
 				currentStatus[i].results = result;
