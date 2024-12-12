@@ -12,7 +12,7 @@
 	let handleDragEnter: UnlistenFn;
 	let handleDragLeave: UnlistenFn;
 
-	export let load: () => void;
+	export let load: () => Promise<void>;
 	export let extensions: string[];
 
 	onMount(async () => {
