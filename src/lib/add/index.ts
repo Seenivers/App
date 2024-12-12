@@ -29,6 +29,8 @@ export function buttonClass(searchStatus: MovieSearchState) {
 			return 'btn-success';
 		case 'foundMultiple':
 			return 'btn-warning';
+		case 'downloading':
+			return 'btn-info';
 		default:
 			return 'btn-neutral';
 	}
