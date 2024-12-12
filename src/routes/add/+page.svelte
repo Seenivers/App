@@ -25,6 +25,24 @@
 	let loading = false;
 	let filter: MovieSearchState | null = null;
 
+	// Zähle die Anzahl der Filme für jeden Zustand
+	$: counts = $status.reduce(
+		(acc, item) => {
+			if (item.state) {
+				acc[item.state] = (acc[item.state] || 0) + 1;
+			}
+			return acc;
+		},
+		{
+			notStarted: 0,
+			searching: 0,
+			notFound: 0,
+			foundOne: 0,
+			foundMultiple: 0,
+			downloading: 0
+		}
+	);
+
 	onMount(async () => {
 		if (data.paths.length > 0 && Array.isArray(data.paths)) {
 			// Neue Dateien hinzufügen
@@ -143,36 +161,23 @@
 			</button>
 			<select class="select" bind:value={filter}>
 				<option value={null} selected disabled={$status.length === 0}>Kein Filter</option>
-				<option
-					value="notStarted"
-					disabled={$status.filter((item) => item.state === 'notStarted').length === 0}
-					>Nicht gestartet ({$status.filter((item) => item.state === 'notStarted').length})
+				<option value="notStarted" disabled={counts.notStarted === 0}>
+					Nicht gestartet ({counts.notStarted})
 				</option>
-				<option
-					value="searching"
-					disabled={$status.filter((item) => item.state === 'searching').length === 0}
-					>Sucht ({$status.filter((item) => item.state === 'searching').length})
+				<option value="searching" disabled={counts.searching === 0}>
+					Sucht ({counts.searching})
 				</option>
-				<option
-					value="notFound"
-					disabled={$status.filter((item) => item.state === 'notFound').length === 0}
-					>Nicht gefunden ({$status.filter((item) => item.state === 'notFound').length})
+				<option value="notFound" disabled={counts.notFound === 0}>
+					Nicht gefunden ({counts.notFound})
 				</option>
-				<option
-					value="foundOne"
-					disabled={$status.filter((item) => item.state === 'foundOne').length === 0}
-					>Ein Film gefunden ({$status.filter((item) => item.state === 'foundOne').length})
+				<option value="foundOne" disabled={counts.foundOne === 0}>
+					Ein Film gefunden ({counts.foundOne})
 				</option>
-				<option
-					value="foundMultiple"
-					disabled={$status.filter((item) => item.state === 'foundMultiple').length === 0}
-					>Mehre Filme gefunden ({$status.filter((item) => item.state === 'foundMultiple').length})
+				<option value="foundMultiple" disabled={counts.foundMultiple === 0}>
+					Mehrere Filme gefunden ({counts.foundMultiple})
 				</option>
-				<option
-					value="downloading"
-					disabled={$status.filter((item) => item.state === 'downloading').length === 0}
-				>
-					Laderunter ({$status.filter((item) => item.state === 'downloading').length})
+				<option value="downloading" disabled={counts.downloading === 0}>
+					Laderunter ({counts.downloading})
 				</option>
 			</select>
 		</div>
