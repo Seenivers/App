@@ -251,8 +251,12 @@ export function findNewFileIndexes(newFiles: string[], status: MovieSearchContex
 export async function searchMovieStatus(
 	i: number,
 	modal: boolean,
-	searchMovies: Function,
-	addNewMovie: Function
+	searchMovies: (
+		name: string,
+		primaryReleaseYear?: string | number,
+		page?: number
+	) => Promise<Search<SearchMovie>>,
+	addNewMovie: (id: number, path: string) => Promise<void>
 ) {
 	// Prüfe die Internetverbindung
 	if (!window.navigator.onLine) {
