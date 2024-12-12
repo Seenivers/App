@@ -211,7 +211,7 @@ export function addNewFilesToStatus(
 			})
 			.join(' ');
 
-		const yearMatch = fileName.match(/(\d{4})/);
+		const yearMatch = /(\d{4})/.exec(fileName);
 		const year = yearMatch ? yearMatch[1] : '';
 		const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*|(\d{4})/g, '').trim();
 
