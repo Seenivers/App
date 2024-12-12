@@ -99,7 +99,6 @@
 		} else if (CARDSCALE.aktiv < 1) {
 			CARDSCALE.aktiv = 3;
 		}
-		console.log(`CARDSCALE geändert: ${CARDSCALE.aktiv}`);
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
