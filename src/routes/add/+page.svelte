@@ -134,9 +134,17 @@
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
 	<div class="gap-1">
-		<a href="/" class="btn btn-ghost" on:click={() => clearResultsOnLeave ?? status.set([])}
-			>Zurück zur Startseite</a
+		<a
+			href="/"
+			class="btn btn-ghost"
+			on:click={() => {
+				if (clearResultsOnLeave) {
+					status.set([]);
+				}
+			}}
 		>
+			Zurück zur Startseite
+		</a>
 	</div>
 	<div class="gap-1">
 		<!-- Platzhalter -->
