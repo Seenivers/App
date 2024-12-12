@@ -110,7 +110,7 @@
 			}
 		}
 		loading = false;
-		if ($status.some((entry) => entry.state === 'wait')) load();
+		if ($status.some((entry) => entry.state === 'wait' && entry.results.length === 0)) load();
 	}
 
 	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
