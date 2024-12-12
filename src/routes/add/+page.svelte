@@ -140,6 +140,7 @@
 			on:click={() => {
 				if (clearResultsOnLeave) {
 					status.set([]);
+					filter = null;
 				}
 			}}
 		>
