@@ -176,7 +176,6 @@ export async function fetchImageDimensions(
 					await remove(decodedPath);
 				} catch (removeError) {
 					error(`Fehler beim Verarbeiten des Pfads zum Entfernen des Bildes: ${removeError}`);
-					console.log(src, { width: img.width, height: img.height });
 				}
 				return resolve({ width: 300, height: 450 });
 			} else {
