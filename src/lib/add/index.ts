@@ -39,9 +39,9 @@ export function buttonClass(searchStatus: MovieSearchState) {
 export function getIcon(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
 		case 'notStarted':
-			return '🔍'; // search icon
-		case 'searching':
 			return '⏳'; // loading icon
+		case 'searching':
+			return '🔍'; // search icon
 		case 'notFound':
 			return '❌'; // not found icon
 		case 'foundOne':
