@@ -201,7 +201,7 @@ export function addNewFilesToStatus(
 			path
 				.split('\\')
 				.pop()
-				?.replace(/\.[^/.]+$/, '') || '';
+				?.replace(/\.[^/.]+$/, '') ?? '';
 
 		const fileName = name
 			.split(/[.\s]+/)
