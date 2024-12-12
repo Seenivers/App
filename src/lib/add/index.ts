@@ -84,6 +84,9 @@ export function getValidFileNames(filePaths: string[], validExtensions: string[]
 	});
 }
 
+let downloadingMovie: boolean = false; // Flag, um den laufenden Download zu überwachen
+let downloadQueue: Array<{ id: number; path: string }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
+
 export async function addNewMovie(id: number, path: string) {
 	// Überprüfen, ob der Benutzer online ist
 	if (!window.navigator.onLine) {
@@ -101,64 +104,104 @@ export async function addNewMovie(id: number, path: string) {
 		return Promise.resolve();
 	}
 
+	// Film zur Warteschlange hinzufügen, wenn kein Download läuft
+	if (!downloadingMovie) {
+		downloadQueue.push({ id, path });
+		processDownloadQueue(); // Starte den Download-Prozess, wenn kein Download läuft
+	} else {
+		// Andernfalls, wenn ein Download läuft, wird der Film nur in die Warteschlange gestellt
+		downloadQueue.push({ id, path });
+	}
+
+	return Promise.resolve();
+}
+
+async function processDownloadQueue() {
+	// Wenn ein Download bereits läuft, nichts tun
+	if (downloadingMovie) return;
+
+	// Wenn die Warteschlange leer ist, stoppen wir den Prozess
+	if (downloadQueue.length === 0) return;
+
+	// Nächsten Film aus der Warteschlange nehmen
+	const nextMovie = downloadQueue.shift();
+	if (!nextMovie) return;
+
+	// Starten des Downloads für den nächsten Film
+	downloadingMovie = true;
+
+	// Update des Status, dass der Film heruntergeladen wird
 	status.update((currentStatus) => {
-		const i = currentStatus.findIndex((movie) => movie.options.path === path);
+		const i = currentStatus.findIndex((movie) => movie.options.path === nextMovie.path);
 		currentStatus[i].state = 'downloading';
 		return [...currentStatus];
 	});
 
-	// Hole die Filmdetails
-	const result = await getMovieTmdb(id);
+	try {
+		// Hole die Filmdetails
+		const result = await getMovieTmdb(nextMovie.id);
 
-	if (await isMovieIDUnique(result.id)) {
-		// Film zur DB hinzufügen
-		await addMovie({ id, path, tmdb: result, updated: new Date() });
+		if (await isMovieIDUnique(result.id)) {
+			// Film zur DB hinzufügen
+			await addMovie({ id: nextMovie.id, path: nextMovie.path, tmdb: result, updated: new Date() });
 
-		// Posterbild laden, falls verfügbar
-		if (result.poster_path) {
-			await loadImageWithErrorHandling(result.poster_path, 'posters');
-		}
+			// Posterbild laden, falls verfügbar
+			if (result.poster_path) {
+				await loadImageWithErrorHandling(result.poster_path, 'posters');
+			}
 
-		// Hintergrundbild laden, falls verfügbar
-		if (result.backdrop_path) {
-			await loadImageWithErrorHandling(result.backdrop_path, 'backdrops');
-		}
+			// Hintergrundbild laden, falls verfügbar
+			if (result.backdrop_path) {
+				await loadImageWithErrorHandling(result.backdrop_path, 'backdrops');
+			}
 
-		// Collection hinzufügen, falls vorhanden
-		if (
-			result.belongs_to_collection?.id &&
-			(await isCollectionIDUnique(result.belongs_to_collection?.id))
-		) {
-			const collection = await getCollectionTmdb(result.belongs_to_collection.id);
-			if (collection) {
-				await addCollection({ ...collection, updated: new Date() });
+			// Collection hinzufügen, falls vorhanden
+			if (
+				result.belongs_to_collection?.id &&
+				(await isCollectionIDUnique(result.belongs_to_collection?.id))
+			) {
+				const collection = await getCollectionTmdb(result.belongs_to_collection.id);
+				if (collection) {
+					await addCollection({ ...collection, updated: new Date() });
+				}
+			}
+
+			// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
+			const castImagePaths = result.credits.cast
+				.map((actor) => actor.profile_path)
+				.filter((path) => path != null);
+
+			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
+			const imagesToLoad =
+				// @ts-expect-error castImages wird später über die Settings verarbeitet
+				castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
+
+			// Bilder für Schauspieler laden
+			for (let i = 0; i < imagesToLoad; i++) {
+				const path = castImagePaths[i];
+				await loadImageWithErrorHandling(path, 'actors');
 			}
 		}
 
-		// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
-		const castImagePaths = result.credits.cast
-			.map((actor) => actor.profile_path)
-			.filter((path) => path != null);
-
-		// `castImages` bestimmen: 0 bedeutet alle Bilder laden
-		const imagesToLoad =
-			// @ts-expect-error castImages wird später über die Settings verarbeitet
-			castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
-
-		// Bilder für Schauspieler laden
-		for (let i = 0; i < imagesToLoad; i++) {
-			const path = castImagePaths[i];
-			await loadImageWithErrorHandling(path, 'actors');
+		// Update des Status, dass der Film fertig heruntergeladen wurde
+		status.update((currentStatus) => {
+			const i = currentStatus.findIndex((movie) => movie.options.path === nextMovie.path);
+			currentStatus[i].state = 'foundOne';
+			return [...currentStatus];
+		});
+	} catch (err: unknown) {
+		if (err instanceof Error) {
+			error('Fehler beim Hinzufügen des Films: ' + err.message);
+		} else {
+			error('Unbekannter Fehler beim Hinzufügen des Films');
 		}
+	} finally {
+		// Setze das Flag zurück, dass der Download abgeschlossen ist
+		downloadingMovie = false;
+
+		// Wenn die Warteschlange noch Filme enthält, starte den nächsten Download
+		processDownloadQueue();
 	}
-
-	status.update((currentStatus) => {
-		const i = currentStatus.findIndex((movie) => movie.options.path === path);
-		currentStatus[i].state = 'foundOne';
-		return [...currentStatus];
-	});
-
-	return Promise.resolve();
 }
 
 // Hilfsfunktion zum Laden von Bildern mit Fehlerbehandlung
