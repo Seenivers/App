@@ -16,7 +16,7 @@ export interface DropPayload {
 
 /**
  * Represents the state of a movie search operation.
- * - `notStarted`: The search has not started yet.
+ * - `wait`: The search is on hold, waiting for the next action or condition to proceed.
  * - `searching`: The search is currently in progress.
  * - `notFound`: No results were found.
  * - `foundOne`: A single result was found.
@@ -24,7 +24,7 @@ export interface DropPayload {
  * - `downloading`: Results are being downloaded.
  */
 export type MovieSearchState =
-	| 'notStarted'
+	| 'wait'
 	| 'searching'
 	| 'notFound'
 	| 'foundOne'

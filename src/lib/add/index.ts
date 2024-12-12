@@ -19,7 +19,7 @@ import { get } from 'svelte/store';
 
 export function buttonClass(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
-		case 'notStarted':
+		case 'wait':
 			return 'btn-neutral';
 		case 'searching':
 			return 'btn-primary';
@@ -38,7 +38,7 @@ export function buttonClass(searchStatus: MovieSearchState) {
 
 export function getIcon(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
-		case 'notStarted':
+		case 'wait':
 			return '⏳'; // loading icon
 		case 'searching':
 			return '🔍'; // search icon
@@ -271,7 +271,7 @@ export function addNewFilesToStatus(
 		const cleanedFileName = fileName.replace(/\s*\(\d{4}\)\s*/g, '').trim();
 
 		status.push({
-			state: 'notStarted',
+			state: 'wait',
 			results: [],
 			options: {
 				path,

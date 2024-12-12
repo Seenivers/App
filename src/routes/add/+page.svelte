@@ -34,7 +34,7 @@
 			return acc;
 		},
 		{
-			notStarted: 0,
+			wait: 0,
 			searching: 0,
 			notFound: 0,
 			foundOne: 0,
@@ -98,10 +98,10 @@
 		loading = true;
 
 		// Überprüfe nach dem Hinzufügen der Dateien den Status der Einträge
-		// Wenn noch Einträge mit dem Status "notStarted" existieren, starte die Suche für diese Filme
-		const notStartedEntries = $status.filter((entry) => entry.state === 'notStarted');
+		// Wenn noch Einträge mit dem Status "wait" existieren, starte die Suche für diese Filme
+		const waitEntries = $status.filter((entry) => entry.state === 'wait');
 
-		for (const entry of notStartedEntries) {
+		for (const entry of waitEntries) {
 			// Nutze die 'path' Eigenschaft aus 'options' als Identifikator
 			const entryIndex = $status.findIndex((e) => e.options.path === entry.options.path);
 			if (entryIndex !== -1) {
@@ -110,7 +110,7 @@
 			}
 		}
 		loading = false;
-		if ($status.some((entry) => entry.state === 'notStarted')) load();
+		if ($status.some((entry) => entry.state === 'wait')) load();
 	}
 
 	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
@@ -167,8 +167,8 @@
 				disabled={!window.navigator.onLine || $status.length === 0}
 			>
 				<option value={null} selected disabled={$status.length === 0}>Kein Filter</option>
-				<option value="notStarted" disabled={counts.notStarted === 0}>
-					Nicht gestartet ({counts.notStarted})
+				<option value="wait" disabled={counts.wait === 0}>
+					Warteschlange ({counts.wait})
 				</option>
 				<option value="searching" disabled={counts.searching === 0}>
 					Sucht ({counts.searching})
@@ -293,7 +293,7 @@
 						</button>
 					{/each}
 				</div>
-			{:else if $status[modalID].state === 'notStarted'}
+			{:else if $status[modalID].state === 'wait'}
 				<p class="text-center">
 					Es wurde noch nicht nach einem Film gesucht.
 					<br />
