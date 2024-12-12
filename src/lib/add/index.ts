@@ -281,7 +281,6 @@ export async function searchMovieStatus(
 		status.update((currentStatus) => {
 			if (result.length === 1) {
 				currentStatus[i].results = result;
-				currentStatus[i].state = 'foundOne';
 
 				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
 				if (!modal) {
