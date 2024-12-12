@@ -122,8 +122,10 @@
 	}
 
 	function openModal(index: number) {
-		modalID = index;
-		modal = true;
+		if ($status[index].state !== 'downloading' && $status[index].state !== 'foundOne') {
+			modalID = index;
+			modal = true;
+		}
 	}
 </script>
 
