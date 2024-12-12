@@ -100,8 +100,8 @@ export async function image(
 	}
 
 	// Verzeichnisstruktur basierend auf dem optionalen `path`-Parameter
-	const folderPath = path ? `images/${path}` : 'images';
-	const filePath = `${folderPath}/${file}`;
+	const folderPath = path ? await join('images', path) : 'images';
+	const filePath = await join(folderPath, file);
 
 	// Sicherstellen, dass das Verzeichnis existiert
 	try {
