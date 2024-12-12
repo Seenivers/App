@@ -161,7 +161,11 @@
 			>
 				Alles entfernen
 			</button>
-			<select class="select" bind:value={filter}>
+			<select
+				class="select"
+				bind:value={filter}
+				disabled={!window.navigator.onLine || $status.length === 0}
+			>
 				<option value={null} selected disabled={$status.length === 0}>Kein Filter</option>
 				<option value="notStarted" disabled={counts.notStarted === 0}>
 					Nicht gestartet ({counts.notStarted})
