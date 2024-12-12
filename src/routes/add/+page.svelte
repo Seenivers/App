@@ -295,8 +295,9 @@
 				</div>
 			{:else if $status[modalID].state === 'notStarted'}
 				<p class="text-center">
-					Es wurde noch nicht nach einem Film gesucht. Bitte klicken Sie auf "Suchen", wenn Sie den
-					Film hinzufügen möchten.
+					Es wurde noch nicht nach einem Film gesucht.
+					<br />
+					Bitte klicken Sie auf "Suchen", wenn Sie den Film hinzufügen möchten.
 				</p>
 			{:else}
 				<p class="text-center text-error">Es wurden keine Ergebnisse gefunden.</p>
