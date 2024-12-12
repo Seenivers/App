@@ -13,7 +13,7 @@
 	import { status } from '$lib/stores';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import { extensions, imageURL, placeholderURL } from '$lib';
+	import { clearResultsOnLeave, extensions, imageURL, placeholderURL } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { MovieSearchState } from '$lib/types/add';
 
@@ -134,7 +134,9 @@
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
 	<div class="gap-1">
-		<a href="/" class="btn btn-ghost">Zurück zur Startseite</a>
+		<a href="/" class="btn btn-ghost" on:click={() => clearResultsOnLeave ?? status.set([])}
+			>Zurück zur Startseite</a
+		>
 	</div>
 	<div class="gap-1">
 		<!-- Platzhalter -->

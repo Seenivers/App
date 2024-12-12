@@ -5,3 +5,4 @@ export const imageURL = 'https://image.tmdb.org/t/p/original';
 export const seeniversURL = 'https://seenivers.com';
 export const castImages = 5; // 5 Actors Bilder Runterladen
 export const extensions = ['mp4', 'mkv'];
+export const clearResultsOnLeave = false;
