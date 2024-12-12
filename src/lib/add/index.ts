@@ -369,7 +369,7 @@ export async function addNewFiles(files: string[]) {
 	// Filtere und validiere die Dateien
 	const validFiles = files.filter((file) => {
 		const fileExtension = file.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
-		return extensions.includes(fileExtension || ''); // Überprüfe, ob die Erweiterung gültig ist
+		return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
 	});
 
 	if (validFiles.length === 0) {
