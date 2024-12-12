@@ -15,6 +15,7 @@
 	import { onMount } from 'svelte';
 	import { extensions, imageURL, placeholderURL } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
+	import type { MovieSearchState } from '$lib/types/add';
 
 	export let data: PageData;
 
@@ -22,6 +23,7 @@
 	let modalID = 0;
 
 	let loading = false;
+	let filter: MovieSearchState | null = null;
 
 	onMount(async () => {
 		if (data.paths.length > 0 && Array.isArray(data.paths)) {
@@ -133,22 +135,65 @@
 			<button class="btn grow" on:click={selectFolder} disabled={!window.navigator.onLine}>
 				Ordner auswählen
 			</button>
+			<button
+				class="btn hover:btn-error"
+				on:click={() => status.set([])}
+				disabled={!window.navigator.onLine || $status.length === 0}
+			>
+				Alles entfernen
+			</button>
+			<select class="select" bind:value={filter}>
+				<option value={null} selected disabled={$status.length === 0}>Kein Filter</option>
+				<option
+					value="notStarted"
+					disabled={$status.filter((item) => item.state === 'notStarted').length === 0}
+					>Nicht gestartet ({$status.filter((item) => item.state === 'notStarted').length})
+				</option>
+				<option
+					value="searching"
+					disabled={$status.filter((item) => item.state === 'searching').length === 0}
+					>Sucht ({$status.filter((item) => item.state === 'searching').length})
+				</option>
+				<option
+					value="notFound"
+					disabled={$status.filter((item) => item.state === 'notFound').length === 0}
+					>Nicht gefunden ({$status.filter((item) => item.state === 'notFound').length})
+				</option>
+				<option
+					value="foundOne"
+					disabled={$status.filter((item) => item.state === 'foundOne').length === 0}
+					>Ein Film gefunden ({$status.filter((item) => item.state === 'foundOne').length})
+				</option>
+				<option
+					value="foundMultiple"
+					disabled={$status.filter((item) => item.state === 'foundMultiple').length === 0}
+					>Mehre Filme gefunden ({$status.filter((item) => item.state === 'foundMultiple').length})
+				</option>
+				<option
+					value="downloading"
+					disabled={$status.filter((item) => item.state === 'downloading').length === 0}
+				>
+					Laderunter ({$status.filter((item) => item.state === 'downloading').length})
+				</option>
+			</select>
 		</div>
 
 		<div class="grid w-full gap-3">
 			{#each $status as item, index}
-				<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
-					<span>
-						<p class="text-lg">Filmtitel: {item.options.query}</p>
-						<p class="text-sm">Dateipfad: {item.options.path}</p>
-					</span>
-					<button
-						class="btn bg-opacity-50 {buttonClass($status[index].state)}"
-						on:click={() => openModal(index)}
-					>
-						{getIcon($status[index].state)}
-					</button>
-				</div>
+				{#if item.state === filter || filter === null}
+					<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
+						<span>
+							<p class="text-lg">Filmtitel: {item.options.query}</p>
+							<p class="text-sm">Dateipfad: {item.options.path}</p>
+						</span>
+						<button
+							class="btn bg-opacity-50 {buttonClass($status[index].state)}"
+							on:click={() => openModal(index)}
+						>
+							{getIcon($status[index].state)}
+						</button>
+					</div>
+				{/if}
 			{/each}
 		</div>
 	{/if}
