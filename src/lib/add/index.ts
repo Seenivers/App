@@ -101,6 +101,12 @@ export async function addNewMovie(id: number, path: string) {
 		return Promise.resolve();
 	}
 
+	status.update((currentStatus) => {
+		const i = currentStatus.findIndex((movie) => movie.options.path === path);
+		currentStatus[i].state = 'downloading';
+		return [...currentStatus];
+	});
+
 	// Hole die Filmdetails
 	const result = await getMovieTmdb(id);
 
@@ -145,6 +151,12 @@ export async function addNewMovie(id: number, path: string) {
 			await loadImageWithErrorHandling(path, 'actors');
 		}
 	}
+
+	status.update((currentStatus) => {
+		const i = currentStatus.findIndex((movie) => movie.options.path === path);
+		currentStatus[i].state = 'foundOne';
+		return [...currentStatus];
+	});
 
 	return Promise.resolve();
 }
