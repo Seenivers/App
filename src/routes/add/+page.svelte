@@ -167,7 +167,10 @@
 			</button>
 			<button
 				class="btn hover:btn-error"
-				on:click={() => status.set([])}
+				on:click={() => {
+					status.set([]);
+					filter = null;
+				}}
 				disabled={!$isOnline || $status.length === 0}
 			>
 				Alles entfernen
