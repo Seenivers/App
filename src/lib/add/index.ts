@@ -88,12 +88,6 @@ let downloadingMovie: boolean = false; // Flag, um den laufenden Download zu üb
 let downloadQueue: Array<{ id: number; path: string }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
 
 export async function addNewMovie(id: number, path: string) {
-	// Überprüfen, ob der Benutzer online ist
-	if (!get(isOnline)) {
-		error('Sie sind nicht mit dem Internet verbunden.');
-		return Promise.resolve();
-	}
-
 	if (!id) {
 		error('Es muss eine valide ID angegeben werden.');
 		return Promise.resolve();
@@ -117,11 +111,14 @@ export async function addNewMovie(id: number, path: string) {
 }
 
 async function processDownloadQueue() {
-	// Wenn ein Download bereits läuft, nichts tun
-	if (downloadingMovie) return;
+	// Überprüfen, ob der Benutzer online ist
+	if (!get(isOnline)) {
+		error('Sie sind nicht mit dem Internet verbunden.');
+		return;
+	}
 
-	// Wenn die Warteschlange leer ist, stoppen wir den Prozess
-	if (downloadQueue.length === 0) return;
+	// Wenn ein Download bereits läuft, nichts tun oder Wenn die Warteschlange leer ist, stoppen wir den Prozess
+	if (downloadingMovie || downloadQueue.length === 0) return;
 
 	// Nächsten Film aus der Warteschlange nehmen
 	const nextMovie = downloadQueue.shift();
