@@ -147,12 +147,12 @@ async function processDownloadQueue() {
 
 			// Posterbild laden, falls verfügbar
 			if (result.poster_path) {
-				await loadImageWithErrorHandling(result.poster_path, 'posters');
+				await image(result.poster_path, 'posters', true);
 			}
 
 			// Hintergrundbild laden, falls verfügbar
 			if (result.backdrop_path) {
-				await loadImageWithErrorHandling(result.backdrop_path, 'backdrops');
+				await image(result.backdrop_path, 'backdrops', true);
 			}
 
 			// Collection hinzufügen, falls vorhanden
@@ -179,7 +179,7 @@ async function processDownloadQueue() {
 			// Bilder für Schauspieler laden
 			for (let i = 0; i < imagesToLoad; i++) {
 				const path = castImagePaths[i];
-				await loadImageWithErrorHandling(path, 'actors');
+				await image(path, 'actors', true);
 			}
 		}
 
@@ -201,18 +201,6 @@ async function processDownloadQueue() {
 
 		// Wenn die Warteschlange noch Filme enthält, starte den nächsten Download
 		processDownloadQueue();
-	}
-}
-
-// Hilfsfunktion zum Laden von Bildern mit Fehlerbehandlung
-async function loadImageWithErrorHandling(
-	path: string,
-	folder: 'actors' | 'backdrops' | 'posters' | null
-) {
-	try {
-		await image(path, folder, true);
-	} catch (err) {
-		error(`Fehler beim Laden von ${folder}-Bild: ${err}`);
 	}
 }
 
