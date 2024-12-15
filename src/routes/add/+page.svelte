@@ -18,7 +18,7 @@
 	export let data: PageData;
 
 	let modal = false;
-	let modalID = 0;
+	let modalID: number | null = null;
 
 	let loading = false;
 	let filter: MovieSearchState | null = null;
@@ -205,7 +205,9 @@
 
 			<form
 				on:submit|preventDefault={async () => {
-					await searchMovieStatus(modalID, modal);
+					if (modalID !== null) {
+						await searchMovieStatus(modalID, modal);
+					}
 				}}
 				class="my-3 grid gap-3"
 			>
@@ -260,7 +262,10 @@
 						<button
 							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
 							on:click={async () => {
-								await selectMovie(modalID, i);
+								if (modalID !== null) {
+									await selectMovie(modalID, i);
+									modalID = null;
+								}
 							}}
 						>
 							<img
@@ -287,5 +292,11 @@
 			{/if}
 		{/if}
 	</div>
-	<button class="modal-backdrop" on:click={() => (modal = false)}>Schließen</button>
+	<button
+		class="modal-backdrop"
+		on:click={() => {
+			modal = false;
+			modalID = null;
+		}}>Schließen</button
+	>
 </dialog>
