@@ -78,15 +78,6 @@ export async function searchMovies(
 	return (await result.json()) as Search<SearchMovie>;
 }
 
-export function getValidFileNames(filePaths: string[], validExtensions: string[]) {
-	const supportedExtensions = new Set(validExtensions.map((ext) => ext.toLowerCase()));
-
-	return filePaths.filter((path) => {
-		const fileExtension = path.split('.').pop()?.toLowerCase();
-		return fileExtension && supportedExtensions.has(fileExtension);
-	});
-}
-
 let downloadingMovie: boolean = false; // Flag, um den laufenden Download zu überwachen
 let downloadQueue: Array<{ id: number; path: string }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
 
