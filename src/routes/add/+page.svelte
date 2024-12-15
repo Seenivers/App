@@ -14,6 +14,7 @@
 	import { clearResultsOnLeave, imageURL, placeholderURL } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { MovieSearchState } from '$lib/types/add';
+	import { warn } from '@tauri-apps/plugin-log';
 
 	export let data: PageData;
 	let modal = false;
@@ -24,8 +25,12 @@
 	// Zähle die Anzahl der Filme für jeden Zustand
 	$: counts = $status.reduce(
 		(acc, item) => {
-			if (item.state) {
-				acc[item.state] = (acc[item.state] || 0) + 1;
+			const state = item.state; // Hole den Zustand des Films
+			if (state && acc.hasOwnProperty(state)) {
+				// Überprüfe, ob der Zustand existiert und validiere ihn
+				acc[state] = (acc[state] || 0) + 1;
+			} else {
+				warn(`Ungültiger Zustand für Film gefunden: ${state}`);
 			}
 			return acc;
 		},
