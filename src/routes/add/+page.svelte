@@ -16,10 +16,8 @@
 	import type { MovieSearchState } from '$lib/types/add';
 
 	export let data: PageData;
-
 	let modal = false;
 	let modalID: number | null = null;
-
 	let loading = false;
 	let filter: MovieSearchState | null = null;
 
@@ -43,15 +41,17 @@
 
 	onMount(async () => {
 		if (data.paths.length > 0 && Array.isArray(data.paths)) {
-			// Neue Dateien hinzufügen
-			await addNewFiles(data.paths);
 			// Danach Suche starten
-			await load();
+			await load(data.paths);
 		}
 	});
 
 	// Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
-	async function load() {
+	async function load(newFiles?: string[]) {
+		if (newFiles && newFiles.length > 0) {
+			await addNewFiles(newFiles);
+		}
+
 		if (loading || !$isOnline) return;
 
 		loading = true;
@@ -66,6 +66,9 @@
 			if (entryIndex !== -1) {
 				// Rufe 'searchMovieStatus' mit dem Index des Eintrags auf
 				await searchMovieStatus(entryIndex, modal);
+				if ($status[entryIndex].options.id) {
+					await addNewMovie($status[entryIndex].options.id, entryIndex);
+				}
 			}
 		}
 		loading = false;
@@ -77,7 +80,9 @@
 		modal = false; // Schließe das Modal nach Auswahl
 
 		// Füge den vom Benutzer ausgewählten Film hinzu
-		await addNewMovie($status[modalID].results[movieIndex].id, $status[modalID].options.path);
+		$status[modalID].options.id = $status[modalID].results[movieIndex].id;
+
+		load();
 	}
 
 	function openModal(index: number) {

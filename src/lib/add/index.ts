@@ -55,121 +55,33 @@ export function getIcon(searchStatus: MovieSearchState) {
 	}
 }
 
-let downloadingMovie: boolean = false; // Flag, um den laufenden Download zu überwachen
-let downloadQueue: Array<{ id: number; path: string }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
+//#region add Files
+/**
+ * Fügt neue Filme zum Status hinzu, nachdem sie validiert wurden.
+ * @param files - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
+ */
+export async function addNewFiles(files: string[]) {
+	// Filtere und validiere die Dateien
+	const validFiles = files.filter((file) => {
+		const fileExtension = file.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
+		return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
+	});
 
-export async function addNewMovie(id: number, path: string) {
-	if (!id) {
-		error('Es muss eine valide ID angegeben werden.');
-		return Promise.resolve();
-	}
-
-	if (!path) {
-		error('Es muss ein valider Pfad angegeben werden.');
-		return Promise.resolve();
-	}
-
-	// Film zur Warteschlange hinzufügen, wenn kein Download läuft
-	if (!downloadingMovie) {
-		downloadQueue.push({ id, path });
-		processDownloadQueue(); // Starte den Download-Prozess, wenn kein Download läuft
-	} else {
-		// Andernfalls, wenn ein Download läuft, wird der Film nur in die Warteschlange gestellt
-		downloadQueue.push({ id, path });
-	}
-
-	return Promise.resolve();
-}
-
-async function processDownloadQueue() {
-	// Überprüfen, ob der Benutzer online ist
-	if (!get(isOnline)) {
-		error('Sie sind nicht mit dem Internet verbunden.');
+	if (validFiles.length === 0) {
+		alert('Keine gültigen Dateien gefunden.');
 		return;
 	}
 
-	// Wenn ein Download bereits läuft, nichts tun oder Wenn die Warteschlange leer ist, stoppen wir den Prozess
-	if (downloadingMovie || downloadQueue.length === 0) return;
+	// Filtere neue Dateien, die noch nicht im Status enthalten sind
+	const newFiles = await filterNewFiles(validFiles);
 
-	// Nächsten Film aus der Warteschlange nehmen
-	const nextMovie = downloadQueue.shift();
-	if (!nextMovie) return;
-
-	// Starten des Downloads für den nächsten Film
-	downloadingMovie = true;
-
-	// Update des Status, dass der Film heruntergeladen wird
-	status.update((currentStatus) => {
-		const i = currentStatus.findIndex((movie) => movie.options.path === nextMovie.path);
-		currentStatus[i].state = 'downloading';
-		return [...currentStatus];
-	});
-
-	try {
-		// Hole die Filmdetails
-		const result = await tmdb.getMovie(nextMovie.id);
-
-		if (await isMovieIDUnique(result.id)) {
-			// Film zur DB hinzufügen
-			await addMovie({ id: nextMovie.id, path: nextMovie.path, tmdb: result, updated: new Date() });
-
-			// Posterbild laden, falls verfügbar
-			if (result.poster_path) {
-				await image(result.poster_path, 'posters', true);
-			}
-
-			// Hintergrundbild laden, falls verfügbar
-			if (result.backdrop_path) {
-				await image(result.backdrop_path, 'backdrops', true);
-			}
-
-			// Collection hinzufügen, falls vorhanden
-			if (
-				result.belongs_to_collection?.id &&
-				(await isCollectionIDUnique(result.belongs_to_collection?.id))
-			) {
-				const collection = await tmdb.getCollection(result.belongs_to_collection.id);
-				if (collection) {
-					await addCollection({ ...collection, updated: new Date() });
-				}
-			}
-
-			// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
-			const castImagePaths = result.credits.cast
-				.map((actor) => actor.profile_path)
-				.filter((path) => path != null);
-
-			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
-			const imagesToLoad =
-				// @ts-expect-error castImages wird später über die Settings verarbeitet
-				castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
-
-			// Bilder für Schauspieler laden
-			for (let i = 0; i < imagesToLoad; i++) {
-				const path = castImagePaths[i];
-				await image(path, 'actors', true);
-			}
-		}
-
-		// Update des Status, dass der Film fertig heruntergeladen wurde
-		status.update((currentStatus) => {
-			const i = currentStatus.findIndex((movie) => movie.options.path === nextMovie.path);
-			currentStatus[i].state = 'foundOne';
-			return [...currentStatus];
-		});
-	} catch (err: unknown) {
-		if (err instanceof Error) {
-			error('Fehler beim Hinzufügen des Films: ' + err.message);
-		} else {
-			error('Unbekannter Fehler beim Hinzufügen des Films');
-		}
-	} finally {
-		// Setze das Flag zurück, dass der Download abgeschlossen ist
-		downloadingMovie = false;
-
-		// Wenn die Warteschlange noch Filme enthält, starte den nächsten Download
-		processDownloadQueue();
+	if (newFiles.length === 0) {
+		alert('Keine neuen Filme zum Hinzufügen gefunden.');
+		return;
 	}
+
+	// Füge neue Filme zum Status hinzu
+	addNewFilesToStatus(newFiles);
 }
 
 /**
@@ -234,7 +146,9 @@ function addNewFilesToStatus(newFiles: string[]) {
 	// Aktualisiere den Status nur einmal
 	status.update((currentStatus) => [...currentStatus, ...tempStatus]);
 }
+//#endregion
 
+//#region search Movie
 export async function searchMovieStatus(i: number, modal: boolean) {
 	// Prüfe die Internetverbindung
 	if (!get(isOnline)) {
@@ -263,11 +177,11 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 		status.update((currentStatus) => {
 			if (result.length === 1) {
 				currentStatus[i].results = result;
+				currentStatus[i].options.id = result[0].id;
 
 				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
 				if (!modal) {
 					currentStatus[i].state = 'wait';
-					addNewMovie(result[0].id, currentStatus[i].options.path);
 				} else {
 					currentStatus[i].state = 'foundOne';
 				}
@@ -294,34 +208,122 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 		});
 	}
 }
+//#endregion
 
-/**
- * Fügt neue Filme zum Status hinzu, nachdem sie validiert wurden.
- * @param files - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
- */
-export async function addNewFiles(files: string[]) {
-	// Filtere und validiere die Dateien
-	const validFiles = files.filter((file) => {
-		const fileExtension = file.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
-		return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
+//#region add Movie
+let downloadingMovie: boolean = false; // Flag, um den laufenden Download zu überwachen
+let downloadQueue: Array<{ id: number; index: number }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
+
+export async function addNewMovie(id: number, index: number) {
+	if (!id) {
+		error('Es muss eine valide ID angegeben werden.');
+		return Promise.resolve();
+	}
+
+	downloadQueue.push({ id, index });
+	// Film zur Warteschlange hinzufügen, wenn kein Download läuft
+	if (!downloadingMovie) {
+		// Starte den Download-Prozess, wenn kein Download läuft
+		processDownloadQueue();
+	}
+
+	return Promise.resolve();
+}
+
+async function processDownloadQueue() {
+	// Überprüfen, ob der Benutzer online ist
+	if (!get(isOnline)) {
+		error('Sie sind nicht mit dem Internet verbunden.');
+		return;
+	}
+
+	// Wenn ein Download bereits läuft, nichts tun oder Wenn die Warteschlange leer ist, stoppen wir den Prozess
+	if (downloadingMovie || downloadQueue.length === 0) return;
+
+	// Nächsten Film aus der Warteschlange nehmen
+	const nextMovie = downloadQueue.shift();
+	if (!nextMovie) return;
+
+	// Starten des Downloads für den nächsten Film
+	downloadingMovie = true;
+
+	// Update des Status, dass der Film heruntergeladen wird
+	status.update((currentStatus) => {
+		currentStatus[nextMovie.index].state = 'downloading';
+		return [...currentStatus];
 	});
 
-	if (validFiles.length === 0) {
-		alert('Keine gültigen Dateien gefunden.');
-		return;
+	try {
+		// Hole die Filmdetails
+		const result = await tmdb.getMovie(nextMovie.id);
+
+		if (await isMovieIDUnique(result.id)) {
+			// Film zur DB hinzufügen
+			await addMovie({
+				id: nextMovie.id,
+				path: get(status)[nextMovie.index].options.path,
+				tmdb: result,
+				updated: new Date()
+			});
+
+			// Collection hinzufügen, falls nicht vorhanden
+			if (
+				result.belongs_to_collection?.id &&
+				(await isCollectionIDUnique(result.belongs_to_collection?.id))
+			) {
+				const collection = await tmdb.getCollection(result.belongs_to_collection.id);
+				if (collection) {
+					await addCollection({ ...collection, updated: new Date() });
+				}
+			}
+
+			// Posterbild laden, falls verfügbar
+			if (result.poster_path) {
+				await image(result.poster_path, 'posters', true);
+			}
+
+			// Hintergrundbild laden, falls verfügbar
+			if (result.backdrop_path) {
+				await image(result.backdrop_path, 'backdrops', true);
+			}
+
+			// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
+			const castImagePaths = result.credits.cast
+				.map((actor) => actor.profile_path)
+				.filter((path) => path != null);
+
+			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
+			const imagesToLoad =
+				// @ts-expect-error castImages wird später über die Settings verarbeitet
+				castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
+
+			// Bilder für Schauspieler laden
+			for (let i = 0; i < imagesToLoad; i++) {
+				const path = castImagePaths[i];
+				await image(path, 'actors', true);
+			}
+		}
+
+		// Update des Status, dass der Film fertig heruntergeladen wurde
+		status.update((currentStatus) => {
+			currentStatus[nextMovie.index].state = 'foundOne';
+			return [...currentStatus];
+		});
+	} catch (err: unknown) {
+		if (err instanceof Error) {
+			error('Fehler beim Hinzufügen des Films: ' + err.message);
+		} else {
+			error('Unbekannter Fehler beim Hinzufügen des Films');
+		}
+	} finally {
+		// Setze das Flag zurück, dass der Download abgeschlossen ist
+		downloadingMovie = false;
+
+		// Wenn die Warteschlange noch Filme enthält, starte den nächsten Download
+		if (downloadQueue.length > 0) processDownloadQueue();
 	}
-
-	// Filtere neue Dateien, die noch nicht im Status enthalten sind
-	const newFiles = await filterNewFiles(validFiles);
-
-	if (newFiles.length === 0) {
-		alert('Keine neuen Filme zum Hinzufügen gefunden.');
-		return;
-	}
-
-	// Füge neue Filme zum Status hinzu
-	addNewFilesToStatus(newFiles);
 }
+//#endregion
 
 // Handle file selection
 export async function selectFile() {
