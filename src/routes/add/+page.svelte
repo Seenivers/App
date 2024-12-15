@@ -48,31 +48,47 @@
 
 	// Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
 	async function load(newFiles?: string[]) {
+		// Falls neue Dateien übergeben werden, füge sie dem Status hinzu
 		if (newFiles && newFiles.length > 0) {
 			await addNewFiles(newFiles);
 		}
 
+		// Verhindere, dass die Funktion startet, wenn bereits geladen wird oder die Verbindung offline ist
 		if (loading || !$isOnline) return;
 
 		loading = true;
 
-		// Überprüfe nach dem Hinzufügen der Dateien den Status der Einträge
-		// Wenn noch Einträge mit dem Status "wait" existieren, starte die Suche für diese Filme
+		// Filtere die Einträge mit dem Status "wait"
 		const waitEntries = $status.filter((entry) => entry.state === 'wait');
 
+		// Iteriere über alle "wait"-Einträge und starte die Suche für diese
 		for (const entry of waitEntries) {
-			// Nutze die 'path' Eigenschaft aus 'options' als Identifikator
 			const entryIndex = $status.findIndex((e) => e.options.path === entry.options.path);
+
+			// Falls der Eintrag noch im Status vorhanden ist, starte die Suche
 			if (entryIndex !== -1) {
-				// Rufe 'searchMovieStatus' mit dem Index des Eintrags auf
+				// Suche nach dem Film
 				await searchMovieStatus(entryIndex, modal);
+
+				// Wenn der Film gefunden wurde, füge ihn dem Status hinzu
 				if ($status[entryIndex].options.id) {
 					await addNewMovie($status[entryIndex].options.id, entryIndex);
 				}
 			}
 		}
+
+		// Setze den Ladezustand zurück, nachdem alle Einträge verarbeitet wurden
 		loading = false;
-		if ($status.some((entry) => entry.state === 'wait' && entry.results.length === 0)) load();
+
+		// Wenn noch Filme im Status mit "wait" und ohne Ergebnisse sind, starte die Funktion erneut
+		const hasUnprocessedMovies = $status.some(
+			(entry) => entry.state === 'wait' && entry.results.length === 0
+		);
+
+		// Nur erneut laden, wenn wirklich noch Einträge zu verarbeiten sind
+		if (hasUnprocessedMovies) {
+			load();
+		}
 	}
 
 	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
