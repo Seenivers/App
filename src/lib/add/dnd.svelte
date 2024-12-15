@@ -5,7 +5,6 @@
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import type { DropPayload } from '$lib/types/add';
 	import { error } from '@tauri-apps/plugin-log';
-	import { addNewFiles } from '$lib/add/index';
 	import { join } from '@tauri-apps/api/path';
 	import { extensions } from '$lib';
 
@@ -14,7 +13,7 @@
 	let handleDragEnter: UnlistenFn | undefined;
 	let handleDragLeave: UnlistenFn | undefined;
 
-	export let load: () => Promise<void>;
+	export let load: (newFiles?: string[]) => Promise<void>;
 
 	onMount(async () => {
 		const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
@@ -67,10 +66,8 @@
 
 			// Wenn gültige Dateien gefunden wurden, übergebe sie an die Ladefunktion
 			if (files.length > 0) {
-				// Neue Dateien hinzufügen
-				await addNewFiles(files);
 				// Danach Suche starten
-				await load();
+				await load(files);
 			} else {
 				alert('Keine Dateien zum Hinzufügen gefunden.');
 			}
