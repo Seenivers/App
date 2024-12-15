@@ -79,6 +79,7 @@ export interface SearchOptions {
 	primaryReleaseYear?: string | number;
 	/** The page number for paginated search results. */
 	page: number;
+	id?: number;
 }
 
 /**
