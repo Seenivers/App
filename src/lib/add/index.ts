@@ -9,7 +9,7 @@ import {
 import { castImages, extensions, seeniversURL } from '$lib';
 import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
 import { fetch } from '@tauri-apps/plugin-http';
-import { getCollection as getCollectionTmdb, getMovie as getMovieTmdb } from '$lib/tmdb';
+import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
@@ -139,7 +139,7 @@ async function processDownloadQueue() {
 
 	try {
 		// Hole die Filmdetails
-		const result = await getMovieTmdb(nextMovie.id);
+		const result = await tmdb.getMovie(nextMovie.id);
 
 		if (await isMovieIDUnique(result.id)) {
 			// Film zur DB hinzufügen
@@ -160,7 +160,7 @@ async function processDownloadQueue() {
 				result.belongs_to_collection?.id &&
 				(await isCollectionIDUnique(result.belongs_to_collection?.id))
 			) {
-				const collection = await getCollectionTmdb(result.belongs_to_collection.id);
+				const collection = await tmdb.getCollection(result.belongs_to_collection.id);
 				if (collection) {
 					await addCollection({ ...collection, updated: new Date() });
 				}
