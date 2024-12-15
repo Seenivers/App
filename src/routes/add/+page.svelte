@@ -93,7 +93,7 @@
 	}
 </script>
 
-<Dnd {load} {extensions} />
+<Dnd {load} />
 
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">

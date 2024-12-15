@@ -7,6 +7,7 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import { addNewFiles } from '$lib/add/index';
 	import { join } from '@tauri-apps/api/path';
+	import { extensions } from '$lib';
 
 	let isDraggingOver = false;
 	let handleDrop: UnlistenFn | undefined;
@@ -14,7 +15,6 @@
 	let handleDragLeave: UnlistenFn | undefined;
 
 	export let load: () => Promise<void>;
-	export let extensions: string[];
 
 	onMount(async () => {
 		const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
