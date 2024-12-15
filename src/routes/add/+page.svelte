@@ -109,10 +109,15 @@
 		load();
 	}
 
+	// Öffne das Modal nur, wenn der Status des Films 'downloading' oder 'foundOne' ist
 	function openModal(index: number) {
-		if ($status[index].state !== 'downloading' && $status[index].state !== 'foundOne') {
+		// Sicherstellen, dass der Status des Films gültig ist, bevor das Modal geöffnet wird
+		const filmState = $status[index]?.state;
+		if (filmState !== 'downloading' && filmState !== 'foundOne') {
 			modalID = index;
-			modal = true;
+			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
+		} else {
+			console.log('Modal kann nicht geöffnet werden, da der Status ungültig ist:', filmState);
 		}
 	}
 </script>
