@@ -44,9 +44,10 @@
 		}
 	);
 
+	// Überprüfe beim Mounten, ob die Daten valide sind und starte den Ladevorgang
 	onMount(async () => {
-		if (data.paths.length > 0 && Array.isArray(data.paths)) {
-			// Danach Suche starten
+		if (Array.isArray(data.paths) && data.paths.length > 0) {
+			// Wenn data.paths ein Array ist und nicht leer, starte den Ladevorgang
 			await load(data.paths);
 		}
 	});
