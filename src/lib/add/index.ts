@@ -204,32 +204,22 @@ async function filterNewFiles(files: string[]) {
  * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
  */
 function addNewFilesToStatus(newFiles: string[]) {
-	let tempStatus: MovieSearchContext[] = [];
-
-	if (tempStatus.length > 0) {
-		status.update((currentStatus) => [...currentStatus, ...tempStatus]);
-	}
-
-	newFiles.forEach((path) => {
+	const tempStatus: MovieSearchContext[] = newFiles.map((path) => {
 		const name =
 			path
 				.split('\\')
 				.pop()
 				?.replace(/\.[^/.]+$/, '') ?? '';
-
 		const fileName = name
 			.split(/[.\s]+/)
-			.filter((word) => {
-				// Filtern von Keywords ohne async-Aktion
-				return !settings.keywords.map((k) => k.toLowerCase()).includes(word.toLowerCase());
-			})
+			.filter((word) => !settings.keywords.map((k) => k.toLowerCase()).includes(word.toLowerCase()))
 			.join(' ');
 
 		const yearMatch = /(\d{4})/.exec(fileName);
 		const year = yearMatch ? yearMatch[1] : '';
 		const cleanedFileName = fileName.replace(/\s*\(?\d{4}\)?\s*/g, '').trim();
 
-		tempStatus.push({
+		return {
 			state: 'wait',
 			results: [],
 			options: {
@@ -239,12 +229,11 @@ function addNewFilesToStatus(newFiles: string[]) {
 				includeAdult: settings.adult,
 				page: 1
 			}
-		});
+		};
 	});
 
-	status.update((currentStatus) => {
-		return [...currentStatus, ...tempStatus];
-	});
+	// Aktualisiere den Status nur einmal
+	status.update((currentStatus) => [...currentStatus, ...tempStatus]);
 }
 
 export async function searchMovieStatus(i: number, modal: boolean) {
