@@ -4,7 +4,6 @@
 		addNewMovie,
 		buttonClass,
 		getIcon,
-		searchMovies,
 		searchMovieStatus,
 		selectFile,
 		selectFolder
@@ -66,7 +65,7 @@
 			const entryIndex = $status.findIndex((e) => e.options.path === entry.options.path);
 			if (entryIndex !== -1) {
 				// Rufe 'searchMovieStatus' mit dem Index des Eintrags auf
-				await searchMovieStatus(entryIndex, modal, searchMovies, addNewMovie);
+				await searchMovieStatus(entryIndex, modal);
 			}
 		}
 		loading = false;
@@ -206,7 +205,7 @@
 
 			<form
 				on:submit|preventDefault={async () => {
-					await searchMovieStatus(modalID, modal, searchMovies, addNewMovie);
+					await searchMovieStatus(modalID, modal);
 				}}
 				class="my-3 grid gap-3"
 			>
