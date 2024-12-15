@@ -208,23 +208,25 @@ async function processDownloadQueue() {
  * Filtert nur die Dateien, die nicht bereits im Status enthalten sind und einzigartig sind.
  *
  * @param files - Die Liste der zu überprüfenden Dateipfade.
- * @param status - Der aktuelle Status, der bereits vorhandene Dateipfade enthält.
  * @returns Ein Array von Dateipfaden, die einzigartig sind und noch nicht im Status enthalten sind.
  */
-export async function filterNewFiles(files: string[], status: MovieSearchContext[]) {
-	// Filtere nur die Dateien, die nicht bereits im Status enthalten sind
-	const newFiles = (
-		await Promise.all(
-			files.map(async (path) => {
-				// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
-				const unique = await isPathUnique(path);
-				const existsInStatus = status.some((item) => item.options.path === path);
-				return unique && !existsInStatus ? path : null;
-			})
-		)
-	).filter((path): path is string => path !== null);
+export async function filterNewFiles(files: string[]) {
+	// Hole den aktuellen Wert des writable Store
+	const currentStatus = get(status);
+	// Erstelle ein Set für bereits existierende Pfade, um die Suche effizienter zu machen
+	const existingPaths = new Set(currentStatus.map((item) => item.options.path));
 
-	return newFiles;
+	// Filtere die Dateien parallel
+	const newFiles = await Promise.all(
+		files.map(async (path) => {
+			// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
+			const unique = await isPathUnique(path);
+			return unique && !existingPaths.has(path) ? path : undefined;
+		})
+	);
+
+	// Entferne `undefined` und gebe nur die einzigartigen Pfade zurück
+	return newFiles.filter(Boolean) as string[];
 }
 
 /**
@@ -352,8 +354,6 @@ export async function searchMovieStatus(i: number, modal: boolean) {
  * @param files - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
  */
 export async function addNewFiles(files: string[]) {
-	const currentStatus = get(status); // Hole den aktuellen Wert des writable Store
-
 	// Filtere und validiere die Dateien
 	const validFiles = files.filter((file) => {
 		const fileExtension = file.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
@@ -366,7 +366,7 @@ export async function addNewFiles(files: string[]) {
 	}
 
 	// Filtere neue Dateien, die noch nicht im Status enthalten sind
-	const newFiles = await filterNewFiles(validFiles, currentStatus);
+	const newFiles = await filterNewFiles(validFiles);
 
 	if (newFiles.length === 0) {
 		alert('Keine neuen Filme zum Hinzufügen gefunden.');
