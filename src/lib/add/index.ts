@@ -61,7 +61,7 @@ export function getIcon(searchStatus: MovieSearchState) {
 /**
  * Suche Filme in der TMDB basierend auf einem Namen und optionalen Parametern.
  */
-export async function searchMovies(
+async function searchMovies(
 	name: string,
 	primaryReleaseYear?: string | number,
 	page = 1
@@ -201,7 +201,7 @@ async function processDownloadQueue() {
  * @param files - Die Liste der zu überprüfenden Dateipfade.
  * @returns Ein Array von Dateipfaden, die einzigartig sind und noch nicht im Status enthalten sind.
  */
-export async function filterNewFiles(files: string[]) {
+async function filterNewFiles(files: string[]) {
 	// Hole den aktuellen Wert des writable Store
 	const currentStatus = get(status);
 	// Erstelle ein Set für bereits existierende Pfade, um die Suche effizienter zu machen
@@ -226,10 +226,7 @@ export async function filterNewFiles(files: string[]) {
  * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
  * @param settings - Die aktuellen Einstellungen (z. B. Keywords, Adult-Filter).
  */
-export function addNewFilesToStatus(
-	newFiles: string[],
-	settings: typeof schema.settings.$inferSelect
-) {
+function addNewFilesToStatus(newFiles: string[], settings: typeof schema.settings.$inferSelect) {
 	let tempStatus: MovieSearchContext[] = [];
 
 	if (tempStatus.length > 0) {
