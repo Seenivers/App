@@ -231,14 +231,18 @@ export async function filterNewFiles(files: string[], status: MovieSearchContext
  * Fügt die neuen Dateien dem Status hinzu.
  *
  * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
- * @param status - Der aktuelle Status, in dem die neuen Dateien hinzugefügt werden.
  * @param settings - Die aktuellen Einstellungen (z. B. Keywords, Adult-Filter).
  */
 export function addNewFilesToStatus(
 	newFiles: string[],
-	status: MovieSearchContext[],
 	settings: typeof schema.settings.$inferSelect
 ) {
+	let tempStatus: MovieSearchContext[] = [];
+
+	if (tempStatus.length > 0) {
+		status.update((currentStatus) => [...currentStatus, ...tempStatus]);
+	}
+
 	newFiles.forEach((path) => {
 		const name =
 			path
@@ -258,7 +262,7 @@ export function addNewFilesToStatus(
 		const year = yearMatch ? yearMatch[1] : '';
 		const cleanedFileName = fileName.replace(/\s*\(?\d{4}\)?\s*/g, '').trim();
 
-		status.push({
+		tempStatus.push({
 			state: 'wait',
 			results: [],
 			options: {
@@ -269,6 +273,10 @@ export function addNewFilesToStatus(
 				page: 1
 			}
 		});
+	});
+
+	status.update((currentStatus) => {
+		return [...currentStatus, ...tempStatus];
 	});
 }
 
@@ -366,7 +374,7 @@ export async function addNewFiles(files: string[]) {
 	}
 
 	// Füge neue Filme zum Status hinzu
-	addNewFilesToStatus(newFiles, currentStatus, settings);
+	addNewFilesToStatus(newFiles, settings);
 }
 
 // Handle file selection
