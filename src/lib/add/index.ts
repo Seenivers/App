@@ -202,9 +202,8 @@ async function filterNewFiles(files: string[]) {
  * Fügt die neuen Dateien dem Status hinzu.
  *
  * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
- * @param settings - Die aktuellen Einstellungen (z. B. Keywords, Adult-Filter).
  */
-function addNewFilesToStatus(newFiles: string[], settings: typeof schema.settings.$inferSelect) {
+function addNewFilesToStatus(newFiles: string[]) {
 	let tempStatus: MovieSearchContext[] = [];
 
 	if (tempStatus.length > 0) {
@@ -333,7 +332,7 @@ export async function addNewFiles(files: string[]) {
 	}
 
 	// Füge neue Filme zum Status hinzu
-	addNewFilesToStatus(newFiles, settings);
+	addNewFilesToStatus(newFiles);
 }
 
 // Handle file selection
