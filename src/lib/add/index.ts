@@ -282,13 +282,6 @@ export function addNewFilesToStatus(
 	});
 }
 
-// Exportierte Funktion, um die Indizes der neuen Filme zu finden
-export function findNewFileIndexes(newFiles: string[], status: MovieSearchContext[]): number[] {
-	return status
-		.map((movie, index) => (newFiles.includes(movie.options.path) ? index : -1))
-		.filter((index) => index !== -1); // Nur Indexes der neuen Filme
-}
-
 export async function searchMovieStatus(i: number, modal: boolean) {
 	// Prüfe die Internetverbindung
 	if (!get(isOnline)) {
