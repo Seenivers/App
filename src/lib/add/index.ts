@@ -6,9 +6,7 @@ import {
 	isPathUnique,
 	settings
 } from '$lib/db/funktion';
-import { castImages, extensions, seeniversURL } from '$lib';
-import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
-import { fetch } from '@tauri-apps/plugin-http';
+import { castImages, extensions } from '$lib';
 import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
@@ -56,26 +54,6 @@ export function getIcon(searchStatus: MovieSearchState) {
 		default:
 			return '❓'; // default to search icon
 	}
-}
-
-/**
- * Suche Filme in der TMDB basierend auf einem Namen und optionalen Parametern.
- */
-async function searchMovies(
-	name: string,
-	primaryReleaseYear?: string | number,
-	page = 1
-): Promise<Search<SearchMovie>> {
-	const url = new URL(seeniversURL + '/api/movie/search');
-	url.searchParams.append('name', name);
-	url.searchParams.append('language', settings.language);
-	url.searchParams.append('includeAdult', String(settings.adult));
-	url.searchParams.append('primaryReleaseYear', primaryReleaseYear?.toString() ?? '');
-	url.searchParams.append('page', page.toString());
-
-	const result = await fetch(url.toString());
-
-	return (await result.json()) as Search<SearchMovie>;
 }
 
 let downloadingMovie: boolean = false; // Flag, um den laufenden Download zu überwachen
@@ -292,7 +270,7 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 
 	try {
 		// TMDB-Suche durchführen
-		const result = (await searchMovies(query, primaryReleaseYear)).results;
+		const result = (await tmdb.searchMovies(query, primaryReleaseYear)).results;
 
 		// Update status based on results
 		status.update((currentStatus) => {

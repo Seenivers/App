@@ -4,6 +4,7 @@ import type { Movie } from '$lib/types/movie';
 import { settings } from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
 import type { CollectionDetails } from '$lib/types/collection';
+import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
 
 async function fetchData<T>(endpoint: string, id: number, language: string) {
 	// Erstelle die URL mit den Query-Parametern id und language
@@ -61,4 +62,24 @@ export async function getCollection(
 	language: string = settings.language || window.navigator.language
 ) {
 	return await fetchData<CollectionDetails>('/api/collection', id, language);
+}
+
+/**
+ * Suche Filme in der TMDB basierend auf einem Namen und optionalen Parametern.
+ */
+export async function searchMovies(
+	name: string,
+	primaryReleaseYear?: string | number,
+	page = 1
+): Promise<Search<SearchMovie>> {
+	const url = new URL(seeniversURL + '/api/movie/search');
+	url.searchParams.append('name', name);
+	url.searchParams.append('language', settings.language);
+	url.searchParams.append('includeAdult', String(settings.adult));
+	url.searchParams.append('primaryReleaseYear', primaryReleaseYear?.toString() ?? '');
+	url.searchParams.append('page', page.toString());
+
+	const result = await fetch(url.toString());
+
+	return (await result.json()) as Search<SearchMovie>;
 }
