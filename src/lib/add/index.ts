@@ -16,6 +16,9 @@ import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
 import type { schema } from '$lib/db/schema';
 import { isOnline, status } from '$lib/stores';
 import { get } from 'svelte/store';
+import { open } from '@tauri-apps/plugin-dialog';
+import { join, videoDir } from '@tauri-apps/api/path';
+import { readDir } from '@tauri-apps/plugin-fs';
 
 export function buttonClass(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
@@ -385,4 +388,39 @@ export async function addNewFiles(files: string[]) {
 
 	// Füge neue Filme zum Status hinzu
 	addNewFilesToStatus(newFiles, currentStatus, settings);
+}
+
+// Handle file selection
+export async function selectFile() {
+	const files = await open({
+		multiple: true,
+		directory: false,
+		defaultPath: await videoDir(),
+		filters: [{ name: 'Video', extensions }]
+	});
+
+	if (files && files.length > 0) {
+		// Neue Dateien hinzufügen
+		await addNewFiles(files);
+	}
+}
+
+// Handle folder selection
+export async function selectFolder() {
+	const folder = await open({
+		multiple: false,
+		directory: true,
+		defaultPath: await videoDir()
+	});
+
+	if (folder) {
+		const entries = await readDir(folder);
+
+		const pfads = await Promise.all(entries.map(async (entry) => await join(folder, entry.name)));
+
+		if (pfads && pfads.length > 0) {
+			// Neue Dateien hinzufügen
+			await addNewFiles(pfads);
+		}
+	}
 }

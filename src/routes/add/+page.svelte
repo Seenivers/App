@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { open } from '@tauri-apps/plugin-dialog';
-	import { join, videoDir } from '@tauri-apps/api/path';
-	import { readDir } from '@tauri-apps/plugin-fs';
 	import {
 		addNewFiles,
 		addNewMovie,
 		buttonClass,
 		getIcon,
 		searchMovies,
-		searchMovieStatus
+		searchMovieStatus,
+		selectFile,
+		selectFolder
 	} from '$lib/add/index';
 	import { isOnline, status } from '$lib/stores';
 	import type { PageData } from './$types';
@@ -51,45 +50,6 @@
 			await load();
 		}
 	});
-
-	// Handle file selection
-	async function selectFile() {
-		const files = await open({
-			multiple: true,
-			directory: false,
-			defaultPath: await videoDir(),
-			filters: [{ name: 'Video', extensions }]
-		});
-
-		if (files && files.length > 0) {
-			// Neue Dateien hinzufügen
-			await addNewFiles(files);
-			// Danach Suche starten
-			await load();
-		}
-	}
-
-	// Handle folder selection
-	async function selectFolder() {
-		const folder = await open({
-			multiple: false,
-			directory: true,
-			defaultPath: await videoDir()
-		});
-
-		if (folder) {
-			const entries = await readDir(folder);
-
-			const pfads = await Promise.all(entries.map(async (entry) => await join(folder, entry.name)));
-
-			if (pfads && pfads.length > 0) {
-				// Neue Dateien hinzufügen
-				await addNewFiles(pfads);
-				// Danach Suche starten
-				await load();
-			}
-		}
-	}
 
 	// Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
 	async function load() {
@@ -159,10 +119,24 @@
 		</div>
 	{:else}
 		<div class="mb-5 flex w-3/4 gap-5">
-			<button class="btn grow" on:click={selectFile} disabled={!$isOnline}>
+			<button
+				class="btn grow"
+				on:click={async () => {
+					await selectFile();
+					load();
+				}}
+				disabled={!$isOnline}
+			>
 				Filme auswählen
 			</button>
-			<button class="btn grow" on:click={selectFolder} disabled={!$isOnline}>
+			<button
+				class="btn grow"
+				on:click={async () => {
+					await selectFolder();
+					load();
+				}}
+				disabled={!$isOnline}
+			>
 				Ordner auswählen
 			</button>
 			<button
