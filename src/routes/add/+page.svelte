@@ -93,11 +93,19 @@
 
 	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
 	async function selectMovie(modalID: number, movieIndex: number) {
+		// Überprüfe, ob der Index gültig ist, um Fehler zu vermeiden
+		const movieResults = $status[modalID]?.results ?? [];
+		if (movieIndex < 0 || movieIndex >= movieResults.length) {
+			console.error('Ungültiger Film-Index');
+			return; // Verhindere die Auswahl eines ungültigen Films
+		}
+
 		modal = false; // Schließe das Modal nach Auswahl
 
 		// Füge den vom Benutzer ausgewählten Film hinzu
-		$status[modalID].options.id = $status[modalID].results[movieIndex].id;
+		$status[modalID].options.id = movieResults[movieIndex].id;
 
+		// Lade neue Filme
 		load();
 	}
 
