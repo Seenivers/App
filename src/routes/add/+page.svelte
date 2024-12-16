@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { preventDefault } from 'svelte/legacy';
-
 	import {
 		addNewFiles,
 		addNewMovie,
@@ -29,26 +27,28 @@
 	let filter: MovieSearchState | null = $state(null);
 
 	// Zähle die Anzahl der Filme für jeden Zustand
-	let counts = $derived($status.reduce(
-		(acc, item) => {
-			const state = item.state; // Hole den Zustand des Films
-			if (state && acc.hasOwnProperty(state)) {
-				// Überprüfe, ob der Zustand existiert und validiere ihn
-				acc[state] = (acc[state] || 0) + 1;
-			} else {
-				warn(`Ungültiger Zustand für Film gefunden: ${state}`);
+	let counts = $derived(
+		$status.reduce(
+			(acc, item) => {
+				const state = item.state; // Hole den Zustand des Films
+				if (state && acc.hasOwnProperty(state)) {
+					// Überprüfe, ob der Zustand existiert und validiere ihn
+					acc[state] = (acc[state] || 0) + 1;
+				} else {
+					warn(`Ungültiger Zustand für Film gefunden: ${state}`);
+				}
+				return acc;
+			},
+			{
+				wait: 0,
+				searching: 0,
+				notFound: 0,
+				foundOne: 0,
+				foundMultiple: 0,
+				downloading: 0
 			}
-			return acc;
-		},
-		{
-			wait: 0,
-			searching: 0,
-			notFound: 0,
-			foundOne: 0,
-			foundMultiple: 0,
-			downloading: 0
-		}
-	));
+		)
+	);
 
 	// Überprüfe beim Mounten, ob die Daten valide sind und starte den Ladevorgang
 	onMount(async () => {
@@ -250,11 +250,12 @@
 			</h2>
 
 			<form
-				onsubmit={preventDefault(async () => {
+				onsubmit={async (event) => {
+					event.preventDefault();
 					if (modalID !== null) {
 						await searchMovieStatus(modalID, modal);
 					}
-				})}
+				}}
 				class="my-3 grid gap-3"
 			>
 				<label class="input input-bordered flex items-center gap-2">

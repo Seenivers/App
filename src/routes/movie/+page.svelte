@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { preventDefault } from 'svelte/legacy';
-
 	import { exists } from '@tauri-apps/plugin-fs';
 	import { image } from '$lib/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
@@ -201,7 +199,8 @@
 
 		<form
 			bind:this={form}
-			onsubmit={preventDefault(async () => {
+			onsubmit={async (event) => {
+				event.preventDefault();
 				if (!form || !form.newID || !movieData) return;
 				const newID = parseInt(form.newID.value, 10);
 				try {
@@ -220,7 +219,7 @@
 				} catch {
 					alert('Diese TMDB ID ist falsch');
 				}
-			})}
+			}}
 			class="flex gap-2"
 		>
 			<input
