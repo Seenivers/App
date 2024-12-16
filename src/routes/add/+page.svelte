@@ -8,7 +8,7 @@
 		selectFile,
 		selectFolder
 	} from '$lib/add/index';
-	import { isOnline, status } from '$lib/stores';
+	import { isOnline, status } from '$lib/stores.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { clearResultsOnLeave, imageURL, placeholderURL } from '$lib';

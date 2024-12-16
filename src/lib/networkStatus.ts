@@ -1,6 +1,6 @@
 import { newToast } from '$lib/toast/toast';
 import { trace } from '@tauri-apps/plugin-log';
-import { isOnline } from './stores';
+import { isOnline } from './stores.svelte';
 
 // Online-Status überwachen und Einstellungen aktualisieren
 export function networkStatus() {

@@ -11,7 +11,7 @@ import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
-import { isOnline, status } from '$lib/stores';
+import { isOnline, status } from '$lib/stores.svelte';
 import { get } from 'svelte/store';
 import { open } from '@tauri-apps/plugin-dialog';
 import { join, videoDir } from '@tauri-apps/api/path';

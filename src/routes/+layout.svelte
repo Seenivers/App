@@ -9,7 +9,7 @@
 	import { attachConsole, attachLogger, trace } from '@tauri-apps/plugin-log';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/log';
-	import { isOnline } from '$lib/stores';
+	import { isOnline } from '$lib/stores.svelte';
 	interface Props {
 		children?: import('svelte').Snippet;
 	}

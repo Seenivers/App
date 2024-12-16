@@ -6,7 +6,7 @@
 	import { marked } from 'marked';
 	import '$lib/css/md.css';
 	import { open } from '@tauri-apps/plugin-shell';
-	import { isOnline } from './stores';
+	import { isOnline } from './stores.svelte';
 
 	let update: Update | null = $state(null);
 	let downloadProgress = $state(0);
