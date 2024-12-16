@@ -155,17 +155,11 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 		error(
 			'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
 		);
-		status.update((currentStatus) => {
-			currentStatus[i].state = 'notFound';
-			return [...currentStatus]; // Rückgabe einer neuen Kopie, damit Svelte den Store erkennt
-		});
+		updateMovieStatus(i, 'notFound');
 		return;
 	}
 
-	status.update((currentStatus) => {
-		currentStatus[i].state = 'searching';
-		return [...currentStatus]; // Rückgabe einer neuen Kopie, damit Svelte den Store erkennt
-	});
+	updateMovieStatus(i, 'searching');
 
 	const { query, primaryReleaseYear } = get(status)[i].options;
 
