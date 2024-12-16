@@ -230,35 +230,42 @@ export async function addNewMovie(id: number, index: number) {
 	return Promise.resolve();
 }
 
-async function processDownloadQueue() {
-	// Überprüfen, ob der Benutzer online ist
+function checkOnlineStatus() {
 	if (!get(isOnline)) {
 		error('Sie sind nicht mit dem Internet verbunden.');
-		return;
+		return false;
 	}
+	return true;
+}
 
-	// Wenn ein Download bereits läuft, nichts tun oder Wenn die Warteschlange leer ist, stoppen wir den Prozess
+function updateMovieStatus(index: number, newState: MovieSearchState) {
+	status.update((currentStatus) => {
+		currentStatus[index].state = newState;
+		return [...currentStatus];
+	});
+}
+
+async function processDownloadQueue() {
+	// Überprüfen, ob der Benutzer online ist
+	if (!checkOnlineStatus()) return;
+
+	// Wenn ein Download bereits läuft oder die Warteschlange leer ist, nichts tun
 	if (downloadingMovie || downloadQueue.length === 0) return;
 
 	// Nächsten Film aus der Warteschlange nehmen
 	const nextMovie = downloadQueue.shift();
 	if (!nextMovie) return;
 
-	// Starten des Downloads für den nächsten Film
+	// Status aktualisieren und Download starten
 	downloadingMovie = true;
-
-	// Update des Status, dass der Film heruntergeladen wird
-	status.update((currentStatus) => {
-		currentStatus[nextMovie.index].state = 'downloading';
-		return [...currentStatus];
-	});
+	updateMovieStatus(nextMovie.index, 'downloading');
 
 	try {
 		// Hole die Filmdetails
 		const result = await tmdb.getMovie(nextMovie.id);
 
 		if (await isMovieIDUnique(result.id)) {
-			// Film zur DB hinzufügen
+			// Film zur Datenbank hinzufügen
 			await addMovie({
 				id: nextMovie.id,
 				path: get(status)[nextMovie.index].options.path,
@@ -287,7 +294,7 @@ async function processDownloadQueue() {
 				await image(result.backdrop_path, 'backdrops', true);
 			}
 
-			// Schauspieler-Bilder parallel laden, nur wenn Pfad vorhanden
+			// Schauspieler-Bilder parallel laden
 			const castImagePaths = result.credits.cast
 				.map((actor) => actor.profile_path)
 				.filter((path) => path != null);
@@ -297,29 +304,25 @@ async function processDownloadQueue() {
 				// @ts-expect-error castImages wird später über die Settings verarbeitet
 				castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
 
-			// Bilder für Schauspieler laden
 			for (let i = 0; i < imagesToLoad; i++) {
 				const path = castImagePaths[i];
 				await image(path, 'actors', true);
 			}
 		}
 
-		// Update des Status, dass der Film fertig heruntergeladen wurde
-		status.update((currentStatus) => {
-			currentStatus[nextMovie.index].state = 'foundOne';
-			return [...currentStatus];
-		});
+		// Status aktualisieren, dass der Film erfolgreich heruntergeladen wurde
+		updateMovieStatus(nextMovie.index, 'foundOne');
 	} catch (err: unknown) {
 		if (err instanceof Error) {
-			error('Fehler beim Hinzufügen des Films: ' + err.message);
+			error(`Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}: ${err.message}`);
 		} else {
-			error('Unbekannter Fehler beim Hinzufügen des Films');
+			error(`Unbekannter Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}`);
 		}
 	} finally {
-		// Setze das Flag zurück, dass der Download abgeschlossen ist
+		// Flag zurücksetzen, dass der Download abgeschlossen ist
 		downloadingMovie = false;
 
-		// Wenn die Warteschlange noch Filme enthält, starte den nächsten Download
+		// Nächsten Download starten, falls die Warteschlange noch Filme enthält
 		if (downloadQueue.length > 0) processDownloadQueue();
 	}
 }
