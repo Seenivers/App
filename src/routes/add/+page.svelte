@@ -28,7 +28,7 @@
 
 	// Zähle die Anzahl der Filme für jeden Zustand
 	let counts = $derived(
-		$status.reduce(
+		status.reduce(
 			(acc, item) => {
 				const state = item.state; // Hole den Zustand des Films
 				if (state && acc.hasOwnProperty(state)) {
@@ -71,11 +71,11 @@
 		loading = true;
 
 		// Filtere die Einträge mit dem Status "wait"
-		const waitEntries = $status.filter((entry) => entry.state === 'wait');
+		const waitEntries = status.filter((entry) => entry.state === 'wait');
 
 		// Iteriere über alle "wait"-Einträge und starte die Suche für diese
 		for (const entry of waitEntries) {
-			const entryIndex = $status.findIndex((e) => e.options.path === entry.options.path);
+			const entryIndex = status.findIndex((e) => e.options.path === entry.options.path);
 
 			// Falls der Eintrag noch im Status vorhanden ist, starte die Suche
 			if (entryIndex !== -1) {
@@ -83,8 +83,8 @@
 				await searchMovieStatus(entryIndex, modal);
 
 				// Wenn der Film gefunden wurde, füge ihn dem Status hinzu
-				if ($status[entryIndex].options.id) {
-					await addNewMovie($status[entryIndex].options.id, entryIndex);
+				if (status[entryIndex].options.id) {
+					await addNewMovie(status[entryIndex].options.id, entryIndex);
 				}
 			}
 		}
@@ -93,7 +93,7 @@
 		loading = false;
 
 		// Wenn noch Filme im Status mit "wait" und ohne Ergebnisse sind, starte die Funktion erneut
-		const hasUnprocessedMovies = $status.some(
+		const hasUnprocessedMovies = status.some(
 			(entry) => entry.state === 'wait' && entry.results.length === 0
 		);
 
@@ -106,7 +106,7 @@
 	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
 	async function selectMovie(modalID: number, movieIndex: number) {
 		// Überprüfe, ob der Index gültig ist, um Fehler zu vermeiden
-		const movieResults = $status[modalID]?.results ?? [];
+		const movieResults = status[modalID]?.results ?? [];
 		if (movieIndex < 0 || movieIndex >= movieResults.length) {
 			console.error('Ungültiger Film-Index');
 			return; // Verhindere die Auswahl eines ungültigen Films
@@ -115,7 +115,7 @@
 		modal = false; // Schließe das Modal nach Auswahl
 
 		// Füge den vom Benutzer ausgewählten Film hinzu
-		$status[modalID].options.id = movieResults[movieIndex].id;
+		status[modalID].options.id = movieResults[movieIndex].id;
 
 		// Lade neue Filme
 		load();
@@ -124,7 +124,7 @@
 	// Öffne das Modal nur, wenn der Status des Films 'downloading' oder 'foundOne' ist
 	function openModal(index: number) {
 		// Sicherstellen, dass der Status des Films gültig ist, bevor das Modal geöffnet wird
-		const filmState = $status[index]?.state;
+		const filmState = status[index]?.state;
 		if (filmState !== 'downloading' && filmState !== 'foundOne') {
 			modalID = index;
 			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
@@ -144,7 +144,7 @@
 			class="btn btn-ghost"
 			onclick={() => {
 				if (clearResultsOnLeave) {
-					status.set([]);
+					status.length = 0;
 					filter = null;
 				}
 			}}
@@ -187,15 +187,15 @@
 			<button
 				class="btn hover:btn-error"
 				onclick={() => {
-					status.set([]);
+					status.length = 0;
 					filter = null;
 				}}
-				disabled={!$isOnline || $status.length === 0}
+				disabled={!$isOnline || status.length === 0}
 			>
 				Alles entfernen
 			</button>
-			<select class="select" bind:value={filter} disabled={!$isOnline || $status.length === 0}>
-				<option value={null} selected disabled={$status.length === 0}>Kein Filter</option>
+			<select class="select" bind:value={filter} disabled={!$isOnline || status.length === 0}>
+				<option value={null} selected disabled={status.length === 0}>Kein Filter</option>
 				<option value="wait" disabled={counts.wait === 0}>
 					Warteschlange ({counts.wait})
 				</option>
@@ -218,7 +218,7 @@
 		</div>
 
 		<div class="grid w-full gap-3">
-			{#each $status as item, index}
+			{#each status as item, index}
 				{#if item.state === filter || filter === null}
 					<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
 						<span>
@@ -226,10 +226,10 @@
 							<p class="text-sm">Dateipfad: {item.options.path}</p>
 						</span>
 						<button
-							class="btn bg-opacity-50 {buttonClass($status[index].state)}"
+							class="btn bg-opacity-50 {buttonClass(status[index].state)}"
 							onclick={() => openModal(index)}
 						>
-							{getIcon($status[index].state)}
+							{getIcon(status[index].state)}
 						</button>
 					</div>
 				{/if}
@@ -244,9 +244,9 @@
 		<button class="btn btn-circle btn-sm absolute right-2 top-2" onclick={() => (modal = false)}>
 			✕
 		</button>
-		{#if modalID !== null && $status[modalID]}
+		{#if modalID !== null && status[modalID]}
 			<h2 class="line-clamp-1 py-1 text-3xl">
-				{$status[modalID].options.path.split('\\').pop()}
+				{status[modalID].options.path.split('\\').pop()}
 			</h2>
 
 			<form
@@ -264,9 +264,9 @@
 						type="text"
 						class="grow"
 						minlength="2"
-						disabled={$status[modalID].state === 'searching'}
+						disabled={status[modalID].state === 'searching'}
 						required
-						bind:value={$status[modalID].options.query}
+						bind:value={status[modalID].options.query}
 					/>
 				</label>
 				<label class="input input-bordered flex items-center gap-2">
@@ -276,19 +276,19 @@
 						class="grow"
 						minlength="4"
 						maxlength="4"
-						disabled={$status[modalID].state === 'searching'}
-						bind:value={$status[modalID].options.primaryReleaseYear}
+						disabled={status[modalID].state === 'searching'}
+						bind:value={status[modalID].options.primaryReleaseYear}
 					/>
 					<span class="badge badge-info">Optional</span>
 				</label>
-				<button type="submit" class="btn grow" disabled={$status[modalID].state === 'searching'}>
+				<button type="submit" class="btn grow" disabled={status[modalID].state === 'searching'}>
 					Suchen
 				</button>
 			</form>
 
 			<hr class="my-3 border-2 border-base-content" />
 
-			{#if $status[modalID].state === 'searching'}
+			{#if status[modalID].state === 'searching'}
 				<div
 					class="mx-auto flex max-w-md flex-col items-center rounded-lg bg-base-200 p-5 shadow-md"
 				>
@@ -303,9 +303,9 @@
 					</div>
 					<button class="btn btn-secondary w-full" disabled> Suchen... </button>
 				</div>
-			{:else if modalID !== null && $status[modalID]?.results?.length > 0}
+			{:else if modalID !== null && status[modalID]?.results?.length > 0}
 				<div class="grid gap-4">
-					{#each $status[modalID].results as result, i}
+					{#each status[modalID].results as result, i}
 						<button
 							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
 							onclick={async () => {
@@ -328,7 +328,7 @@
 						</button>
 					{/each}
 				</div>
-			{:else if $status[modalID].state === 'wait'}
+			{:else if status[modalID].state === 'wait'}
 				<p class="text-center">
 					Es wurde noch nicht nach einem Film gesucht.
 					<br />
