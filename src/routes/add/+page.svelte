@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
+
 	import {
 		addNewFiles,
 		addNewMovie,
@@ -16,14 +18,18 @@
 	import type { MovieSearchState } from '$lib/types/add';
 	import { warn } from '@tauri-apps/plugin-log';
 
-	export let data: PageData;
-	let modal = false;
-	let modalID: number | null = null;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let modal = $state(false);
+	let modalID: number | null = $state(null);
 	let loading = false;
-	let filter: MovieSearchState | null = null;
+	let filter: MovieSearchState | null = $state(null);
 
 	// Zähle die Anzahl der Filme für jeden Zustand
-	$: counts = $status.reduce(
+	let counts = $derived($status.reduce(
 		(acc, item) => {
 			const state = item.state; // Hole den Zustand des Films
 			if (state && acc.hasOwnProperty(state)) {
@@ -42,7 +48,7 @@
 			foundMultiple: 0,
 			downloading: 0
 		}
-	);
+	));
 
 	// Überprüfe beim Mounten, ob die Daten valide sind und starte den Ladevorgang
 	onMount(async () => {
@@ -136,7 +142,7 @@
 		<a
 			href="/"
 			class="btn btn-ghost"
-			on:click={() => {
+			onclick={() => {
 				if (clearResultsOnLeave) {
 					status.set([]);
 					filter = null;
@@ -160,7 +166,7 @@
 		<div class="mb-5 flex w-3/4 gap-5">
 			<button
 				class="btn grow"
-				on:click={async () => {
+				onclick={async () => {
 					await selectFile();
 					load();
 				}}
@@ -170,7 +176,7 @@
 			</button>
 			<button
 				class="btn grow"
-				on:click={async () => {
+				onclick={async () => {
 					await selectFolder();
 					load();
 				}}
@@ -180,7 +186,7 @@
 			</button>
 			<button
 				class="btn hover:btn-error"
-				on:click={() => {
+				onclick={() => {
 					status.set([]);
 					filter = null;
 				}}
@@ -221,7 +227,7 @@
 						</span>
 						<button
 							class="btn bg-opacity-50 {buttonClass($status[index].state)}"
-							on:click={() => openModal(index)}
+							onclick={() => openModal(index)}
 						>
 							{getIcon($status[index].state)}
 						</button>
@@ -235,7 +241,7 @@
 <!-- Modal -->
 <dialog class="modal backdrop-blur-sm" open={modal}>
 	<div class="modal-box max-w-3xl">
-		<button class="btn btn-circle btn-sm absolute right-2 top-2" on:click={() => (modal = false)}>
+		<button class="btn btn-circle btn-sm absolute right-2 top-2" onclick={() => (modal = false)}>
 			✕
 		</button>
 		{#if modalID !== null && $status[modalID]}
@@ -244,11 +250,11 @@
 			</h2>
 
 			<form
-				on:submit|preventDefault={async () => {
+				onsubmit={preventDefault(async () => {
 					if (modalID !== null) {
 						await searchMovieStatus(modalID, modal);
 					}
-				}}
+				})}
 				class="my-3 grid gap-3"
 			>
 				<label class="input input-bordered flex items-center gap-2">
@@ -301,7 +307,7 @@
 					{#each $status[modalID].results as result, i}
 						<button
 							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
-							on:click={async () => {
+							onclick={async () => {
 								if (modalID !== null) {
 									await selectMovie(modalID, i);
 									modalID = null;
@@ -334,7 +340,7 @@
 	</div>
 	<button
 		class="modal-backdrop"
-		on:click={() => {
+		onclick={() => {
 			modal = false;
 			modalID = null;
 		}}>Schließen</button

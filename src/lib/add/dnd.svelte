@@ -8,12 +8,16 @@
 	import { join } from '@tauri-apps/api/path';
 	import { extensions } from '$lib';
 
-	let isDraggingOver = false;
+	let isDraggingOver = $state(false);
 	let handleDrop: UnlistenFn | undefined;
 	let handleDragEnter: UnlistenFn | undefined;
 	let handleDragLeave: UnlistenFn | undefined;
 
-	export let load: (newFiles?: string[]) => Promise<void>;
+	interface Props {
+		load: (newFiles?: string[]) => Promise<void>;
+	}
+
+	let { load }: Props = $props();
 
 	onMount(async () => {
 		const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));

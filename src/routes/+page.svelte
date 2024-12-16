@@ -14,16 +14,16 @@
 	};
 
 	// Suchparameter initialisieren
-	let searchCriteria: SearchCriteria = {
+	let searchCriteria: SearchCriteria = $state({
 		title: '',
 		genre: null,
 		isWatched: null
-	};
+	});
 
 	// Lade die Filme und initialisiere die Fuse-Suche
-	let matchedMovies: (typeof schema.movies.$inferSelect)[] = [];
-	let isLoading = false;
-	let CARDSCALE: Cardscale = {
+	let matchedMovies: (typeof schema.movies.$inferSelect)[] = $state([]);
+	let isLoading = $state(false);
+	let CARDSCALE: Cardscale = $state({
 		aktiv: 2,
 		sizes: [
 			{
@@ -39,7 +39,7 @@
 				size: 'Large'
 			}
 		]
-	};
+	});
 
 	// Funktion zum Laden der Filme
 	async function loadMovies() {
@@ -47,8 +47,8 @@
 	}
 
 	// Referenzen für das Such-Eingabefeld
-	let searchInput: HTMLInputElement;
-	let datalistItem: HTMLDataListElement;
+	let searchInput: HTMLInputElement | undefined = $state();
+	let datalistItem: HTMLDataListElement | undefined = $state();
 
 	// Funktion zum Filtern der Filme
 	async function filterMovies() {
@@ -104,7 +104,7 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.ctrlKey && event.key === 'f') {
 			event.preventDefault();
-			searchInput.focus();
+			if (searchInput) searchInput.focus();
 		} else if (event.ctrlKey && event.key === 'p') {
 			event.preventDefault();
 		} else if (event.ctrlKey && event.key === '+') {
@@ -138,6 +138,7 @@
 
 		if (matchedMovies.length >= 1 && searchInput && datalistItem) {
 			searchInput.onfocus = function () {
+				if (!datalistItem || !searchInput) return;
 				datalistItem.style.display = 'block';
 				datalistItem.style.width = `${searchInput.offsetWidth}px`;
 				searchInput.style.borderBottomLeftRadius = '0';
@@ -147,6 +148,7 @@
 			searchInput.onblur = function () {
 				// Kurze Verzögerung, um sicherzustellen, dass das Klicken auf ein Optionselement erkannt wird
 				setTimeout(() => {
+					if (!datalistItem || !searchInput) return;
 					datalistItem.style.display = 'none';
 					searchInput.style.borderBottomLeftRadius = '0.5rem';
 				}, 200);
@@ -155,6 +157,7 @@
 			// Datalist-Optionen behandeln
 			for (let option of datalistItem.options) {
 				option.onclick = () => {
+					if (!datalistItem) return;
 					searchCriteria.title = option.value;
 					datalistItem.style.display = 'none';
 					filterMovies();
@@ -162,6 +165,7 @@
 			}
 
 			searchInput.oninput = () => {
+				if (!datalistItem) return;
 				const text = searchCriteria.title.toUpperCase();
 				for (let option of datalistItem.options) {
 					option.style.display = option.value.toUpperCase().includes(text) ? 'block' : 'none';
@@ -169,6 +173,7 @@
 			};
 
 			searchInput.onkeydown = (e: KeyboardEvent) => {
+				if (!datalistItem) return;
 				const optionsArray = Array.from(datalistItem.options);
 				switch (e.key) {
 					case 'ArrowDown':
@@ -210,7 +215,7 @@
 	});
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />
 
 <!-- Navbar -->
 <nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
@@ -225,7 +230,7 @@
 <main class="z-0 flex-grow flex-col p-5">
 	{#if matchedMovies.length >= 1}
 		<!-- Suche -->
-		<div class="join flex flex-wrap justify-center" on:change={filterMovies}>
+		<div class="join flex flex-wrap justify-center" onchange={filterMovies}>
 			<div>
 				<input
 					class="input join-item input-bordered"
@@ -233,7 +238,7 @@
 					placeholder="Titel"
 					autocomplete="off"
 					bind:value={searchCriteria.title}
-					on:input={filterMovies}
+					oninput={filterMovies}
 					bind:this={searchInput}
 				/>
 				<datalist
@@ -267,7 +272,7 @@
 				<option value={false}>Nicht angeschaut</option>
 			</select>
 			<button
-				on:click={() => {
+				onclick={() => {
 					searchCriteria = { title: '', genre: null, isWatched: null };
 					filterMovies();
 				}}
@@ -286,7 +291,7 @@
 					<button
 						class="btn join-item flex items-center gap-2"
 						class:btn-active={CARDSCALE.aktiv === number}
-						on:click={() => {
+						onclick={() => {
 							CARDSCALE.aktiv = number;
 						}}
 					>

@@ -6,19 +6,25 @@
 	import { format, fullscreen, pictureInPicture } from '.';
 	import { onDestroy } from 'svelte';
 
-	export let id: number;
-	let duration: number;
-	export let src: string;
-	export let poster: string;
-	let currentTime = 0;
-	let paused = true;
-	let muted = false;
-	let player: HTMLDivElement;
-	let videoElement: HTMLVideoElement;
-	let steuerElemente: boolean = false;
-	let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
+	let duration: number = $state(0);
+	interface Props {
+		id: number;
+		src: string;
+		poster: string;
+	}
+
+	let { id, src, poster }: Props = $props();
+	let currentTime = $state(0);
+	let paused = $state(true);
+	let muted = $state(false);
+	let player: HTMLDivElement | undefined = $state();
+	let videoElement: HTMLVideoElement | undefined = $state();
+	let steuerElemente: boolean = $state(false);
+	let timeoutHandle: ReturnType<typeof setTimeout> | null = $state(null);
 
 	function elemente() {
+		if (!videoElement) return;
+
 		// Aktiviert Steuerungs-Elemente
 		steuerElemente = true;
 
@@ -47,6 +53,7 @@
 	}
 
 	async function ended() {
+		if (!player) return;
 		if (document.fullscreenElement) fullscreen(player);
 		steuerElemente = true;
 		await db
@@ -60,13 +67,13 @@
 	});
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="relative z-0 flex select-none justify-center text-white"
 	bind:this={player}
-	on:mousemove={elemente}
+	onmousemove={elemente}
 >
-	<!-- svelte-ignore a11y-media-has-caption -->
+	<!-- svelte-ignore a11y_media_has_caption -->
 	<!-- https://github.com/sveltejs/svelte/issues/5967#issuecomment-775297424 -->
 	<video
 		bind:duration
@@ -74,9 +81,9 @@
 		bind:paused
 		bind:muted
 		bind:this={videoElement}
-		on:pause={save}
-		on:ended={ended}
-		on:loadedmetadata={async () => {
+		onpause={save}
+		onended={ended}
+		onloadedmetadata={async () => {
 			const watchTime = (await db.select().from(schema.movies).where(eq(schema.movies.id, id)))[0]
 				.watchTime;
 
@@ -98,7 +105,7 @@
 			<!-- ZURÜCK -->
 			<div
 				class="flex h-full w-5/12 place-items-center justify-center"
-				on:dblclick={() => {
+				ondblclick={() => {
 					currentTime -= 10;
 				}}
 			>
@@ -117,7 +124,7 @@
 			<!-- VOR -->
 			<div
 				class="flex h-full w-5/12 place-items-center justify-center"
-				on:dblclick={() => {
+				ondblclick={() => {
 					currentTime += 30;
 				}}
 			>
@@ -144,7 +151,11 @@
 					<!-- Bild in Bild -->
 					<button
 						class="flex cursor-pointer items-center"
-						on:click={() => pictureInPicture(videoElement)}
+						onclick={() => {
+							if (videoElement) {
+								pictureInPicture(videoElement);
+							}
+						}}
 					>
 						<PictureInPicture />
 					</button>
@@ -155,7 +166,11 @@
 								type="checkbox"
 								id="fullscreen"
 								name="fullscreen"
-								on:change={() => fullscreen(player)}
+								onchange={() => {
+									if (player) {
+										fullscreen(player);
+									}
+								}}
 							/>
 							<Fullscreen />
 						</label>

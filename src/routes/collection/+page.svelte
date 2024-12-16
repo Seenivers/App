@@ -3,10 +3,14 @@
 	import { getCollection, settings } from '$lib/db/funktion';
 	import { image } from '$lib/image';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 	const id = data.id;
 
-	let isGridView = false; // Startwert für das Layout
+	let isGridView = $state(false); // Startwert für das Layout
 </script>
 
 <!-- Navbar -->
@@ -14,7 +18,7 @@
 	<div class="gap-1">
 		<button
 			class="btn btn-sm md:btn-md"
-			on:click={() =>
+			onclick={() =>
 				window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
 		>
 			{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}
@@ -60,7 +64,7 @@
 						<h2 class="text-3xl font-bold md:text-4xl">Filme</h2>
 
 						<!-- Toggle für Grid/List-Ansicht -->
-						<button class="btn btn-outline" on:click={() => (isGridView = !isGridView)}>
+						<button class="btn btn-outline" onclick={() => (isGridView = !isGridView)}>
 							{isGridView ? 'Wechsel zu Listenansicht' : 'Wechsel zu Grid-Ansicht'}
 						</button>
 					</div>

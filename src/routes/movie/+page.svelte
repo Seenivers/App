@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
+
 	import { exists } from '@tauri-apps/plugin-fs';
 	import { image } from '$lib/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
@@ -12,14 +14,18 @@
 	import type { PageData } from './$types';
 	import { getCollection } from '$lib/db/funktion';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const id = data.id;
-	let pathExists: boolean = false;
-	let watched: boolean = false;
-	let modal = false;
-	let form: HTMLFormElement;
-	let movieData: typeof schema.movies.$inferSelect;
+	let pathExists: boolean = $state(false);
+	let watched: boolean = $state(false);
+	let modal = $state(false);
+	let form: HTMLFormElement | undefined = $state();
+	let movieData: typeof schema.movies.$inferSelect | undefined = $state();
 	const loadMovieData = async () => {
 		const movie = await db.select().from(schema.movies).where(eq(schema.movies.id, id));
 		if (movie.length > 0) {
@@ -46,6 +52,7 @@
 
 	// Öffne die Datei mit dem Standardplayer
 	async function openExternalPlayer() {
+		if (!movieData) return;
 		try {
 			// Öffne die Datei mit dem Standardplayer
 			await open(movieData.path);
@@ -60,13 +67,13 @@
 	<div class="gap-1">
 		<button
 			class="btn btn-sm md:btn-md"
-			on:click={() =>
+			onclick={() =>
 				window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
 			>{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}</button
 		>
 	</div>
 	<div class="gap-1">
-		<button class="btn btn-sm md:btn-md" on:click={openExternalPlayer} disabled={!pathExists}
+		<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!pathExists}
 			>Starte Externen Player</button
 		>
 		<div
@@ -75,18 +82,18 @@
 		>
 			<button
 				class="btn btn-sm hover:btn-error md:btn-md"
-				on:dblclick={removeElementById}
+				ondblclick={removeElementById}
 				disabled={!movieData}>Löschen</button
 			>
 		</div>
 		<button
 			class="btn btn-sm md:btn-md"
 			disabled={!movieData}
-			on:click={() => {
+			onclick={() => {
 				modal = true;
 			}}>Bearbeiten</button
 		>
-		<button class="btn btn-sm md:btn-md" on:click={toggleWatchedStatus} disabled={!movieData}>
+		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
 			{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 		</button>
 	</div>
@@ -141,7 +148,7 @@
 					{#each movieData.tmdb.credits.cast as cast}
 						<button
 							class="carousel-item flex flex-col items-center"
-							on:click={() => open('https://www.themoviedb.org/person/' + cast.id)}
+							onclick={() => open('https://www.themoviedb.org/person/' + cast.id)}
 						>
 							{#await image(cast.profile_path, 'actors') then { src, height, width }}
 								<img
@@ -194,7 +201,8 @@
 
 		<form
 			bind:this={form}
-			on:submit|preventDefault={async () => {
+			onsubmit={preventDefault(async () => {
+				if (!form || !form.newID || !movieData) return;
 				const newID = parseInt(form.newID.value, 10);
 				try {
 					if (id !== -1 && newID && newID !== movieData.id) {
@@ -212,7 +220,7 @@
 				} catch {
 					alert('Diese TMDB ID ist falsch');
 				}
-			}}
+			})}
 			class="flex gap-2"
 		>
 			<input
