@@ -50,22 +50,24 @@ export async function migrate() {
 			});
 
 		if (hash && hasBeenRun(hash) === undefined) {
-			// Lese die Datei als Uint8Array und konvertiere sie in einen ArrayBuffer
-			const fileData: Uint8Array = await readFile(`${resourcePath}/migrations/${migration.name}`);
-			const sql = arrayBufferToString(fileData.buffer);
+			try {
+				// Lese die Datei als Uint8Array
+				const fileData: Uint8Array = await readFile(`${resourcePath}/migrations/${migration.name}`);
 
-			await sqlite.execute(sql, []).catch((err) => {
-				error(`Failed to execute migration ${hash}: ` + err);
-			});
+				// Konvertiere den ArrayBuffer zu einem String
+				const sql = arrayBufferToString(fileData.buffer as ArrayBuffer);
 
-			await sqlite
-				.execute(/*sql*/ `INSERT INTO "__drizzle_migrations" (hash, created_at) VALUES ($1, $2)`, [
-					hash,
-					Date.now()
-				])
-				.catch((err) => {
-					error(`Failed to insert migration ${hash}: ` + err);
-				});
+				// Führe das SQL-Skript aus
+				await sqlite.execute(sql, []);
+
+				// Speichere die Migration in der Tabelle
+				await sqlite.execute(
+					/*sql*/ `INSERT INTO "__drizzle_migrations" (hash, created_at) VALUES ($1, $2)`,
+					[hash, Date.now()]
+				);
+			} catch (err) {
+				error(`Failed to process migration ${hash}: ${err}`);
+			}
 		}
 	}
 
