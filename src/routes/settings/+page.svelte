@@ -6,7 +6,7 @@
 	import { newToast } from '$lib/toast/toast';
 	import { app } from '@tauri-apps/api';
 
-	let settings: typeof schema.settings.$inferSelect = dbSettings;
+	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
 
 	// Automatisch Vorschläge aus navigator.languages generieren
 	const languageSuggestions = Array.from(
@@ -42,7 +42,7 @@
 		<a href="./" class="btn btn-ghost">Zurück</a>
 	</div>
 	<div class="gap-1">
-		<button class="btn btn-primary" on:click={saveSettings}>Speichern</button>
+		<button class="btn btn-primary" onclick={saveSettings}>Speichern</button>
 	</div>
 </nav>
 
@@ -106,7 +106,7 @@
 					class="textarea textarea-bordered h-32 w-full"
 					placeholder="Schlüsselwörter (kommagetrennt)"
 					bind:value={settings.keywords}
-					on:input={handleInput}
+					oninput={handleInput}
 				></textarea>
 			</label>
 		</div>

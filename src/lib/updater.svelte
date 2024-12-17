@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { afterUpdate, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { check, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { debug, error } from '@tauri-apps/plugin-log';
 	import { marked } from 'marked';
 	import '$lib/css/md.css';
 	import { open } from '@tauri-apps/plugin-shell';
-	import { isOnline } from './stores';
+	import { isOnline } from './stores.svelte';
 
-	let update: Update | null = null;
-	let downloadProgress = 0;
-	let downloadStarted = false;
-	let downloadFinished = false;
-	let modalOpen = false;
+	let update: Update | null = $state(null);
+	let downloadProgress = $state(0);
+	let downloadStarted = $state(false);
+	let downloadFinished = $state(false);
+	let modalOpen = $state(false);
 
 	onMount(async () => {
 		if (!$isOnline) return;
@@ -25,7 +25,7 @@
 	});
 
 	// Nachdem der HTML-Inhalt gerendert wurde, werden alle Links abgefangen
-	afterUpdate(() => {
+	$effect(() => {
 		if (update) {
 			// Alle Links im body finden und die Funktion openLink darauf anwenden
 			const links = document.querySelectorAll('.body a');
@@ -86,9 +86,8 @@
 
 <dialog class="modal backdrop-blur-sm" open={modalOpen}>
 	<div class="modal-box mx-4 w-full max-w-xl sm:w-auto sm:max-w-3xl">
-		<button
-			class="btn btn-circle btn-sm absolute right-2 top-2"
-			on:click={() => (modalOpen = false)}>✕</button
+		<button class="btn btn-circle btn-sm absolute right-2 top-2" onclick={() => (modalOpen = false)}
+			>✕</button
 		>
 
 		{#if update !== null && update.body}
@@ -116,11 +115,11 @@
 
 			<div class="mt-6 flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 				{#if update && !downloadStarted}
-					<button class="btn btn-primary" disabled={!$isOnline} on:click={download}
+					<button class="btn btn-primary" disabled={!$isOnline} onclick={download}
 						>Update herunterladen</button
 					>
 				{:else if update && downloadFinished}
-					<button class="btn btn-secondary" on:click={() => (modalOpen = false)}>Schließen</button>
+					<button class="btn btn-secondary" onclick={() => (modalOpen = false)}>Schließen</button>
 				{/if}
 			</div>
 		{/if}

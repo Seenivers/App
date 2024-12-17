@@ -11,7 +11,7 @@ import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
-import { isOnline, status } from '$lib/stores';
+import { isOnline, status } from '$lib/stores.svelte';
 import { get } from 'svelte/store';
 import { open } from '@tauri-apps/plugin-dialog';
 import { join, videoDir } from '@tauri-apps/api/path';
@@ -91,10 +91,8 @@ export async function addNewFiles(files: string[]) {
  * @returns Ein Array von Dateipfaden, die einzigartig sind und noch nicht im Status enthalten sind.
  */
 async function filterNewFiles(files: string[]) {
-	// Hole den aktuellen Wert des writable Store
-	const currentStatus = get(status);
 	// Erstelle ein Set für bereits existierende Pfade, um die Suche effizienter zu machen
-	const existingPaths = new Set(currentStatus.map((item) => item.options.path));
+	const existingPaths = new Set(status.map((item) => item.options.path));
 
 	// Filtere die Dateien parallel
 	const newFiles = await Promise.all(
@@ -144,7 +142,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 	});
 
 	// Aktualisiere den Status nur einmal
-	status.update((currentStatus) => [...currentStatus, ...tempStatus]);
+	status.push(...tempStatus);
 }
 //#endregion
 
@@ -161,33 +159,44 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 
 	updateMovieStatus(i, 'searching');
 
-	const { query, primaryReleaseYear } = get(status)[i].options;
+	const { query, primaryReleaseYear } = status[i].options;
 
 	try {
 		// TMDB-Suche durchführen
 		const result = (await tmdb.searchMovies(query, primaryReleaseYear)).results;
 
 		// Update status based on results
-		status.update((currentStatus) => {
-			if (result.length === 1) {
-				currentStatus[i].results = result;
-				currentStatus[i].options.id = result[0].id;
 
-				// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
-				if (!modal) {
-					currentStatus[i].state = 'wait';
-				} else {
-					currentStatus[i].state = 'foundOne';
+		if (result.length === 1) {
+			status[i] = {
+				...status[i],
+				results: result,
+				options: {
+					...status[i].options,
+					id: result[0].id
 				}
-			} else if (result.length > 1) {
-				currentStatus[i].results = result;
-				currentStatus[i].state = 'foundMultiple';
+			};
+
+			// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
+			if (!modal) {
+				status[i].state = 'wait';
 			} else {
-				currentStatus[i].results = [];
-				currentStatus[i].state = 'notFound';
+				status[i].state = 'foundOne';
 			}
-			return [...currentStatus]; // Rückgabe einer neuen Kopie
-		});
+		} else if (result.length > 1) {
+			status[i] = {
+				...status[i],
+				results: result,
+				state: 'foundMultiple'
+			};
+		} else {
+			status[i] = {
+				...status[i],
+				results: [],
+				state: 'notFound'
+			};
+		}
+		return;
 	} catch (err) {
 		// Fehlerbehandlung
 		if (err instanceof Error) {
@@ -195,11 +204,12 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 		} else {
 			error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
 		}
-		status.update((currentStatus) => {
-			currentStatus[i].results = [];
-			currentStatus[i].state = 'notFound';
-			return [...currentStatus]; // Rückgabe einer neuen Kopie
-		});
+
+		status[i] = {
+			...status[i],
+			results: [],
+			state: 'notFound'
+		};
 	}
 }
 //#endregion
@@ -233,10 +243,7 @@ function checkOnlineStatus() {
 }
 
 function updateMovieStatus(index: number, newState: MovieSearchState) {
-	status.update((currentStatus) => {
-		currentStatus[index].state = newState;
-		return [...currentStatus];
-	});
+	status[index].state = newState;
 }
 
 async function processDownloadQueue() {
@@ -262,7 +269,7 @@ async function processDownloadQueue() {
 			// Film zur Datenbank hinzufügen
 			await addMovie({
 				id: nextMovie.id,
-				path: get(status)[nextMovie.index].options.path,
+				path: status[nextMovie.index].options.path,
 				tmdb: result,
 				updated: new Date()
 			});
