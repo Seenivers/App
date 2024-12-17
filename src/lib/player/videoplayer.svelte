@@ -17,8 +17,8 @@
 	let currentTime = $state(0);
 	let paused = $state(true);
 	let muted = $state(false);
-	let player: HTMLDivElement | undefined = $state();
-	let videoElement: HTMLVideoElement | undefined = $state();
+	let player: HTMLDivElement;
+	let videoElement: HTMLVideoElement;
 	let steuerElemente: boolean = $state(false);
 	let timeoutHandle: ReturnType<typeof setTimeout> | null = $state(null);
 

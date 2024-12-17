@@ -22,7 +22,7 @@
 	let pathExists: boolean = $state(false);
 	let watched: boolean = $state(false);
 	let modal = $state(false);
-	let form: HTMLFormElement | undefined = $state();
+	let form: HTMLFormElement;
 	let movieData: typeof schema.movies.$inferSelect | undefined = $state();
 	const loadMovieData = async () => {
 		const movie = await db.select().from(schema.movies).where(eq(schema.movies.id, id));
