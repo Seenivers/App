@@ -216,7 +216,7 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 
 //#region add Movie
 let downloadingMovie: boolean = false; // Flag, um den laufenden Download zu überwachen
-let downloadQueue: Array<{ id: number; index: number }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
+const downloadQueue: Array<{ id: number; index: number }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
 
 export async function addNewMovie(id: number, index: number) {
 	if (!id) {
