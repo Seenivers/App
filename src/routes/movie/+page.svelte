@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { exists } from '@tauri-apps/plugin-fs';
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie } from '$lib/tmdb';
@@ -21,22 +20,10 @@
 	let { data }: Props = $props();
 
 	const id = data.id;
-	let pathExists: boolean = $state(false);
-	let watched: boolean = $state(false);
+	let watched: boolean = $state(data.result.watched ?? false);
 	let modal = $state(false);
 	let form: HTMLFormElement;
-	let movieData: typeof schema.movies.$inferSelect | undefined = $state();
-	const loadMovieData = async () => {
-		const movie = await db.select().from(schema.movies).where(eq(schema.movies.id, id));
-		if (movie.length > 0) {
-			movieData = movie[0];
-			pathExists = await exists(movieData.path);
-			watched = movieData.watched;
-		}
-	};
-
-	// Lädt die Datei beim Laden des Skripts
-	loadMovieData();
+	let movieData: typeof schema.movies.$inferSelect = $state(data.result);
 
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
@@ -64,25 +51,18 @@
 
 <Navbar back={true}>
 	{#snippet right()}
-		<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!pathExists}
+		<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!data.pathExists}
 			>Starte Externen Player</button
 		>
-		<div
-			class={pathExists ? 'tooltip tooltip-bottom' : ''}
-			data-tip={pathExists ? 'Doppel klicken zum löschen' : ''}
-		>
+		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 			<button
 				class="btn btn-sm hover:btn-error md:btn-md"
 				ondblclick={removeElementById}
 				disabled={!movieData}>Löschen</button
 			>
 		</div>
-		<button
-			class="btn btn-sm md:btn-md"
-			disabled={!movieData}
-			onclick={() => {
-				modal = true;
-			}}>Bearbeiten</button
+		<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}
+			>Bearbeiten</button
 		>
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
 			{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
@@ -101,7 +81,7 @@
 				</h2>
 			{/if}
 
-			{#if pathExists}
+			{#if data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					<Videoplayer src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
 				{/await}
