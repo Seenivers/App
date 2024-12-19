@@ -9,5 +9,8 @@
 	"sonarlint.connectedMode.project": {
 		"connectionId": "seenivers",
 		"projectKey": "Seenivers_App"
-	}
+	},
+	"[svelte]": {
+     "editor.defaultFormatter": "svelte.svelte-vscode"
+   }
 }
