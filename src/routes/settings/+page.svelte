@@ -37,10 +37,7 @@
 	}
 </script>
 
-<Navbar>
-	{#snippet left()}
-		<a href="./" class="btn btn-ghost">Zurück</a>
-	{/snippet}
+<Navbar back={true}>
 	{#snippet right()}
 		<button class="btn btn-primary" onclick={saveSettings}>Speichern</button>
 	{/snippet}

@@ -14,17 +14,7 @@
 	let isGridView = $state(false); // Startwert für das Layout
 </script>
 
-<Navbar>
-	{#snippet left()}
-		<button
-			class="btn btn-sm md:btn-md"
-			onclick={() =>
-				window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
-		>
-			{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}
-		</button>
-	{/snippet}
-</Navbar>
+<Navbar back={true}></Navbar>
 
 <!-- Main -->
 <main class="z-0 flex flex-col items-center p-3 md:p-5">

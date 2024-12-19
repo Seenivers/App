@@ -137,22 +137,16 @@
 
 <Dnd {load} />
 
-<Navbar>
-	{#snippet left()}
-		<a
-			href="/"
-			class="btn btn-ghost"
-			onclick={() => {
-				if (clearResultsOnLeave) {
-					status.length = 0;
-					filter = null;
-				}
-			}}
-		>
-			Zurück zur Startseite
-		</a>
-	{/snippet}
-</Navbar>
+<Navbar
+	back={true}
+	onclick={() => {
+		window.history.length > 1 ? window.history.back() : (window.location.href = '/');
+		if (clearResultsOnLeave) {
+			status.length = 0;
+			filter = null;
+		}
+	}}
+></Navbar>
 
 <main class="z-0 flex flex-col items-center p-5">
 	{#if !$isOnline}

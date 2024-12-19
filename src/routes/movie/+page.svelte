@@ -61,15 +61,7 @@
 	}
 </script>
 
-<Navbar>
-	{#snippet left()}
-		<button
-			class="btn btn-sm md:btn-md"
-			onclick={() =>
-				window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
-			>{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}</button
-		>
-	{/snippet}
+<Navbar back={true}>
 	{#snippet right()}
 		<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!pathExists}
 			>Starte Externen Player</button
