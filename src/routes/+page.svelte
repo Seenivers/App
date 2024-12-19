@@ -2,6 +2,7 @@
 	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
 	import { image } from '$lib/image';
+	import Img from '$lib/image/Img.svelte';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { Cardscale } from '$lib/types/add';
 	import Fuse, { type FuseResult } from 'fuse.js';
@@ -329,18 +330,11 @@
 							: 'min-w-[16rem] max-w-[24rem]'}"
 				>
 					<figure class="relative px-2 pt-2">
-						{#await image(movie.tmdb.poster_path, 'posters', true) then { src, width, height }}
-							<img
-								{src}
-								{width}
-								{height}
-								class="rounded-xl"
-								alt="Poster von {movie.tmdb.title}"
-								draggable="false"
-								decoding="async"
-								loading="lazy"
-							/>
-						{/await}
+						<Img
+							params={[movie.tmdb.poster_path, 'posters', true]}
+							alt="Poster von {movie.tmdb.title}"
+							class="rounded-xl"
+						/>
 						{#if movie.watched}
 							<div class="badge badge-outline absolute left-3 top-3 bg-base-300">Angesehen</div>
 						{/if}

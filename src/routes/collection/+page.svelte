@@ -3,6 +3,7 @@
 	import { getCollection, settings } from '$lib/db/funktion';
 	import { image } from '$lib/image';
 	import Navbar from '$lib/Navbar.svelte';
+	import Img from '$lib/image/Img.svelte';
 
 	interface Props {
 		data: PageData;
@@ -28,16 +29,11 @@
 					>
 						<div class="hero-overlay rounded-box bg-opacity-90"></div>
 						<div class="hero-content flex-col gap-4 lg:flex-row">
-							{#await image(collection.poster_path, 'posters', true) then { src, height, width }}
-								<img
-									alt="Poster"
-									{src}
-									{height}
-									{width}
-									loading="lazy"
-									class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
-								/>
-							{/await}
+							<Img
+								alt="Poster"
+								params={[collection.poster_path, 'backdrops', true]}
+								class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
+							/>
 							<div class="text-center text-neutral-content lg:text-left">
 								<h1 class="text-4xl font-bold md:text-5xl">{collection.name}</h1>
 								<p class="py-6 text-lg md:text-2xl">{collection.overview}</p>
@@ -77,16 +73,11 @@
 								class:hover:scale-105={isGridView}
 								class:md:flex-row={!isGridView}
 							>
-								{#await image(movie.poster_path, 'posters', true) then { src, height, width }}
-									<img
-										alt="Poster"
-										{src}
-										{height}
-										{width}
-										loading="lazy"
-										class="aspect-[2/3] w-full max-w-[15rem] rounded-lg object-cover shadow-2xl"
-									/>
-								{/await}
+								<Img
+									alt="Poster"
+									params={[movie.poster_path, 'posters', true]}
+									class="aspect-[2/3] w-full max-w-[15rem] rounded-lg object-cover shadow-2xl"
+								/>
 								<div
 									class:text-center={isGridView}
 									class:flex={!isGridView}

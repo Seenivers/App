@@ -16,6 +16,7 @@
 	import type { MovieSearchState } from '$lib/types/add';
 	import { warn } from '@tauri-apps/plugin-log';
 	import Navbar from '$lib/Navbar.svelte';
+	import Img from '$lib/image/Img.svelte';
 
 	interface Props {
 		data: PageData;
@@ -306,8 +307,8 @@
 								}
 							}}
 						>
-							<img
-								src={result.poster_path ? imageURL + result.poster_path : placeholderURL}
+							<Img
+								params={[result.poster_path, null, false]}
 								alt="Poster"
 								class="h-72 rounded-lg"
 							/>

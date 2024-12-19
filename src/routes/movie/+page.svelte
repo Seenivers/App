@@ -12,6 +12,7 @@
 	import type { PageData } from './$types';
 	import { getCollection } from '$lib/db/funktion';
 	import Navbar from '$lib/Navbar.svelte';
+	import Img from '$lib/image/Img.svelte';
 
 	interface Props {
 		data: PageData;
@@ -140,16 +141,11 @@
 							class="carousel-item flex flex-col items-center"
 							onclick={() => open('https://www.themoviedb.org/person/' + cast.id)}
 						>
-							{#await image(cast.profile_path, 'actors') then { src, height, width }}
-								<img
-									{src}
-									{height}
-									{width}
-									alt={cast.name}
-									loading="lazy"
-									class="max-w-40 rounded-box sm:max-w-60"
-								/>
-							{/await}
+							<Img
+								params={[cast.profile_path, 'actors', false]}
+								alt={cast.name}
+								class="max-w-40 rounded-box sm:max-w-60"
+							/>
 							<p class="text-center text-lg">{cast.name}</p>
 							<p class="text-base italic">{cast.character}</p>
 						</button>
