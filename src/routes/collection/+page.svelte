@@ -49,10 +49,6 @@
 			{/await}
 
 			<div class="mt-6 w-full">
-				<div class="flex items-center justify-between">
-					<h2 class="text-3xl font-bold md:text-4xl">Filme</h2>
-				</div>
-
 				<!-- Grid-Ansicht / Listenansicht -->
 				<div
 					class="mt-4"
