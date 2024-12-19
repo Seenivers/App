@@ -9,7 +9,7 @@ import {
 import { castImages, extensions } from '$lib';
 import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
-import { image } from '$lib/image';
+import { image } from '$lib/image/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
 import { isOnline, status } from '$lib/stores.svelte';
 import { get } from 'svelte/store';

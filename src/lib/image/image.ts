@@ -4,7 +4,7 @@ import { BaseDirectory, create, exists, mkdir, remove } from '@tauri-apps/plugin
 import { appDataDir, join } from '@tauri-apps/api/path';
 import { error } from '@tauri-apps/plugin-log';
 import { fetch } from '@tauri-apps/plugin-http';
-import { isOnline } from './stores.svelte';
+import { isOnline } from '../stores.svelte';
 import { get } from 'svelte/store';
 
 /**

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
-	import { image } from '$lib/image';
+	import { image } from '$lib/image/image';
 	import Img from '$lib/image/Img.svelte';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { Cardscale } from '$lib/types/add';

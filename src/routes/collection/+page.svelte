@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { getCollection, settings } from '$lib/db/funktion';
-	import { image } from '$lib/image';
+	import { image } from '$lib/image/image';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 

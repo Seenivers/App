@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { placeholderURL } from '$lib';
-	import { image } from '$lib/image';
+	import { image } from '$lib/image/image';
 
 	// Eigenschaften der Komponente
 	interface ImageProps {

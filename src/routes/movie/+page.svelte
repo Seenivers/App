@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { exists } from '@tauri-apps/plugin-fs';
-	import { image } from '$lib/image';
+	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie } from '$lib/tmdb';
 	import { db } from '$lib/db/database';
