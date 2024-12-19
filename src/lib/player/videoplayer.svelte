@@ -36,7 +36,7 @@
 		// Setzt einen neuen Timer, der nach 3 Sekunden die Steuerungselemente deaktiviert
 		timeoutHandle = setTimeout(() => {
 			steuerElemente = paused;
-		}, 1000);
+		}, 2000);
 	}
 
 	async function save() {
@@ -63,7 +63,9 @@
 	}
 
 	onDestroy(async () => {
-		await save();
+		paused = true;
+		// await save(); // da paused schon save() triggert
+		muted = true;
 	});
 </script>
 
@@ -97,10 +99,7 @@
 	>
 		The video tag does not support from you device.
 	</video>
-	<div
-		class="absolute top-0 -z-40 h-full w-full transition-opacity duration-300 ease-in-out"
-		class:opacity-0={!steuerElemente}
-	>
+	<div class="absolute top-0 -z-40 h-full w-full" class:hidden={!steuerElemente}>
 		<div class="flex h-full w-full">
 			<!-- ZURÜCK -->
 			<div
