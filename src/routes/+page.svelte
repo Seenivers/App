@@ -2,6 +2,7 @@
 	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
 	import { image } from '$lib/image';
+	import Navbar from '$lib/Navbar.svelte';
 	import type { Cardscale } from '$lib/types/add';
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onDestroy, onMount } from 'svelte';
@@ -217,15 +218,14 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 
-<!-- Navbar -->
-<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
-	<div class="gap-1">
+<Navbar>
+	{#snippet left()}
 		<a href="./add" class="btn btn-ghost">Hinzufügen</a>
-	</div>
-	<div class="gap-1">
+	{/snippet}
+	{#snippet right()}
 		<a href="./settings" class="btn btn-ghost">Settings</a>
-	</div>
-</nav>
+	{/snippet}
+</Navbar>
 
 <main class="z-0 flex-grow flex-col p-5">
 	{#if matchedMovies.length >= 1}

@@ -5,6 +5,7 @@
 	import { settings as dbSettings } from '$lib/db/funktion';
 	import { newToast } from '$lib/toast/toast';
 	import { app } from '@tauri-apps/api';
+	import Navbar from '$lib/Navbar.svelte';
 
 	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
 
@@ -36,15 +37,14 @@
 	}
 </script>
 
-<!-- Navbar -->
-<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
-	<div class="gap-1">
+<Navbar>
+	{#snippet left()}
 		<a href="./" class="btn btn-ghost">Zurück</a>
-	</div>
-	<div class="gap-1">
+	{/snippet}
+	{#snippet right()}
 		<button class="btn btn-primary" onclick={saveSettings}>Speichern</button>
-	</div>
-</nav>
+	{/snippet}
+</Navbar>
 
 <main class="container z-0 mx-auto max-w-screen-md flex-grow flex-col px-4 py-6">
 	<div class="card bg-base-100 p-6 shadow-lg md:p-8">

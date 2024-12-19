@@ -11,6 +11,7 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
 	import { getCollection } from '$lib/db/funktion';
+	import Navbar from '$lib/Navbar.svelte';
 
 	interface Props {
 		data: PageData;
@@ -60,17 +61,16 @@
 	}
 </script>
 
-<!-- Navbar -->
-<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
-	<div class="gap-1">
+<Navbar>
+	{#snippet left()}
 		<button
 			class="btn btn-sm md:btn-md"
 			onclick={() =>
 				window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
 			>{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}</button
 		>
-	</div>
-	<div class="gap-1">
+	{/snippet}
+	{#snippet right()}
 		<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!pathExists}
 			>Starte Externen Player</button
 		>
@@ -94,8 +94,8 @@
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
 			{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 		</button>
-	</div>
-</nav>
+	{/snippet}
+</Navbar>
 
 <!-- Main -->
 <main class="z-0">

@@ -15,6 +15,7 @@
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { MovieSearchState } from '$lib/types/add';
 	import { warn } from '@tauri-apps/plugin-log';
+	import Navbar from '$lib/Navbar.svelte';
 
 	interface Props {
 		data: PageData;
@@ -136,9 +137,8 @@
 
 <Dnd {load} />
 
-<!-- Navbar -->
-<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
-	<div class="gap-1">
+<Navbar>
+	{#snippet left()}
 		<a
 			href="/"
 			class="btn btn-ghost"
@@ -151,11 +151,8 @@
 		>
 			Zurück zur Startseite
 		</a>
-	</div>
-	<div class="gap-1">
-		<!-- Platzhalter -->
-	</div>
-</nav>
+	{/snippet}
+</Navbar>
 
 <main class="z-0 flex flex-col items-center p-5">
 	{#if !$isOnline}

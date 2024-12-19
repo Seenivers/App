@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import { getCollection, settings } from '$lib/db/funktion';
 	import { image } from '$lib/image';
+	import Navbar from '$lib/Navbar.svelte';
 
 	interface Props {
 		data: PageData;
@@ -13,9 +14,8 @@
 	let isGridView = $state(false); // Startwert für das Layout
 </script>
 
-<!-- Navbar -->
-<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
-	<div class="gap-1">
+<Navbar>
+	{#snippet left()}
 		<button
 			class="btn btn-sm md:btn-md"
 			onclick={() =>
@@ -23,11 +23,8 @@
 		>
 			{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}
 		</button>
-	</div>
-	<div class="gap-1">
-		<!-- Platzhalter -->
-	</div>
-</nav>
+	{/snippet}
+</Navbar>
 
 <!-- Main -->
 <main class="z-0 flex flex-col items-center p-3 md:p-5">
