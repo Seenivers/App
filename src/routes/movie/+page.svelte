@@ -90,8 +90,8 @@
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
-			<div class="my-4">
-				{#if movieData.tmdb.belongs_to_collection?.id}
+			{#if movieData.tmdb.belongs_to_collection?.id}
+				<div class="my-4">
 					{#await getCollection(movieData.tmdb.belongs_to_collection.id) then value}
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
 							<div class="hero rounded-box" style="background-image: url({image.src});">
@@ -110,8 +110,8 @@
 							</div>
 						{/await}
 					{/await}
-				{/if}
-			</div>
+				</div>
+			{/if}
 
 			<div class="my-4">
 				<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
@@ -193,8 +193,9 @@
 			<input
 				class="input input-bordered flex-grow"
 				type="number"
-				placeholder={movieData?.id?.toString() || ''}
+				placeholder={movieData?.id?.toString() ?? 'TMDB ID'}
 				name="newID"
+				min="1"
 				required
 			/>
 			<button class="btn" type="submit">Speichern</button>
