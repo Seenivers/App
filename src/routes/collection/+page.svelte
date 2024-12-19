@@ -14,7 +14,14 @@
 	let isGridView = $state(false); // Startwert für das Layout
 </script>
 
-<Navbar back={true} />
+<Navbar back={true}>
+	{#snippet right()}
+		<!-- Toggle für Grid/List-Ansicht -->
+		<button class="btn btn-outline" onclick={() => (isGridView = !isGridView)}>
+			{isGridView ? 'Wechsel zu Listenansicht' : 'Wechsel zu Grid-Ansicht'}
+		</button>
+	{/snippet}
+</Navbar>
 
 <!-- Main -->
 <main class="z-0 flex flex-col items-center p-3 md:p-5">
@@ -44,11 +51,6 @@
 			<div class="mt-6 w-full">
 				<div class="flex items-center justify-between">
 					<h2 class="text-3xl font-bold md:text-4xl">Filme</h2>
-
-					<!-- Toggle für Grid/List-Ansicht -->
-					<button class="btn btn-outline" onclick={() => (isGridView = !isGridView)}>
-						{isGridView ? 'Wechsel zu Listenansicht' : 'Wechsel zu Grid-Ansicht'}
-					</button>
 				</div>
 
 				<!-- Grid-Ansicht / Listenansicht -->
