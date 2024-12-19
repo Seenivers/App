@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { getAllMovies } from '$lib/db/funktion';
 	import { schema } from '$lib/db/schema';
 	import Img from '$lib/image/Img.svelte';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { Cardscale } from '$lib/types/add';
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onDestroy, onMount } from 'svelte';
+	import type { PageData } from './$types';
 
 	// Typ für die Suchparameter
 	type SearchCriteria = {
@@ -21,8 +21,14 @@
 		isWatched: null
 	});
 
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+
 	// Lade die Filme und initialisiere die Fuse-Suche
-	let matchedMovies: (typeof schema.movies.$inferSelect)[] = $state([]);
+	let matchedMovies: (typeof schema.movies.$inferSelect)[] = $state(data.result);
 	let isLoading = $state(false);
 	let CARDSCALE: Cardscale = $state({
 		aktiv: 2,
@@ -41,23 +47,13 @@
 			}
 		]
 	});
-
-	// Funktion zum Laden der Filme
-	async function loadMovies() {
-		matchedMovies = (await getAllMovies()) || [];
-	}
-
 	// Referenzen für das Such-Eingabefeld
 	let searchInput: HTMLInputElement | undefined = $state();
 	let datalistItem: HTMLDataListElement | undefined = $state();
 
 	// Funktion zum Filtern der Filme
 	async function filterMovies() {
-		if (!searchCriteria.title && !searchCriteria.genre && searchCriteria.isWatched === null) {
-			// Zeigt alle Filme an, wenn keine Suchkriterien gesetzt sind
-			await loadMovies();
-			return;
-		}
+		if (!searchCriteria.title && !searchCriteria.genre && searchCriteria.isWatched === null) return;
 
 		// Ansonsten wird gefiltert
 		isLoading = true;
@@ -130,8 +126,6 @@
 
 	// Initiale Daten und Setup
 	onMount(async () => {
-		await loadMovies();
-
 		// Füge das Wheel-Event mit { passive: false } hinzu
 		window.addEventListener('wheel', handleWheel, { passive: false });
 
