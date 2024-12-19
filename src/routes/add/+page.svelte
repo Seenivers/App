@@ -11,7 +11,7 @@
 	import { isOnline, status } from '$lib/stores.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import { clearResultsOnLeave, imageURL, placeholderURL } from '$lib';
+	import { clearResultsOnLeave } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { MovieSearchState } from '$lib/types/add';
 	import { warn } from '@tauri-apps/plugin-log';
