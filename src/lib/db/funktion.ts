@@ -3,7 +3,7 @@ import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 import { db } from '$lib/db/database';
 import { migrate } from '$lib/db/migrate';
-import { updateCollections, updateMovies, updateOldDB } from './update';
+import { updateActors, updateCollections, updateMovies, updateOldDB } from './update';
 
 export let loadedSettings: typeof schema.settings.$inferSelect | undefined;
 
@@ -41,6 +41,7 @@ export const settings = loadedSettings;
 		await updateOldDB();
 		await updateMovies();
 		await updateCollections();
+		await updateActors();
 	}
 })();
 

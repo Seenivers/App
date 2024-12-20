@@ -5,6 +5,7 @@ import {
 	addActor,
 	addCollection,
 	addMovie,
+	getActor,
 	getAllActors,
 	getAllCollections,
 	getAllMovies,
@@ -20,6 +21,7 @@ import {
 	getActor as getActorTmdb
 } from '$lib/tmdb';
 import { schema } from './schema';
+import { castImages } from '$lib';
 
 const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
@@ -106,8 +108,14 @@ export async function updateMovies() {
 					await processCollection(movie.tmdb.belongs_to_collection.id);
 				}
 				if (movie.tmdb.credits.cast) {
-					for (const actor of movie.tmdb.credits.cast) {
-						await processActor(actor.id);
+					// `castImages` bestimmen: 0 bedeutet alle Bilder laden
+					const imagesToLoad =
+						// @ts-expect-error castImages wird später über die Settings verarbeitet
+						castImages === 0
+							? movie.tmdb.credits.cast.length
+							: Math.min(castImages, movie.tmdb.credits.cast.length);
+					for (let i = 0; i < imagesToLoad; i++) {
+						await processActor(movie.tmdb.credits.cast[i].id);
 					}
 				}
 			}
@@ -128,7 +136,7 @@ async function processCollection(collectionId: number) {
 }
 
 async function processActor(actorId: number) {
-	const actor = await getCollection(actorId);
+	const actor = await getActor(actorId);
 	if (!actor) {
 		const result = await getActorTmdb(actorId, settings?.language);
 		if (result) {
@@ -155,9 +163,14 @@ export async function updateCollections() {
 export async function updateActors() {
 	try {
 		const actors = await getAllActors();
+
 		if (actors && actors.length > 0) {
-			for (const actor of actors) {
-				await updateEntity(actor, 'actors');
+			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
+			const imagesToLoad =
+				// @ts-expect-error castImages wird später über die Settings verarbeitet
+				castImages === 0 ? actors.length : Math.min(castImages, actors.length);
+			for (let i = 0; i < imagesToLoad; i++) {
+				await updateEntity(actors[i], 'actors');
 			}
 		}
 	} catch (err) {
