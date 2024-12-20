@@ -19,7 +19,7 @@ let dbInstance: ReturnType<typeof drizzle<typeof schema>> | undefined;
  * Initializes the `dbInstance` once `sqlite` is loaded.
  * @returns The `dbInstance` after ensuring SQLite is loaded.
  */
-export async function getDb() {
+export function getDb() {
 	if (!dbInstance) {
 		// Stelle sicher, dass SQLite geladen ist, bevor die Datenbankinstanz erstellt wird
 		if (!sqlite) {
@@ -68,4 +68,4 @@ function isSelectQuery(sql: string): boolean {
 	return selectRegex.test(sql);
 }
 
-export const db = await getDb();
+export const db = getDb();
