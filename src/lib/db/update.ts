@@ -67,33 +67,38 @@ async function updateEntity(
 	try {
 		const currentDate = new Date();
 
-		// Falls "updated" nicht gesetzt ist, aktualisiere es auf den aktuellen Zeitpunkt
+		// Aktualisiere das "updated"-Feld, wenn es fehlt
 		if (!entity.updated) {
 			await db
 				.update(schema[entityType])
 				.set({ updated: currentDate })
 				.where(eq(schema[entityType].id, entity.id));
-		} else {
-			// Überprüfen, ob das "updated"-Datum älter als die definierte Zeitspanne ist
-			const updatedDate = new Date(entity.updated);
-			if (updatedDate.getTime() + WEEKS_IN_MILLIS < currentDate.getTime()) {
-				const result =
-					entityType === 'movies'
-						? await getMovieTmdb(entity.id, settings?.language)
-						: entityType === 'collections'
-							? await getCollectionTmdb(entity.id, settings?.language)
-							: await getActorTmdb(entity.id, settings?.language);
+			return;
+		}
 
-				if (result) {
-					await db
-						.update(schema[entityType])
-						.set({ ...result, updated: currentDate })
-						.where(eq(schema[entityType].id, entity.id));
-				}
-			}
+		// Aktualisiere die Entität, wenn das "updated"-Datum zu alt ist
+		const updatedDate = new Date(entity.updated);
+		if (updatedDate.getTime() + WEEKS_IN_MILLIS >= currentDate.getTime()) {
+			return;
+		}
+
+		// Abrufen der aktuellen Daten basierend auf dem Typ
+		const fetchTmdbData = {
+			movies: getMovieTmdb,
+			collections: getCollectionTmdb,
+			actors: getActorTmdb
+		}[entityType];
+
+		const result = await fetchTmdbData(entity.id, settings?.language);
+
+		if (result) {
+			await db
+				.update(schema[entityType])
+				.set({ ...result, updated: currentDate })
+				.where(eq(schema[entityType].id, entity.id));
 		}
 	} catch (err) {
-		error(`Fehler beim Aktualisieren der ${entityType}: ` + err);
+		error(`Fehler beim Aktualisieren der ${entityType}: ${err}`);
 	}
 }
 
