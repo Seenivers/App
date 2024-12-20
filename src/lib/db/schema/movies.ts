@@ -7,6 +7,5 @@ export const movies = sqliteTable('movies', {
 	watched: int('watched', { mode: 'boolean' }).notNull().default(false),
 	watchTime: int('watchTime').notNull().default(0),
 	tmdb: text('tmdb', { mode: 'json' }).$type<Movie>().notNull(),
-	// @ts-expect-error "0" ist in Unix-Format vorhanden und daher ist es das gleiche wie Type "Date"
-	updated: int('updated', { mode: 'timestamp' }).notNull().default(0)
+	updated: int('updated', { mode: 'timestamp' }).notNull().default(new Date(0))
 });

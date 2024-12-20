@@ -8,6 +8,5 @@ export const collections = sqliteTable('collection', {
 	poster_path: text('poster_path'),
 	backdrop_path: text('backdrop_path'),
 	parts: text('parts', { mode: 'json' }).notNull().$type<Movie[]>(),
-	// @ts-expect-error "0" ist in Unix-Format vorhanden und daher ist es das gleiche wie Type "Date"
-	updated: int('updated', { mode: 'timestamp' }).notNull().default(0)
+	updated: int('updated', { mode: 'timestamp' }).notNull().default(new Date(0))
 });

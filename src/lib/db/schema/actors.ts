@@ -16,6 +16,5 @@ export const actors = sqliteTable('actors', {
 	popularity: int('popularity'),
 	imdb_id: text('imdb_id').notNull(),
 	place_of_birth: int('place_of_birth', { mode: 'timestamp' }),
-	// @ts-expect-error "0" ist in Unix-Format vorhanden und daher ist es das gleiche wie Type "Date"
-	updated: int('updated', { mode: 'timestamp' }).notNull().default(0)
+	updated: int('updated', { mode: 'timestamp' }).notNull().default(new Date(0))
 });
