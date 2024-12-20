@@ -2,8 +2,10 @@ import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 import { db } from './database';
 import {
+	addActor,
 	addCollection,
 	addMovie,
+	getAllActors,
 	getAllCollections,
 	getAllMovies,
 	getCollection,
@@ -12,7 +14,11 @@ import {
 } from './funktion';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types';
-import { getMovie as getMovieTmdb, getCollection as getCollectionTmdb } from '$lib/tmdb';
+import {
+	getMovie as getMovieTmdb,
+	getCollection as getCollectionTmdb,
+	getActor as getActorTmdb
+} from '$lib/tmdb';
 import { schema } from './schema';
 
 const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
@@ -51,8 +57,11 @@ export async function updateOldDB() {
 }
 
 async function updateEntity(
-	entity: typeof schema.movies.$inferSelect | typeof schema.collections.$inferSelect,
-	entityType: 'movies' | 'collections'
+	entity:
+		| typeof schema.movies.$inferSelect
+		| typeof schema.collections.$inferSelect
+		| typeof schema.actors.$inferSelect,
+	entityType: 'movies' | 'collections' | 'actors'
 ) {
 	try {
 		const currentDate = new Date();
@@ -70,7 +79,9 @@ async function updateEntity(
 				const result =
 					entityType === 'movies'
 						? await getMovieTmdb(entity.id, settings?.language)
-						: await getCollectionTmdb(entity.id, settings?.language);
+						: entityType === 'collections'
+							? await getCollectionTmdb(entity.id, settings?.language)
+							: await getActorTmdb(entity.id, settings?.language);
 
 				if (result) {
 					await db
@@ -94,6 +105,11 @@ export async function updateMovies() {
 				if (movie.tmdb.belongs_to_collection) {
 					await processCollection(movie.tmdb.belongs_to_collection.id);
 				}
+				if (movie.tmdb.credits.cast) {
+					for (const actor of movie.tmdb.credits.cast) {
+						await processActor(actor.id);
+					}
+				}
 			}
 		}
 	} catch (err) {
@@ -111,6 +127,16 @@ async function processCollection(collectionId: number) {
 	}
 }
 
+async function processActor(actorId: number) {
+	const actor = await getCollection(actorId);
+	if (!actor) {
+		const result = await getActorTmdb(actorId, settings?.language);
+		if (result) {
+			await addActor({ id: result.id, name: result.name, tmdb: result, updated: new Date() });
+		}
+	}
+}
+
 export async function updateCollections() {
 	try {
 		const collections = await getAllCollections();
@@ -123,5 +149,18 @@ export async function updateCollections() {
 		}
 	} catch (err) {
 		error('Fehler beim Aktualisieren der Collections: ' + err);
+	}
+}
+
+export async function updateActors() {
+	try {
+		const actors = await getAllActors();
+		if (actors && actors.length > 0) {
+			for (const actor of actors) {
+				await updateEntity(actor, 'actors');
+			}
+		}
+	} catch (err) {
+		error('Fehler beim Aktualisieren der Schauspieler: ' + err);
 	}
 }
