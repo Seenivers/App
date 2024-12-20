@@ -22,7 +22,6 @@ export const load = (async ({ url }) => {
 	}
 
 	const module = await import('$lib/db/funktion');
-	const fs = await import('@tauri-apps/plugin-fs');
 
 	const result = await module.getCollection(id);
 	if (!result) {
