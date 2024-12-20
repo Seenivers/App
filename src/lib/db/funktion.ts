@@ -152,3 +152,36 @@ export async function isCollectionIDUnique(id: number): Promise<boolean> {
 	const existingCollection = await getCollection(id);
 	return !existingCollection;
 }
+
+/**
+ * Get Actor from db
+ */
+export async function getActor(id: number) {
+	return await db.query.actors.findFirst({ where: eq(schema.actors.id, id) }).catch((err) => {
+		error('Get Actor: ' + err);
+	});
+}
+
+/**
+ * Add Actor to db
+ */
+export async function addActor(data: typeof schema.actors.$inferInsert) {
+	return await db
+		.insert(schema.actors)
+		.values(data)
+		.catch((err) => {
+			error('Add Actor: ' + err);
+		});
+}
+
+/**
+ * Get all actors from db
+ */
+export async function getAllActors(): Promise<void | (typeof schema.actors.$inferSelect)[]> {
+	return await db
+		.select()
+		.from(schema.actors)
+		.catch((err) => {
+			error('Get All Actors: ' + err);
+		});
+}
