@@ -1,10 +1,12 @@
+import type { Gender } from './movie';
+
 export interface Actor {
 	adult: boolean;
 	also_known_as: string[];
 	biography: string;
 	birthday: Date | null;
-	deathday: null;
-	gender: number;
+	deathday: Date | null;
+	gender: Gender;
 	homepage: null | string;
 	id: number;
 	imdb_id: string;
@@ -68,8 +70,8 @@ interface Cast {
 interface ExternalIDS {
 	freebase_mid: null | string;
 	freebase_id: null | string;
-	imdb_id: string;
-	tvrage_id: number | null;
+	imdb_id: null | string;
+	tvrage_id: null | number;
 	wikidata_id: null | string;
 	facebook_id: null | string;
 	instagram_id: null | string;
