@@ -5,7 +5,7 @@
 	import '../app.css';
 	import { networkStatus } from '$lib/networkStatus';
 	import { db } from '$lib/db/database';
-	import { settings } from '$lib/db/schema';
+	import { settings } from '$lib/db/funktion';
 	import { attachConsole, attachLogger, trace } from '@tauri-apps/plugin-log';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/log';
