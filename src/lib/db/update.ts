@@ -10,7 +10,6 @@ import {
 	getAllCollections,
 	getAllMovies,
 	getCollection,
-	loadedSettings,
 	settings
 } from './funktion';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
@@ -37,7 +36,7 @@ export async function updateOldDB() {
 
 			await Promise.all(
 				data.movies.map(async (movie) => {
-					const result = await getMovieTmdb(movie.id, loadedSettings?.language);
+					const result = await getMovieTmdb(movie.id, settings.language);
 
 					if (!result) {
 						throw new Error(`Movie with ID ${movie.id} could not be fetched.`);
