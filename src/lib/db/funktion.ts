@@ -5,7 +5,7 @@ import { db } from '$lib/db/database';
 import { migrate } from '$lib/db/migrate';
 import { updateActors, updateCollections, updateMovies, updateOldDB } from './update';
 
-export let loadedSettings: typeof schema.settings.$inferSelect | undefined;
+let loadedSettings: typeof schema.settings.$inferSelect | undefined;
 
 async function createDefaultSettings() {
 	const language = navigator.language.substring(0, 2);
