@@ -53,7 +53,10 @@
 
 	// Funktion zum Filtern der Filme
 	async function filterMovies() {
-		if (!searchCriteria.title && !searchCriteria.genre && searchCriteria.isWatched === null) return;
+		if (!searchCriteria.title && !searchCriteria.genre && searchCriteria.isWatched === null) {
+			matchedMovies = data.result;
+			return;
+		}
 
 		// Ansonsten wird gefiltert
 		isLoading = true;
@@ -71,7 +74,7 @@
 					);
 
 			matchedMovies = (
-				results.length ? results.map((result) => result.item) : matchedMovies
+				results.length >= 1 ? results.map((result) => result.item) : data.result
 			).filter((movie) => {
 				// Typ-Deklaration für Genre hinzufügen
 				const genreMatches =
@@ -222,7 +225,7 @@
 </Navbar>
 
 <main class="z-0 flex-grow flex-col p-5">
-	{#if matchedMovies.length >= 1}
+	{#if data.result.length >= 1}
 		<!-- Suche -->
 		<div class="join flex flex-wrap justify-center" onchange={filterMovies}>
 			<div>
@@ -240,7 +243,10 @@
 					bind:this={datalistItem}
 				>
 					{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
-						<option class="cursor-pointer px-2 hover:bg-base-content/20" value={title}>
+						<option
+							class="w-full min-w-fit cursor-pointer px-2 hover:bg-base-content/20"
+							value={title}
+						>
 							{title}
 						</option>
 					{/each}
@@ -271,6 +277,9 @@
 					filterMovies();
 				}}
 				class="btn join-item"
+				disabled={!searchCriteria.title &&
+					!searchCriteria.genre &&
+					searchCriteria.isWatched === null}
 			>
 				Filter zurücksetzen
 			</button>
@@ -304,48 +313,50 @@
 				{/each}
 			</div>
 		</div>
-	{/if}
 
-	{#if isLoading}
-		<p>Lädt...</p>
-	{:else if matchedMovies.length >= 1}
-		<!-- Filme -->
-		<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
-			{#each matchedMovies as movie}
-				<a
-					href={'./movie?id=' + movie.id.toString()}
-					draggable="false"
-					class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
+		{#if isLoading}
+			<p>Lädt...</p>
+		{:else if matchedMovies.length >= 1}
+			<!-- Filme -->
+			<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
+				{#each matchedMovies as movie}
+					<a
+						href={'./movie?id=' + movie.id.toString()}
+						draggable="false"
+						class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
 				{CARDSCALE.aktiv === 1
-						? 'min-w-[8rem] max-w-[12rem]'
-						: CARDSCALE.aktiv === 2
-							? 'min-w-[12rem] max-w-[18rem]'
-							: 'min-w-[16rem] max-w-[24rem]'}"
-				>
-					<figure class="relative px-2 pt-2">
-						<Img
-							params={[movie.tmdb.poster_path, 'posters', true]}
-							alt="Poster von {movie.tmdb.title}"
-							class="rounded-xl"
-						/>
-						{#if movie.watched}
-							<div class="badge badge-outline absolute left-3 top-3 bg-base-300">Angesehen</div>
-						{/if}
-					</figure>
-					<div class="card-body items-center py-2 text-center">
-						<p
-							class="card-title {CARDSCALE.aktiv === 1
-								? 'text-base'
-								: CARDSCALE.aktiv === 2
-									? 'text-lg'
-									: 'text-2xl'}"
-						>
-							{movie.tmdb.title}
-						</p>
-					</div>
-				</a>
-			{/each}
-		</div>
+							? 'min-w-[8rem] max-w-[12rem]'
+							: CARDSCALE.aktiv === 2
+								? 'min-w-[12rem] max-w-[18rem]'
+								: 'min-w-[16rem] max-w-[24rem]'}"
+					>
+						<figure class="relative px-2 pt-2">
+							<Img
+								params={[movie.tmdb.poster_path, 'posters', true]}
+								alt="Poster von {movie.tmdb.title}"
+								class="rounded-xl"
+							/>
+							{#if movie.watched}
+								<div class="badge badge-outline absolute left-3 top-3 bg-base-300">Angesehen</div>
+							{/if}
+						</figure>
+						<div class="card-body items-center py-2 text-center">
+							<p
+								class="card-title {CARDSCALE.aktiv === 1
+									? 'text-base'
+									: CARDSCALE.aktiv === 2
+										? 'text-lg'
+										: 'text-2xl'}"
+							>
+								{movie.tmdb.title}
+							</p>
+						</div>
+					</a>
+				{/each}
+			</div>
+		{:else}
+			<p>Kein Film entspricht diesen Kriterien</p>
+		{/if}
 	{:else}
 		<p>Du hast noch keine Filme hinzugefügt</p>
 	{/if}
