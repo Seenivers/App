@@ -82,7 +82,7 @@
 			// Falls der Eintrag noch im Status vorhanden ist, starte die Suche
 			if (entryIndex !== -1) {
 				// Suche nach dem Film
-				if (status[entryIndex].options.id) {
+				if (!status[entryIndex].options.id) {
 					await searchMovieStatus(entryIndex, modal);
 				}
 
@@ -133,8 +133,6 @@
 		if (filmState !== 'downloading' && filmState !== 'foundOne') {
 			modalID = index;
 			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
-		} else {
-			error('Modal kann nicht geöffnet werden, da der Status ungültig ist: ' + filmState);
 		}
 	}
 </script>
