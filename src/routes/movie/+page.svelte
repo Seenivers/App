@@ -51,22 +51,30 @@
 
 <Navbar back={true}>
 	{#snippet right()}
-		<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!data.pathExists}
-			>Starte Externen Player</button
-		>
-		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
-			<button
-				class="btn btn-sm hover:btn-error md:btn-md"
-				ondblclick={removeElementById}
-				disabled={!movieData}>Löschen</button
+		{#if data.result.path}
+			<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!data.pathExists}
+				>Starte Externen Player</button
 			>
-		</div>
-		<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}
-			>Bearbeiten</button
+			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+				<button
+					class="btn btn-sm hover:btn-error md:btn-md"
+					ondblclick={removeElementById}
+					disabled={!movieData}>Löschen</button
+				>
+			</div>
+			<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}
+				>Bearbeiten</button
+			>
+			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
+				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
+			</button>
+		{/if}
+		<a
+			href="https://www.themoviedb.org/movie/{id}"
+			class="btn btn-sm md:btn-md"
+			target="_blank"
+			rel="noopener noreferrer">Bei TMDB öffnen</a
 		>
-		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
-			{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
-		</button>
 	{/snippet}
 </Navbar>
 
@@ -85,7 +93,7 @@
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					<Videoplayer src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
 				{/await}
-			{:else}
+			{:else if movieData.path}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
