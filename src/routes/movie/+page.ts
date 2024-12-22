@@ -2,18 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
-
-function parseId(url: URL): number {
-	const idParam = url.searchParams.get('id');
-	if (!idParam) {
-		error(400, 'ID must be provided');
-	}
-	const parsedId = parseInt(idParam, 10);
-	if (isNaN(parsedId)) {
-		error(400, 'ID must be a valid number');
-	}
-	return parsedId;
-}
+import { parseId } from '$lib/load/loadUtils';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
