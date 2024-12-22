@@ -64,6 +64,7 @@
 					{#each collection.parts as movie}
 						<a
 							href="/movie?id={movie.id}"
+							data-sveltekit-preload-data="tap"
 							class="flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md"
 							class:transform={isGridView}
 							class:transition-transform={isGridView}
