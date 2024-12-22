@@ -178,10 +178,10 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 			};
 
 			// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
-			if (!modal) {
-				status[i].state = 'wait';
-			} else {
+			if (modal) {
 				status[i].state = 'foundOne';
+			} else {
+				status[i].state = 'wait';
 			}
 		} else if (result.length > 1) {
 			status[i] = {
