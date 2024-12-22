@@ -117,9 +117,10 @@
 				<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
 				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-base-100 p-3">
 					{#each movieData.tmdb.credits.cast as cast}
-						<button
+						<a
+							href="./actor?id={cast.id}"
 							class="carousel-item flex flex-col items-center"
-							onclick={() => open('https://www.themoviedb.org/person/' + cast.id)}
+							data-sveltekit-preload-data="tap"
 						>
 							<Img
 								params={[cast.profile_path, 'actors', false]}
@@ -128,7 +129,7 @@
 							/>
 							<p class="text-center text-lg">{cast.name}</p>
 							<p class="text-base italic">{cast.character}</p>
-						</button>
+						</a>
 					{/each}
 				</div>
 			</div>
