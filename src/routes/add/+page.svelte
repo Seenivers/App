@@ -14,7 +14,7 @@
 	import { clearResultsOnLeave } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { MovieSearchState } from '$lib/types/add';
-	import { warn } from '@tauri-apps/plugin-log';
+	import { error, warn } from '@tauri-apps/plugin-log';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 
@@ -82,7 +82,9 @@
 			// Falls der Eintrag noch im Status vorhanden ist, starte die Suche
 			if (entryIndex !== -1) {
 				// Suche nach dem Film
-				await searchMovieStatus(entryIndex, modal);
+				if (status[entryIndex].options.id) {
+					await searchMovieStatus(entryIndex, modal);
+				}
 
 				// Wenn der Film gefunden wurde, füge ihn dem Status hinzu
 				if (status[entryIndex].options.id) {
@@ -110,7 +112,7 @@
 		// Überprüfe, ob der Index gültig ist, um Fehler zu vermeiden
 		const movieResults = status[modalID]?.results ?? [];
 		if (movieIndex < 0 || movieIndex >= movieResults.length) {
-			console.error('Ungültiger Film-Index');
+			error('Ungültiger Film-Index');
 			return; // Verhindere die Auswahl eines ungültigen Films
 		}
 
@@ -118,6 +120,7 @@
 
 		// Füge den vom Benutzer ausgewählten Film hinzu
 		status[modalID].options.id = movieResults[movieIndex].id;
+		status[modalID].state = 'wait'; // Setze den Status auf "wait" zurück
 
 		// Lade neue Filme
 		load();
@@ -131,7 +134,7 @@
 			modalID = index;
 			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
 		} else {
-			console.log('Modal kann nicht geöffnet werden, da der Status ungültig ist:', filmState);
+			error('Modal kann nicht geöffnet werden, da der Status ungültig ist: ' + filmState);
 		}
 	}
 </script>
