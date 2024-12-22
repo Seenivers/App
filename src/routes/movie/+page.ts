@@ -23,7 +23,6 @@ export const load = (async ({ url }) => {
 	}
 
 	const module = await import('$lib/db/funktion');
-	const fs = await import('@tauri-apps/plugin-fs');
 
 	let result = await module.getMovie(id);
 	if (!result) {
