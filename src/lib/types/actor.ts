@@ -39,7 +39,7 @@ interface Item {
 	original_value?: string;
 }
 
-interface Cast {
+export interface Cast {
 	adult: boolean;
 	backdrop_path: null | string;
 	genre_ids: number[];
@@ -85,7 +85,7 @@ interface CombinedCredits {
 	crew: Crew[];
 }
 
-interface Crew {
+export interface Crew {
 	adult: boolean;
 	backdrop_path: null | string;
 	genre_ids: number[];
