@@ -1,15 +1,16 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
+import { exists } from '@tauri-apps/plugin-fs';
 
 function parseId(url: URL): number {
 	const idParam = url.searchParams.get('id');
 	if (!idParam) {
-		throw error(400, 'ID must be provided');
+		error(400, 'ID must be provided');
 	}
 	const parsedId = parseInt(idParam, 10);
 	if (isNaN(parsedId)) {
-		throw error(400, 'ID must be a valid number');
+		error(400, 'ID must be a valid number');
 	}
 	return parsedId;
 }
@@ -18,18 +19,40 @@ export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
 
 	if (!browser) {
-		throw error(500, 'This operation is only supported in the browser');
+		error(500, 'This operation is only supported in the browser');
 	}
 
 	const module = await import('$lib/db/funktion');
 	const fs = await import('@tauri-apps/plugin-fs');
 
-	const result = await module.getMovie(id);
+	let result = await module.getMovie(id);
 	if (!result) {
-		throw error(404, 'Movie not found');
+		if (navigator.onLine) {
+			// Daten von TMDB abrufen
+			const tmdb = await import('$lib/tmdb');
+			const fetchedMovie = await tmdb.getMovie(id);
+
+			if (!fetchedMovie) {
+				// Wenn der Film auch online nicht gefunden wurde
+				error(404, 'Movie not found');
+			}
+
+			result = {
+				id,
+				path: '',
+				watched: false,
+				watchTime: 0,
+				tmdb: fetchedMovie,
+				updated: new Date()
+			};
+		} else {
+			// Wenn offline und keine Daten gefunden
+			error(404, 'Movie not found');
+		}
 	}
 
-	const pathExists = await fs.exists(result.path);
+	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
+	const pathExists = result.path ? await exists(result.path) : false;
 
 	// Nur relevante Daten zurückgeben
 	return { id, result, pathExists };
