@@ -1,3 +1,63 @@
+# [0.15.0](https://github.com/Seenivers/App/compare/v0.14.0...v0.15.0) (2024-12-22)
+
+
+### Bug Fixes
+
+* **add-page:** correct movie search logic to trigger only when ID is missing ([11e2b90](https://github.com/Seenivers/App/commit/11e2b90ef507fb94babea0bfcef5c739d0f300f8))
+* **add-page:** correct movie status assignment logic based on user selection ([18de5d8](https://github.com/Seenivers/App/commit/18de5d83a6785a917436a62fdabe29a0416549a4))
+* **add-page:** enhance error logging and validate movie search status before proceeding ([73b8998](https://github.com/Seenivers/App/commit/73b8998f265b317916938d2879aae56284090800))
+* adjust video player controls timeout and update onDestroy behavior ([5f86048](https://github.com/Seenivers/App/commit/5f86048df277b1e3f6e5eecad425aec3ba2bbb2d))
+* change 'status' to const as it is never reassigned ([91f3c1f](https://github.com/Seenivers/App/commit/91f3c1f8c39f83a82f2b7b433d543b4c9317d333))
+* **collection:** ensure browser-only operation and improve error handling for collection loading ([303ab9c](https://github.com/Seenivers/App/commit/303ab9c371cacd9baabe3e02775efbb4ee8ff2bc))
+* **data-fetch:** ensure fetch always makes a request and handles DB content as JSON ([a87bd75](https://github.com/Seenivers/App/commit/a87bd75de67b03f485dfb3bb964b7a95632a3219))
+* **deps:** update dependency @tauri-apps/plugin-sql to ^2.2.0 ([7168364](https://github.com/Seenivers/App/commit/71683649418ed735607e302dc6f0f166f2244c59))
+* **deps:** update dependency drizzle-orm to ^0.38.1 ([3d21ce6](https://github.com/Seenivers/App/commit/3d21ce620e2877c1783a4927b59d2508ecf6c8a1))
+* **download:** ensure online status is checked before processing download queue ([4ab85e0](https://github.com/Seenivers/App/commit/4ab85e02cf565f4eea02ad5de595d99bdbf3599d))
+* **error page:** replace link with button for improved navigation handling ([792bd77](https://github.com/Seenivers/App/commit/792bd77b510685a6fedde9cd4e262db48cd89ec1))
+* **error page:** update import from '$app/stores' to '$app/state' for correct state management ([e3e719e](https://github.com/Seenivers/App/commit/e3e719e63519990e2f8815feb426c34648f5a0d7))
+* **filter:** adjust movie filtering logic and improve UI feedback for no results ([419ff37](https://github.com/Seenivers/App/commit/419ff37e2c98def838aa798e4e47bd2446fd8bab))
+* **imports:** update settings import path to '$lib/db/funktion' ([8b282f5](https://github.com/Seenivers/App/commit/8b282f5a43cfd96844616734548993eb3e29010f))
+* **migrations:** resolve type error for ArrayBuffer conversion and improve error handling ([d21198b](https://github.com/Seenivers/App/commit/d21198b7113c5677e92e5b994b14f15e9ae90ede))
+* **movie:** improve error handling and fetch movie data from TMDB if not found locally ([6d2429a](https://github.com/Seenivers/App/commit/6d2429a0dd893e9e599f2c913c6f253a2595276f))
+* **movie:** remove unused file system import in movie page load function ([e4b87f9](https://github.com/Seenivers/App/commit/e4b87f9c044ff7ee0ebf46fe4a96369a29635215))
+* **openModal:** add validation to ensure modal is only opened for valid film states ([d149ce0](https://github.com/Seenivers/App/commit/d149ce0fdce43a836b76e60a6dca2defabf89bfd))
+* resolve dependency conflict by upgrading vite version to ^6.0.3 ([5418dc9](https://github.com/Seenivers/App/commit/5418dc9898ac9284ba87862cf1d670592cefc579))
+* **selectMovie:** add validation to prevent invalid movie selection and handle errors ([8e5c073](https://github.com/Seenivers/App/commit/8e5c07371cda0087655c15183e6d43687aad24b4))
+
+
+### Features
+
+* **actor schema:** simplify actor schema by removing unused fields and adding TMDB reference ([4755b23](https://github.com/Seenivers/App/commit/4755b2344ea92b629d63d5dc333d8f3847efe8c3))
+* **actor types:** add Actor interface and related types for improved type safety ([49d78c6](https://github.com/Seenivers/App/commit/49d78c678e1a3a8ef98f4ef6fa475ffdd8856329))
+* **actor types:** update Actor interface to include Gender type and nullable fields ([90aa289](https://github.com/Seenivers/App/commit/90aa289f557d735cf0606507852e5eae7174f3dc))
+* **actor:** add functions to get, add, and retrieve all actors from the database ([a52950c](https://github.com/Seenivers/App/commit/a52950c44eded3d214677ea1e0937fd3b8ff0402))
+* **actor:** add getActor function to fetch actor data by ID ([98aa5a1](https://github.com/Seenivers/App/commit/98aa5a1b284b863602d1be98366c1196a82987fe))
+* **actor:** implement actor detail page with data fetching and display ([66d4388](https://github.com/Seenivers/App/commit/66d4388e631ab61034878d0d07e4f6e4e08c3b77))
+* add back button functionality to Navbar component for improved navigation ([6cbcb7b](https://github.com/Seenivers/App/commit/6cbcb7b63f2c6e4a58215d9248662b9eab4c3f42))
+* add Img component for optimized image handling across multiple pages ([53fe9fb](https://github.com/Seenivers/App/commit/53fe9fb3e0dae2691d89630dd9b294ec27fff9c7))
+* add reusable Navbar component with customizable slots for left, middle, and right sections ([d8e55ff](https://github.com/Seenivers/App/commit/d8e55ff8920235d6f49e145cd7fa233857a90b65))
+* **collection:** add preload data attribute for movie links to enhance navigation performance ([2900c63](https://github.com/Seenivers/App/commit/2900c63da484425c98785f5b655237ad32eb7cd3))
+* **collection:** add toggle button for grid/list view in Navbar ([5f5db32](https://github.com/Seenivers/App/commit/5f5db32d104c6195477dd6d206531e103265b0ff))
+* **collection:** remove unused file system import from collection page ([3f8df68](https://github.com/Seenivers/App/commit/3f8df681760cdb624676332195850d7d40bd0a73))
+* **database:** refactor getDb function to remove async and improve initialization ([08607c9](https://github.com/Seenivers/App/commit/08607c9ac769d5ebf6552e9156c7da2343054991))
+* **db:** change loadedSettings to a local variable in funktion.ts ([c899bad](https://github.com/Seenivers/App/commit/c899bad93bf4a8233f592f9a25dd2cc3f5e308f0))
+* **db:** optimize updateEntity function to streamline entity updates and improve error handling ([091d423](https://github.com/Seenivers/App/commit/091d42372c45a949b6103919e085677066051dd7))
+* **db:** remove loadedSettings import and use settings.language in updateOldDB function ([9a3954d](https://github.com/Seenivers/App/commit/9a3954d5976210f722b18ad13de12d6a8cb18b60))
+* **dependencies:** expand features for tauri-plugin-http to enhance functionality ([1036bde](https://github.com/Seenivers/App/commit/1036bde41c7f8dbb97227b484e1588550ed100dd))
+* **docs:** add developer documentation for Svelte CLI with usage instructions and options ([62ea561](https://github.com/Seenivers/App/commit/62ea5615fb2d81343ce0bab72ad603cbc25e7504))
+* **load-utils:** extract ID parsing logic into a separate utility function ([4938ce1](https://github.com/Seenivers/App/commit/4938ce13bb74250e5bc4c74de51e019c3be6ade8))
+* **migrations:** add migration for restructuring actors, collections, and movies tables with unique indexes ([8e74f4f](https://github.com/Seenivers/App/commit/8e74f4fffd73ef564d1ed3e00a4c1993bfdcc2f2))
+* **movie page:** implement data loading in separate load function and initialize matchedMovies with page data ([70dec5a](https://github.com/Seenivers/App/commit/70dec5a9da19cb5232077b2cdc13c173674502f9))
+* **movie:** add link to TMDB for movie details and improve button visibility based on data availability ([18f914c](https://github.com/Seenivers/App/commit/18f914cc4c67582d60b8b930bd6298fcb4f88601))
+* **movie:** replace cast button with link to actor detail page for improved navigation ([79bd56e](https://github.com/Seenivers/App/commit/79bd56e02f2e2912eed95a18ab7b6d70fed6856d))
+* replace inline Navbar implementation with reusable Navbar component across multiple pages ([ff083c3](https://github.com/Seenivers/App/commit/ff083c3657d99748cbe85974f56a13680433bc7b))
+* **types/add.ts:** add optional id field to SearchOptions interface ([5d8e89f](https://github.com/Seenivers/App/commit/5d8e89f9c787717dbf94b0a97369317cca664b7b))
+* **types:** export Cast and Crew interfaces for improved accessibility ([0dce2d4](https://github.com/Seenivers/App/commit/0dce2d455c2935649f23cacd6a1a030a3d803092))
+* **ui:** reset filter when clearing all movies ([37b23a4](https://github.com/Seenivers/App/commit/37b23a4caa5b3ab707b50c3e371ad1e3cec474ab))
+* **update:** extend update functions to include actors and process actor data ([2a0267c](https://github.com/Seenivers/App/commit/2a0267c1e9dd997760a839e6db20e3f810f989cf))
+* **update:** implement functions to update movies and collections, and migrate old database entries ([3283baa](https://github.com/Seenivers/App/commit/3283baa3da2a2ceb8d3ade5a1bdc414068b4f44c))
+* **update:** include updateActors function in the update process and optimize actor image loading ([db71f61](https://github.com/Seenivers/App/commit/db71f61fd71f71a63d781a400272bc57951ff182))
+
 # [0.14.0](https://github.com/Seenivers/App/compare/v0.13.0...v0.14.0) (2024-12-12)
 
 
