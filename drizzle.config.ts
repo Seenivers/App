@@ -1,4 +1,4 @@
-import { defineConfig } from 'drizzle-kit';
+import { defineConfig, type Config } from 'drizzle-kit';
 
 export default defineConfig({
 	dialect: 'sqlite',
@@ -10,4 +10,4 @@ export default defineConfig({
 
 	verbose: true,
 	strict: true
-});
+}) satisfies Config;
