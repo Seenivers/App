@@ -30,4 +30,4 @@ export default {
 		'alert-warning',
 		'alert-error'
 	]
-} as Config;
+} satisfies Config;

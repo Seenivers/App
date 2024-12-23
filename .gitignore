@@ -1,10 +1,14 @@
+.DS_Store
 node_modules
 
 # Output
 .output
 .vercel
+.netlify
+.wrangler
 /.svelte-kit
 /build
+/package
 
 # OS
 .DS_Store
@@ -19,3 +23,9 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# SQLite
+*.db
+
+# Tauri
+/src-tauri/target

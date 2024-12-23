@@ -16,17 +16,16 @@
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["patch", "minor"],
-			"requiredStatusChecks": ["CodeQL"]
-		},
-		{
-			"matchFileNames": ["package.json", "npm"],
+			"matchFileNames": ["package.json", "pnpm"],
 			"labels": ["npm", "javascript"]
 		},
 		{
+			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
 			"labels": ["rust"]
 		},
 		{
+			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": [".github/workflows/*.yml"],
 			"automerge": false,
 			"labels": ["github-actions"]

@@ -1,10 +1,11 @@
 {
 	"$schema": "../gen/schemas/desktop-schema.json",
 	"identifier": "default",
-	"description": "enables the default permissions",
+	"description": "Capability for the main window",
 	"windows": ["main"],
 	"permissions": [
 		"core:default",
+		"opener:default",
 		"dialog:default",
 		"fs:default",
 		"fs:allow-exists",
@@ -26,6 +27,7 @@
 		"sql:default",
 		"sql:allow-execute",
 		"shell:default",
-		"log:default"
+		"log:default",
+		"process:default"
 	]
 }

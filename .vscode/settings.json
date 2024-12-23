@@ -1,9 +1,10 @@
 {
+	"svelte.enable-ts-plugin": true,
 	"search.exclude": {
 		"**/node_modules": true,
 		"**/.svelte-kit": true,
 		"**/build": true,
-		"**/package-lock.json": true,
+		"**/pnpm-lock.yaml": true,
 		"**/target": true
 	},
 	"sonarlint.connectedMode.project": {
@@ -11,6 +12,6 @@
 		"projectKey": "Seenivers_App"
 	},
 	"[svelte]": {
-     "editor.defaultFormatter": "svelte.svelte-vscode"
-   }
+		"editor.defaultFormatter": "svelte.svelte-vscode"
+	}
 }
