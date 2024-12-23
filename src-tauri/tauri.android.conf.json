@@ -1,0 +1,9 @@
+{
+	"identifier": "seenivers.app",
+	"bundle": {
+		"android": {
+			"minSdkVersion": 24
+		}
+	},
+	"$schema": "https://schema.tauri.app/config/2"
+}
