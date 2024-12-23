@@ -98,7 +98,7 @@
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
-			{#if movieData.tmdb.belongs_to_collection?.id}
+			{#if movieData.tmdb.belongs_to_collection?.id && data.result.path}
 				<div class="my-4">
 					{#await getCollection(movieData.tmdb.belongs_to_collection.id) then value}
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
