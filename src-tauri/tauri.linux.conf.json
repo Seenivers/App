@@ -1,0 +1,21 @@
+{
+	"identifier": "seenivers",
+	"bundle": {
+		"linux": {
+			"appimage": {
+				"bundleMediaFramework": false,
+				"files": {}
+			},
+			"deb": {
+				"files": {},
+				"section": "video"
+			},
+			"rpm": {
+				"epoch": 0,
+				"files": {},
+				"release": "1"
+			}
+		}
+	},
+	"$schema": "https://schema.tauri.app/config/2"
+}
