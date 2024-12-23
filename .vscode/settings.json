@@ -1,4 +1,5 @@
 {
+	"svelte.enable-ts-plugin": true,
 	"search.exclude": {
 		"**/node_modules": true,
 		"**/.svelte-kit": true,
@@ -11,6 +12,6 @@
 		"projectKey": "Seenivers_App"
 	},
 	"[svelte]": {
-     "editor.defaultFormatter": "svelte.svelte-vscode"
-   }
+		"editor.defaultFormatter": "svelte.svelte-vscode"
+	}
 }
