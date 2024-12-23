@@ -4,7 +4,7 @@
 		"**/node_modules": true,
 		"**/.svelte-kit": true,
 		"**/build": true,
-		"**/package-lock.json": true,
+		"**/pnpm-lock.yaml": true,
 		"**/target": true
 	},
 	"sonarlint.connectedMode.project": {
