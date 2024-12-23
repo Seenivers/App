@@ -1,0 +1,10 @@
+{
+	"identifier": "seenivers",
+	"bundle": {
+		"macOS": {
+			"entitlements": null,
+			"files": {}
+		}
+	},
+	"$schema": "https://schema.tauri.app/config/2"
+}
