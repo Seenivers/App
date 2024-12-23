@@ -67,45 +67,6 @@
 			"icons/icon.icns",
 			"icons/icon.ico"
 		],
-		"windows": {
-			"allowDowngrades": true,
-			"certificateThumbprint": "D9397B9DB157E2642314E70D506A7C7DAACA21F1",
-			"digestAlgorithm": "sha256",
-			"timestampUrl": "http://timestamp.digicert.com",
-			"nsis": {
-				"installMode": "currentUser",
-				"installerIcon": "icons/icon.ico",
-				"languages": ["English", "German", "Spanish", "French"]
-			},
-			"tsp": false,
-			"webviewInstallMode": {
-				"silent": true,
-				"type": "downloadBootstrapper"
-			},
-			"wix": null
-		},
-		"linux": {
-			"appimage": {
-				"bundleMediaFramework": false,
-				"files": {}
-			},
-			"deb": {
-				"files": {},
-				"section": "video"
-			},
-			"rpm": {
-				"epoch": 0,
-				"files": {},
-				"release": "1"
-			}
-		},
-		"macOS": {
-			"entitlements": null,
-			"files": {}
-		},
-		"android": {
-			"minSdkVersion": 24
-		},
 		"iOS": {
 			"minimumSystemVersion": "14.0",
 			"developmentTeam": "BlackTiger007"
