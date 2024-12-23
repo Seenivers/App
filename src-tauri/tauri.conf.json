@@ -1,12 +1,12 @@
 {
 	"productName": "Seenivers",
 	"version": "../package.json",
-	"identifier": "Seenivers",
+	"identifier": "seenivers",
 	"build": {
 		"frontendDist": "../build",
 		"devUrl": "http://localhost:1420",
-		"beforeDevCommand": "npm run dev",
-		"beforeBuildCommand": "npm run build"
+		"beforeDevCommand": "pnpm dev",
+		"beforeBuildCommand": "pnpm build"
 	},
 	"app": {
 		"windows": [
@@ -111,5 +111,5 @@
 			"developmentTeam": "BlackTiger007"
 		}
 	},
-	"$schema": "../node_modules/@tauri-apps/cli/config.schema.json"
+	"$schema": "https://schema.tauri.app/config/2"
 }
