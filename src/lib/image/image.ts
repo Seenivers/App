@@ -40,7 +40,7 @@ export async function downloadImage(url: string, filename: string) {
 	);
 
 	if (!response?.ok) {
-		error(`Error downloading image: ${response?.statusText || 'Unknown error'}`);
+		error(`Error downloading image: ${response?.statusText ?? 'Unknown error'}`);
 		return;
 	}
 
