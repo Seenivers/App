@@ -100,7 +100,7 @@ importers:
         specifier: ^15.13.0
         version: 15.14.0
       marked:
-        specifier: ^15.0.3
+        specifier: ^15.0.4
         version: 15.0.4
       prettier:
         specifier: ^3.4.2
