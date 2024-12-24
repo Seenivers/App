@@ -1,0 +1,10 @@
+{
+	"identifier": "seenivers",
+	"bundle": {
+		"iOS": {
+			"minimumSystemVersion": "14.0",
+			"developmentTeam": "BlackTiger007"
+		}
+	},
+	"$schema": "https://schema.tauri.app/config/2"
+}
