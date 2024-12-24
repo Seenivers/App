@@ -77,7 +77,11 @@ export async function downloadImage(url: string, filename: string) {
 
 const resolveImageSource = async (src: string) => {
 	const { width, height } = await fetchImageDimensions(src).catch((err) => {
-		error(`Fehler beim Abrufen der Bildabmessungen: ${err}`);
+		if (err instanceof Error) {
+			error(`Fehler beim Abrufen der Bildabmessungen: ${err.message}`);
+		} else {
+			error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
+		}
 		// Rückfallwerte, falls das Bild nicht geladen werden kann
 		return { width: 300, height: 450 };
 	});
@@ -121,7 +125,11 @@ export async function image(
 			// Wenn das Bild nicht existiert und der Download aktiviert ist, versuche es herunterzuladen
 			if (download) {
 				await downloadImage(remoteSrc, filePath).catch((err) => {
-					error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err}`);
+					if (err instanceof Error) {
+						error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err.message}`);
+					} else {
+						error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
+					}
 				});
 			} else {
 				return resolveImageSource(remoteSrc);
