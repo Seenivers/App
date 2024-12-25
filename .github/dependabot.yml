@@ -7,12 +7,10 @@ updates:
       day: 'saturday'
       time: '09:00'
       timezone: 'Europe/Berlin'
-    groups:
-      minor-and-patch:
-        applies-to: version-updates
-        update-types:
-          - 'minor'
-          - 'patch'
+    ignore:
+      - dependency-type: 'all'
+    allow:
+      - dependency-type: 'security'
 
   - package-ecosystem: 'cargo'
     directory: './src-tauri'
@@ -21,9 +19,7 @@ updates:
       day: 'saturday'
       time: '09:00'
       timezone: 'Europe/Berlin'
-    groups:
-      minor-and-patch:
-        applies-to: version-updates
-        update-types:
-          - 'minor'
-          - 'patch'
+    ignore:
+      - dependency-type: 'all'
+    allow:
+      - dependency-type: 'security'
