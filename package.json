@@ -29,7 +29,7 @@
 		"autoprefixer": "^10.4.20",
 		"daisyui": "^4.12.22",
 		"drizzle-kit": "^0.22.0",
-		"eslint": "^9.16.0",
+		"eslint": "^9.17.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
 		"fuse.js": "^7.0.0",
