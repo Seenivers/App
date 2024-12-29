@@ -6,6 +6,7 @@
 	import { getMovie } from '$lib/db/funktion';
 	import Plyr from 'plyr';
 	import 'plyr/dist/plyr.css';
+	import plyrSVG from '$lib/SVG/plyr.svg';
 
 	interface Props {
 		id: number;
@@ -47,7 +48,9 @@
 			loop: { active: false },
 			seekTime: 10,
 			storage: { enabled: true, key: 'plyr' },
-			tooltips: { controls: true, seek: true }
+			tooltips: { controls: true, seek: true },
+			loadSprite: false,
+			iconUrl: plyrSVG
 		});
 
 		player.on('ready', async () => {
