@@ -10,25 +10,27 @@
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
-	"schedule": ["before 5am"],
+	"schedule": ["after 1am", "before 5am", "monthly"],
 	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": ["package.json", "pnpm"],
-			"labels": ["npm", "javascript"]
+			"labels": ["npm", "javascript"],
+			"automerge": true
 		},
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
-			"labels": ["rust"]
+			"labels": ["rust"],
+			"automerge": true
 		},
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": [".github/workflows/*.yml"],
-			"automerge": false,
-			"labels": ["github-actions"]
+			"labels": ["github-actions"],
+			"automerge": false
 		}
 	],
 	"separateMajorMinor": true
