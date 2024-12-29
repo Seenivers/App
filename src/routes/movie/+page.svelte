@@ -5,7 +5,7 @@
 	import { db } from '$lib/db/database';
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
-	import Videoplayer from '$lib/player/videoplayer.svelte';
+	import Videoplayer from '$lib/player/Plyr.svelte';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
