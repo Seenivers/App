@@ -58,6 +58,7 @@
 		"@tauri-apps/plugin-updater": "^2.3.0",
 		"@tauri-apps/plugin-opener": "^2",
 		"better-sqlite3": "^11.1.2",
-		"drizzle-orm": "^0.33.0"
+		"drizzle-orm": "^0.33.0",
+		"plyr": "^3.7.8"
 	}
 }
