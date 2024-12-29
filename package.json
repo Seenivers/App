@@ -16,7 +16,7 @@
 		"tauri": "tauri"
 	},
 	"devDependencies": {
-		"@eslint/compat": "^1.2.3",
+		"@eslint/compat": "^1.2.4",
 		"@semantic-release/changelog": "^6.0.3",
 		"@semantic-release/git": "^10.0.1",
 		"@sveltejs/adapter-static": "^3.0.6",
@@ -39,7 +39,7 @@
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.9",
 		"semantic-release": "^24.2.0",
-		"svelte": "^5.14.0",
+		"svelte": "^5.15.0",
 		"svelte-check": "^4.1.1",
 		"tailwindcss": "^3.4.16",
 		"typescript": "^5.7.2",
