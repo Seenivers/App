@@ -1,3 +1,10 @@
+## [0.16.1](https://github.com/Seenivers/App/compare/v0.16.0...v0.16.1) (2024-12-30)
+
+
+### Bug Fixes
+
+* **deps:** remove unnecessary devtools feature from tauri dependency ([c0dc5e9](https://github.com/Seenivers/App/commit/c0dc5e9ddedf880330fcc494fb51bc3bd4ebf394))
+
 # [0.16.0](https://github.com/Seenivers/App/compare/v0.15.0...v0.16.0) (2024-12-30)
 
 
