@@ -5,7 +5,6 @@
 		"labels": ["security"]
 	},
 	"rebaseWhen": "auto",
-	"labels": ["dependencies"],
 	"requiredStatusChecks": ["CodeQL"],
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
@@ -18,19 +17,19 @@
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": ["package.json", "pnpm"],
-			"labels": ["javascript"],
+			"labels": ["javascript", "dependencies"],
 			"automerge": true
 		},
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
-			"labels": ["rust"],
+			"labels": ["rust", "dependencies"],
 			"automerge": true
 		},
 		{
 			"matchUpdateTypes": ["patch", "minor"],
 			"matchFileNames": [".github/workflows/*.yml"],
-			"labels": ["github-actions"],
+			"labels": ["github-actions", "dependencies"],
 			"automerge": false
 		}
 	],
