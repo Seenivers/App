@@ -11,6 +11,7 @@
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
 	"schedule": ["after 1am", "before 5am", "monthly"],
+	"automergeSchedule": ["after 1am", "before 5am"],
 	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
 	"packageRules": [
