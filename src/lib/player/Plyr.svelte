@@ -50,10 +50,10 @@
 			blankVideo: blankVideo
 		});
 
-		player.on('ready', async () => {
+		player.on('loadedmetadata', async () => {
 			const movie = await getMovie(id); // Hole die Film-Daten
 			if (movie && movie.watchTime && movie.watchTime > 0) {
-				videoElement.currentTime = movie.watchTime;
+				player.currentTime = movie.watchTime;
 			}
 		});
 
