@@ -1,10 +1,10 @@
- GNU GENERAL PUBLIC LICENSE
-
- Version 3, 29 June 2007
-
 # License
 
 This project is licensed under the **GNU General Public License v3.0** (GPL-3.0).
+
+## GNU GENERAL PUBLIC LICENSE
+
+**Version 3, 29 June 2007**
 
 The full license terms are available here:  
 [GNU General Public License v3.0](https://github.com/Seenivers/.github/blob/main/LICENSE)
