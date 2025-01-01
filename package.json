@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev:tauri": "pnpm tauri dev",
+		"dev:android": "pnpm tauri android dev",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
