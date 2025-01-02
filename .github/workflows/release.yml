@@ -183,3 +183,4 @@ jobs:
           releaseDraft: ${{ fromJson(env.release_details).release_draft }}
           prerelease: ${{ fromJson(env.release_details).prerelease }}
           args: ${{ matrix.args }}
+          updaterJsonPreferNsis: true
