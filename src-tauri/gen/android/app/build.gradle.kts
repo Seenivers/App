@@ -6,12 +6,13 @@ plugins {
     id("rust")
 }
 
-val tauriProperties = Properties().apply {
-    val propFile = file("tauri.properties")
-    if (propFile.exists()) {
-        propFile.inputStream().use { load(it) }
-    }
-}
+val tauriProperties =
+        Properties().apply {
+            val propFile = file("tauri.properties")
+            if (propFile.exists()) {
+                propFile.inputStream().use { load(it) }
+            }
+        }
 
 android {
     compileSdk = 34
@@ -40,9 +41,10 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(
-                *fileTree(".") { include("**/*.pro") }
-                    .plus(getDefaultProguardFile("proguard-android-optimize.txt"))
-                    .toList().toTypedArray()
+                    *fileTree(".") { include("**/*.pro") }
+                            .plus(getDefaultProguardFile("proguard-android-optimize.txt"))
+                            .toList()
+                            .toTypedArray()
             )
         }
     }
@@ -50,17 +52,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        buildConfig = true
-    }
+    kotlinOptions { jvmTarget = "11" }
+    buildFeatures { buildConfig = true }
 }
 
-rust {
-    rootDirRel = "../../../"
-}
+rust { rootDirRel = "../../../" }
 
 dependencies {
     implementation("androidx.webkit:webkit:1.6.1")
