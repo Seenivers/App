@@ -1,5 +1,5 @@
 import { readDir, readFile } from '@tauri-apps/plugin-fs';
-import { resourceDir } from '@tauri-apps/api/path';
+import { join, resourceDir } from '@tauri-apps/api/path';
 import { sqlite } from '$lib/db/database';
 import { error, info } from '@tauri-apps/plugin-log';
 
@@ -10,7 +10,7 @@ import { error, info } from '@tauri-apps/plugin-log';
  */
 export async function migrate() {
 	const resourcePath = await resourceDir();
-	const files = await readDir(`${resourcePath}/migrations`);
+	const files = await readDir(await join(resourcePath, 'migrations'));
 	let migrations = files.filter((file) => file.name?.endsWith('.sql'));
 
 	// Sort migrations by the first 4 characters of the file name
