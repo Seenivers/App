@@ -12,7 +12,8 @@
 		"moduleResolution": "bundler",
 		"removeComments": true,
 		"noImplicitAny": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"types": ["vidstack/svelte"]
 	}
 	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
 	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
