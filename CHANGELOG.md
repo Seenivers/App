@@ -1,44 +1,41 @@
 ## [0.16.1](https://github.com/Seenivers/App/compare/v0.16.0...v0.16.1) (2024-12-30)
 
-
 ### Bug Fixes
 
-* **deps:** remove unnecessary devtools feature from tauri dependency ([c0dc5e9](https://github.com/Seenivers/App/commit/c0dc5e9ddedf880330fcc494fb51bc3bd4ebf394))
+- **deps:** remove unnecessary devtools feature from tauri dependency ([c0dc5e9](https://github.com/Seenivers/App/commit/c0dc5e9ddedf880330fcc494fb51bc3bd4ebf394))
 
 # [0.16.0](https://github.com/Seenivers/App/compare/v0.15.0...v0.16.0) (2024-12-30)
 
-
 ### Bug Fixes
 
-* add type annotation to drizzle configuration ([42c6300](https://github.com/Seenivers/App/commit/42c6300b32b2826e75b22125154cbbdb4c8bda63))
-* **dependabot:** change package ecosystem from pnpm to npm ([3ed2e38](https://github.com/Seenivers/App/commit/3ed2e383204c7f48ea87fbbf0da0f187773b8955))
-* **deps:** update dependency drizzle-orm to ^0.38.2 ([4b0bc42](https://github.com/Seenivers/App/commit/4b0bc427a6865f1881da02109a2e62067281b966))
-* improve error handling for image dimension fetching and downloading ([5a208b7](https://github.com/Seenivers/App/commit/5a208b782a41f12289ddfc6f93a26f4340ebbbdc))
-* integrate tauri-plugin-opener and update main function to use seenivers_lib ([89ca289](https://github.com/Seenivers/App/commit/89ca2890f009992c864951466a6504a2207dbb49))
-* **movie:** ensure collection display only when path is available ([621c144](https://github.com/Seenivers/App/commit/621c14436f017280c7e07c5deafab45f5821929d))
-* **player:** update event listener to 'loadedmetadata' and correct currentTime assignment ([a56b2ca](https://github.com/Seenivers/App/commit/a56b2cafb2ac5be571c2b6994fa89dee1f9f4419))
-* update default.json to enhance main window capabilities and add opener and process permissions ([47923b6](https://github.com/Seenivers/App/commit/47923b6ab741b839be1c3d6f6b4254f3a7f606bb))
-* update dependabot configuration to use pnpm as the package ecosystem ([16ff862](https://github.com/Seenivers/App/commit/16ff8626792e9e9637b10d3c29c41523d5a87891))
-* update documentation links and improve type assertion in configuration files ([d2cb9ef](https://github.com/Seenivers/App/commit/d2cb9efac53f9f0f8302339ff016103e7426e5d9))
-* update GitHub Actions workflow to use pnpm for dependency management and installation ([11fb87a](https://github.com/Seenivers/App/commit/11fb87a2dd8c41bd00f2290725ee71bfdc55d869))
-* update package name and library name for consistency; add tauri-plugin-opener dependency ([5a2cc86](https://github.com/Seenivers/App/commit/5a2cc86d1427acd55a46436b60bba23b2f16638e))
-* update renovate configuration to use pnpm and adjust package rules ([878d080](https://github.com/Seenivers/App/commit/878d080a19db06807dd2046824113b19b7fa5958))
-* update tauri configuration for consistent identifier and switch to pnpm commands ([b347beb](https://github.com/Seenivers/App/commit/b347bebae313ecf0b6b2e43e0358aea21566cc89))
-* update VSCode settings to ignore pnpm-lock.yaml instead of package-lock.json ([2d90e27](https://github.com/Seenivers/App/commit/2d90e27a7ed82e930b1090918c7a182bbb01da0b))
-* use nullish coalescing operator for error message in image download ([21ba866](https://github.com/Seenivers/App/commit/21ba866c53e0f9e6eb755953dcbc7cdf7140ba93))
-
+- add type annotation to drizzle configuration ([42c6300](https://github.com/Seenivers/App/commit/42c6300b32b2826e75b22125154cbbdb4c8bda63))
+- **dependabot:** change package ecosystem from pnpm to npm ([3ed2e38](https://github.com/Seenivers/App/commit/3ed2e383204c7f48ea87fbbf0da0f187773b8955))
+- **deps:** update dependency drizzle-orm to ^0.38.2 ([4b0bc42](https://github.com/Seenivers/App/commit/4b0bc427a6865f1881da02109a2e62067281b966))
+- improve error handling for image dimension fetching and downloading ([5a208b7](https://github.com/Seenivers/App/commit/5a208b782a41f12289ddfc6f93a26f4340ebbbdc))
+- integrate tauri-plugin-opener and update main function to use seenivers_lib ([89ca289](https://github.com/Seenivers/App/commit/89ca2890f009992c864951466a6504a2207dbb49))
+- **movie:** ensure collection display only when path is available ([621c144](https://github.com/Seenivers/App/commit/621c14436f017280c7e07c5deafab45f5821929d))
+- **player:** update event listener to 'loadedmetadata' and correct currentTime assignment ([a56b2ca](https://github.com/Seenivers/App/commit/a56b2cafb2ac5be571c2b6994fa89dee1f9f4419))
+- update default.json to enhance main window capabilities and add opener and process permissions ([47923b6](https://github.com/Seenivers/App/commit/47923b6ab741b839be1c3d6f6b4254f3a7f606bb))
+- update dependabot configuration to use pnpm as the package ecosystem ([16ff862](https://github.com/Seenivers/App/commit/16ff8626792e9e9637b10d3c29c41523d5a87891))
+- update documentation links and improve type assertion in configuration files ([d2cb9ef](https://github.com/Seenivers/App/commit/d2cb9efac53f9f0f8302339ff016103e7426e5d9))
+- update GitHub Actions workflow to use pnpm for dependency management and installation ([11fb87a](https://github.com/Seenivers/App/commit/11fb87a2dd8c41bd00f2290725ee71bfdc55d869))
+- update package name and library name for consistency; add tauri-plugin-opener dependency ([5a2cc86](https://github.com/Seenivers/App/commit/5a2cc86d1427acd55a46436b60bba23b2f16638e))
+- update renovate configuration to use pnpm and adjust package rules ([878d080](https://github.com/Seenivers/App/commit/878d080a19db06807dd2046824113b19b7fa5958))
+- update tauri configuration for consistent identifier and switch to pnpm commands ([b347beb](https://github.com/Seenivers/App/commit/b347bebae313ecf0b6b2e43e0358aea21566cc89))
+- update VSCode settings to ignore pnpm-lock.yaml instead of package-lock.json ([2d90e27](https://github.com/Seenivers/App/commit/2d90e27a7ed82e930b1090918c7a182bbb01da0b))
+- use nullish coalescing operator for error message in image download ([21ba866](https://github.com/Seenivers/App/commit/21ba866c53e0f9e6eb755953dcbc7cdf7140ba93))
 
 ### Features
 
-* add Android configuration for Tauri application ([5472ed8](https://github.com/Seenivers/App/commit/5472ed824f64e65d9181ac9c6b7f7d86cbcd0e97))
-* add conditional updater plugin for desktop platforms ([94b3d10](https://github.com/Seenivers/App/commit/94b3d109c39c8cff208bcca5d0db03462a391db7))
-* add iOS configuration for Tauri application ([937a60f](https://github.com/Seenivers/App/commit/937a60f481b7148a5ca2e929f66b0971066af78c))
-* add Linux configuration for Tauri application ([5b4aa7f](https://github.com/Seenivers/App/commit/5b4aa7f967d76a94fd77bfda3353fa4f1f09c841))
-* add macOS configuration for Tauri application ([3a501db](https://github.com/Seenivers/App/commit/3a501db71fdc5ecf97d6e9c8e85827dac03cfce9))
-* add SVG icons for Plyr player and update iconUrl in Plyr.svelte ([0666aed](https://github.com/Seenivers/App/commit/0666aed265d9f1d0fb6e3289576663b9dc8a57ce))
-* add Windows configuration for Tauri application ([1ce3033](https://github.com/Seenivers/App/commit/1ce303346ce331563b39fdead3611793c36d1cc8))
-* **i18n:** add URL for Plyr internationalization documentation ([12540ef](https://github.com/Seenivers/App/commit/12540ef19e268cd964f88c0695db728cf078424b))
-* integrate Plyr for enhanced video playback controls and state management ([85d1b43](https://github.com/Seenivers/App/commit/85d1b43196174cae3b14a48c7f9049a97eafa548))
+- add Android configuration for Tauri application ([5472ed8](https://github.com/Seenivers/App/commit/5472ed824f64e65d9181ac9c6b7f7d86cbcd0e97))
+- add conditional updater plugin for desktop platforms ([94b3d10](https://github.com/Seenivers/App/commit/94b3d109c39c8cff208bcca5d0db03462a391db7))
+- add iOS configuration for Tauri application ([937a60f](https://github.com/Seenivers/App/commit/937a60f481b7148a5ca2e929f66b0971066af78c))
+- add Linux configuration for Tauri application ([5b4aa7f](https://github.com/Seenivers/App/commit/5b4aa7f967d76a94fd77bfda3353fa4f1f09c841))
+- add macOS configuration for Tauri application ([3a501db](https://github.com/Seenivers/App/commit/3a501db71fdc5ecf97d6e9c8e85827dac03cfce9))
+- add SVG icons for Plyr player and update iconUrl in Plyr.svelte ([0666aed](https://github.com/Seenivers/App/commit/0666aed265d9f1d0fb6e3289576663b9dc8a57ce))
+- add Windows configuration for Tauri application ([1ce3033](https://github.com/Seenivers/App/commit/1ce303346ce331563b39fdead3611793c36d1cc8))
+- **i18n:** add URL for Plyr internationalization documentation ([12540ef](https://github.com/Seenivers/App/commit/12540ef19e268cd964f88c0695db728cf078424b))
+- integrate Plyr for enhanced video playback controls and state management ([85d1b43](https://github.com/Seenivers/App/commit/85d1b43196174cae3b14a48c7f9049a97eafa548))
 
 # [0.15.0](https://github.com/Seenivers/App/compare/v0.14.0...v0.15.0) (2024-12-22)
 
