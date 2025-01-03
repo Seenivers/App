@@ -21,9 +21,6 @@
 
 	onMount(async () => {
 		if (videoElement) {
-			const movie = await getMovie(id); // Hole die Film-Daten
-			console.log(movie?.watchTime ?? 0);
-
 			player = await VidstackPlayer.create({
 				target: videoElement,
 				src,
