@@ -12,5 +12,4 @@
 
 - **Standard-Player:** Der auf dem Rechner installierte Standard-Player.
 - **[Plyr](https://plyr.io/) ([NPM-Seite](https://www.npmjs.com/package/plyr)):** Ein moderner, funktionsreicher Video-Player.
-
-Vielleicht füge ich **[Vidstack](https://github.com/vidstack/player#readme) ([NPM-Seite](https://www.npmjs.com/package/vidstack))** hinzu.
+- **[Vidstack](https://github.com/vidstack/player#readme) ([NPM-Seite](https://www.npmjs.com/package/vidstack))** Ein anpassbarer HTML5-Video-Player mit einer einfachen API und Unterstützung für moderne Medienformate.
