@@ -4,7 +4,6 @@
 	import { schema } from '../db/schema';
 	import { onDestroy, onMount } from 'svelte';
 	import { getMovie } from '$lib/db/funktion';
-	import 'vidstack/bundle';
 	import type { MediaPlayerElement } from 'vidstack/elements';
 	import 'vidstack/player/styles/default/theme.css';
 	import 'vidstack/player/styles/default/layouts/video.css';
