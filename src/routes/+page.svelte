@@ -6,26 +6,16 @@
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
-
-	// Typ für die Suchparameter
-	type SearchCriteria = {
-		title: string;
-		genre: string | null;
-		isWatched: boolean | null;
-	};
-
-	// Suchparameter initialisieren
-	let searchCriteria: SearchCriteria = $state({
-		title: '',
-		genre: null,
-		isWatched: null
-	});
+	import { getFilter, type SearchCriteria, setFilter } from '$lib/sessionStorage';
 
 	interface Props {
 		data: PageData;
 	}
 
 	let { data }: Props = $props();
+
+	// Suchparameter initialisieren
+	let searchCriteria: SearchCriteria = $state(getFilter());
 
 	// Lade die Filme und initialisiere die Fuse-Suche
 	let matchedMovies: (typeof schema.movies.$inferSelect)[] = $state(data.result);
@@ -53,6 +43,7 @@
 
 	// Funktion zum Filtern der Filme
 	async function filterMovies() {
+		setFilter(searchCriteria);
 		if (!searchCriteria.title && !searchCriteria.genre && searchCriteria.isWatched === null) {
 			matchedMovies = data.result;
 			return;
@@ -206,6 +197,8 @@
 		function removeActive(options: HTMLOptionElement[]) {
 			options.forEach((option) => option.classList.remove('active'));
 		}
+
+		filterMovies();
 	});
 
 	onDestroy(() => {
