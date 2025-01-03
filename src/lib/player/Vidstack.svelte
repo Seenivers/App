@@ -1,9 +1,6 @@
 <script lang="ts">
-	import { eq } from 'drizzle-orm';
-	import { db } from '../db/database';
-	import { schema } from '../db/schema';
+	import { loadWatchTime, saveWatchTime, markAsWatched } from './videoUtils';
 	import { onDestroy, onMount } from 'svelte';
-	import { getMovie } from '$lib/db/funktion';
 	import type { MediaPlayerElement } from 'vidstack/elements';
 	import 'vidstack/player/styles/default/theme.css';
 	import 'vidstack/player/styles/default/layouts/video.css';
@@ -31,46 +28,23 @@
 				logLevel: 'error',
 				storage: 'vidstack'
 			});
+
+			player.addEventListener('loaded-metadata', async () => {
+				await loadWatchTime(id, (time) => (player.currentTime = time));
+			});
+
+			player.addEventListener('pause', async () => {
+				await saveWatchTime(id, player.currentTime, player.duration);
+			});
+
+			player.addEventListener('ended', async () => {
+				await markAsWatched(id);
+			});
 		}
-
-		player.addEventListener('loaded-metadata', async (e) => {
-			const movie = await getMovie(id); // Hole die Film-Daten
-			if (movie && e.target && movie.watchTime && movie.watchTime > 0) {
-				e.target.currentTime = movie?.watchTime ?? 0;
-			}
-		});
-
-		player.addEventListener('pause', async () => {
-			await save(); // Speichere den Status beim Pausieren
-		});
-
-		player.addEventListener('ended', async () => {
-			await db
-				.update(schema.movies)
-				.set({ watched: true, watchTime: 0 })
-				.where(eq(schema.movies.id, id));
-		});
 	});
 
-	// Speicherlogik beim Verlassen der Komponente
-	async function save() {
-		if (player && player.currentTime && player.duration) {
-			const watchTime = Math.max(0, Math.round(player.currentTime) - 2);
-
-			// Datenbank aktualisieren
-			await db.update(schema.movies).set({ watchTime }).where(eq(schema.movies.id, id));
-
-			// Setzt "watched" auf true, wenn zu 85 % gesehen
-			if (Math.round((player.currentTime / player.duration) * 100) >= 85) {
-				await db.update(schema.movies).set({ watched: true }).where(eq(schema.movies.id, id));
-			}
-		}
-	}
-
-	onDestroy(async () => {
-		await save(); // Speichere den Status beim Verlassen der Komponente, es kommt ein Fehler wenn es noch nicht gespeichert wurde in der Console
-		// This call will destroy the player and all child instances.
-		player.destroy();
+	onDestroy(() => {
+		saveWatchTime(id, player.currentTime, player.duration).finally(() => player.destroy());
 	});
 </script>
 

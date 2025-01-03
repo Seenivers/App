@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { eq } from 'drizzle-orm';
-	import { db } from '../db/database';
-	import { schema } from '../db/schema';
-	import { onDestroy, onMount } from 'svelte';
-	import { getMovie } from '$lib/db/funktion';
 	import Plyr from 'plyr';
 	import 'plyr/dist/plyr.css';
 	import plyrSVG from '$lib/SVG/plyr.svg';
 	import blankVideo from '$lib/videos/blank.mp4';
+	import { onMount, onDestroy } from 'svelte';
+	import { loadWatchTime, saveWatchTime, markAsWatched } from './videoUtils';
 
 	interface Props {
 		id: number;
@@ -51,45 +48,21 @@
 		});
 
 		player.on('loadedmetadata', async () => {
-			const movie = await getMovie(id); // Hole die Film-Daten
-			if (movie && movie.watchTime && movie.watchTime > 0) {
-				player.currentTime = movie.watchTime;
-			}
+			await loadWatchTime(id, (time) => (player.currentTime = time));
 		});
 
 		player.on('pause', async () => {
-			await save(); // Speichere den Status beim Pausieren
+			await saveWatchTime(id, player.currentTime, player.duration);
 		});
 
 		player.on('ended', async () => {
-			await db
-				.update(schema.movies)
-				.set({ watched: true, watchTime: 0 })
-				.where(eq(schema.movies.id, id));
+			await markAsWatched(id);
 		});
 	});
 
-	// Speicherlogik beim Verlassen der Komponente
-	async function save() {
-		if (player && player.currentTime && player.duration) {
-			const watchTime = Math.max(0, Math.round(player.currentTime) - 2);
-
-			// Datenbank aktualisieren
-			await db.update(schema.movies).set({ watchTime }).where(eq(schema.movies.id, id));
-
-			// Setzt "watched" auf true, wenn zu 85 % gesehen
-			if (Math.round((player.currentTime / player.duration) * 100) >= 85) {
-				await db.update(schema.movies).set({ watched: true }).where(eq(schema.movies.id, id));
-			}
-		}
-	}
-
-	// Ressourcen beim Zerstören der Komponente bereinigen
 	onDestroy(() => {
 		if (player) {
-			save().then(() => {
-				player.destroy();
-			});
+			saveWatchTime(id, player.currentTime, player.duration).finally(() => player.destroy());
 		}
 	});
 </script>
