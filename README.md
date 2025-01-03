@@ -6,8 +6,7 @@
 [![GitHub Contributors](https://img.shields.io/github/contributors/Seenivers/App?style=flat-square)](https://github.com/Seenivers/App/graphs/contributors)
 [![GitHub All Releases](https://img.shields.io/github/downloads/Seenivers/App/total?style=flat-square)](https://github.com/Seenivers/App/releases)
 [![GitHub Release (latest SemVer)](https://img.shields.io/github/v/release/Seenivers/App?style=flat-square)](https://github.com/Seenivers/App/releases)
-
-<!-- [![GitHub License](https://img.shields.io/github/license/Seenivers/App?style=flat-square)](https://github.com/Seenivers/App/blob/main/LICENSE) -->
+[![GitHub License](https://img.shields.io/github/license/Seenivers/.github?style=flat-square)](https://github.com/Seenivers/.github/blob/main/LICENSE)
 
 ## Video Player
 
