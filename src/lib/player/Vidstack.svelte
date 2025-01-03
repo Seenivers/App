@@ -29,7 +29,6 @@
 				target: videoElement,
 				src,
 				poster,
-				currentTime: movie?.watchTime ?? 0,
 				layout: new VidstackPlayerLayout({
 					seekStep: 10
 				}),
