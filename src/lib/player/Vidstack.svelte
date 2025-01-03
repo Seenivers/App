@@ -70,7 +70,8 @@
 		}
 	}
 
-	onDestroy(() => {
+	onDestroy(async () => {
+		await save(); // Speichere den Status beim Verlassen der Komponente, es kommt ein Fehler wenn es noch nicht gespeichert wurde in der Console
 		// This call will destroy the player and all child instances.
 		player.destroy();
 	});
