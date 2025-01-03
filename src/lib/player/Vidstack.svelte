@@ -29,8 +29,6 @@
 				target: videoElement,
 				src,
 				poster,
-				load: 'idle',
-				posterLoad: 'visible',
 				currentTime: movie?.watchTime ?? 0,
 				layout: new VidstackPlayerLayout({
 					seekStep: 10
