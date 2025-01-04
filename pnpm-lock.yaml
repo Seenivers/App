@@ -76,7 +76,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       '@types/better-sqlite3':
-        specifier: ^7.6.11
+        specifier: ^7.6.12
         version: 7.6.12
       '@types/eslint-config-prettier':
         specifier: ^6.11.3
