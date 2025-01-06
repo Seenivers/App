@@ -136,7 +136,7 @@ export interface ProductionCompany {
 }
 
 export interface ProductionCountry {
-	iso_3166_1: string;
+	iso_3166_1: ISO3166_1;
 	name: string;
 }
 
@@ -145,7 +145,7 @@ export interface ReleaseDates {
 }
 
 export interface ReleaseDatesResult {
-	iso_3166_1: string;
+	iso_3166_1: ISO3166_1;
 	release_dates: ReleaseDate[];
 }
 
@@ -184,7 +184,7 @@ export interface AuthorDetails {
 
 export interface SpokenLanguage {
 	english_name: string;
-	iso_639_1: string;
+	iso_639_1: ISO639_1;
 	name: string;
 }
 
