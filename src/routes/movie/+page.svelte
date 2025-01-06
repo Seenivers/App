@@ -143,18 +143,87 @@
 			</div>
 
 			<div class="grid gap-3">
-				{#each [{ label: 'Stimmenanzahl', value: movieData.tmdb.vote_count }, { label: 'Durchschnittliche Bewertung', value: movieData.tmdb.vote_average ? `${Math.round(movieData.tmdb.vote_average * 10) / 10}/10` : null }, { label: 'Genres', value: movieData.tmdb.genres
-								?.map((g) => g.name)
-								.join(', ') }, { label: 'Produktionsfirmen', value: movieData.tmdb.production_companies
-								?.map((c) => c.name)
-								.join(', ') }, { label: 'Produktionsländer', value: movieData.tmdb.production_countries
-								?.map((c) => c.name)
-								.join(', ') }, { label: 'Veröffentlichungsdatum', value: movieData.tmdb.release_date ? new Date(movieData.tmdb.release_date).toLocaleDateString(window.navigator.language) : null }, { label: 'Laufzeit', value: movieData.tmdb.runtime ? `${movieData.tmdb.runtime} Minuten` : null }, { label: 'Beliebtheit', value: movieData.tmdb.popularity }, { label: 'Budget', value: movieData.tmdb.budget }, { label: 'Homepage', value: movieData.tmdb.homepage }, { label: 'Originalsprache', value: movieData.tmdb.original_language }, { label: 'Originaltitel', value: movieData.tmdb.original_title }, { label: 'Einnahmen', value: movieData.tmdb.revenue }, { label: 'Status', value: movieData.tmdb.status }, { label: 'Handlung', value: movieData.tmdb.overview }] as info}
-					<div class="text-sm md:text-base">
-						<p class="font-bold">{info.label}:</p>
-						<p>{info.value || 'Keine Informationen verfügbar'}</p>
-					</div>
-				{/each}
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Handlung</p>
+					<p>{movieData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Veröffentlichungsdatum</p>
+					<p>
+						{new Date(movieData.tmdb.release_date).toLocaleDateString(window.navigator.language) ||
+							'Keine Informationen verfügbar'}
+					</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Laufzeit</p>
+					<p>
+						{Math.floor(movieData.tmdb.runtime / 60) +
+							':' +
+							(movieData.tmdb.runtime % 60) +
+							' Stunden' || 'Keine Informationen verfügbar'}
+					</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Stimmenanzahl</p>
+					<p>{movieData.tmdb.vote_count || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Durchschnittliche Bewertung</p>
+					<p>
+						{movieData.tmdb.vote_average
+							? `${Math.round(movieData.tmdb.vote_average * 10) / 10}/10`
+							: 'Keine Informationen verfügbar'}
+					</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Genres</p>
+					<p>
+						{movieData.tmdb.genres?.map((g) => g.name).join(', ') ||
+							'Keine Informationen verfügbar'}
+					</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Produktionsfirmen</p>
+					<p>
+						{movieData.tmdb.production_companies?.map((c) => c.name).join(', ') ||
+							'Keine Informationen verfügbar'}
+					</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Produktionsländer</p>
+					<p>
+						{movieData.tmdb.production_countries?.map((c) => c.name).join(', ') ||
+							'Keine Informationen verfügbar'}
+					</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Beliebtheit</p>
+					<p>{movieData.tmdb.popularity || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Budget</p>
+					<p>{movieData.tmdb.budget || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Homepage</p>
+					<p>{movieData.tmdb.homepage || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Originalsprache</p>
+					<p>{movieData.tmdb.original_language || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Originaltitel</p>
+					<p>{movieData.tmdb.original_title || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Einnahmen</p>
+					<p>{movieData.tmdb.revenue || 'Keine Informationen verfügbar'}</p>
+				</div>
+				<div class="text-sm md:text-base">
+					<p class="font-bold">Status</p>
+					<p>{movieData.tmdb.status || 'Keine Informationen verfügbar'}</p>
+				</div>
 			</div>
 		</div>
 	{:else}
