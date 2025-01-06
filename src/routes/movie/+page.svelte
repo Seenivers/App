@@ -191,10 +191,15 @@
 					</div>
 					<div>
 						<h2 class="text-lg font-bold">Genres</h2>
-						<p>
-							{movieData.tmdb.genres?.map((g) => g.name).join(', ') ||
-								'Keine Informationen verfügbar'}
-						</p>
+						{#if movieData.tmdb.genres}
+							<div class="space-x-1">
+								{#each movieData.tmdb.genres as genre}
+									<span class="badge">{genre.name} </span>
+								{/each}
+							</div>
+						{:else}
+							<p>Keine Informationen verfügbar</p>
+						{/if}
 					</div>
 					<div>
 						<h2 class="text-lg font-bold">Produktionsfirmen</h2>
