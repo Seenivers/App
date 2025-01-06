@@ -153,12 +153,12 @@
 			</div>
 
 			<div class="space-y-3">
-				<div class="md:text-base">
+				<div>
 					<h2 class="text-lg font-bold">Handlung</h2>
 					<p>{movieData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
 				</div>
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Veröffentlichungsdatum</h2>
 						<p>
 							{new Date(movieData.tmdb.release_date).toLocaleDateString(
@@ -166,7 +166,7 @@
 							) || 'Keine Informationen verfügbar'}
 						</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Laufzeit</h2>
 						<p>
 							{#if movieData.tmdb.runtime}
@@ -180,7 +180,7 @@
 							{/if}
 						</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Durchschnittliche Bewertung</h2>
 						<p>
 							{movieData.tmdb.vote_average
@@ -189,54 +189,54 @@
 							{movieData.tmdb.vote_count ? `(${movieData.tmdb.vote_count} Bewertungen)` : ''}
 						</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Genres</h2>
 						<p>
 							{movieData.tmdb.genres?.map((g) => g.name).join(', ') ||
 								'Keine Informationen verfügbar'}
 						</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Produktionsfirmen</h2>
 						<p>
 							{movieData.tmdb.production_companies?.map((c) => c.name).join(', ') ||
 								'Keine Informationen verfügbar'}
 						</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Produktionsländer</h2>
 						<p>
 							{movieData.tmdb.production_countries?.map((c) => c.name).join(', ') ||
 								'Keine Informationen verfügbar'}
 						</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Beliebtheit</h2>
 						<p>{movieData.tmdb.popularity || 'Keine Informationen verfügbar'}</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Budget</h2>
 						<p>
 							{formate(movieData.tmdb.budget)}
 						</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Homepage</h2>
 						<p>{movieData.tmdb.homepage || 'Keine Informationen verfügbar'}</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Originalsprache</h2>
 						<p>{movieData.tmdb.original_language || 'Keine Informationen verfügbar'}</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Originaltitel</h2>
 						<p>{movieData.tmdb.original_title || 'Keine Informationen verfügbar'}</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Einnahmen</h2>
 						<p>{formate(movieData.tmdb.revenue)}</p>
 					</div>
-					<div class="md:text-base">
+					<div>
 						<h2 class="text-lg font-bold">Status</h2>
 						<p>{movieData.tmdb.status || 'Keine Informationen verfügbar'}</p>
 					</div>
