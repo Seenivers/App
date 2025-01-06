@@ -32,14 +32,15 @@ jobs:
       - name: Commit Changes
         run: |
           if [[ `git status --porcelain` ]]; then
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "chore(format): run Prettier to format codebase
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git add .
+            git commit -m "chore(format): run Prettier to format codebase
 
           - Applied Prettier formatting to ensure consistent code style"
           else
-          echo "No changes to commit."
+            echo "No changes to commit."
+          fi
 
       - name: Push Changes
         if: success() # Nur ausführen, wenn die vorherigen Schritte erfolgreich sind
