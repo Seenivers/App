@@ -226,10 +226,6 @@
 						</p>
 					</div>
 					<div>
-						<h2 class="text-lg font-bold">Homepage</h2>
-						<p>{movieData.tmdb.homepage || 'Keine Informationen verfügbar'}</p>
-					</div>
-					<div>
 						<h2 class="text-lg font-bold">Originalsprache</h2>
 						<p>{movieData.tmdb.original_language || 'Keine Informationen verfügbar'}</p>
 					</div>
