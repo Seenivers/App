@@ -30,7 +30,8 @@ export const settings = sqliteTable('settings', {
 			'bluray',
 			'x264',
 			'x265',
-			'hevc'
+			'hevc',
+			'Trailer'
 		]),
 	adult: int('adult', { mode: 'boolean' }).notNull().default(false),
 	toastPosition: text('toastPosition', { mode: 'json' })
