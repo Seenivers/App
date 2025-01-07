@@ -8,6 +8,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  format:
+    name: Code Formatting
+    uses: ./.github/workflows/format.yml
+
   semantic-release:
     name: Semantic Release
     runs-on: ubuntu-latest
