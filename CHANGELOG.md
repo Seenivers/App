@@ -1,3 +1,44 @@
+# [0.17.0](https://github.com/Seenivers/App/compare/v0.16.1...v0.17.0) (2025-01-07)
+
+
+### Bug Fixes
+
+* **docs:** update GitHub License badge link in README.md ([1543250](https://github.com/Seenivers/App/commit/15432505e06246460ab236a320a2e7c480ae7786))
+* enable updaterJsonPreferNsis in release workflow for improved installer handling ([265b1d2](https://github.com/Seenivers/App/commit/265b1d27d75d05aa49422d894a3864da11145a1c))
+* **renovate:** remove unnecessary npm label from automerge configuration ([fba2583](https://github.com/Seenivers/App/commit/fba2583fcf25acbdeea60badb939f1484d5f8dae))
+* **tsconfig:** add vidstack types for improved type checking in Svelte ([76ac22b](https://github.com/Seenivers/App/commit/76ac22b3b1d35a610ded3d67c8d62f03a242eca0))
+* update migration file path handling to use join for better compatibility ([783a10d](https://github.com/Seenivers/App/commit/783a10d56232928da3b2df430b9d1ab446458dcb))
+* update targets in tauri configuration to 'all' for broader compatibility ([398652e](https://github.com/Seenivers/App/commit/398652e58c903986ce6fe71b5ddaf83202ea97fd))
+
+
+### Features
+
+* add SECURITY.md to outline security policy and reporting procedures ([72685fb](https://github.com/Seenivers/App/commit/72685fb6d5e0ae7dd83906e4706b64235d41e616))
+* add vidstack dependency for enhanced video handling ([706d62b](https://github.com/Seenivers/App/commit/706d62b06b0c862d529119bf4adf242add568fcd))
+* **csp:** add media-src directive to tauri configuration ([f83f9b9](https://github.com/Seenivers/App/commit/f83f9b9d3187e6b456304115218b6bfd7415b99d))
+* **dependencies:** add hls.js version 1.5.18 to package.json and pnpm-lock.yaml ([6100b73](https://github.com/Seenivers/App/commit/6100b732f7fd88072057806b9567047e96423fa5))
+* **dependencies:** update schedule to run on Sundays and Saturdays for better automation ([7b76591](https://github.com/Seenivers/App/commit/7b76591a385103fa2f659dfa87f3aa174d33affd))
+* **i18n:** add Vidstack URL for documentation reference ([1f48bac](https://github.com/Seenivers/App/commit/1f48baceff75ea8b0248cb7698d1e7263e1f7102))
+* implement Vidstack player component for video playback and tracking ([8935775](https://github.com/Seenivers/App/commit/89357753af2e30baff3a898c70e846c3fd6a8651))
+* **movie:** display genres as badges for improved visual clarity ([cdcd4f5](https://github.com/Seenivers/App/commit/cdcd4f5f25f385ac815897feea8f34dba879c6c4))
+* **movie:** enhance movie details display with additional information ([289aaf4](https://github.com/Seenivers/App/commit/289aaf4de97941d0b91e1eaaae7bdbefe1f789b8))
+* **movie:** improve movie details layout and format monetary values ([e687192](https://github.com/Seenivers/App/commit/e68719292ee3d8756d0ee12c08e4794984849487))
+* **movie:** remove homepage section for cleaner movie details display ([6e9847b](https://github.com/Seenivers/App/commit/6e9847bc349230526bb9c78a30fea41e4356f4f0))
+* **movie:** remove unnecessary text-base class for improved layout consistency ([5783013](https://github.com/Seenivers/App/commit/5783013ebb8d7c1d5388d0197ab55d9b94c7eb55))
+* **readme:** add GitHub badges for stars, forks, issues, contributors, downloads, and latest release ([77715b6](https://github.com/Seenivers/App/commit/77715b61b801ba081988b07a24dcea1b3893f3ff))
+* **renovate:** add 'dependencies' label to update configurations for better categorization ([994dc4a](https://github.com/Seenivers/App/commit/994dc4ab58e5dd3d7e3b4973145d612ad4789ed2))
+* **renovate:** add automergeSchedule for improved dependency management ([af54132](https://github.com/Seenivers/App/commit/af54132328919068f42e80d6409ad3a72633309e))
+* **renovate:** update schedule and automergeSchedule to run on weekends during early hours ([f43b49b](https://github.com/Seenivers/App/commit/f43b49b055e8b4d5abf7e17301354b0fd00f4514))
+* **search:** implement session storage for search criteria management ([960b887](https://github.com/Seenivers/App/commit/960b88769a16b0f7ba93a7b5bcbc493db4054f35))
+* **settings:** add 'Trailer' option to default keywords ([8cb4b24](https://github.com/Seenivers/App/commit/8cb4b24330f91d2a886a7743a6cda1703f414db5))
+* **types:** replace string types with ISO3166_1 and ISO639_1 for better type safety ([5503e93](https://github.com/Seenivers/App/commit/5503e937eb598c43773bfbbc6afc4b58461b8956))
+* **Vidstack:** save component state on destroy ([1c19ad7](https://github.com/Seenivers/App/commit/1c19ad7b9deadc75cf984beecc3a1957352d0134))
+* **vite:** add vidstack plugin for enhanced video capabilities ([f6d6320](https://github.com/Seenivers/App/commit/f6d6320f09a45540b4a0388aa1b828a35e5db688))
+* **vscode:** add custom HTML data for vidstack in settings ([437d8a6](https://github.com/Seenivers/App/commit/437d8a607000c5760df289a2f9e5afedb7555bbb))
+* **workflow:** add code formatting workflow using Prettier for consistent style ([6e2314a](https://github.com/Seenivers/App/commit/6e2314a931143bc2648ff623e2b513b27fe8d838))
+* **workflow:** update format workflow to include write permissions and simplify push command ([eabf548](https://github.com/Seenivers/App/commit/eabf548d65941b9461dad3e7c4ccf6246b1cef7b))
+* **workflow:** update Node.js setup to use latest LTS version for improved compatibility ([2b4d82a](https://github.com/Seenivers/App/commit/2b4d82a2d2df2b5bf625a3284cab39a34178d011))
+
 ## [0.16.1](https://github.com/Seenivers/App/compare/v0.16.0...v0.16.1) (2024-12-30)
 
 ### Bug Fixes
