@@ -106,6 +106,40 @@
 			{:else if movieData.path}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
+			{:else}
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{#each movieData.tmdb.videos.results as trailer}
+						{#if trailer.site === 'YouTube'}
+							<div
+								class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+							>
+								<figure>
+									<img
+										src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
+										alt={`Thumbnail for ${trailer.name}`}
+										class="h-48 w-full rounded-t-lg object-cover"
+									/>
+								</figure>
+								<div class="card-body">
+									<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
+									<a
+										href={`https://www.youtube.com/watch?v=${trailer.key}`}
+										onclick={(e) => {
+											{
+												e.preventDefault();
+												open(`https://www.youtube.com/watch?v=${trailer.key}`);
+											}
+										}}
+										class="btn btn-primary mt-2"
+										rel="noopener noreferrer"
+									>
+										Watch on YouTube
+									</a>
+								</div>
+							</div>
+						{/if}
+					{/each}
+				</div>
 			{/if}
 
 			{#if movieData.tmdb.belongs_to_collection?.id && data.result.path}
