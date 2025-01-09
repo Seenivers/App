@@ -17,6 +17,7 @@
 	let { children }: Props = $props();
 
 	oncontextmenu = (event: MouseEvent) => {
+		if (import.meta.env.DEV) return;
 		event.preventDefault();
 	};
 
