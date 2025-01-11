@@ -7,6 +7,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { getFilter, type SearchCriteria, setFilter } from '$lib/sessionStorage';
+	import { _ } from 'svelte-i18n';
 
 	interface Props {
 		data: PageData;
@@ -213,6 +214,7 @@
 		<a href="./add" class="btn btn-ghost">Hinzufügen</a>
 	{/snippet}
 	{#snippet right()}
+		<p>{$_('title')}</p>
 		<a href="./settings" class="btn btn-ghost">Settings</a>
 	{/snippet}
 </Navbar>
