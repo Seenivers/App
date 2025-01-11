@@ -211,11 +211,10 @@
 
 <Navbar>
 	{#snippet left()}
-		<a href="./add" class="btn btn-ghost">Hinzufügen</a>
+		<a href="./add" class="btn btn-ghost">{$_('main.nav.add')}</a>
 	{/snippet}
 	{#snippet right()}
-		<p>{$_('title')}</p>
-		<a href="./settings" class="btn btn-ghost">Settings</a>
+		<a href="./settings" class="btn btn-ghost">{$_('main.nav.settings')}</a>
 	{/snippet}
 </Navbar>
 
@@ -310,7 +309,7 @@
 		</div>
 
 		{#if isLoading}
-			<p>Lädt...</p>
+			<p>{$_('loading')}</p>
 		{:else if matchedMovies.length >= 1}
 			<!-- Filme -->
 			<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
@@ -328,7 +327,7 @@
 						<figure class="relative px-2 pt-2">
 							<Img
 								params={[movie.tmdb.poster_path, 'posters', true]}
-								alt="Poster von {movie.tmdb.title}"
+								alt={$_('main.poster', { values: { title: movie.tmdb.title } })}
 								class="rounded-xl"
 							/>
 							{#if movie.watched}
