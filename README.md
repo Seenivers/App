@@ -7,6 +7,7 @@
 [![GitHub All Releases](https://img.shields.io/github/downloads/Seenivers/App/total?style=flat-square)](https://github.com/Seenivers/App/releases)
 [![GitHub Release (latest SemVer)](https://img.shields.io/github/v/release/Seenivers/App?style=flat-square)](https://github.com/Seenivers/App/releases)
 [![GitHub License](https://img.shields.io/github/license/Seenivers/.github?style=flat-square)](https://github.com/Seenivers/.github/blob/main/LICENSE)
+[![Crowdin](https://badges.crowdin.net/seenivers/localized.svg)](https://crowdin.com)
 
 ## Video Player
 
