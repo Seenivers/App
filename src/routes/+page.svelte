@@ -226,7 +226,7 @@
 				<input
 					class="input join-item input-bordered"
 					name="title"
-					placeholder="Titel"
+					placeholder={$_('main.search.titlePlaceholder')}
 					autocomplete="off"
 					bind:value={searchCriteria.title}
 					oninput={filterMovies}
@@ -251,7 +251,7 @@
 				name="genre"
 				bind:value={searchCriteria.genre}
 			>
-				<option value={null}>Kein Filter</option>
+				<option value={null}>{$_('main.search.genreDefault')}</option>
 				{#each Array.from(new Set(matchedMovies.flatMap( (item) => item.tmdb.genres.map((i) => i.name) ))) as genre}
 					<option>{genre}</option>
 				{/each}
@@ -261,9 +261,9 @@
 				name="isWatched"
 				bind:value={searchCriteria.isWatched}
 			>
-				<option value={null}>Alle Filme</option>
-				<option value={true}>Angeschaut</option>
-				<option value={false}>Nicht angeschaut</option>
+				<option value={null}>{$_('main.search.isWatched.all')}</option>
+				<option value={true}>{$_('main.search.isWatched.watched')}</option>
+				<option value={false}>{$_('main.search.isWatched.notWatched')}</option>
 			</select>
 			<button
 				onclick={() => {
@@ -275,7 +275,7 @@
 					!searchCriteria.genre &&
 					searchCriteria.isWatched === null}
 			>
-				Filter zurücksetzen
+				{$_('main.search.resetFilter')}
 			</button>
 		</div>
 
@@ -309,7 +309,7 @@
 		</div>
 
 		{#if isLoading}
-			<p>{$_('loading')}</p>
+			<p>{$_('main.scaling.loading')}</p>
 		{:else if matchedMovies.length >= 1}
 			<!-- Filme -->
 			<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
@@ -327,11 +327,13 @@
 						<figure class="relative px-2 pt-2">
 							<Img
 								params={[movie.tmdb.poster_path, 'posters', true]}
-								alt={$_('main.poster', { values: { title: movie.tmdb.title } })}
+								alt={$_('main.movies.posterAlt', { values: { title: movie.tmdb.title } })}
 								class="rounded-xl"
 							/>
 							{#if movie.watched}
-								<div class="badge badge-outline absolute left-3 top-3 bg-base-300">Angesehen</div>
+								<div class="badge badge-outline absolute left-3 top-3 bg-base-300">
+									{$_('main.movies.badgeWatched')}
+								</div>
 							{/if}
 						</figure>
 						<div class="card-body items-center py-2 text-center">
@@ -349,9 +351,9 @@
 				{/each}
 			</div>
 		{:else}
-			<p>Kein Film entspricht diesen Kriterien</p>
+			<p>{$_('main.movies.noneFound')}</p>
 		{/if}
 	{:else}
-		<p>Du hast noch keine Filme hinzugefügt</p>
+		<p>{$_('main.movies.noneAdded')}</p>
 	{/if}
 </main>

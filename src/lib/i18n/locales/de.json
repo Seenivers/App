@@ -1,11 +1,30 @@
 {
-  "title": "Seenivers",
-  "loading": "Laden...",
-  "main": {
-    "nav": {
-      "add": "Hinzufügen",
-      "settings": "Einstellungen"
-    },
-    "poster": "Poster von {title}"
-  }
+	"title": "Seenivers",
+	"loading": "Laden...",
+	"main": {
+		"nav": {
+			"add": "Hinzufügen",
+			"settings": "Einstellungen"
+		},
+		"search": {
+			"titlePlaceholder": "Titel",
+			"genreDefault": "Kein Filter",
+			"isWatched": {
+				"all": "Alle Filme",
+				"watched": "Angeschaut",
+				"notWatched": "Nicht angeschaut"
+			},
+			"resetFilter": "Filter zurücksetzen"
+		},
+		"scaling": {
+			"loading": "Lädt...",
+			"size": "Größe"
+		},
+		"movies": {
+			"noneFound": "Kein Film entspricht diesen Kriterien",
+			"noneAdded": "Du hast noch keine Filme hinzugefügt",
+			"badgeWatched": "Angesehen",
+			"posterAlt": "Poster von {title}"
+		}
+	}
 }
