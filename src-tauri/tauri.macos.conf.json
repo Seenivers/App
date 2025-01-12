@@ -3,7 +3,8 @@
 	"bundle": {
 		"macOS": {
 			"entitlements": null,
-			"files": {}
+			"files": {},
+			"signingIdentity": "-"
 		}
 	},
 	"$schema": "https://schema.tauri.app/config/2"
