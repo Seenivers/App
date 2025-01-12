@@ -1,30 +1,30 @@
 {
 	"title": "Seenivers",
-	"loading": "Laden...",
+	"loading": "Cargando...",
 	"main": {
 		"nav": {
-			"add": "Hinzufügen",
-			"settings": "Einstellungen"
+			"add": "Agregar película",
+			"settings": "Configuración"
 		},
 		"search": {
-			"titlePlaceholder": "Titel",
-			"genreDefault": "Kein Filter",
+			"titlePlaceholder": "Título de la película",
+			"genreDefault": "Sin filtro de género",
 			"isWatched": {
-				"all": "Alle Filme",
-				"watched": "Angeschaut",
-				"notWatched": "Nicht angeschaut"
+				"all": "Todas las películas",
+				"watched": "Ya vistas",
+				"notWatched": "No vistas"
 			},
-			"resetFilter": "Filter zurücksetzen"
+			"resetFilter": "Restablecer filtro"
 		},
 		"scaling": {
-			"loading": "Lädt...",
-			"size": "Größe"
+			"loading": "Cargando...",
+			"size": "Tamaño de visualización"
 		},
 		"movies": {
-			"noneFound": "Kein Film entspricht diesen Kriterien",
-			"noneAdded": "Du hast noch keine Filme hinzugefügt",
-			"badgeWatched": "Angesehen",
-			"posterAlt": "Poster von {title}"
+			"noneFound": "No se encontró ninguna película que coincida con estos criterios.",
+			"noneAdded": "Aún no has agregado ninguna película.",
+			"badgeWatched": "Ya vista",
+			"posterAlt": "Póster de {title}"
 		}
 	}
 }
