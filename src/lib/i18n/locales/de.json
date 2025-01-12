@@ -2,7 +2,9 @@
 	"title": "Seenivers",
 	"loading": "Laden...",
 	"error": {
-		"title": "Fehler",
+		"title": "Fehler"
+	},
+	"nav": {
 		"back": "Zurück",
 		"backToHome": "Zur Startseite"
 	},

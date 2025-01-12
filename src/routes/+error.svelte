@@ -17,7 +17,7 @@
 					onclick={() =>
 						window.history.length > 1 ? window.history.back() : (window.location.href = '/')}
 				>
-					{window.history.length > 1 ? $_('error.back') : $_('error.backToHome')}
+					{window.history.length > 1 ? $_('nav.back') : $_('nav.backToHome')}
 				</button>
 			</div>
 		</div>
