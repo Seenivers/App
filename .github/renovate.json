@@ -9,8 +9,8 @@
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
-	"schedule": ["before 5am every weekend"],
-	"automergeSchedule": ["before 5am every weekend"],
+	"schedule": ["before 5am"],
+	"automergeSchedule": ["before 5am"],
 	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
 	"packageRules": [
@@ -33,5 +33,6 @@
 			"automerge": false
 		}
 	],
-	"separateMajorMinor": true
+	"separateMajorMinor": true,
+	"timezone": "Europe/Berlin"
 }
