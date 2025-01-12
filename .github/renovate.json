@@ -9,8 +9,8 @@
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
-	"schedule": ["* 0-5 * * 0,6"],
-	"automergeSchedule": ["* 0-5 * * 0,6"],
+	"schedule": ["before 5am every weekend"],
+	"automergeSchedule": ["before 5am every weekend"],
 	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
 	"packageRules": [
