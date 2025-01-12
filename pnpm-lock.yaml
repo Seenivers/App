@@ -133,7 +133,7 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(svelte@5.16.1)(typescript@5.7.2)
       tailwindcss:
-        specifier: ^3.4.16
+        specifier: ^3.4.17
         version: 3.4.17
       typescript:
         specifier: ^5.7.2
