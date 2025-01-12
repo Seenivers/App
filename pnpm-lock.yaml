@@ -112,8 +112,8 @@ importers:
         specifier: ^15.13.0
         version: 15.14.0
       marked:
-        specifier: ^15.0.4
-        version: 15.0.4
+        specifier: ^15.0.5
+        version: 15.0.6
       prettier:
         specifier: ^3.4.2
         version: 3.4.2
@@ -2242,8 +2242,8 @@ packages:
     engines: {node: '>= 18'}
     hasBin: true
 
-  marked@15.0.4:
-    resolution: {integrity: sha512-TCHvDqmb3ZJ4PWG7VEGVgtefA5/euFmsIhxtD0XsBxI39gUSKL81mIRFdt0AiNQozUahd4ke98ZdirExd/vSEw==}
+  marked@15.0.6:
+    resolution: {integrity: sha512-Y07CUOE+HQXbVDCGl3LXggqJDbXDP2pArc2C1N1RRMN0ONiShoSsIInMd5Gsxupe7fKLpgimTV+HOJ9r7bA+pg==}
     engines: {node: '>= 18'}
     hasBin: true
 
@@ -5238,7 +5238,7 @@ snapshots:
 
   marked@12.0.2: {}
 
-  marked@15.0.4: {}
+  marked@15.0.6: {}
 
   media-captions@1.0.4: {}
 

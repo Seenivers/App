@@ -34,7 +34,7 @@
 		"eslint-plugin-svelte": "^2.36.0",
 		"fuse.js": "^7.0.0",
 		"globals": "^15.13.0",
-		"marked": "^15.0.4",
+		"marked": "^15.0.5",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.9",
