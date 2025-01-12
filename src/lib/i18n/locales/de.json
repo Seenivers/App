@@ -1,6 +1,11 @@
 {
 	"title": "Seenivers",
 	"loading": "Laden...",
+	"error": {
+		"title": "Fehler",
+		"back": "Zurück",
+		"backToHome": "Zur Startseite"
+	},
 	"main": {
 		"nav": {
 			"add": "Hinzufügen",
@@ -25,6 +30,48 @@
 			"noneAdded": "Du hast noch keine Filme hinzugefügt",
 			"badgeWatched": "Angesehen",
 			"posterAlt": "Poster von {title}"
+		}
+	},
+	"actor": {
+		"nav": {
+			"openTmdb": "Bei TMDB öffnen"
+		},
+		"gender": "Geschlecht",
+		"gendertypes": {
+			"female": "Weiblich",
+			"male": "Männlich",
+			"nonBinary": "Non-Binär",
+			"unknown": "Unbekannt"
+		},
+		"socialLinks": "Soziale Medien",
+		"knownFor": "Bekannt für",
+		"birthdate": {
+			"label": "Geboren am",
+			"unknown": "Unbekannt"
+		},
+		"deathdate": {
+			"label": "Gestorben am"
+		},
+		"birthplace": {
+			"label": "Geburtsort",
+			"unknown": "Unbekannt"
+		},
+		"aliases": {
+			"label": "Auch bekannt als",
+			"none": "Keine weiteren Namen bekannt"
+		},
+		"biography": {
+			"label": "Biografie",
+			"none": "Keine Biografie verfügbar."
+		},
+		"filmography": {
+			"title": "Filmografie (Darsteller)",
+			"roleUnknown": "Rolle unbekannt",
+			"releaseUnknown": "N/A"
+		},
+		"crew": {
+			"title": "Beteiligungen (Crew)",
+			"releaseUnknown": "N/A"
 		}
 	}
 }
