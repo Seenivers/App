@@ -21,8 +21,8 @@
 			"size": "Display Size"
 		},
 		"movies": {
-			"noneFound": "No movie matches these criteria",
-			"noneAdded": "You haven't added any movies yet",
+			"noneFound": "No movie matches these criteria.",
+			"noneAdded": "You haven't added any movies yet.",
 			"badgeWatched": "Already Watched",
 			"posterAlt": "Poster of {title}"
 		}
