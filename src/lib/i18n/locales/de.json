@@ -8,6 +8,10 @@
 		"back": "Zurück",
 		"backToHome": "Zur Startseite"
 	},
+	"networkStatus": {
+		"online": "You are connected to the internet",
+		"offline": "You are not connected to the internet"
+	},
 	"main": {
 		"nav": {
 			"add": "Hinzufügen",
