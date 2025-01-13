@@ -10,6 +10,10 @@ concurrency:
 jobs:
   format:
     name: Code Formatting
+
+    permissions:
+      contents: write
+
     uses: ./.github/workflows/format.yml
 
   semantic-release:
