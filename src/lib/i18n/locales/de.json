@@ -21,8 +21,8 @@
 			"size": "Größe"
 		},
 		"movies": {
-			"noneFound": "Kein Film entspricht diesen Kriterien",
-			"noneAdded": "Du hast noch keine Filme hinzugefügt",
+			"noneFound": "No movie matches these criteria.",
+			"noneAdded": "You haven't added any movies yet.",
 			"badgeWatched": "Angesehen",
 			"posterAlt": "Poster von {title}"
 		}
