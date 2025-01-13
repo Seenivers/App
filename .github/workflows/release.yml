@@ -18,6 +18,7 @@ jobs:
 
   semantic-release:
     name: Semantic Release
+    needs: format
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.check_asset_count.outputs.should_run }}
