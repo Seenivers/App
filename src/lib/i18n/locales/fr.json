@@ -21,8 +21,8 @@
 			"size": "Taille de l'affichage"
 		},
 		"movies": {
-			"noneFound": "Aucun film ne correspond à ces critères.",
-			"noneAdded": "Vous n'avez ajouté aucun film pour le moment.",
+			"noneFound": "No movie matches these criteria.",
+			"noneAdded": "You haven't added any movies yet.",
 			"badgeWatched": "Déjà vu",
 			"posterAlt": "Affiche de {title}"
 		}
