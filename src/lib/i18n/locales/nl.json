@@ -1,5 +1,5 @@
 {
-	"loading": "Cargando...",
+	"loading": "Loading...",
 	"error": {
 		"title": "Error"
 	},
@@ -13,27 +13,27 @@
 	},
 	"main": {
 		"nav": {
-			"add": "Agregar película",
-			"settings": "Configuración"
+			"add": "Add Movie",
+			"settings": "Settings"
 		},
 		"search": {
-			"titlePlaceholder": "Título de la película",
-			"genreDefault": "Sin filtro de género",
+			"titlePlaceholder": "Movie Title",
+			"genreDefault": "No Genre Filter",
 			"isWatched": {
-				"all": "Todas las películas",
-				"watched": "Ya vistas",
-				"notWatched": "No vistas"
+				"all": "All Movies",
+				"watched": "Already Watched",
+				"notWatched": "Not Watched Yet"
 			},
-			"resetFilter": "Restablecer filtro"
+			"resetFilter": "Reset Filter"
 		},
 		"scaling": {
-			"size": "Tamaño de visualización"
+			"size": "Display Size"
 		},
 		"movies": {
-			"noneFound": "No se encontró ninguna película que coincida con estos criterios.",
-			"noneAdded": "Aún no has agregado ninguna película.",
-			"badgeWatched": "Ya vista",
-			"posterAlt": "Póster de {title}"
+			"noneFound": "No movie matches these criteria.",
+			"noneAdded": "You haven't added any movies yet.",
+			"badgeWatched": "Already Watched",
+			"posterAlt": "Poster of {title}"
 		}
 	},
 	"actor": {

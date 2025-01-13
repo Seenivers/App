@@ -1,6 +1,16 @@
 {
-	"title": "Seenivers",
 	"loading": "Chargement...",
+	"error": {
+		"title": "Error"
+	},
+	"nav": {
+		"back": "Back",
+		"backToHome": "Back to Home"
+	},
+	"networkStatus": {
+		"online": "You are connected to the internet",
+		"offline": "You are not connected to the internet"
+	},
 	"main": {
 		"nav": {
 			"add": "Ajouter un film",
@@ -17,7 +27,6 @@
 			"resetFilter": "Réinitialiser le filtre"
 		},
 		"scaling": {
-			"loading": "Chargement...",
 			"size": "Taille de l'affichage"
 		},
 		"movies": {
@@ -25,6 +34,105 @@
 			"noneAdded": "Vous n'avez ajouté aucun film pour le moment.",
 			"badgeWatched": "Déjà vu",
 			"posterAlt": "Affiche de {title}"
+		}
+	},
+	"actor": {
+		"nav": {
+			"openTmdb": "Open on TMDB"
+		},
+		"gender": "Gender",
+		"gendertypes": {
+			"female": "Female",
+			"male": "Male",
+			"nonBinary": "Non-Binary",
+			"unknown": "Unknown"
+		},
+		"socialLinks": "Social Media",
+		"knownFor": "Known For",
+		"birthdate": {
+			"label": "Born on",
+			"unknown": "Unknown"
+		},
+		"deathdate": {
+			"label": "Died on"
+		},
+		"birthplace": {
+			"label": "Birthplace",
+			"unknown": "Unknown"
+		},
+		"aliases": {
+			"label": "Also Known As",
+			"none": "No other names known"
+		},
+		"biography": {
+			"label": "Biography",
+			"none": "No biography available."
+		},
+		"filmography": {
+			"title": "Filmography (Actor)",
+			"roleUnknown": "Role unknown",
+			"releaseUnknown": "N/A"
+		},
+		"crew": {
+			"title": "Crew Contributions",
+			"releaseUnknown": "N/A"
+		}
+	},
+	"add": {
+		"common": {
+			"error": "Error",
+			"close": "Close",
+			"search": "Search",
+			"optional": "Optional",
+			"noResults": "No results found"
+		},
+		"main": {
+			"buttons": {
+				"selectFile": "Select Movies",
+				"selectFolder": "Select Folder",
+				"clearAll": "Clear All"
+			},
+			"filter": {
+				"default": "No Filter",
+				"wait": "Queue ({count})",
+				"searching": "Searching ({count})",
+				"notFound": "Not Found ({count})",
+				"foundOne": "One Movie Found ({count})",
+				"foundMultiple": "Multiple Movies Found ({count})",
+				"downloading": "Downloading ({count})"
+			},
+			"movie": {
+				"title": "Movie Title: {title}",
+				"path": "File Path: {path}",
+				"state": {
+					"searching": "Searching...",
+					"notSearched": "A search has not been performed yet",
+					"noResults": "No results found",
+					"resultsAvailable": "Results available"
+				}
+			}
+		},
+		"modal": {
+			"title": "Edit Movie Details",
+			"inputs": {
+				"title": "Movie Title:",
+				"year": "Release Year:"
+			},
+			"search": "Search",
+			"state": {
+				"searching": {
+					"title": "Searching...",
+					"description": "We are currently searching the database for the movie"
+				},
+				"results": {
+					"posterAlt": "Poster of {title}",
+					"releaseDate": "Release Date: {release_date}",
+					"overview": "Overview: {overview}"
+				},
+				"notSearched": "No search has been performed yet. Click 'Search' to find the movie",
+				"noResults": "No results found for your search"
+			},
+			"close": "Close"
 		}
 	}
 }
