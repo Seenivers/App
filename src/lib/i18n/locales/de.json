@@ -1,5 +1,4 @@
 {
-	"title": "Seenivers",
 	"loading": "Laden...",
 	"error": {
 		"title": "Fehler"
@@ -28,7 +27,6 @@
 			"resetFilter": "Filter zurücksetzen"
 		},
 		"scaling": {
-			"loading": "Lädt...",
 			"size": "Größe"
 		},
 		"movies": {
@@ -78,6 +76,63 @@
 		"crew": {
 			"title": "Beteiligungen (Crew)",
 			"releaseUnknown": "N/A"
+		}
+	},
+	"add": {
+		"common": {
+			"error": "Fehler",
+			"close": "Schließen",
+			"search": "Suchen",
+			"optional": "Optional",
+			"noResults": "Keine Ergebnisse gefunden."
+		},
+		"main": {
+			"buttons": {
+				"selectFile": "Filme auswählen",
+				"selectFolder": "Ordner auswählen",
+				"clearAll": "Alles löschen"
+			},
+			"filter": {
+				"default": "Kein Filter",
+				"wait": "Warteschlange ({count})",
+				"searching": "Suche läuft ({count})",
+				"notFound": "Nicht gefunden ({count})",
+				"foundOne": "Ein Film gefunden ({count})",
+				"foundMultiple": "Mehrere Filme gefunden ({count})",
+				"downloading": "Herunterladen ({count})"
+			},
+			"movie": {
+				"title": "Filmtitel: {title}",
+				"path": "Dateipfad: {path}",
+				"state": {
+					"searching": "Suche läuft...",
+					"notSearched": "Es wurde noch keine Suche durchgeführt.",
+					"noResults": "Keine Ergebnisse gefunden.",
+					"resultsAvailable": "Ergebnisse verfügbar."
+				}
+			}
+		},
+		"modal": {
+			"title": "Filmdetails bearbeiten",
+			"inputs": {
+				"title": "Filmtitel:",
+				"year": "Erscheinungsjahr:"
+			},
+			"search": "Suchen",
+			"state": {
+				"searching": {
+					"title": "Suche läuft...",
+					"description": "Wir durchsuchen aktuell die Datenbank nach dem Film."
+				},
+				"results": {
+					"posterAlt": "Poster von {title}",
+					"releaseDate": "Veröffentlichungsdatum: {release_date}",
+					"overview": "Zusammenfassung: {overview}"
+				},
+				"notSearched": "Es wurde noch keine Suche durchgeführt. Klicken Sie auf 'Suchen', um den Film zu finden.",
+				"noResults": "Keine Ergebnisse für Ihre Suche gefunden."
+			},
+			"close": "Schließen"
 		}
 	}
 }

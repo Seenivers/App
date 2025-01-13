@@ -17,6 +17,7 @@
 	import { error, warn } from '@tauri-apps/plugin-log';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
+	import { _ } from 'svelte-i18n';
 
 	interface Props {
 		data: PageData;
@@ -153,7 +154,7 @@
 <main class="z-0 flex flex-col items-center p-5">
 	{#if !$isOnline}
 		<div class="alert alert-error text-center">
-			Du bist momentan nicht mit dem Internet verbunden.
+			{$_('networkStatus.offline')}
 		</div>
 	{:else}
 		<div class="mb-5 flex w-3/4 gap-5">
@@ -165,7 +166,7 @@
 				}}
 				disabled={!$isOnline}
 			>
-				Filme auswählen
+				{$_('add.main.buttons.selectFile')}
 			</button>
 			<button
 				class="btn grow"
@@ -175,7 +176,7 @@
 				}}
 				disabled={!$isOnline}
 			>
-				Ordner auswählen
+				{$_('add.main.buttons.selectFolder')}
 			</button>
 			<button
 				class="btn hover:btn-error"
@@ -185,27 +186,29 @@
 				}}
 				disabled={!$isOnline || status.length === 0}
 			>
-				Alles entfernen
+				{$_('add.main.buttons.clearAll')}
 			</button>
 			<select class="select" bind:value={filter} disabled={!$isOnline || status.length === 0}>
-				<option value={null} selected disabled={status.length === 0}>Kein Filter</option>
+				<option value={null} selected disabled={status.length === 0}
+					>{$_('add.main.filter.default')}</option
+				>
 				<option value="wait" disabled={counts.wait === 0}>
-					Warteschlange ({counts.wait})
+					{$_('add.main.filter.wait', { values: { count: counts.wait } })}
 				</option>
 				<option value="searching" disabled={counts.searching === 0}>
-					Sucht ({counts.searching})
+					{$_('add.main.filter.searching', { values: { count: counts.searching } })}
 				</option>
 				<option value="notFound" disabled={counts.notFound === 0}>
-					Nicht gefunden ({counts.notFound})
+					{$_('add.main.filter.notFound', { values: { count: counts.notFound } })}
 				</option>
 				<option value="foundOne" disabled={counts.foundOne === 0}>
-					Ein Film gefunden ({counts.foundOne})
+					{$_('add.main.filter.foundOne', { values: { count: counts.foundOne } })}
 				</option>
 				<option value="foundMultiple" disabled={counts.foundMultiple === 0}>
-					Mehrere Filme gefunden ({counts.foundMultiple})
+					{$_('add.main.filter.foundMultiple', { values: { count: counts.foundMultiple } })}
 				</option>
 				<option value="downloading" disabled={counts.downloading === 0}>
-					Laderunter ({counts.downloading})
+					{$_('add.main.filter.downloading', { values: { count: counts.downloading } })}
 				</option>
 			</select>
 		</div>
@@ -215,8 +218,12 @@
 				{#if item.state === filter || filter === null}
 					<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
 						<span>
-							<p class="text-lg">Filmtitel: {item.options.query}</p>
-							<p class="text-sm">Dateipfad: {item.options.path}</p>
+							<p class="text-lg">
+								{$_('add.main.movie.title', { values: { title: item.options.query } })}
+							</p>
+							<p class="text-sm">
+								{$_('add.main.movie.path', { values: { title: item.options.path } })}
+							</p>
 						</span>
 						<button
 							class="btn bg-opacity-50 {buttonClass(status[index].state)}"
@@ -263,7 +270,7 @@
 					/>
 				</label>
 				<label class="input input-bordered flex items-center gap-2">
-					Veröffentlichungsjahr:
+					{$_('add.modal.inputs.year')}
 					<input
 						type="number"
 						class="grow"
@@ -275,7 +282,7 @@
 					<span class="badge badge-info">Optional</span>
 				</label>
 				<button type="submit" class="btn grow" disabled={status[modalID].state === 'searching'}>
-					Suchen
+					{$_('add.modal.search')}
 				</button>
 			</form>
 
@@ -285,16 +292,16 @@
 				<div
 					class="mx-auto flex max-w-md flex-col items-center rounded-lg bg-base-200 p-5 shadow-md"
 				>
-					<h2 class="mb-2 text-2xl font-semibold">Suche läuft...</h2>
+					<h2 class="mb-2 text-2xl font-semibold">{$_('add.modal.state.searching.title')}</h2>
 					<p class="mb-4 text-sm text-gray-600">
-						Wir durchsuchen gerade die Datenbank nach dem Film.
+						{$_('add.modal.state.searching.description')}
 					</p>
 					<div class="mb-4 flex items-center justify-center">
 						<div
 							class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
 						></div>
 					</div>
-					<button class="btn btn-secondary w-full" disabled> Suchen... </button>
+					<button class="btn btn-secondary w-full" disabled>{$_('add.modal.search')}</button>
 				</div>
 			{:else if modalID !== null && status[modalID]?.results?.length > 0}
 				<div class="grid gap-4">
@@ -315,7 +322,9 @@
 							/>
 							<div class="px-3 text-left">
 								<p><strong>{result.title}</strong></p>
-								<p class="text-sm text-gray-500">Veröffentlichungsdatum: {result.release_date}</p>
+								<p class="text-sm text-gray-500">
+									{$_('add.modal.inputs.year')}: {result.release_date}
+								</p>
 								<p class="text-gray-400">{result.overview}</p>
 							</div>
 						</button>
@@ -323,12 +332,12 @@
 				</div>
 			{:else if status[modalID].state === 'wait'}
 				<p class="text-center">
-					Es wurde noch nicht nach einem Film gesucht.
-					<br />
-					Bitte klicken Sie auf "Suchen", wenn Sie den Film hinzufügen möchten.
+					{$_('add.modal.state.notSearched')}
 				</p>
 			{:else}
-				<p class="text-center text-error">Es wurden keine Ergebnisse gefunden.</p>
+				<p class="text-center text-error">
+					{$_('add.modal.state.noResults')}
+				</p>
 			{/if}
 		{/if}
 	</div>
@@ -337,6 +346,8 @@
 		onclick={() => {
 			modal = false;
 			modalID = null;
-		}}>Schließen</button
+		}}
 	>
+		{$_('add.modal.close')}
+	</button>
 </dialog>
