@@ -21,8 +21,8 @@
 			"size": "Tamaño de visualización"
 		},
 		"movies": {
-			"noneFound": "No se encontró ninguna película que coincida con estos criterios.",
-			"noneAdded": "Aún no has agregado ninguna película.",
+			"noneFound": "No movie matches these criteria.",
+			"noneAdded": "You haven't added any movies yet.",
 			"badgeWatched": "Ya vista",
 			"posterAlt": "Póster de {title}"
 		}
