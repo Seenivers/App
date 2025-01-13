@@ -1,3 +1,33 @@
+# [0.18.0](https://github.com/Seenivers/App/compare/v0.17.0...v0.18.0) (2025-01-13)
+
+
+### Bug Fixes
+
+* add write permissions for content in the release workflow ([37328cb](https://github.com/Seenivers/App/commit/37328cb79d5d6f029333615ea53582d9fe42ed03))
+* **layout:** prevent context menu in production environment ([7293861](https://github.com/Seenivers/App/commit/72938610b7b2b1f07e3cb9279480286798d47aee))
+* **macOS:** add `signingIdentity` to Tauri config for self-signing ([1fedd00](https://github.com/Seenivers/App/commit/1fedd00444b54d8d668fbf3309b16ee410fa6d07))
+* update Renovate schedule to run before 5 a.m. and set timezone to Europe/Berlin ([bcfc28d](https://github.com/Seenivers/App/commit/bcfc28de924f6730dbfb9ed39f90f1bb2ddada9a))
+
+
+### Features
+
+* add error handling and actor details localization in German and English ([c8fb6c8](https://github.com/Seenivers/App/commit/c8fb6c803e057b45457dd3ed433f548d06f4eaca))
+* add network status localization in German ([4c945af](https://github.com/Seenivers/App/commit/4c945af368921d41abd3f02032880b54dc43dd05))
+* add network status messages and enhance add page localization in English ([486d332](https://github.com/Seenivers/App/commit/486d3321dbb24984ec901c7408429521caa52cec))
+* add support for German, French, and Spanish translations ([c17492c](https://github.com/Seenivers/App/commit/c17492c2d0253f230926148948c46144ab1e858e))
+* **dependencies:** add svelte-i18n for internationalization support ([bf7fe35](https://github.com/Seenivers/App/commit/bf7fe355cc3d2840d9cd8bff94c625670498f57a))
+* **docs:** add Crowdin badge to README ([06372b2](https://github.com/Seenivers/App/commit/06372b2f1ff3cbf83311ef7f2a3f8652cd990332))
+* enhance German localization for add page and modal components ([74856ec](https://github.com/Seenivers/App/commit/74856ecadc26879a422131d211ce1352c40e0771))
+* **i18n:** add internationalization support for title in the main page ([82eef02](https://github.com/Seenivers/App/commit/82eef02ad70a500f8e7a49f68dfc7358082a3201))
+* **i18n:** configure i18n-ally settings for locale paths and key style ([58b4c8f](https://github.com/Seenivers/App/commit/58b4c8f1126e5dca3a8e4953fbee34cc436133fd))
+* **i18n:** extended German translations for navigation and loading displays ([5f9a448](https://github.com/Seenivers/App/commit/5f9a448d2751f939831c49cb51a14c7db195ca5c))
+* **i18n:** extended German translations for search filters and loading displays ([e88eb7b](https://github.com/Seenivers/App/commit/e88eb7b3867e5015fb4b81d003f1ecf5755a0106))
+* **i18n:** implement internationalization with German locale support ([cc94b73](https://github.com/Seenivers/App/commit/cc94b738a82bbc8e3d9ef73426d0f5683fc5fb0e))
+* implement localization for navigation buttons in German ([bb2b1f0](https://github.com/Seenivers/App/commit/bb2b1f0bc8ee330e8655af298cabe1e1fb5e63c9))
+* **movie:** display YouTube trailers when available ([3105b66](https://github.com/Seenivers/App/commit/3105b666e88218b8281647452fd9eae29c75ebe8))
+* update i18n-ally settings for improved localization management ([8625cf5](https://github.com/Seenivers/App/commit/8625cf54d67ea2c05cdd2304d012da4739566113))
+* **workflow:** add code formatting job to release workflow ([76a5e37](https://github.com/Seenivers/App/commit/76a5e37f376716ba543053004b6ef83796afecfc))
+
 # [0.17.0](https://github.com/Seenivers/App/compare/v0.16.1...v0.17.0) (2025-01-07)
 
 
