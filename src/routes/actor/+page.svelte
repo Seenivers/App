@@ -3,6 +3,7 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import type { Cast, Crew } from '$lib/types/actor';
+	import { _ } from 'svelte-i18n';
 
 	interface Props {
 		data: PageData;
@@ -11,10 +12,10 @@
 	let { data }: Props = $props();
 
 	const genderMapping = {
-		1: 'Weiblich',
-		2: 'Männlich',
-		3: 'Non-Binär',
-		0: 'Unbekannt'
+		1: $_('actor.gendertypes.male'),
+		2: $_('actor.gendertypes.female'),
+		3: $_('actor.gendertypes.nonBinary'),
+		0: $_('actor.gendertypes.unknown')
 	};
 
 	// Sortiere die Einträge nach Datum (ohne Datum zuerst)
@@ -37,7 +38,7 @@
 			href="https://www.themoviedb.org/person/{data.result.id}"
 			class="btn btn-ghost"
 			target="_blank"
-			rel="noopener noreferrer">Bei TMDB öffnen</a
+			rel="noopener noreferrer">{$_('actor.nav.openTmdb')}</a
 		>
 	{/snippet}
 </Navbar>
@@ -59,7 +60,7 @@
 					<!-- Social Links -->
 					{#if actor.external_ids}
 						<div>
-							<h2 class="mb-2 text-2xl font-semibold">Social Media</h2>
+							<h2 class="mb-2 text-2xl font-semibold">{$_('actor.socialLinks')}</h2>
 							<div class="flex flex-wrap gap-2">
 								{#if actor.external_ids.imdb_id}
 									<a
@@ -126,42 +127,42 @@
 					{/if}
 					<!-- Grunddaten -->
 					<div>
-						<h2 class="text-2xl font-semibold">Bekannt für</h2>
+						<h2 class="text-2xl font-semibold">{$_('actor.knownFor')}</h2>
 						<p>{actor.known_for_department || 'Keine Angabe'}</p>
 					</div>
 					<div>
-						<h2 class="text-2xl font-semibold">Geschlecht</h2>
-						<p>{genderMapping[actor.gender]}</p>
+						<h2 class="text-2xl font-semibold">{$_('actor.gender')}</h2>
+						<p>{$_(genderMapping[actor.gender])}</p>
 					</div>
 					<div>
-						<h2 class="text-2xl font-semibold">Geboren am</h2>
+						<h2 class="text-2xl font-semibold">{$_('actor.birthdate.label')}</h2>
 						<p>
 							{actor.birthday
 								? `${new Date(actor.birthday).toLocaleDateString()} (${
 										new Date().getFullYear() - new Date(actor.birthday).getFullYear()
 									} Jahre alt)`
-								: 'Unbekannt'}
+								: $_('actor.birthdate.unknown')}
 						</p>
 					</div>
 					{#if actor.deathday}
 						<div>
-							<h2 class="text-2xl font-semibold">Gestorben am</h2>
+							<h2 class="text-2xl font-semibold">{$_('actor.deathdate.label')}</h2>
 							<p>{new Date(actor.deathday).toLocaleDateString()}</p>
 						</div>
 					{/if}
 					<div>
-						<h2 class="text-2xl font-semibold">Geburtsort</h2>
-						<p>{actor.place_of_birth || 'Unbekannt'}</p>
+						<h2 class="text-2xl font-semibold">{$_('actor.birthplace.label')}</h2>
+						<p>{actor.place_of_birth || $_('actor.birthplace.unknown')}</p>
 					</div>
 					<div>
-						<h2 class="text-2xl font-semibold">Auch bekannt als</h2>
+						<h2 class="text-2xl font-semibold">{$_('actor.aliases.label')}</h2>
 						<ul class="list-inside list-disc space-y-1">
 							{#if actor.also_known_as.length > 0}
 								{#each actor.also_known_as as alias}
 									<li>{alias}</li>
 								{/each}
 							{:else}
-								<li>Keine weiteren Namen bekannt</li>
+								<li>{$_('actor.aliases.none')}</li>
 							{/if}
 						</ul>
 					</div>
@@ -172,36 +173,38 @@
 			<div class="card w-full bg-base-200 p-5 shadow-md lg:col-span-2">
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 				<div class="mt-5">
-					<h2 class="text-2xl font-semibold">Biografie</h2>
+					<h2 class="text-2xl font-semibold">{$_('actor.biography.label')}</h2>
 					<p class="whitespace-pre-wrap text-base-content">
-						{actor.biography || 'Keine Biografie verfügbar.'}
+						{actor.biography || $_('actor.biography.none')}
 					</p>
 				</div>
 				<div class="mt-5">
-					<h2 class="text-2xl font-semibold">Filmografie (Darsteller)</h2>
+					<h2 class="text-2xl font-semibold">{$_('actor.filmography.title')}</h2>
 					<ul class="mt-2 grid gap-2">
 						{#each sortByDate<Cast>(actor.combined_credits.cast) as movie}
 							<li class="flex items-center gap-2">
 								<span class="badge badge-accent"
-									>{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</span
+									>{movie.release_date
+										? new Date(movie.release_date).getFullYear()
+										: $_('actor.filmography.releaseUnknown')}</span
 								>
 								<div>
 									<span class="font-semibold">{movie.title || movie.name}</span>
-									- {movie.character || 'Rolle unbekannt'}
+									- {movie.character || $_('actor.filmography.roleUnknown')}
 								</div>
 							</li>
 						{/each}
 					</ul>
 				</div>
 				<div class="mt-5">
-					<h2 class="text-2xl font-semibold">Beteiligungen (Crew)</h2>
+					<h2 class="text-2xl font-semibold">{$_('actor.crew.title')}</h2>
 					<ul class="mt-2 grid gap-2">
 						{#each sortByDate<Crew>(actor.combined_credits.crew) as crewItem}
 							<li class="flex items-center gap-2">
 								<span class="badge badge-secondary"
 									>{crewItem.release_date
 										? new Date(crewItem.release_date).getFullYear()
-										: 'N/A'}</span
+										: $_('actor.crew.releaseUnknown')}</span
 								>
 								<div>
 									<span class="font-semibold">{crewItem.title || crewItem.name}</span>

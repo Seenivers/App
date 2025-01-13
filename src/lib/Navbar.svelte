@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { _ } from 'svelte-i18n';
 	interface NavbarProps {
 		back?: boolean;
 		onclick?: () => void;
@@ -22,7 +23,7 @@
 		<div class="gap-1">
 			{#if back}
 				<button class="btn btn-sm md:btn-md" {onclick}>
-					{window.history.length > 1 ? 'Zurück' : 'Zur Startseite'}
+					{window.history.length > 1 ? $_('nav.back') : $_('nav.backToHome')}
 				</button>
 			{/if}
 			{@render left?.()}
