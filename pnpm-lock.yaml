@@ -36,11 +36,11 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0
       better-sqlite3:
-        specifier: ^11.1.2
-        version: 11.7.0
+        specifier: ^11.7.2
+        version: 11.7.2
       drizzle-orm:
         specifier: ^0.38.2
-        version: 0.38.3(@types/better-sqlite3@7.6.12)(better-sqlite3@11.7.0)
+        version: 0.38.3(@types/better-sqlite3@7.6.12)(better-sqlite3@11.7.2)
       hls.js:
         specifier: ^1.5.18
         version: 1.5.18
@@ -1229,8 +1229,8 @@ packages:
   before-after-hook@3.0.2:
     resolution: {integrity: sha512-Nik3Sc0ncrMK4UUdXQmAnRtzmNQTAAXmXIopizwZ1W1t8QmfJj+zL4OA2I7XPTPW5z5TDqv4hRo/JzouDJnX3A==}
 
-  better-sqlite3@11.7.0:
-    resolution: {integrity: sha512-mXpa5jnIKKHeoGzBrUJrc65cXFKcILGZpU3FXR0pradUEm9MA7UZz02qfEejaMcm9iXrSOCenwwYMJ/tZ1y5Ig==}
+  better-sqlite3@11.7.2:
+    resolution: {integrity: sha512-10a57cHVDmfNQS4jrZ9AH2t+2ekzYh5Rhbcnb4ytpmYweoLdogDmyTt5D+hLiY9b44Mx9foowb/4iXBTO2yP3Q==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -4219,7 +4219,7 @@ snapshots:
 
   before-after-hook@3.0.2: {}
 
-  better-sqlite3@11.7.0:
+  better-sqlite3@11.7.2:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.2
@@ -4484,10 +4484,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.38.3(@types/better-sqlite3@7.6.12)(better-sqlite3@11.7.0):
+  drizzle-orm@0.38.3(@types/better-sqlite3@7.6.12)(better-sqlite3@11.7.2):
     optionalDependencies:
       '@types/better-sqlite3': 7.6.12
-      better-sqlite3: 11.7.0
+      better-sqlite3: 11.7.2
 
   duplexer2@0.1.4:
     dependencies:
