@@ -64,7 +64,7 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(semantic-release@24.2.0(typescript@5.7.2))
       '@sveltejs/adapter-static':
-        specifier: ^3.0.6
+        specifier: ^3.0.8
         version: 3.0.8(@sveltejs/kit@2.15.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.16.1)(vite@6.0.6(@types/node@22.10.5)(jiti@1.21.7)(yaml@2.6.1)))(svelte@5.16.1)(vite@6.0.6(@types/node@22.10.5)(jiti@1.21.7)(yaml@2.6.1)))
       '@sveltejs/kit':
         specifier: ^2.11.1
