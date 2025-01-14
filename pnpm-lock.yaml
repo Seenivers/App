@@ -109,7 +109,7 @@ importers:
         specifier: ^15.14.0
         version: 15.14.0
       marked:
-        specifier: ^15.0.5
+        specifier: ^15.0.6
         version: 15.0.6
       prettier:
         specifier: ^3.4.2
