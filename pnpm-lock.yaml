@@ -106,7 +106,7 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0
       globals:
-        specifier: ^15.13.0
+        specifier: ^15.14.0
         version: 15.14.0
       marked:
         specifier: ^15.0.5

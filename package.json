@@ -33,7 +33,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.1",
 		"fuse.js": "^7.0.0",
-		"globals": "^15.13.0",
+		"globals": "^15.14.0",
 		"marked": "^15.0.5",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
