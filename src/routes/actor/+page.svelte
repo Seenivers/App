@@ -2,7 +2,6 @@
 	import type { PageData } from './$types';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
-	import type { Cast, Crew } from '$lib/types/actor';
 	import { _ } from 'svelte-i18n';
 
 	interface Props {
