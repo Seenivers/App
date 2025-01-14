@@ -188,10 +188,15 @@
 										? new Date(movie.release_date).getFullYear()
 										: $_('actor.filmography.releaseUnknown')}</span
 								>
-								<div>
+								<a
+									href={movie.media_type === 'tv'
+										? 'https://www.themoviedb.org/tv/' + movie.id
+										: movie.media_type + '?id=' + movie.id}
+									data-sveltekit-preload-data="tap"
+								>
 									<span class="font-semibold">{movie.title || movie.name}</span>
 									- {movie.character || $_('actor.filmography.roleUnknown')}
-								</div>
+								</a>
 							</li>
 						{/each}
 					</ul>
