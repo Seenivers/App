@@ -12,8 +12,8 @@
 	let { data }: Props = $props();
 
 	const genderMapping = {
-		1: $_('actor.gendertypes.male'),
-		2: $_('actor.gendertypes.female'),
+		1: $_('actor.gendertypes.female'),
+		2: $_('actor.gendertypes.male'),
 		3: $_('actor.gendertypes.nonBinary'),
 		0: $_('actor.gendertypes.unknown')
 	};
