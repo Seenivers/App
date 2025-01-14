@@ -5,7 +5,11 @@
 		"**/.svelte-kit": true,
 		"**/build": true,
 		"**/pnpm-lock.yaml": true,
-		"**/target": true
+		"**/target": true,
+		"**/docs": true,
+		"**/locales": true,
+		"CHANGELOG.md": true,
+		"llms-full.txt": true
 	},
 	"sonarlint.connectedMode.project": {
 		"connectionId": "seenivers",
