@@ -23,7 +23,7 @@
 		"@sveltejs/kit": "^2.11.1",
 		"@sveltejs/vite-plugin-svelte": "^5.0.2",
 		"@tauri-apps/cli": "^2.1.0",
-		"@types/better-sqlite3": "^7.6.11",
+		"@types/better-sqlite3": "^7.6.12",
 		"@types/eslint-config-prettier": "^6.11.3",
 		"@types/node": "^22.10.5",
 		"autoprefixer": "^10.4.20",
