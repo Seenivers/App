@@ -137,11 +137,14 @@
 					<div>
 						<h2 class="text-2xl font-semibold">{$_('actor.birthdate.label')}</h2>
 						<p>
-							{actor.birthday
-								? `${new Date(actor.birthday).toLocaleDateString()} (${
-										new Date().getFullYear() - new Date(actor.birthday).getFullYear()
-									} Jahre alt)`
-								: $_('actor.birthdate.unknown')}
+							{#if actor.birthday}
+								{@const birthDate = new Date(actor.birthday)}
+								{@const deathDate = actor.deathday ? new Date(actor.deathday) : new Date()}
+								{@const age = deathDate.getFullYear() - birthDate.getFullYear()}
+								{birthDate.toLocaleDateString()} ({age} Jahre alt)
+							{:else}
+								{$_('actor.birthdate.unknown')}
+							{/if}
 						</p>
 					</div>
 					{#if actor.deathday}
