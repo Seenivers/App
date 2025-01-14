@@ -6,12 +6,12 @@
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
 	import Videoplayer from '$lib/player/Plyr.svelte';
-	import { open } from '@tauri-apps/plugin-shell';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
 	import { getCollection } from '$lib/db/funktion';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
+	import { openUrl } from '@tauri-apps/plugin-opener';
 
 	interface Props {
 		data: PageData;
@@ -42,7 +42,7 @@
 		if (!movieData) return;
 		try {
 			// Öffne die Datei mit dem Standardplayer
-			await open(movieData.path);
+			await openUrl(movieData.path);
 		} catch (err) {
 			error('Failed to open video with external player: ' + err);
 		}
@@ -127,7 +127,7 @@
 										onclick={(e) => {
 											{
 												e.preventDefault();
-												open(`https://www.youtube.com/watch?v=${trailer.key}`);
+												openUrl(`https://www.youtube.com/watch?v=${trailer.key}`);
 											}
 										}}
 										class="btn btn-primary mt-2"

@@ -5,8 +5,8 @@
 	import { debug, error } from '@tauri-apps/plugin-log';
 	import { marked } from 'marked';
 	import '$lib/css/md.css';
-	import { open } from '@tauri-apps/plugin-shell';
 	import { isOnline } from './stores.svelte';
+	import { openUrl } from '@tauri-apps/plugin-opener';
 
 	let update: Update | null = $state(null);
 	let downloadProgress = $state(0);
@@ -41,7 +41,7 @@
 		if (event.target instanceof HTMLAnchorElement) {
 			const URL = event.target.getAttribute('href');
 			if (URL) {
-				open(URL);
+				openUrl(URL);
 			}
 		}
 	}
