@@ -181,47 +181,39 @@
 						{actor.biography || $_('actor.biography.none')}
 					</p>
 				</div>
-				<div class="mt-5">
-					<h2 class="text-2xl font-semibold">{$_('actor.filmography.title')}</h2>
-					<ul class="mt-2 grid gap-2">
-						{#each sortByDate<Cast>(actor.combined_credits.cast) as movie}
-							<li class="flex items-center gap-2">
-								<span class="badge badge-accent"
-									>{movie.release_date
-										? new Date(movie.release_date).getFullYear()
-										: $_('actor.filmography.releaseUnknown')}</span
-								>
-								<a
-									href={movie.media_type === 'tv'
-										? 'https://www.themoviedb.org/tv/' + movie.id
-										: movie.media_type + '?id=' + movie.id}
-									data-sveltekit-preload-data="tap"
-								>
-									<span class="font-semibold">{movie.title || movie.name}</span>
-									- {movie.character || $_('actor.filmography.roleUnknown')}
-								</a>
-							</li>
-						{/each}
-					</ul>
-				</div>
-				<div class="mt-5">
-					<h2 class="text-2xl font-semibold">{$_('actor.crew.title')}</h2>
-					<ul class="mt-2 grid gap-2">
-						{#each sortByDate<Crew>(actor.combined_credits.crew) as crewItem}
-							<li class="flex items-center gap-2">
-								<span class="badge badge-secondary"
-									>{crewItem.release_date
-										? new Date(crewItem.release_date).getFullYear()
-										: $_('actor.crew.releaseUnknown')}</span
-								>
-								<div>
-									<span class="font-semibold">{crewItem.title || crewItem.name}</span>
-									- {crewItem.job}
-								</div>
-							</li>
-						{/each}
-					</ul>
-				</div>
+				{#each ['cast', 'crew'] as const as type}
+					<div class="mt-5">
+						{#if actor.combined_credits[type].length > 0}
+							<h2 class="text-2xl font-semibold">
+								{$_(`actor.${type === 'cast' ? 'crew' : 'filmography'}.title`)}
+							</h2>
+							<ul class="mt-2 grid gap-2">
+								{#each sortByDate(actor.combined_credits[type]) as item}
+									<li class="flex items-center gap-2">
+										<span class="badge {type === 'cast' ? 'badge-accent' : 'badge-secondary'}">
+											{item.release_date
+												? new Date(item.release_date).getFullYear()
+												: $_(`actor.${type === 'cast' ? 'crew' : 'filmography'}.releaseUnknown`)}
+										</span>
+										<a
+											href={item.media_type === 'tv'
+												? `https://www.themoviedb.org/tv/${item.id}`
+												: `${item.media_type}?id=${item.id}`}
+											data-sveltekit-preload-data="tap"
+										>
+											<span class="font-semibold">
+												{item.title || item.name}
+											</span>
+											- {type === 'cast'
+												? item.character || $_('actor.filmography.roleUnknown')
+												: item.job}
+										</a>
+									</li>
+								{/each}
+							</ul>
+						{/if}
+					</div>
+				{/each}
 			</div>
 		</div>
 	{/if}
