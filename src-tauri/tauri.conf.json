@@ -25,8 +25,8 @@
 		],
 		"security": {
 			"csp": {
-				"default-src": "'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org https://api.themoviedb.org",
-				"connect-src": "'self' ipc: http://ipc.localhost https://api.themoviedb.org",
+				"default-src": "'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org",
+				"connect-src": "'self' ipc: http://ipc.localhost",
 				"img-src": "'self' http://asset.localhost https://image.tmdb.org data: blob:",
 				"style-src": "'self' 'unsafe-inline'",
 				"media-src": "'self' data:"

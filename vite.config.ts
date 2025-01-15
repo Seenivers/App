@@ -19,7 +19,7 @@ export default defineConfig({
 	server: {
 		headers: {
 			'content-security-policy':
-				"default-src 'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org https://api.themoviedb.org; connect-src 'self' ipc: http://ipc.localhost https://api.themoviedb.org; img-src 'self' http://asset.localhost https://image.tmdb.org data: blob:;",
+				"default-src 'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org; connect-src 'self' ipc: http://ipc.localhost; img-src 'self' http://asset.localhost https://image.tmdb.org data: blob:;",
 			'access-control-allow-origin': 'http://localhost:1420'
 		},
 		host: host ?? false,
