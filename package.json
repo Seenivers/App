@@ -58,7 +58,7 @@
 		"@tauri-apps/plugin-updater": "^2.3.0",
 		"better-sqlite3": "^11.7.2",
 		"drizzle-orm": "^0.38.2",
-		"hls.js": "^1.5.18",
+		"hls.js": "^1.5.19",
 		"plyr": "^3.7.8",
 		"svelte-i18n": "^4.0.1",
 		"vidstack": "^1.12.12"
