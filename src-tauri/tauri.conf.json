@@ -56,7 +56,7 @@
 		"shortDescription": "Seenivers is your personal hub for managing and enjoying movies and TV series. Track, stream, and stay updated—all in one app.",
 		"longDescription": "Seenivers is an all-in-one app for movie and TV enthusiasts. Easily manage your media collection, track what you've watched and what's next, maintain a wishlist, and play content either within the app or using an external player. Get notifications about new releases and enjoy your media offline whenever you want.",
 		"copyright": "Copyright © Seenivers.net, All rights reserved.",
-		"targets": "all",
+		"targets": ["app", "appimage", "deb", "dmg", "msi", "rpm"],
 		"createUpdaterArtifacts": true,
 		"category": "Video",
 		"homepage": "https://seenivers.com",
