@@ -192,7 +192,11 @@
 				{$_('add.main.buttons.clearAll')}
 			</button>
 		</div>
-		<select class="select" bind:value={filter} disabled={!online || searchList.length === 0}>
+		<select
+			class="select select-bordered max-w-96"
+			bind:value={filter}
+			disabled={!online || searchList.length === 0}
+		>
 			<option value={null} selected disabled={searchList.length === 0}
 				>{$_('add.main.filter.default')}</option
 			>
