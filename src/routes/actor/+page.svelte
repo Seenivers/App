@@ -195,18 +195,7 @@
 												? new Date(item.release_date).getFullYear()
 												: $_(`actor.${type === 'cast' ? 'crew' : 'filmography'}.releaseUnknown`)}
 										</span>
-										<a
-											href={item.media_type === 'tv'
-												? `https://www.themoviedb.org/tv/${item.id}`
-												: `${item.media_type}?id=${item.id}`}
-											onclick={(e) => {
-												if (item.media_type === 'tv') {
-													e.preventDefault();
-													openUrl(`https://www.themoviedb.org/tv/${item.id}`);
-												}
-											}}
-											data-sveltekit-preload-data="tap"
-										>
+										<a href={`${item.media_type}?id=${item.id}`} data-sveltekit-preload-data="tap">
 											<span class="font-semibold">
 												{item.title || item.name}
 											</span>
