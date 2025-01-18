@@ -11,7 +11,7 @@ import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
-import { isOnline, status } from '$lib/stores.svelte';
+import { isOnline, searchList } from '$lib/stores.svelte';
 import { get } from 'svelte/store';
 import { open } from '@tauri-apps/plugin-dialog';
 import { join, videoDir } from '@tauri-apps/api/path';
@@ -92,7 +92,7 @@ export async function addNewFiles(files: string[]) {
  */
 async function filterNewFiles(files: string[]) {
 	// Erstelle ein Set für bereits existierende Pfade, um die Suche effizienter zu machen
-	const existingPaths = new Set(status.map((item) => item.options.path));
+	const existingPaths = new Set(searchList.map((item) => item.options.path));
 
 	// Filtere die Dateien parallel
 	const newFiles = await Promise.all(
@@ -142,7 +142,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 	});
 
 	// Aktualisiere den Status nur einmal
-	status.push(...tempStatus);
+	searchList.push(...tempStatus);
 }
 //#endregion
 
@@ -159,7 +159,7 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 
 	updateMovieStatus(i, 'searching');
 
-	const { query, primaryReleaseYear } = status[i].options;
+	const { query, primaryReleaseYear } = searchList[i].options;
 
 	try {
 		// TMDB-Suche durchführen
@@ -168,30 +168,30 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 		// Update status based on results
 
 		if (result.length === 1) {
-			status[i] = {
-				...status[i],
+			searchList[i] = {
+				...searchList[i],
 				results: result,
 				options: {
-					...status[i].options,
+					...searchList[i].options,
 					id: result[0].id
 				}
 			};
 
 			// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
 			if (modal) {
-				status[i].state = 'foundOne';
+				searchList[i].state = 'foundOne';
 			} else {
-				status[i].state = 'wait';
+				searchList[i].state = 'wait';
 			}
 		} else if (result.length > 1) {
-			status[i] = {
-				...status[i],
+			searchList[i] = {
+				...searchList[i],
 				results: result,
 				state: 'foundMultiple'
 			};
 		} else {
-			status[i] = {
-				...status[i],
+			searchList[i] = {
+				...searchList[i],
 				results: [],
 				state: 'notFound'
 			};
@@ -205,8 +205,8 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 			error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
 		}
 
-		status[i] = {
-			...status[i],
+		searchList[i] = {
+			...searchList[i],
 			results: [],
 			state: 'notFound'
 		};
@@ -243,7 +243,7 @@ function checkOnlineStatus() {
 }
 
 function updateMovieStatus(index: number, newState: MovieSearchState) {
-	status[index].state = newState;
+	searchList[index].state = newState;
 }
 
 async function processDownloadQueue() {
@@ -269,7 +269,7 @@ async function processDownloadQueue() {
 			// Film zur Datenbank hinzufügen
 			await addMovie({
 				id: nextMovie.id,
-				path: status[nextMovie.index].options.path,
+				path: searchList[nextMovie.index].options.path,
 				tmdb: result,
 				updated: new Date()
 			});
