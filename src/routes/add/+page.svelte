@@ -175,7 +175,6 @@
 					await selectFile();
 					load();
 				}}
-				disabled={!online.current}
 			>
 				{$_('add.main.buttons.selectFile')}
 			</button>
@@ -185,7 +184,6 @@
 					await selectFolder();
 					load();
 				}}
-				disabled={!online.current}
 			>
 				{$_('add.main.buttons.selectFolder')}
 			</button>
@@ -195,7 +193,7 @@
 					searchList.length = 0;
 					filter = null;
 				}}
-				disabled={!online.current || searchList.length === 0}
+				disabled={searchList.length === 0}
 			>
 				{$_('add.main.buttons.clearAll')}
 			</button>
