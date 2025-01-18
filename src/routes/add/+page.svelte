@@ -187,16 +187,18 @@
 			>
 				{$_('add.main.buttons.selectFolder')}
 			</button>
-			<button
-				class="btn hover:btn-error"
-				onclick={() => {
-					searchList.length = 0;
-					filter = null;
-				}}
-				disabled={searchList.length === 0}
-			>
-				{$_('add.main.buttons.clearAll')}
-			</button>
+			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+				<button
+					class="btn hover:btn-error"
+					ondblclick={() => {
+						searchList.length = 0;
+						filter = null;
+					}}
+					disabled={searchList.length === 0}
+				>
+					{$_('add.main.buttons.clearAll')}
+				</button>
+			</div>
 			<select class="select" bind:value={filter} disabled={!online || searchList.length === 0}>
 				<option value={null} selected disabled={searchList.length === 0}
 					>{$_('add.main.filter.default')}</option
