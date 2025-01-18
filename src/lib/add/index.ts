@@ -307,6 +307,8 @@ async function processDownloadQueue() {
 		} else {
 			error(`Unbekannter Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}`);
 		}
+		// Status aktualisieren, dass der Film **NICHT** erfolgreich heruntergeladen wurde
+		updateMovieStatus(nextMovie.index, 'notFound');
 	} finally {
 		// Status aktualisieren, dass der Film erfolgreich heruntergeladen wurde
 		updateMovieStatus(nextMovie.index, 'downloaded');
