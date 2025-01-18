@@ -8,17 +8,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
-    name: Code Formatting
-
-    permissions:
-      contents: write
-
-    uses: ./.github/workflows/format.yml
-
   semantic-release:
     name: Semantic Release
-    needs: format
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.check_asset_count.outputs.should_run }}
@@ -94,6 +85,15 @@ jobs:
           else
             echo "should_run=true" >> $GITHUB_OUTPUT
           fi
+
+  format:
+    name: Code Formatting
+    needs: semantic-release
+
+    permissions:
+      contents: write
+
+    uses: ./.github/workflows/format.yml
 
   tauri-release:
     name: Tauri Release
