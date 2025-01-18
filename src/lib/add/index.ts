@@ -301,9 +301,6 @@ async function processDownloadQueue() {
 				await image(path, 'actors', true);
 			}
 		}
-
-		// Status aktualisieren, dass der Film erfolgreich heruntergeladen wurde
-		updateMovieStatus(nextMovie.index, 'downloaded');
 	} catch (err: unknown) {
 		if (err instanceof Error) {
 			error(`Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}: ${err.message}`);
@@ -311,6 +308,9 @@ async function processDownloadQueue() {
 			error(`Unbekannter Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}`);
 		}
 	} finally {
+		// Status aktualisieren, dass der Film erfolgreich heruntergeladen wurde
+		updateMovieStatus(nextMovie.index, 'downloaded');
+
 		// Flag zurücksetzen, dass der Download abgeschlossen ist
 		downloadingMovie = false;
 
