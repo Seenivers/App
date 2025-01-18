@@ -153,7 +153,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 //#region search Movie
 export async function searchMovieStatus(i: number) {
 	// Prüfe die Internetverbindung
-	if (!online) {
+	if (!online.current) {
 		error(
 			'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
 		);
@@ -234,7 +234,7 @@ export async function addNewMovie(id: number, index: number) {
 }
 
 function checkOnlineStatus() {
-	if (!online) {
+	if (!online.current) {
 		error('Sie sind nicht mit dem Internet verbunden.');
 		return false;
 	}

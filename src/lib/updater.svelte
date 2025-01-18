@@ -15,7 +15,7 @@
 	let modalOpen = $state(false);
 
 	onMount(async () => {
-		if (!online) return;
+		if (!online.current) return;
 
 		update = await check();
 
@@ -47,7 +47,7 @@
 	}
 
 	async function download() {
-		if (!online) {
+		if (!online.current) {
 			error('You are not connected to the internet.');
 			return;
 		}
@@ -115,7 +115,7 @@
 
 			<div class="mt-6 flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 				{#if update && !downloadStarted}
-					<button class="btn btn-primary" disabled={!online} onclick={download}
+					<button class="btn btn-primary" disabled={!online.current} onclick={download}
 						>Update herunterladen</button
 					>
 				{:else if update && downloadFinished}

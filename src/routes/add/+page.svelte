@@ -71,7 +71,7 @@
 		}
 
 		// Verhindere, dass die Funktion startet, wenn bereits geladen wird oder die Verbindung offline ist
-		if (loading || !online) return;
+		if (loading || !online.current) return;
 
 		loading = true;
 
@@ -156,7 +156,7 @@
 ></Navbar>
 
 <main class="z-0 flex flex-col items-center p-5">
-	{#if !online}
+	{#if !online.current}
 		<div class="alert alert-error text-center">
 			{$_('networkStatus.offline')}
 		</div>
@@ -168,7 +168,7 @@
 					await selectFile();
 					load();
 				}}
-				disabled={!online}
+				disabled={!online.current}
 			>
 				{$_('add.main.buttons.selectFile')}
 			</button>
@@ -178,7 +178,7 @@
 					await selectFolder();
 					load();
 				}}
-				disabled={!online}
+				disabled={!online.current}
 			>
 				{$_('add.main.buttons.selectFolder')}
 			</button>
@@ -188,7 +188,7 @@
 					searchList.length = 0;
 					filter = null;
 				}}
-				disabled={!online || searchList.length === 0}
+				disabled={!online.current || searchList.length === 0}
 			>
 				{$_('add.main.buttons.clearAll')}
 			</button>

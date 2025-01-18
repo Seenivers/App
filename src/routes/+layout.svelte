@@ -44,7 +44,7 @@
 	{#if db && settings}
 		{@render children?.()}
 		<Toast />
-		{#if online && !import.meta.env.DEV}
+		{#if online.current && !import.meta.env.DEV}
 			<Updater />
 		{/if}
 	{:else}

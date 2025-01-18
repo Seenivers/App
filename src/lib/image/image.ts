@@ -118,7 +118,7 @@ export async function image(
 	// Überprüfen, ob das Bild lokal vorhanden ist oder heruntergeladen werden muss
 	const imageExists = await checkImageExistence(filePath);
 	if (!imageExists) {
-		if (online) {
+		if (online.current) {
 			const remoteSrc = `${imageURL}${file}`;
 
 			// Wenn das Bild nicht existiert und der Download aktiviert ist, versuche es herunterzuladen
