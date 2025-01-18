@@ -11,11 +11,11 @@ import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
 import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
-import { isOnline, searchList } from '$lib/stores.svelte';
-import { get } from 'svelte/store';
+import { searchList } from '$lib/stores.svelte';
 import { open } from '@tauri-apps/plugin-dialog';
 import { join, videoDir } from '@tauri-apps/api/path';
 import { readDir } from '@tauri-apps/plugin-fs';
+import { online } from 'svelte/reactivity/window';
 
 export function buttonClass(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
@@ -153,7 +153,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 //#region search Movie
 export async function searchMovieStatus(i: number) {
 	// Prüfe die Internetverbindung
-	if (!get(isOnline)) {
+	if (!online) {
 		error(
 			'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
 		);
@@ -234,7 +234,7 @@ export async function addNewMovie(id: number, index: number) {
 }
 
 function checkOnlineStatus() {
-	if (!get(isOnline)) {
+	if (!online) {
 		error('Sie sind nicht mit dem Internet verbunden.');
 		return false;
 	}

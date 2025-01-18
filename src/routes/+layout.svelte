@@ -9,7 +9,7 @@
 	import { attachConsole, attachLogger, trace } from '@tauri-apps/plugin-log';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/log';
-	import { isOnline } from '$lib/stores.svelte';
+	import { online } from 'svelte/reactivity/window';
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -44,7 +44,7 @@
 	{#if db && settings}
 		{@render children?.()}
 		<Toast />
-		{#if $isOnline && !import.meta.env.DEV}
+		{#if online && !import.meta.env.DEV}
 			<Updater />
 		{/if}
 	{:else}

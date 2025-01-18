@@ -5,8 +5,8 @@
 	import { debug, error } from '@tauri-apps/plugin-log';
 	import { marked } from 'marked';
 	import '$lib/css/md.css';
-	import { isOnline } from './stores.svelte';
 	import { openUrl } from '@tauri-apps/plugin-opener';
+	import { online } from 'svelte/reactivity/window';
 
 	let update: Update | null = $state(null);
 	let downloadProgress = $state(0);
@@ -15,7 +15,7 @@
 	let modalOpen = $state(false);
 
 	onMount(async () => {
-		if (!$isOnline) return;
+		if (!online) return;
 
 		update = await check();
 
@@ -47,7 +47,7 @@
 	}
 
 	async function download() {
-		if (!$isOnline) {
+		if (!online) {
 			error('You are not connected to the internet.');
 			return;
 		}
@@ -115,7 +115,7 @@
 
 			<div class="mt-6 flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 				{#if update && !downloadStarted}
-					<button class="btn btn-primary" disabled={!$isOnline} onclick={download}
+					<button class="btn btn-primary" disabled={!online} onclick={download}
 						>Update herunterladen</button
 					>
 				{:else if update && downloadFinished}

@@ -8,7 +8,7 @@
 		selectFile,
 		selectFolder
 	} from '$lib/add/index';
-	import { isOnline, searchList } from '$lib/stores.svelte';
+	import { searchList } from '$lib/stores.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { clearResultsOnLeave } from '$lib';
@@ -18,6 +18,7 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
+	import { online } from 'svelte/reactivity/window';
 
 	interface Props {
 		data: PageData;
@@ -70,7 +71,7 @@
 		}
 
 		// Verhindere, dass die Funktion startet, wenn bereits geladen wird oder die Verbindung offline ist
-		if (loading || !$isOnline) return;
+		if (loading || !online) return;
 
 		loading = true;
 
@@ -155,7 +156,7 @@
 ></Navbar>
 
 <main class="z-0 flex flex-col items-center p-5">
-	{#if !$isOnline}
+	{#if !online}
 		<div class="alert alert-error text-center">
 			{$_('networkStatus.offline')}
 		</div>
@@ -167,7 +168,7 @@
 					await selectFile();
 					load();
 				}}
-				disabled={!$isOnline}
+				disabled={!online}
 			>
 				{$_('add.main.buttons.selectFile')}
 			</button>
@@ -177,7 +178,7 @@
 					await selectFolder();
 					load();
 				}}
-				disabled={!$isOnline}
+				disabled={!online}
 			>
 				{$_('add.main.buttons.selectFolder')}
 			</button>
@@ -187,11 +188,11 @@
 					searchList.length = 0;
 					filter = null;
 				}}
-				disabled={!$isOnline || searchList.length === 0}
+				disabled={!online || searchList.length === 0}
 			>
 				{$_('add.main.buttons.clearAll')}
 			</button>
-			<select class="select" bind:value={filter} disabled={!$isOnline || searchList.length === 0}>
+			<select class="select" bind:value={filter} disabled={!online || searchList.length === 0}>
 				<option value={null} selected disabled={searchList.length === 0}
 					>{$_('add.main.filter.default')}</option
 				>
