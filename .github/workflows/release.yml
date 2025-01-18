@@ -97,7 +97,7 @@ jobs:
 
   tauri-release:
     name: Tauri Release
-    needs: semantic-release
+    needs: format
     if: needs.semantic-release.outputs.should_run == 'true'
 
     permissions:
