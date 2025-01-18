@@ -22,7 +22,7 @@
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
-		"@tauri-apps/cli": "^2.1.0",
+		"@tauri-apps/cli": "^2.2.3",
 		"@types/better-sqlite3": "^7.6.12",
 		"@types/eslint-config-prettier": "^6.11.3",
 		"@types/node": "^22.10.7",
@@ -47,7 +47,7 @@
 		"vite": "^6.0.7"
 	},
 	"dependencies": {
-		"@tauri-apps/api": "^2.1.1",
+		"@tauri-apps/api": "^2.2.0",
 		"@tauri-apps/plugin-dialog": "^2.2.0",
 		"@tauri-apps/plugin-fs": "^2.2.0",
 		"@tauri-apps/plugin-http": "^2.2.0",
