@@ -1,3 +1,5 @@
+import type { Movie, Search } from './searchMovie';
+
 /**
  * Represents the payload for a drag-and-drop operation,
  * including the file paths and the position where the drop occurs.
@@ -23,7 +25,7 @@ export interface DropPayload {
  * - `foundMultiple`: Multiple results were found.
  * - `downloading`: Results are being downloaded.
  */
-export type MovieSearchState =
+export type MovieSearchStatus =
 	| 'waitForSearching'
 	| 'searching'
 	| 'notFound'
@@ -33,53 +35,18 @@ export type MovieSearchState =
 	| 'downloaded';
 
 /**
- * Represents a single movie result from a search query.
- */
-export interface MovieResult {
-	/** Indicates if the movie is for adults only. */
-	adult: boolean;
-	/** The URL path to the movie's backdrop image (if available). */
-	backdrop_path: string | null;
-	/** Array of genre IDs associated with the movie. */
-	genre_ids: number[];
-	/** The unique identifier for the movie. */
-	id: number;
-	/** The original language of the movie. */
-	original_language: string;
-	/** The original title of the movie. */
-	original_title: string;
-	/** A brief summary or overview of the movie. */
-	overview: string;
-	/** The popularity score of the movie. */
-	popularity: number;
-	/** The URL path to the movie's poster image (if available). */
-	poster_path: string | null;
-	/** The release date of the movie in YYYY-MM-DD format. */
-	release_date: string;
-	/** The title of the movie. */
-	title: string;
-	/** Indicates if the movie is a video (e.g., a trailer or featurette). */
-	video: boolean;
-	/** The average vote score of the movie. */
-	vote_average: number;
-	/** The total number of votes for the movie. */
-	vote_count: number;
-}
-
-/**
  * Options used to configure a movie search query.
  */
 export interface SearchOptions {
 	/** The API path or endpoint for the search. */
 	path: string;
-	/** The search query string (e.g., movie title). */
-	query: string;
+	/** The search file Name. */
+	fileName: string;
 	/** Whether to include adult content in the search results. */
-	includeAdult?: boolean;
+	includeAdult: boolean;
 	/** The primary release year of the movie (optional). */
 	primaryReleaseYear?: string | number;
-	/** The page number for paginated search results. */
-	page: number;
+
 	id?: number;
 }
 
@@ -89,9 +56,9 @@ export interface SearchOptions {
  */
 export interface MovieSearchContext {
 	/** The current state of the search. */
-	state: MovieSearchState;
+	status: MovieSearchStatus;
 	/** The list of movie results returned by the search. */
-	results: MovieResult[];
+	search: Search<Movie>;
 	/** The search options used for the query. */
 	options: SearchOptions;
 }

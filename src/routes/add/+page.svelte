@@ -11,7 +11,7 @@
 	import { onMount } from 'svelte';
 	import { clearResultsOnLeave } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
-	import type { MovieSearchState } from '$lib/types/add';
+	import type { MovieSearchStatus } from '$lib/types/add';
 	import { error, warn } from '@tauri-apps/plugin-log';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
@@ -27,13 +27,13 @@
 	let modal = $state(false);
 	let modalID: number | null = $state(null);
 	let loading = false;
-	let filter: MovieSearchState | null = $state(null);
+	let filter: MovieSearchStatus | null = $state(null);
 
 	// Zähle die Anzahl der Filme für jeden Zustand
 	let counts = $derived(
 		searchList.reduce(
 			(acc, item) => {
-				const state = item.state; // Hole den Zustand des Films
+				const state = item.status; // Hole den Zustand des Films
 				if (state && acc.hasOwnProperty(state)) {
 					// Überprüfe, ob der Zustand existiert und validiere ihn
 					acc[state] = (acc[state] || 0) + 1;
@@ -76,7 +76,7 @@
 
 		// Filtere die Einträge mit dem Status "wait"
 		const waitEntries = searchList.filter(
-			(entry) => entry.state === 'waitForSearching' || entry.state === 'waitForDownloading'
+			(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
 		);
 
 		// Iteriere über alle "wait"-Einträge und starte die Suche für diese
@@ -88,7 +88,7 @@
 				// Suche nach dem Film
 				if (
 					!searchList[entryIndex].options.id &&
-					searchList[entryIndex].state === 'waitForSearching'
+					searchList[entryIndex].status === 'waitForSearching'
 				) {
 					await searchMovieStatus(entryIndex);
 				}
@@ -96,7 +96,7 @@
 				// Wenn der Film gefunden wurde, füge ihn dem Status hinzu
 				if (
 					searchList[entryIndex].options.id &&
-					searchList[entryIndex].state === 'waitForDownloading'
+					searchList[entryIndex].status === 'waitForDownloading'
 				) {
 					await addNewMovie(searchList[entryIndex].options.id, entryIndex);
 				}
@@ -108,7 +108,7 @@
 
 		// Wenn noch Filme im Status mit "waitForSearching" oder "waitForDownloading" sind, starte die Funktion erneut
 		const hasUnprocessedMovies = searchList.some(
-			(entry) => entry.state === 'waitForSearching' || entry.state === 'waitForDownloading'
+			(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
 		);
 
 		if (hasUnprocessedMovies) {
@@ -122,7 +122,7 @@
 	// Stelle sicher, dass nur der ausgewählte Film hinzugefügt wird
 	async function selectMovie(modalID: number, movieIndex: number) {
 		// Überprüfe, ob der Index gültig ist, um Fehler zu vermeiden
-		const movieResults = searchList[modalID]?.results ?? [];
+		const movieResults = searchList[modalID]?.search.results ?? [];
 		if (movieIndex < 0 || movieIndex >= movieResults.length) {
 			error('Ungültiger Film-Index');
 			return; // Verhindere die Auswahl eines ungültigen Films
@@ -132,7 +132,7 @@
 
 		// Füge den vom Benutzer ausgewählten Film hinzu
 		searchList[modalID].options.id = movieResults[movieIndex].id;
-		searchList[modalID].state = 'waitForDownloading'; // Setze den Status auf "waitForDownloading" zurück
+		searchList[modalID].status = 'waitForDownloading'; // Setze den Status auf "waitForDownloading" zurück
 
 		// Lade neue Filme
 		load();
@@ -141,7 +141,7 @@
 	// Öffne das Modal nur, wenn der Status des Films 'downloading' oder 'foundOne' ist
 	function openModal(index: number) {
 		// Sicherstellen, dass der Status des Films gültig ist, bevor das Modal geöffnet wird
-		const filmState = searchList[index]?.state;
+		const filmState = searchList[index]?.status;
 		if (filmState !== 'downloading' || 'waitForDownloading') {
 			modalID = index;
 			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
@@ -231,21 +231,21 @@
 
 		<div class="grid w-full gap-3">
 			{#each searchList as item, index}
-				{#if item.state === filter || filter === null}
+				{#if item.status === filter || filter === null}
 					<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
 						<span>
 							<p class="text-lg">
-								{$_('add.main.movie.title', { values: { title: item.options.query } })}
+								{$_('add.main.movie.title', { values: { title: item.options.fileName } })}
 							</p>
 							<p class="text-sm">
 								{$_('add.main.movie.path', { values: { path: item.options.path } })}
 							</p>
 						</span>
 						<button
-							class="btn bg-opacity-50 {buttonClass(searchList[index].state)}"
+							class="btn bg-opacity-50 {buttonClass(searchList[index].status)}"
 							onclick={() => openModal(index)}
 						>
-							{getIcon(searchList[index].state)}
+							{getIcon(searchList[index].status)}
 						</button>
 					</div>
 				{/if}
@@ -280,9 +280,9 @@
 						type="text"
 						class="grow"
 						minlength="2"
-						disabled={searchList[modalID].state === 'searching'}
+						disabled={searchList[modalID].status === 'searching'}
 						required
-						bind:value={searchList[modalID].options.query}
+						bind:value={searchList[modalID].options.fileName}
 					/>
 				</label>
 				<label class="input input-bordered flex items-center gap-2">
@@ -292,19 +292,23 @@
 						class="grow"
 						minlength="4"
 						maxlength="4"
-						disabled={searchList[modalID].state === 'searching'}
+						disabled={searchList[modalID].status === 'searching'}
 						bind:value={searchList[modalID].options.primaryReleaseYear}
 					/>
 					<span class="badge badge-info">Optional</span>
 				</label>
-				<button type="submit" class="btn grow" disabled={searchList[modalID].state === 'searching'}>
+				<button
+					type="submit"
+					class="btn grow"
+					disabled={searchList[modalID].status === 'searching'}
+				>
 					{$_('add.modal.search')}
 				</button>
 			</form>
 
 			<hr class="my-3 border-2 border-base-content" />
 
-			{#if searchList[modalID].state === 'searching'}
+			{#if searchList[modalID].status === 'searching'}
 				<div
 					class="mx-auto flex max-w-md flex-col items-center rounded-lg bg-base-200 p-5 shadow-md"
 				>
@@ -319,9 +323,9 @@
 					</div>
 					<button class="btn btn-secondary w-full" disabled>{$_('add.modal.search')}</button>
 				</div>
-			{:else if modalID !== null && searchList[modalID]?.results?.length > 0}
+			{:else if modalID !== null && searchList[modalID]?.search?.results.length > 0}
 				<div class="grid gap-4">
-					{#each searchList[modalID].results as result, i}
+					{#each searchList[modalID].search.results as result, i}
 						<button
 							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
 							onclick={async () => {
@@ -346,8 +350,18 @@
 							</div>
 						</button>
 					{/each}
+					{#if searchList[modalID].search.total_pages > searchList[modalID].search.page}
+						<button
+							class="btn"
+							onclick={() => {
+								if (modalID === null) return;
+								searchList[modalID].search.page++;
+								searchMovieStatus(modalID);
+							}}>Lade weiter ergebnisse</button
+						>
+					{/if}
 				</div>
-			{:else if searchList[modalID].state === 'waitForSearching'}
+			{:else if searchList[modalID].status === 'waitForSearching'}
 				<p class="text-center">
 					{$_('add.modal.state.notSearched')}
 				</p>

@@ -10,11 +10,11 @@ import { castImages, extensions } from '$lib';
 import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
-import type { MovieSearchContext, MovieSearchState } from '$lib/types/add';
+import type { MovieSearchContext, MovieSearchStatus } from '$lib/types/add';
 import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 
-export function buttonClass(searchStatus: MovieSearchState) {
+export function buttonClass(searchStatus: MovieSearchStatus) {
 	switch (searchStatus) {
 		case 'waitForSearching':
 			return 'btn-neutral';
@@ -35,7 +35,7 @@ export function buttonClass(searchStatus: MovieSearchState) {
 	}
 }
 
-export function getIcon(searchStatus: MovieSearchState) {
+export function getIcon(searchStatus: MovieSearchStatus) {
 	switch (searchStatus) {
 		case 'waitForSearching':
 			return '⏳'; // loading icon
@@ -130,14 +130,18 @@ function addNewFilesToStatus(newFiles: string[]) {
 		const cleanedFileName = fileName.replace(/\s*\(?\d{4}\)?\s*/g, '').trim();
 
 		return {
-			state: 'waitForSearching',
-			results: [],
+			status: 'waitForSearching',
+			search: {
+				page: 1,
+				results: [],
+				total_pages: 1,
+				total_results: 0
+			},
 			options: {
 				path,
-				query: cleanedFileName || name,
-				primaryReleaseYear: year,
+				fileName: cleanedFileName || name,
 				includeAdult: settings.adult,
-				page: 1
+				primaryReleaseYear: year
 			}
 		};
 	});
@@ -160,39 +164,55 @@ export async function searchMovieStatus(i: number) {
 
 	updateMovieStatus(i, 'searching');
 
-	const { query, primaryReleaseYear } = searchList[i].options;
+	const { fileName, primaryReleaseYear } = searchList[i].options;
+	const page = searchList[i].search?.page || 1;
 
 	try {
 		// TMDB-Suche durchführen
-		const result = (await tmdb.searchMovies(query, primaryReleaseYear)).results;
+		const search = await tmdb.searchMovies(fileName, primaryReleaseYear, page);
 
 		// Update status based on results
-
-		if (result.length === 1) {
+		if (search.results.length === 1) {
+			// Nur einen Film gefunden
 			searchList[i] = {
 				...searchList[i],
-				results: result,
+				search: {
+					...searchList[i].search, // Behalte alle vorherigen search-Daten bei
+					results: [...searchList[i].search.results, ...search.results], // Füge neue Ergebnisse hinzu
+					page: search.page, // Setze die aktuelle Seite (optional, wenn vorhanden)
+					total_results: search.total_results, // Setze die Gesamtanzahl der Ergebnisse (optional)
+					total_pages: search.total_pages // Setze die Gesamtseitenzahl (optional)
+				},
 				options: {
 					...searchList[i].options,
-					id: result[0].id
-				}
+					id: search.results[0].id // ID des ersten gefundenen Films
+				},
+				status: 'waitForDownloading' // Setze den Status
 			};
-
-			searchList[i].state = 'waitForDownloading';
-		} else if (result.length > 1) {
+		} else if (search.results.length > 1) {
+			// Mehrere Filme gefunden
 			searchList[i] = {
 				...searchList[i],
-				results: result,
-				state: 'foundMultiple'
+				search: {
+					...searchList[i].search,
+					results: [...searchList[i].search.results, ...search.results], // Füge die neuen Ergebnisse hinzu
+					page: search.page,
+					total_results: search.total_results,
+					total_pages: search.total_pages
+				},
+				status: 'foundMultiple' // Status auf 'foundMultiple' setzen
 			};
 		} else {
+			// Keine Filme gefunden
 			searchList[i] = {
 				...searchList[i],
-				results: [],
-				state: 'notFound'
+				search: {
+					...searchList[i].search,
+					results: [] // Leeres Array, da keine Filme gefunden wurden
+				},
+				status: 'notFound' // Status auf 'notFound' setzen
 			};
 		}
-		return;
 	} catch (err) {
 		// Fehlerbehandlung
 		if (err instanceof Error) {
@@ -203,8 +223,11 @@ export async function searchMovieStatus(i: number) {
 
 		searchList[i] = {
 			...searchList[i],
-			results: [],
-			state: 'notFound'
+			search: {
+				...searchList[i].search,
+				results: [] // Leeres Array, da keine Filme gefunden wurden
+			},
+			status: 'notFound'
 		};
 	}
 }
@@ -215,10 +238,7 @@ let downloadingMovie = false; // Flag, um den laufenden Download zu überwachen
 const downloadQueue: Array<{ id: number; index: number }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
 
 export async function addNewMovie(id: number, index: number) {
-	if (!id) {
-		error('Es muss eine valide ID angegeben werden.');
-		return Promise.resolve();
-	}
+	if (!id || !(await isMovieIDUnique(id))) return Promise.resolve();
 
 	downloadQueue.push({ id, index });
 	// Film zur Warteschlange hinzufügen, wenn kein Download läuft
@@ -230,8 +250,8 @@ export async function addNewMovie(id: number, index: number) {
 	return Promise.resolve();
 }
 
-function updateMovieStatus(index: number, newState: MovieSearchState) {
-	searchList[index].state = newState;
+function updateMovieStatus(index: number, newState: MovieSearchStatus) {
+	searchList[index].status = newState;
 }
 
 async function processDownloadQueue() {
@@ -244,6 +264,9 @@ async function processDownloadQueue() {
 	// Nächsten Film aus der Warteschlange nehmen
 	const nextMovie = downloadQueue.shift();
 	if (!nextMovie) return;
+
+	// Prüfe, ob der Film bereits heruntergeladen ist
+	if (searchList[nextMovie.index].status !== 'waitForDownloading') return;
 
 	// Status aktualisieren und Download starten
 	downloadingMovie = true;
