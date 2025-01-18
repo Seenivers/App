@@ -160,7 +160,68 @@
 			filter = null;
 		}
 	}}
-></Navbar>
+>
+	{#snippet right()}
+		<button
+			class="btn grow"
+			onclick={async () => {
+				await selectFile();
+				load();
+			}}
+		>
+			{$_('add.main.buttons.selectFile')}
+		</button>
+		<button
+			class="btn grow"
+			onclick={async () => {
+				await selectFolder();
+				load();
+			}}
+		>
+			{$_('add.main.buttons.selectFolder')}
+		</button>
+		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+			<button
+				class="btn hover:btn-error"
+				ondblclick={() => {
+					searchList.length = 0;
+					filter = null;
+				}}
+				disabled={searchList.length === 0}
+			>
+				{$_('add.main.buttons.clearAll')}
+			</button>
+		</div>
+		<select class="select" bind:value={filter} disabled={!online || searchList.length === 0}>
+			<option value={null} selected disabled={searchList.length === 0}
+				>{$_('add.main.filter.default')}</option
+			>
+			<option
+				value="waitForSearching"
+				disabled={counts.waitForSearching === 0 && counts.waitForDownloading === 0}
+			>
+				{$_('add.main.filter.wait', {
+					values: { count: counts.waitForSearching + counts.waitForDownloading }
+				})}
+			</option>
+			<option value="searching" disabled={counts.searching === 0}>
+				{$_('add.main.filter.searching', { values: { count: counts.searching } })}
+			</option>
+			<option value="notFound" disabled={counts.notFound === 0}>
+				{$_('add.main.filter.notFound', { values: { count: counts.notFound } })}
+			</option>
+			<option value="foundMultiple" disabled={counts.foundMultiple === 0}>
+				{$_('add.main.filter.foundMultiple', { values: { count: counts.foundMultiple } })}
+			</option>
+			<option value="downloading" disabled={counts.downloading === 0}>
+				{$_('add.main.filter.downloading', { values: { count: counts.downloading } })}
+			</option>
+			<option value="downloaded" disabled={counts.downloaded === 0}>
+				{$_('add.main.filter.foundOne', { values: { count: counts.downloaded } })}
+			</option>
+		</select>
+	{/snippet}
+</Navbar>
 
 <main class="z-0 flex flex-col items-center p-5">
 	{#if !online.current}
@@ -168,67 +229,6 @@
 			{$_('networkStatus.offline')}
 		</div>
 	{:else}
-		<div class="mb-5 flex w-3/4 gap-5">
-			<button
-				class="btn grow"
-				onclick={async () => {
-					await selectFile();
-					load();
-				}}
-			>
-				{$_('add.main.buttons.selectFile')}
-			</button>
-			<button
-				class="btn grow"
-				onclick={async () => {
-					await selectFolder();
-					load();
-				}}
-			>
-				{$_('add.main.buttons.selectFolder')}
-			</button>
-			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
-				<button
-					class="btn hover:btn-error"
-					ondblclick={() => {
-						searchList.length = 0;
-						filter = null;
-					}}
-					disabled={searchList.length === 0}
-				>
-					{$_('add.main.buttons.clearAll')}
-				</button>
-			</div>
-			<select class="select" bind:value={filter} disabled={!online || searchList.length === 0}>
-				<option value={null} selected disabled={searchList.length === 0}
-					>{$_('add.main.filter.default')}</option
-				>
-				<option
-					value="waitForSearching"
-					disabled={counts.waitForSearching === 0 && counts.waitForDownloading === 0}
-				>
-					{$_('add.main.filter.wait', {
-						values: { count: counts.waitForSearching + counts.waitForDownloading }
-					})}
-				</option>
-				<option value="searching" disabled={counts.searching === 0}>
-					{$_('add.main.filter.searching', { values: { count: counts.searching } })}
-				</option>
-				<option value="notFound" disabled={counts.notFound === 0}>
-					{$_('add.main.filter.notFound', { values: { count: counts.notFound } })}
-				</option>
-				<option value="foundMultiple" disabled={counts.foundMultiple === 0}>
-					{$_('add.main.filter.foundMultiple', { values: { count: counts.foundMultiple } })}
-				</option>
-				<option value="downloading" disabled={counts.downloading === 0}>
-					{$_('add.main.filter.downloading', { values: { count: counts.downloading } })}
-				</option>
-				<option value="downloaded" disabled={counts.downloaded === 0}>
-					{$_('add.main.filter.foundOne', { values: { count: counts.downloaded } })}
-				</option>
-			</select>
-		</div>
-
 		<div class="grid w-full gap-3">
 			{#each searchList as item, index}
 				{#if item.status === filter || filter === null}
