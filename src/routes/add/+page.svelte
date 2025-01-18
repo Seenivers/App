@@ -76,7 +76,7 @@
 
 		// Filtere die Einträge mit dem Status "wait"
 		const waitEntries = searchList.filter(
-			(entry) => entry.state === 'waitForSearching' || 'waitForDownloading'
+			(entry) => entry.state === 'waitForSearching' || entry.state === 'waitForDownloading'
 		);
 
 		// Iteriere über alle "wait"-Einträge und starte die Suche für diese
@@ -106,14 +106,16 @@
 		// Setze den Ladezustand zurück, nachdem alle Einträge verarbeitet wurden
 		loading = false;
 
-		// Wenn noch Filme im Status mit "waitForSearching" und ohne Ergebnisse sind, starte die Funktion erneut
+		// Wenn noch Filme im Status mit "waitForSearching" oder "waitForDownloading" sind, starte die Funktion erneut
 		const hasUnprocessedMovies = searchList.some(
-			(entry) => entry.state === 'waitForSearching' || 'waitForDownloading'
+			(entry) => entry.state === 'waitForSearching' || entry.state === 'waitForDownloading'
 		);
 
-		// Nur erneut laden, wenn wirklich noch Einträge zu verarbeiten sind
 		if (hasUnprocessedMovies) {
-			load();
+			// Verzögere den erneuten Aufruf, um den Stack zu entlasten
+			setTimeout(() => {
+				load();
+			}, 1000); // 100 ms Verzögerung
 		}
 	}
 
@@ -202,8 +204,8 @@
 					>{$_('add.main.filter.default')}</option
 				>
 				<option
-					value="wait"
-					disabled={counts.waitForSearching === 0 || counts.waitForDownloading === 0}
+					value="waitForSearching"
+					disabled={counts.waitForSearching === 0 && counts.waitForDownloading === 0}
 				>
 					{$_('add.main.filter.wait', {
 						values: { count: counts.waitForSearching + counts.waitForDownloading }
