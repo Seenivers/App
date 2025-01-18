@@ -13,6 +13,7 @@ import { image } from '$lib/image/image';
 import type { MovieSearchContext, MovieSearchStatus } from '$lib/types/add';
 import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
+import type { Movie } from '$lib/types/movie';
 
 export function buttonClass(searchStatus: MovieSearchStatus) {
 	switch (searchStatus) {
@@ -215,110 +216,88 @@ export async function searchMovieStatus(i: number) {
 //#endregion
 
 //#region add Movie
-let downloadingMovie = false; // Flag, um den laufenden Download zu überwachen
-const downloadQueue: Array<{ id: number; index: number }> = []; // Warteschlange für Filme, die heruntergeladen werden müssen
-
 export async function addNewMovie(id: number, index: number) {
-	if (!id || !(await isMovieIDUnique(id))) return Promise.resolve();
+	if (!id || !(await isMovieIDUnique(id))) return;
 
-	downloadQueue.push({ id, index });
-	// Film zur Warteschlange hinzufügen, wenn kein Download läuft
-	if (!downloadingMovie) {
-		// Starte den Download-Prozess, wenn kein Download läuft
-		processDownloadQueue();
+	// Prüfen, ob der Benutzer online ist
+	if (!online.current) {
+		updateMovieStatus(index, 'notFound');
+		return;
 	}
 
-	return Promise.resolve();
+	// Status aktualisieren und Download starten
+	updateMovieStatus(index, 'downloading');
+
+	try {
+		// Hole die Filmdetails
+		const result = await tmdb.getMovie(id);
+
+		if (await isMovieIDUnique(result.id)) {
+			// Film zur Datenbank hinzufügen
+			await addMovieToDatabase(result, index);
+		}
+	} catch (err) {
+		handleDownloadError(err, id, index);
+	} finally {
+		updateMovieStatus(index, 'downloaded');
+	}
 }
 
 function updateMovieStatus(index: number, newState: MovieSearchStatus) {
 	searchList[index].status = newState;
 }
 
-async function processDownloadQueue() {
-	// Überprüfen, ob der Benutzer online ist
-	if (!online.current) return;
+async function addMovieToDatabase(result: Movie, index: number) {
+	await addMovie({
+		id: result.id,
+		path: searchList[index].options.path,
+		tmdb: result,
+		updated: new Date()
+	});
 
-	// Wenn ein Download bereits läuft oder die Warteschlange leer ist, nichts tun
-	if (downloadingMovie || downloadQueue.length === 0) return;
-
-	// Nächsten Film aus der Warteschlange nehmen
-	const nextMovie = downloadQueue.shift();
-	if (!nextMovie) return;
-
-	// Prüfe, ob der Film bereits heruntergeladen ist
-	if (searchList[nextMovie.index].status !== 'waitForDownloading') return;
-
-	// Status aktualisieren und Download starten
-	downloadingMovie = true;
-	updateMovieStatus(nextMovie.index, 'downloading');
-
-	try {
-		// Hole die Filmdetails
-		const result = await tmdb.getMovie(nextMovie.id);
-
-		if (await isMovieIDUnique(result.id)) {
-			// Film zur Datenbank hinzufügen
-			await addMovie({
-				id: nextMovie.id,
-				path: searchList[nextMovie.index].options.path,
-				tmdb: result,
-				updated: new Date()
-			});
-
-			// Collection hinzufügen, falls nicht vorhanden
-			if (
-				result.belongs_to_collection?.id &&
-				(await isCollectionIDUnique(result.belongs_to_collection?.id))
-			) {
-				const collection = await tmdb.getCollection(result.belongs_to_collection.id);
-				if (collection) {
-					await addCollection({ ...collection, updated: new Date() });
-				}
-			}
-
-			// Posterbild laden, falls verfügbar
-			if (result.poster_path) {
-				await image(result.poster_path, 'posters', true);
-			}
-
-			// Hintergrundbild laden, falls verfügbar
-			if (result.backdrop_path) {
-				await image(result.backdrop_path, 'backdrops', true);
-			}
-
-			// Schauspieler-Bilder parallel laden
-			const castImagePaths = result.credits.cast
-				.map((actor) => actor.profile_path)
-				.filter((path) => path != null);
-
-			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
-			const imagesToLoad =
-				// @ts-expect-error castImages wird später über die Settings verarbeitet
-				castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
-
-			for (let i = 0; i < imagesToLoad; i++) {
-				const path = castImagePaths[i];
-				await image(path, 'actors', true);
-			}
+	if (
+		result.belongs_to_collection?.id &&
+		(await isCollectionIDUnique(result.belongs_to_collection.id))
+	) {
+		const collection = await tmdb.getCollection(result.belongs_to_collection.id);
+		if (collection) {
+			await addCollection({ ...collection, updated: new Date() });
 		}
-	} catch (err: unknown) {
-		if (err instanceof Error) {
-			error(`Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}: ${err.message}`);
-		} else {
-			error(`Unbekannter Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}`);
-		}
-		// Status aktualisieren, dass der Film **NICHT** erfolgreich heruntergeladen wurde
-		updateMovieStatus(nextMovie.index, 'notFound');
-	} finally {
-		// Status aktualisieren, dass der Film erfolgreich heruntergeladen wurde
-		updateMovieStatus(nextMovie.index, 'downloaded');
-
-		// Flag zurücksetzen, dass der Download abgeschlossen ist
-		downloadingMovie = false;
-
-		// Nächsten Download starten, falls die Warteschlange noch Filme enthält
-		if (downloadQueue.length > 0) processDownloadQueue();
 	}
+
+	await loadImages(result);
+}
+
+async function loadImages(result: Movie) {
+	if (result.poster_path) {
+		await image(result.poster_path, 'posters', true);
+	}
+
+	if (result.backdrop_path) {
+		await image(result.backdrop_path, 'backdrops', true);
+	}
+
+	const castImagePaths = result.credits.cast
+		.map((actor) => actor.profile_path)
+		.filter((path) => path != null);
+
+	const imagesToLoad =
+		// @ts-expect-error castImages wird später User abhängig sein
+		castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
+
+	for (let i = 0; i < imagesToLoad; i++) {
+		const path = castImagePaths[i];
+		await image(path, 'actors', true);
+	}
+}
+
+function handleDownloadError(err: unknown, id: number, index: number) {
+	const message =
+		err instanceof Error
+			? `Fehler beim Hinzufügen des Films mit ID ${id}: ${err.message}`
+			: `Unbekannter Fehler beim Hinzufügen des Films mit ID ${id}`;
+	error(message);
+
+	updateMovieStatus(index, 'notFound');
 }
 //#endregion
