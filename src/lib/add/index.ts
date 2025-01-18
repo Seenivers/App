@@ -155,9 +155,6 @@ function addNewFilesToStatus(newFiles: string[]) {
 export async function searchMovieStatus(i: number) {
 	// Prüfe die Internetverbindung
 	if (!online.current) {
-		error(
-			'Sie sind nicht mit dem Internet verbunden oder es ist ein Fehler mit der API aufgetreten.'
-		);
 		updateMovieStatus(i, 'notFound');
 		return;
 	}
@@ -168,59 +165,43 @@ export async function searchMovieStatus(i: number) {
 	const page = searchList[i].search?.page || 1;
 
 	try {
-		// TMDB-Suche durchführen
 		const search = await tmdb.searchMovies(fileName, primaryReleaseYear, page);
 
-		// Update status based on results
+		let status: MovieSearchStatus;
+		let results = [...(searchList[i].search?.results || []), ...search.results];
+
 		if (search.results.length === 1) {
 			// Nur einen Film gefunden
-			searchList[i] = {
-				...searchList[i],
-				search: {
-					...searchList[i].search, // Behalte alle vorherigen search-Daten bei
-					results: [...searchList[i].search.results, ...search.results], // Füge neue Ergebnisse hinzu
-					page: search.page, // Setze die aktuelle Seite (optional, wenn vorhanden)
-					total_results: search.total_results, // Setze die Gesamtanzahl der Ergebnisse (optional)
-					total_pages: search.total_pages // Setze die Gesamtseitenzahl (optional)
-				},
-				options: {
-					...searchList[i].options,
-					id: search.results[0].id // ID des ersten gefundenen Films
-				},
-				status: 'waitForDownloading' // Setze den Status
-			};
+			status = 'waitForDownloading';
+			searchList[i].options.id = search.results[0].id;
 		} else if (search.results.length > 1) {
 			// Mehrere Filme gefunden
-			searchList[i] = {
-				...searchList[i],
-				search: {
-					...searchList[i].search,
-					results: [...searchList[i].search.results, ...search.results], // Füge die neuen Ergebnisse hinzu
-					page: search.page,
-					total_results: search.total_results,
-					total_pages: search.total_pages
-				},
-				status: 'foundMultiple' // Status auf 'foundMultiple' setzen
-			};
+			status = 'foundMultiple';
 		} else {
 			// Keine Filme gefunden
-			searchList[i] = {
-				...searchList[i],
-				search: {
-					...searchList[i].search,
-					results: [] // Leeres Array, da keine Filme gefunden wurden
-				},
-				status: 'notFound' // Status auf 'notFound' setzen
-			};
-		}
-	} catch (err) {
-		// Fehlerbehandlung
-		if (err instanceof Error) {
-			error('Fehler bei der Suche: ' + err.message);
-		} else {
-			error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
+			status = 'notFound';
+			results = []; // Ergebnisse leeren
 		}
 
+		// Gemeinsame Eigenschaften setzen
+		searchList[i] = {
+			...searchList[i],
+			search: {
+				...searchList[i].search,
+				results,
+				page: search.page,
+				total_results: search.total_results,
+				total_pages: search.total_pages
+			},
+			status
+		};
+	} catch (err) {
+		// Fehlerbehandlung
+		const errorMessage =
+			err instanceof Error ? err.message : 'Ein unbekannter Fehler ist aufgetreten: ' + err;
+		error('Fehler bei der Suche: ' + errorMessage);
+
+		// Fehlerstatus setzen
 		searchList[i] = {
 			...searchList[i],
 			search: {
