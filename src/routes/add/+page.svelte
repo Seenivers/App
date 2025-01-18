@@ -4,9 +4,7 @@
 		addNewMovie,
 		buttonClass,
 		getIcon,
-		searchMovieStatus,
-		selectFile,
-		selectFolder
+		searchMovieStatus
 	} from '$lib/add/index';
 	import { searchList } from '$lib/stores.svelte';
 	import type { PageData } from './$types';
@@ -19,6 +17,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
 	import { online } from 'svelte/reactivity/window';
+	import { selectFile, selectFolder } from '$lib/add/select';
 
 	interface Props {
 		data: PageData;
