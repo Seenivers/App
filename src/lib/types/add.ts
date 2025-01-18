@@ -24,12 +24,13 @@ export interface DropPayload {
  * - `downloading`: Results are being downloaded.
  */
 export type MovieSearchState =
-	| 'wait'
+	| 'waitForSearching'
 	| 'searching'
 	| 'notFound'
-	| 'foundOne'
 	| 'foundMultiple'
-	| 'downloading';
+	| 'waitForDownloading'
+	| 'downloading'
+	| 'downloaded';
 
 /**
  * Represents a single movie result from a search query.

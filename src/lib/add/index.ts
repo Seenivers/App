@@ -19,18 +19,20 @@ import { readDir } from '@tauri-apps/plugin-fs';
 
 export function buttonClass(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
-		case 'wait':
+		case 'waitForSearching':
+			return 'btn-neutral';
+		case 'waitForDownloading':
 			return 'btn-neutral';
 		case 'searching':
 			return 'btn-primary';
 		case 'notFound':
 			return 'btn-error';
-		case 'foundOne':
-			return 'btn-success';
 		case 'foundMultiple':
 			return 'btn-warning';
 		case 'downloading':
 			return 'btn-info';
+		case 'downloaded':
+			return 'btn-success';
 		default:
 			return 'btn-neutral';
 	}
@@ -38,18 +40,20 @@ export function buttonClass(searchStatus: MovieSearchState) {
 
 export function getIcon(searchStatus: MovieSearchState) {
 	switch (searchStatus) {
-		case 'wait':
+		case 'waitForSearching':
+			return '⏳'; // loading icon
+		case 'waitForDownloading':
 			return '⏳'; // loading icon
 		case 'searching':
 			return '🔍'; // search icon
 		case 'notFound':
 			return '❌'; // not found icon
-		case 'foundOne':
-			return '✅'; // found one icon
 		case 'foundMultiple':
 			return '⚠️'; // multiple results icon
 		case 'downloading':
 			return '📥'; // downloading icon
+		case 'downloaded':
+			return '✅'; // found one icon
 		default:
 			return '❓'; // default to search icon
 	}
@@ -129,7 +133,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 		const cleanedFileName = fileName.replace(/\s*\(?\d{4}\)?\s*/g, '').trim();
 
 		return {
-			state: 'wait',
+			state: 'waitForSearching',
 			results: [],
 			options: {
 				path,
@@ -147,7 +151,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 //#endregion
 
 //#region search Movie
-export async function searchMovieStatus(i: number, modal: boolean) {
+export async function searchMovieStatus(i: number) {
 	// Prüfe die Internetverbindung
 	if (!get(isOnline)) {
 		error(
@@ -177,12 +181,7 @@ export async function searchMovieStatus(i: number, modal: boolean) {
 				}
 			};
 
-			// Füge den Film nur hinzu, wenn der Benutzer keinen Film manuell ausgewählt hat
-			if (modal) {
-				searchList[i].state = 'foundOne';
-			} else {
-				searchList[i].state = 'wait';
-			}
+			searchList[i].state = 'waitForDownloading';
 		} else if (result.length > 1) {
 			searchList[i] = {
 				...searchList[i],
@@ -312,7 +311,7 @@ async function processDownloadQueue() {
 		}
 
 		// Status aktualisieren, dass der Film erfolgreich heruntergeladen wurde
-		updateMovieStatus(nextMovie.index, 'foundOne');
+		updateMovieStatus(nextMovie.index, 'downloaded');
 	} catch (err: unknown) {
 		if (err instanceof Error) {
 			error(`Fehler beim Hinzufügen des Films mit ID ${nextMovie.id}: ${err.message}`);

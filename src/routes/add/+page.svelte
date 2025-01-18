@@ -43,12 +43,13 @@
 				return acc;
 			},
 			{
-				wait: 0,
+				waitForSearching: 0,
 				searching: 0,
 				notFound: 0,
-				foundOne: 0,
+				waitForDownloading: 0,
 				foundMultiple: 0,
-				downloading: 0
+				downloading: 0,
+				downloaded: 0
 			}
 		)
 	);
@@ -74,7 +75,9 @@
 		loading = true;
 
 		// Filtere die Einträge mit dem Status "wait"
-		const waitEntries = searchList.filter((entry) => entry.state === 'wait');
+		const waitEntries = searchList.filter(
+			(entry) => entry.state === 'waitForSearching' || 'waitForDownloading'
+		);
 
 		// Iteriere über alle "wait"-Einträge und starte die Suche für diese
 		for (const entry of waitEntries) {
@@ -84,7 +87,7 @@
 			if (entryIndex !== -1) {
 				// Suche nach dem Film
 				if (!searchList[entryIndex].options.id) {
-					await searchMovieStatus(entryIndex, modal);
+					await searchMovieStatus(entryIndex);
 				}
 
 				// Wenn der Film gefunden wurde, füge ihn dem Status hinzu
@@ -97,9 +100,9 @@
 		// Setze den Ladezustand zurück, nachdem alle Einträge verarbeitet wurden
 		loading = false;
 
-		// Wenn noch Filme im Status mit "wait" und ohne Ergebnisse sind, starte die Funktion erneut
+		// Wenn noch Filme im Status mit "waitForSearching" und ohne Ergebnisse sind, starte die Funktion erneut
 		const hasUnprocessedMovies = searchList.some(
-			(entry) => entry.state === 'wait' && entry.results.length === 0
+			(entry) => entry.state === 'waitForSearching' || 'waitForDownloading'
 		);
 
 		// Nur erneut laden, wenn wirklich noch Einträge zu verarbeiten sind
@@ -121,7 +124,7 @@
 
 		// Füge den vom Benutzer ausgewählten Film hinzu
 		searchList[modalID].options.id = movieResults[movieIndex].id;
-		searchList[modalID].state = 'wait'; // Setze den Status auf "wait" zurück
+		searchList[modalID].state = 'waitForDownloading'; // Setze den Status auf "waitForDownloading" zurück
 
 		// Lade neue Filme
 		load();
@@ -131,7 +134,7 @@
 	function openModal(index: number) {
 		// Sicherstellen, dass der Status des Films gültig ist, bevor das Modal geöffnet wird
 		const filmState = searchList[index]?.state;
-		if (filmState !== 'downloading' && filmState !== 'foundOne') {
+		if (filmState !== 'downloading' && filmState !== 'waitForDownloading') {
 			modalID = index;
 			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
 		}
@@ -192,8 +195,13 @@
 				<option value={null} selected disabled={searchList.length === 0}
 					>{$_('add.main.filter.default')}</option
 				>
-				<option value="wait" disabled={counts.wait === 0}>
-					{$_('add.main.filter.wait', { values: { count: counts.wait } })}
+				<option
+					value="wait"
+					disabled={counts.waitForSearching === 0 || counts.waitForDownloading === 0}
+				>
+					{$_('add.main.filter.wait', {
+						values: { count: counts.waitForSearching + counts.waitForDownloading }
+					})}
 				</option>
 				<option value="searching" disabled={counts.searching === 0}>
 					{$_('add.main.filter.searching', { values: { count: counts.searching } })}
@@ -201,14 +209,14 @@
 				<option value="notFound" disabled={counts.notFound === 0}>
 					{$_('add.main.filter.notFound', { values: { count: counts.notFound } })}
 				</option>
-				<option value="foundOne" disabled={counts.foundOne === 0}>
-					{$_('add.main.filter.foundOne', { values: { count: counts.foundOne } })}
-				</option>
 				<option value="foundMultiple" disabled={counts.foundMultiple === 0}>
 					{$_('add.main.filter.foundMultiple', { values: { count: counts.foundMultiple } })}
 				</option>
 				<option value="downloading" disabled={counts.downloading === 0}>
 					{$_('add.main.filter.downloading', { values: { count: counts.downloading } })}
+				</option>
+				<option value="downloaded" disabled={counts.downloaded === 0}>
+					{$_('add.main.filter.foundOne', { values: { count: counts.downloaded } })}
 				</option>
 			</select>
 		</div>
@@ -253,7 +261,7 @@
 				onsubmit={async (event) => {
 					event.preventDefault();
 					if (modalID !== null) {
-						await searchMovieStatus(modalID, modal);
+						await searchMovieStatus(modalID);
 					}
 				}}
 				class="my-3 grid gap-3"
@@ -330,7 +338,7 @@
 						</button>
 					{/each}
 				</div>
-			{:else if searchList[modalID].state === 'wait'}
+			{:else if searchList[modalID].state === 'waitForSearching'}
 				<p class="text-center">
 					{$_('add.modal.state.notSearched')}
 				</p>
