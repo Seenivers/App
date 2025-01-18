@@ -231,7 +231,7 @@
 								{$_('add.main.movie.title', { values: { title: item.options.query } })}
 							</p>
 							<p class="text-sm">
-								{$_('add.main.movie.path', { values: { title: item.options.path } })}
+								{$_('add.main.movie.path', { values: { path: item.options.path } })}
 							</p>
 						</span>
 						<button
