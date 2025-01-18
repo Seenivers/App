@@ -55,7 +55,7 @@
 		"@tauri-apps/plugin-opener": "^2.2.4",
 		"@tauri-apps/plugin-process": "^2.2.0",
 		"@tauri-apps/plugin-sql": "^2.2.0",
-		"@tauri-apps/plugin-updater": "^2.3.0",
+		"@tauri-apps/plugin-updater": "^2.3.1",
 		"better-sqlite3": "^11.7.2",
 		"drizzle-orm": "^0.38.2",
 		"hls.js": "^1.5.19",
