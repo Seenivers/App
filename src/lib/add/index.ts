@@ -233,21 +233,13 @@ export async function addNewMovie(id: number, index: number) {
 	return Promise.resolve();
 }
 
-function checkOnlineStatus() {
-	if (!online.current) {
-		error('Sie sind nicht mit dem Internet verbunden.');
-		return false;
-	}
-	return true;
-}
-
 function updateMovieStatus(index: number, newState: MovieSearchState) {
 	searchList[index].state = newState;
 }
 
 async function processDownloadQueue() {
 	// Überprüfen, ob der Benutzer online ist
-	if (!checkOnlineStatus()) return;
+	if (!online.current) return;
 
 	// Wenn ein Download bereits läuft oder die Warteschlange leer ist, nichts tun
 	if (downloadingMovie || downloadQueue.length === 0) return;
