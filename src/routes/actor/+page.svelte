@@ -198,7 +198,6 @@
 											href={item.media_type === 'tv'
 												? `https://www.themoviedb.org/tv/${item.id}`
 												: `${item.media_type}?id=${item.id}`}
-											target="_blank"
 											data-sveltekit-preload-data="tap"
 										>
 											<span class="font-semibold">
