@@ -16,7 +16,7 @@
 		"tauri": "tauri"
 	},
 	"devDependencies": {
-		"@eslint/compat": "^1.2.4",
+		"@eslint/compat": "^1.2.5",
 		"@semantic-release/changelog": "^6.0.3",
 		"@semantic-release/git": "^10.0.1",
 		"@sveltejs/adapter-static": "^3.0.8",
