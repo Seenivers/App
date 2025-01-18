@@ -2,7 +2,7 @@
 	import { schema } from '$lib/db/schema';
 	import Img from '$lib/image/Img.svelte';
 	import Navbar from '$lib/Navbar.svelte';
-	import type { Cardscale } from '$lib/types/add';
+	import type { Cardscale } from '$lib/types/cardscale';
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
