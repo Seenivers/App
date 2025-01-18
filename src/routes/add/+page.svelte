@@ -334,8 +334,9 @@
 							<Img
 								params={[result.poster_path, null, false]}
 								alt="Poster"
-								class="h-72 rounded-lg"
+								class="h-72 w-fit rounded-lg object-contain"
 							/>
+
 							<div class="px-3 text-left">
 								<p><strong>{result.title}</strong></p>
 								<p class="text-sm text-gray-500">
