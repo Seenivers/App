@@ -87,12 +87,18 @@
 			// Falls der Eintrag noch im Status vorhanden ist, starte die Suche
 			if (entryIndex !== -1) {
 				// Suche nach dem Film
-				if (!searchList[entryIndex].options.id) {
+				if (
+					!searchList[entryIndex].options.id &&
+					searchList[entryIndex].state === 'waitForSearching'
+				) {
 					await searchMovieStatus(entryIndex);
 				}
 
 				// Wenn der Film gefunden wurde, füge ihn dem Status hinzu
-				if (searchList[entryIndex].options.id) {
+				if (
+					searchList[entryIndex].options.id &&
+					searchList[entryIndex].state === 'waitForDownloading'
+				) {
 					await addNewMovie(searchList[entryIndex].options.id, entryIndex);
 				}
 			}
