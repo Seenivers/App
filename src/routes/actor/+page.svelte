@@ -3,6 +3,7 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
+	import { openUrl } from '@tauri-apps/plugin-opener';
 
 	interface Props {
 		data: PageData;
@@ -198,6 +199,12 @@
 											href={item.media_type === 'tv'
 												? `https://www.themoviedb.org/tv/${item.id}`
 												: `${item.media_type}?id=${item.id}`}
+											onclick={(e) => {
+												if (item.media_type === 'tv') {
+													e.preventDefault();
+													openUrl(`https://www.themoviedb.org/tv/${item.id}`);
+												}
+											}}
 											data-sveltekit-preload-data="tap"
 										>
 											<span class="font-semibold">
