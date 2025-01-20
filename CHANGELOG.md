@@ -1,11 +1,10 @@
 ## [0.18.2](https://github.com/Seenivers/App/compare/v0.18.1...v0.18.2) (2025-01-20)
 
-
 ### Bug Fixes
 
-* **movie:** use openPath instead of openUrl for opening video files ([11acb19](https://github.com/Seenivers/App/commit/11acb19647167e6077c3ccd37fc83be2bacd5a20))
-* **tauri:** add permissions for opener to allow opening URLs and paths ([4c6b8d4](https://github.com/Seenivers/App/commit/4c6b8d45b23029733d11f3914c7680458b7f3d9b))
-* **tauri:** update media-src to allow assets from http://asset.localhost ([f326ad7](https://github.com/Seenivers/App/commit/f326ad716614b7d2cf8593f49d6cc134427e3909))
+- **movie:** use openPath instead of openUrl for opening video files ([11acb19](https://github.com/Seenivers/App/commit/11acb19647167e6077c3ccd37fc83be2bacd5a20))
+- **tauri:** add permissions for opener to allow opening URLs and paths ([4c6b8d4](https://github.com/Seenivers/App/commit/4c6b8d45b23029733d11f3914c7680458b7f3d9b))
+- **tauri:** update media-src to allow assets from http://asset.localhost ([f326ad7](https://github.com/Seenivers/App/commit/f326ad716614b7d2cf8593f49d6cc134427e3909))
 
 ## [0.18.1](https://github.com/Seenivers/App/compare/v0.18.0...v0.18.1) (2025-01-18)
 
