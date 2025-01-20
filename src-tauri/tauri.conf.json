@@ -29,7 +29,7 @@
 				"connect-src": "'self' ipc: http://ipc.localhost",
 				"img-src": "'self' http://asset.localhost https://image.tmdb.org data: blob:",
 				"style-src": "'self' 'unsafe-inline'",
-				"media-src": "'self' data:"
+				"media-src": "'self' http://asset.localhost data: blob:"
 			},
 			"dangerousDisableAssetCspModification": false,
 			"assetProtocol": {
