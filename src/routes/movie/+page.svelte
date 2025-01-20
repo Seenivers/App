@@ -11,7 +11,7 @@
 	import { getCollection } from '$lib/db/funktion';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
-	import { openUrl } from '@tauri-apps/plugin-opener';
+	import { openPath, openUrl } from '@tauri-apps/plugin-opener';
 
 	interface Props {
 		data: PageData;
@@ -42,7 +42,7 @@
 		if (!movieData) return;
 		try {
 			// Öffne die Datei mit dem Standardplayer
-			await openUrl(movieData.path);
+			await openPath(movieData.path);
 		} catch (err) {
 			error('Failed to open video with external player: ' + err);
 		}
