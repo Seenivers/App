@@ -289,9 +289,10 @@
 <dialog class="modal backdrop-blur-sm" open={modal}>
 	<div class="modal-box">
 		<!-- Close Button -->
-		<form method="dialog">
-			<button class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">✕</button>
-		</form>
+		<button
+			class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+			onclick={() => (modal = false)}>✕</button
+		>
 
 		<h3 class="text-lg font-bold">Neue TMDB ID</h3>
 
