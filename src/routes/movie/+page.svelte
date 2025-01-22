@@ -39,7 +39,7 @@
 
 	// Öffne die Datei mit dem Standardplayer
 	async function openExternalPlayer() {
-		if (!movieData) return;
+		if (!movieData || !movieData.path) return;
 		try {
 			// Öffne die Datei mit dem Standardplayer
 			await openPath(movieData.path);
@@ -99,7 +99,7 @@
 				</h2>
 			{/if}
 
-			{#if data.pathExists}
+			{#if movieData.path && data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					<Videoplayer src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
 				{/await}
