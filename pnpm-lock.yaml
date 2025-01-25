@@ -73,7 +73,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(svelte@5.19.3)(vite@6.0.9(@types/node@22.10.7)(jiti@1.21.7)(yaml@2.6.1))
       '@tauri-apps/cli':
-        specifier: ^2.2.3
+        specifier: ^2.2.5
         version: 2.2.5
       '@types/better-sqlite3':
         specifier: ^7.6.12
