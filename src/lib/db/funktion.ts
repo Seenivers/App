@@ -204,3 +204,13 @@ export async function deleteActor(id: number) {
 			error(`Delete Actor: ` + err);
 		});
 }
+
+export async function updateActor(id: number, data: typeof schema.actors.$inferInsert) {
+	return await db
+		.update(schema.actors)
+		.set(data)
+		.where(eq(schema.actors.id, id))
+		.catch((err) => {
+			error(`Update Actor: ` + err);
+		});
+}
