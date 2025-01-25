@@ -131,6 +131,15 @@ export async function getAllCollections() {
 		});
 }
 
+export async function deleteCollection(id: number) {
+	return await db
+		.delete(schema.collections)
+		.where(eq(schema.collections.id, id))
+		.catch((err) => {
+			error(`Delete Collection: ` + err);
+		});
+}
+
 /**
  * Überprüft, ob eine Sammlung mit der angegebenen `id` einzigartig in der Datenbank ist.
  * Gibt `true` zurück, wenn keine Sammlung mit dieser ID existiert (d.h., die Sammlung ist einzigartig),
