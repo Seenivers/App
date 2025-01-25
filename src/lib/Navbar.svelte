@@ -18,7 +18,7 @@
 	}: NavbarProps = $props();
 </script>
 
-<nav class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4">
+<nav class="navbar bg-base-100 sticky top-0 z-10 flex justify-between p-2 shadow-lg md:p-4">
 	{#if left || back}
 		<div class="gap-1">
 			{#if back}

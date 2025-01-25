@@ -233,12 +233,12 @@
 					bind:this={searchInput}
 				/>
 				<datalist
-					class="absolute z-10 max-h-96 overflow-y-auto rounded-b-lg bg-base-100"
+					class="bg-base-100 absolute z-10 max-h-96 overflow-y-auto rounded-b-lg"
 					bind:this={datalistItem}
 				>
 					{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
 						<option
-							class="w-full min-w-fit cursor-pointer px-2 hover:bg-base-content/20"
+							class="hover:bg-base-content/20 w-full min-w-fit cursor-pointer px-2"
 							value={title}
 						>
 							{title}
@@ -317,12 +317,12 @@
 					<a
 						href={'./movie?id=' + movie.id.toString()}
 						draggable="false"
-						class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
+						class="card bg-base-100 hover:bg-base-content/20 h-fit flex-grow shadow-xl transition-all duration-300 select-none hover:scale-105
 				{CARDSCALE.aktiv === 1
-							? 'min-w-[8rem] max-w-[12rem]'
+							? 'max-w-[12rem] min-w-[8rem]'
 							: CARDSCALE.aktiv === 2
-								? 'min-w-[12rem] max-w-[18rem]'
-								: 'min-w-[16rem] max-w-[24rem]'}"
+								? 'max-w-[18rem] min-w-[12rem]'
+								: 'max-w-[24rem] min-w-[16rem]'}"
 					>
 						<figure class="relative px-2 pt-2">
 							<Img
@@ -331,7 +331,7 @@
 								class="rounded-xl"
 							/>
 							{#if movie.watched}
-								<div class="badge badge-outline absolute left-3 top-3 bg-base-300">
+								<div class="badge badge-outline bg-base-300 absolute top-3 left-3">
 									{$_('main.movies.badgeWatched')}
 								</div>
 							{/if}

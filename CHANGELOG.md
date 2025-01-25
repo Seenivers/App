@@ -1,27 +1,25 @@
 # [0.19.0](https://github.com/Seenivers/App/compare/v0.18.2...v0.19.0) (2025-01-25)
 
-
 ### Bug Fixes
 
-* **deps:** update dependency @tauri-apps/plugin-opener to ^2.2.5 ([855505c](https://github.com/Seenivers/App/commit/855505c9c50a6abd7fd261f69d8c1e4ed6c03a87))
-* **deps:** update rust crate serde_json to 1.0.137 ([ea3bed4](https://github.com/Seenivers/App/commit/ea3bed4745c1edacfacc74e3d3addb1c3ebdecf5))
-* **deps:** update rust crate tauri-plugin-opener to 2.2.5 ([0bb8d5c](https://github.com/Seenivers/App/commit/0bb8d5ca2b80632288e2427f5ca209c027dc6cde))
-* **deps:** update rust crate tauri-plugin-single-instance to 2.2.1 ([8e8bfbf](https://github.com/Seenivers/App/commit/8e8bfbf51986f29c4442c3c3cfbf69603321445b))
-* **deps:** update tauri monorepo ([1d661b8](https://github.com/Seenivers/App/commit/1d661b81c8933ef66e45228e56791d4f3c92ba49))
-* **movie:** ensure movieData.path is checked before opening external player ([da37ab8](https://github.com/Seenivers/App/commit/da37ab8684b5e165ac8e82284940e1e345df99e8))
-* **movie:** replace form with button for closing modal ([aa24c10](https://github.com/Seenivers/App/commit/aa24c104c056f34c842738bec8e5d4e8ac54cd58))
-* **movies:** make 'path' field nullable in movies schema ([9280124](https://github.com/Seenivers/App/commit/9280124e0cd0d1e165e3fac2f07c3eaabc18dbdf))
-
+- **deps:** update dependency @tauri-apps/plugin-opener to ^2.2.5 ([855505c](https://github.com/Seenivers/App/commit/855505c9c50a6abd7fd261f69d8c1e4ed6c03a87))
+- **deps:** update rust crate serde_json to 1.0.137 ([ea3bed4](https://github.com/Seenivers/App/commit/ea3bed4745c1edacfacc74e3d3addb1c3ebdecf5))
+- **deps:** update rust crate tauri-plugin-opener to 2.2.5 ([0bb8d5c](https://github.com/Seenivers/App/commit/0bb8d5ca2b80632288e2427f5ca209c027dc6cde))
+- **deps:** update rust crate tauri-plugin-single-instance to 2.2.1 ([8e8bfbf](https://github.com/Seenivers/App/commit/8e8bfbf51986f29c4442c3c3cfbf69603321445b))
+- **deps:** update tauri monorepo ([1d661b8](https://github.com/Seenivers/App/commit/1d661b81c8933ef66e45228e56791d4f3c92ba49))
+- **movie:** ensure movieData.path is checked before opening external player ([da37ab8](https://github.com/Seenivers/App/commit/da37ab8684b5e165ac8e82284940e1e345df99e8))
+- **movie:** replace form with button for closing modal ([aa24c10](https://github.com/Seenivers/App/commit/aa24c104c056f34c842738bec8e5d4e8ac54cd58))
+- **movies:** make 'path' field nullable in movies schema ([9280124](https://github.com/Seenivers/App/commit/9280124e0cd0d1e165e3fac2f07c3eaabc18dbdf))
 
 ### Features
 
-* **db:** add deleteActor function to remove actors by ID ([4b3bad4](https://github.com/Seenivers/App/commit/4b3bad4180950e4d6dca2a89826f34c6905f1845))
-* **db:** add deleteCollection function to remove collections by ID ([5956613](https://github.com/Seenivers/App/commit/59566139708ac3aab77ee924f473b1c377a72c3c))
-* **db:** add isActorIDUnique function to check for unique actor IDs ([e01837d](https://github.com/Seenivers/App/commit/e01837def474bf6ebd605ca4789efa6b8e15f0da))
-* **db:** add updateActor function to modify actor details by ID ([b2595e2](https://github.com/Seenivers/App/commit/b2595e2457c9a36e5a4d4fea108116b681b1f6bf))
-* **db:** add updateCollection function to modify collections by ID ([4f2330c](https://github.com/Seenivers/App/commit/4f2330c685dadbb9a71f0d7311c4148282b18077))
-* **plugins:** add tauri-plugin-single-instance for single instance application support ([bc6528d](https://github.com/Seenivers/App/commit/bc6528d3f53ef87c1a87107964ab3be896a147ca))
-* **plugins:** enhance single instance plugin to focus main window on launch ([52df561](https://github.com/Seenivers/App/commit/52df561ab6bc97c855652a18b6c14f7c15c5cb2d))
+- **db:** add deleteActor function to remove actors by ID ([4b3bad4](https://github.com/Seenivers/App/commit/4b3bad4180950e4d6dca2a89826f34c6905f1845))
+- **db:** add deleteCollection function to remove collections by ID ([5956613](https://github.com/Seenivers/App/commit/59566139708ac3aab77ee924f473b1c377a72c3c))
+- **db:** add isActorIDUnique function to check for unique actor IDs ([e01837d](https://github.com/Seenivers/App/commit/e01837def474bf6ebd605ca4789efa6b8e15f0da))
+- **db:** add updateActor function to modify actor details by ID ([b2595e2](https://github.com/Seenivers/App/commit/b2595e2457c9a36e5a4d4fea108116b681b1f6bf))
+- **db:** add updateCollection function to modify collections by ID ([4f2330c](https://github.com/Seenivers/App/commit/4f2330c685dadbb9a71f0d7311c4148282b18077))
+- **plugins:** add tauri-plugin-single-instance for single instance application support ([bc6528d](https://github.com/Seenivers/App/commit/bc6528d3f53ef87c1a87107964ab3be896a147ca))
+- **plugins:** enhance single instance plugin to focus main window on launch ([52df561](https://github.com/Seenivers/App/commit/52df561ab6bc97c855652a18b6c14f7c15c5cb2d))
 
 ## [0.18.2](https://github.com/Seenivers/App/compare/v0.18.1...v0.18.2) (2025-01-20)
 
