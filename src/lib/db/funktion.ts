@@ -5,8 +5,6 @@ import { db } from '$lib/db/database';
 import { migrate } from '$lib/db/migrate';
 import { updateActors, updateCollections, updateMovies, updateOldDB } from './update';
 
-let loadedSettings: typeof schema.settings.$inferSelect | undefined;
-
 async function createDefaultSettings() {
 	const language = navigator.language.substring(0, 2);
 	await db.insert(schema.settings).values({ id: 1, language });
@@ -19,22 +17,14 @@ async function createDefaultSettings() {
 async function initializeSettings() {
 	await migrate();
 
-	if (!loadedSettings) {
-		const settings = await db.select().from(schema.settings).limit(1);
-		loadedSettings = settings[0] ?? (await createDefaultSettings());
-	}
-}
-
-await initializeSettings();
-
-if (!loadedSettings) {
-	throw new Error('Settings is not defined');
+	const settings = await db.select().from(schema.settings).limit(1);
+	return settings[0] ?? (await createDefaultSettings());
 }
 
 /**
  * Exportiert die `settings`-Variable, die einmalig geladen und synchron zugänglich ist.
  */
-export const settings = loadedSettings;
+export const settings = await initializeSettings();
 
 (async () => {
 	if (settings && import.meta.env.PROD) {
