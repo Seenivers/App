@@ -195,3 +195,12 @@ export async function getAllActors(): Promise<void | (typeof schema.actors.$infe
 			error('Get All Actors: ' + err);
 		});
 }
+
+export async function deleteActor(id: number) {
+	return await db
+		.delete(schema.actors)
+		.where(eq(schema.actors.id, id))
+		.catch((err) => {
+			error(`Delete Actor: ` + err);
+		});
+}
