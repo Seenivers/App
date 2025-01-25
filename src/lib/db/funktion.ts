@@ -140,6 +140,16 @@ export async function deleteCollection(id: number) {
 		});
 }
 
+export async function updateCollection(id: number, data: typeof schema.collections.$inferInsert) {
+	return await db
+		.update(schema.collections)
+		.set(data)
+		.where(eq(schema.collections.id, id))
+		.catch((err) => {
+			error(`Update Collection: ` + err);
+		});
+}
+
 /**
  * Überprüft, ob eine Sammlung mit der angegebenen `id` einzigartig in der Datenbank ist.
  * Gibt `true` zurück, wenn keine Sammlung mit dieser ID existiert (d.h., die Sammlung ist einzigartig),
