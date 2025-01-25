@@ -214,3 +214,8 @@ export async function updateActor(id: number, data: typeof schema.actors.$inferI
 			error(`Update Actor: ` + err);
 		});
 }
+
+export async function isActorIDUnique(id: number): Promise<boolean> {
+	const existingActor = await getActor(id);
+	return !existingActor;
+}
