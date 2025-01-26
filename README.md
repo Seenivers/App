@@ -1,8 +1,6 @@
 <h1 align="center">
-  <img src="src-tauri/icons/icon.svg" width="128" style="padding: 5px; background: #363636; border-radius: 8px" />
-  <br>
-  Seenivers
-  <br>
+  <img src="src-tauri/icons/icon.svg" width="128" alt="Seenivers Logo" style="padding: 5px; background: #363636; border-radius: 8px;" />
+  <br>Seenivers
 </h1>
 
 <div align="center">
@@ -19,4 +17,4 @@
 
 - **Standard-Player:** Der auf dem Rechner installierte Standard-Player.
 - **[Plyr](https://plyr.io/) ([NPM-Seite](https://www.npmjs.com/package/plyr)):** Ein moderner, funktionsreicher Video-Player.
-- **[Vidstack](https://github.com/vidstack/player#readme) ([NPM-Seite](https://www.npmjs.com/package/vidstack))** Ein anpassbarer HTML5-Video-Player mit einer einfachen API und Unterstützung für moderne Medienformate.
+- **[Vidstack](https://github.com/vidstack/player#readme) ([NPM-Seite](https://www.npmjs.com/package/vidstack)):** Ein anpassbarer HTML5-Video-Player mit einer einfachen API und Unterstützung für moderne Medienformate.
