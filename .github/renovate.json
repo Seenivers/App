@@ -5,7 +5,7 @@
 		"labels": ["security"]
 	},
 	"rebaseWhen": "auto",
-	"requiredStatusChecks": ["CodeQL"],
+	"requiredStatusChecks": ["CodeQL", "build"],
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
