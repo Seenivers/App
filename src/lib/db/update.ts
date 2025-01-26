@@ -20,9 +20,8 @@ import {
 	getActor as getActorTmdb
 } from '$lib/tmdb';
 import { schema } from './schema';
-import { castImages } from '$lib';
+import { castImages, WEEKS } from '$lib';
 
-const WEEKS = 1; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
 
