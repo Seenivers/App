@@ -141,8 +141,7 @@
 	// Öffne das Modal nur, wenn der Status des Films 'downloading' oder 'foundOne' ist
 	function openModal(index: number) {
 		// Sicherstellen, dass der Status des Films gültig ist, bevor das Modal geöffnet wird
-		const filmState = searchList[index]?.status;
-		if (filmState !== 'downloading' || 'waitForDownloading') {
+		if (searchList[index]?.status !== 'downloading' || 'waitForDownloading') {
 			modalID = index;
 			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
 		}
