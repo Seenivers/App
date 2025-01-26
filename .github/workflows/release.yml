@@ -87,7 +87,7 @@ jobs:
           fi
 
   test:
-    name: Test Build Code
+    name: Test Build
     needs: semantic-release
 
     permissions:
