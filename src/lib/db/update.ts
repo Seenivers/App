@@ -167,7 +167,8 @@ export async function updateActors() {
 	try {
 		const actors = await getAllActors();
 
-		if (actors && actors.length > 0) {
+		// @ts-expect-error castImages wird später über die Settings verarbeitet
+		if (actors && actors.length > 0 && castImages !== -1) {
 			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
 			const imagesToLoad =
 				// @ts-expect-error castImages wird später über die Settings verarbeitet
