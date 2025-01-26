@@ -86,9 +86,18 @@ jobs:
             echo "should_run=true" >> $GITHUB_OUTPUT
           fi
 
+  test:
+    name: Test Build Code
+    needs: semantic-release
+
+    permissions:
+      contents: read
+
+    uses: ./.github/workflows/build.yml
+
   format:
     name: Code Formatting
-    needs: semantic-release
+    needs: test
 
     permissions:
       contents: write
