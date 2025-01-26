@@ -1,13 +1,13 @@
 .body > h1 {
-	@apply text-primary my-5 text-3xl font-bold;
+	@apply my-5 text-3xl font-bold text-primary;
 }
 
 .body > h2 {
-	@apply text-secondary my-4 text-2xl font-semibold;
+	@apply my-4 text-2xl font-semibold text-secondary;
 }
 
 .body > h3 {
-	@apply text-secondary mt-4 mb-2 text-xl font-semibold;
+	@apply mb-2 mt-4 text-xl font-semibold text-secondary;
 }
 
 .body > ul {
@@ -23,7 +23,7 @@
 }
 
 .body > ul > li code {
-	@apply bg-base-300 rounded px-1;
+	@apply rounded bg-base-300 px-1;
 }
 
 .body > ul > li strong {

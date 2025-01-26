@@ -48,7 +48,7 @@
 		{@const actor = data.result}
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 			<!-- Linke Spalte: Bild, Grunddaten und Social Links -->
-			<div class="card bg-base-200 sticky top-24 h-fit w-full p-5 shadow-md">
+			<div class="card sticky top-24 h-fit w-full bg-base-200 p-5 shadow-md">
 				<div class="flex justify-center">
 					<Img
 						params={[actor.profile_path, 'actors', false]}
@@ -173,11 +173,11 @@
 			</div>
 
 			<!-- Mittlere Spalte: Name und Biografie -->
-			<div class="card bg-base-200 w-full p-5 shadow-md lg:col-span-2">
+			<div class="card w-full bg-base-200 p-5 shadow-md lg:col-span-2">
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 				<div class="mt-5">
 					<h2 class="text-2xl font-semibold">{$_('actor.biography.label')}</h2>
-					<p class="text-base-content whitespace-pre-wrap">
+					<p class="whitespace-pre-wrap text-base-content">
 						{actor.biography || $_('actor.biography.none')}
 					</p>
 				</div>

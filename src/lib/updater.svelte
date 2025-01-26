@@ -86,14 +86,14 @@
 
 <dialog class="modal backdrop-blur-sm" open={modalOpen}>
 	<div class="modal-box mx-4 w-full max-w-xl sm:w-auto sm:max-w-3xl">
-		<button class="btn btn-circle btn-sm absolute top-2 right-2" onclick={() => (modalOpen = false)}
+		<button class="btn btn-circle btn-sm absolute right-2 top-2" onclick={() => (modalOpen = false)}
 			>✕</button
 		>
 
 		{#if update !== null && update.body}
 			<h2 class="mb-2 text-xl font-semibold sm:text-3xl">Es ist ein neues Update verfügbar</h2>
 			<h3 class="text-lg font-semibold sm:text-2xl">Version {update.version}</h3>
-			<div class="body bg-base-200 my-3 h-[40rem] overflow-y-scroll rounded-md px-3">
+			<div class="body my-3 h-[40rem] overflow-y-scroll rounded-md bg-base-200 px-3">
 				{#await marked.parse(update.body)}
 					<p>Lade Änderungsprotokoll...</p>
 				{:then body}
@@ -107,13 +107,13 @@
 					<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
 					></progress>
 				{:else if downloadFinished}
-					<p class="text-success mt-4 text-lg font-semibold">
+					<p class="mt-4 text-lg font-semibold text-success">
 						Das Update wurde erfolgreich abgeschlossen!
 					</p>
 				{/if}
 			</div>
 
-			<div class="mt-6 flex flex-col justify-end space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+			<div class="mt-6 flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 				{#if update && !downloadStarted}
 					<button class="btn btn-primary" disabled={!online.current} onclick={download}
 						>Update herunterladen</button
