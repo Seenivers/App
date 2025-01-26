@@ -12,7 +12,15 @@ export const load = (async ({ url }) => {
 
 	const module = await import('$lib/db/funktion');
 
-	const result = await module.getCollection(id);
+	let result = await module.getCollection(id);
+	if (!result && navigator.onLine) {
+		// Daten von TMDB abrufen
+		const tmdb = await import('$lib/tmdb');
+
+		// @ts-expect-error Die Eigenschaft "updated" fehlt im Typ "CollectionDetails", aber wird nicht benötigt
+		result = await tmdb.getCollection(id);
+	}
+
 	if (!result) {
 		throw error(404, 'Collection not found');
 	}
