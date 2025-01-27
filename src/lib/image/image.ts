@@ -3,7 +3,6 @@ import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir, remove } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
 import { error } from '@tauri-apps/plugin-log';
-import { fetch } from '@tauri-apps/plugin-http';
 import { online } from 'svelte/reactivity/window';
 
 /**
