@@ -1,4 +1,4 @@
-name: cleanup caches by a branch
+name: Cleanup caches by branch
 on:
   pull_request:
     types:
@@ -10,18 +10,22 @@ jobs:
     steps:
       - name: Cleanup
         run: |
-          echo "Fetching list of cache key"
-          cacheKeysForPR=$(gh cache list --ref $BRANCH --limit 100 --json id --jq '.[].id')
+          set -eo pipefail
 
-          ## Setting this to not fail the workflow while deleting cache keys.
-          set +e
+          # Log: Start fetching cache keys
+          echo "Fetching list of cache keys for PR branch..."
+          cacheKeysForPR=$(gh cache list --ref refs/pull/${{ github.event.pull_request.number }}/merge --limit 100 --json id --jq '.[].id')
+
+          # Check if there are any cache keys
+          if [ -z "$cacheKeysForPR" ]; then
+              echo "No cache keys found for the branch. Exiting."
+              exit 0
+          fi
+
+          # Log: Deleting cache keys
           echo "Deleting caches..."
-          for cacheKey in $cacheKeysForPR
-          do
-              gh cache delete $cacheKey
-          done
-          echo "Done"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
+          gh cache delete --confirm --ref refs/pull/${{ github.event.pull_request.number }}/merge
+
+          echo "Cleanup completed successfully."
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
