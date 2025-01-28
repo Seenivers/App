@@ -4,7 +4,7 @@ import { browser } from '$app/environment';
 
 export const load = (async () => {
 	if (!browser) {
-		throw error(500, 'This operation is only supported in the browser');
+		error(500, 'This operation is only supported in the browser');
 	}
 
 	const module = await import('$lib/db/funktion');

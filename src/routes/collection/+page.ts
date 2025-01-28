@@ -9,7 +9,7 @@ export const load = (async ({ url }) => {
 
 	// Sicherstellen, dass die Funktion nur im Browser ausgeführt wird
 	if (!browser) {
-		throw error(500, 'This operation is only supported in the browser');
+		error(500, 'This operation is only supported in the browser');
 	}
 
 	// Import von Modulen, die Datenbankoperationen durchführen
@@ -26,7 +26,7 @@ export const load = (async ({ url }) => {
 
 		// Wenn keine Daten gefunden wurden, Fehler auslösen
 		if (!collection) {
-			throw error(404, 'Collection not found');
+			error(404, 'Collection not found');
 		}
 
 		// Collection speichern und aktualisiert setzen
@@ -36,7 +36,7 @@ export const load = (async ({ url }) => {
 
 	// Wenn selbst nach TMDB-Aufruf keine Daten vorhanden sind, Fehler auslösen
 	if (!result) {
-		throw error(404, 'Collection not found');
+		error(404, 'Collection not found');
 	}
 
 	// Filme aus der lokalen Datenbank laden, nur mit Pfad
