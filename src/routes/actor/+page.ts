@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { parseId } from '$lib/load/loadUtils';
+import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
 	// ID validieren und parsen
@@ -27,7 +28,7 @@ export const load = (async ({ url }) => {
 
 	// Wenn kein Ergebnis in der lokalen Datenbank und online
 	if (!result) {
-		if (navigator.onLine) {
+		if (online.current) {
 			// Daten von TMDB abrufen
 			const tmdb = await import('$lib/tmdb');
 			const fetchedActor = await tmdb.getActor(id);

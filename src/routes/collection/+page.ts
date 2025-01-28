@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { parseId } from '$lib/load/loadUtils';
+import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
@@ -17,7 +18,7 @@ export const load = (async ({ url }) => {
 	// Versuchen, die Collection aus der lokalen Datenbank zu laden
 	let result = await getCollection(id);
 
-	if (!result && navigator.onLine) {
+	if (!result && online.current) {
 		// Wenn nicht vorhanden und online, Daten von TMDB abrufen
 		const { getCollection: getTMDBCollection } = await import('$lib/tmdb');
 

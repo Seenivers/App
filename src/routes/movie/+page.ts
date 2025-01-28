@@ -3,6 +3,7 @@ import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
 import { parseId } from '$lib/load/loadUtils';
+import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
@@ -15,7 +16,7 @@ export const load = (async ({ url }) => {
 
 	let result = await module.getMovie(id);
 	if (!result) {
-		if (navigator.onLine) {
+		if (online.current) {
 			// Daten von TMDB abrufen
 			const tmdb = await import('$lib/tmdb');
 			const fetchedMovie = await tmdb.getMovie(id);
