@@ -27,6 +27,8 @@
 <main class="z-0 flex flex-col items-center p-3 md:p-5">
 	{#if data.result}
 		{@const collection = data.result}
+		{@const movies = data.movies}
+
 		<div class="mx-auto w-full max-w-full">
 			{#await image(collection.backdrop_path, 'backdrops', true) then backdropImage}
 				<div
@@ -70,6 +72,8 @@
 							class:transition-transform={isGridView}
 							class:hover:scale-105={isGridView}
 							class:md:flex-row={!isGridView}
+							class:border-2={movies.some((m) => m.id === movie.id && m.path !== null)}
+							class:border-accent={movies.some((m) => m.id === movie.id && m.path !== null)}
 						>
 							<Img
 								alt="Poster"
