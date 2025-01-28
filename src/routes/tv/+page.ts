@@ -13,12 +13,11 @@ export const load = (async ({ url }) => {
 	try {
 		// Öffne die URL mit der gegebenen ID
 		await openUrl(`https://www.themoviedb.org/tv/${idParam}`);
-
-		// Gehe zurück oder leite auf die vorherige Seite weiter
-		setTimeout(() => window.history.back(), 1000);
 	} catch (err) {
 		// Fehlerbehandlung, falls die URL nicht geöffnet werden kann
 		console.error('Error opening URL:', err);
-		error(302, 'Failed to open URL');
 	}
+
+	// Gehe zurück oder leite auf die vorherige Seite weiter
+	setTimeout(() => window.history.back(), 1000);
 }) satisfies PageLoad;
