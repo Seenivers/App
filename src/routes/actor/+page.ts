@@ -27,29 +27,29 @@ export const load = (async ({ url }) => {
 	}
 
 	// Wenn kein Ergebnis in der lokalen Datenbank und online
-	if (!result) {
-		if (online.current) {
-			// Daten von TMDB abrufen
-			const tmdb = await import('$lib/tmdb');
-			const fetchedActor = await tmdb.getActor(id);
+	if (!result && online.current) {
+		// Daten von TMDB abrufen
+		const tmdb = await import('$lib/tmdb');
+		const fetchedActor = await tmdb.getActor(id);
 
-			if (!fetchedActor) {
-				// Wenn der Schauspieler auch online nicht gefunden wurde
-				error(404, 'Actor not found');
-			}
-			result = fetchedActor;
-
-			// Schauspieler in die Datenbank speichern
-			db.addActor({
-				name: result.name,
-				tmdb: result,
-				id: id,
-				updated: new Date()
-			});
-		} else {
-			// Wenn offline und keine Daten gefunden
-			error(404, 'Actor not found and you are offline');
+		if (!fetchedActor) {
+			// Wenn der Schauspieler auch online nicht gefunden wurde
+			error(404, 'Actor not found');
 		}
+		result = fetchedActor;
+
+		// Schauspieler in die Datenbank speichern
+		db.addActor({
+			name: result.name,
+			tmdb: result,
+			id: id,
+			updated: new Date()
+		});
+	}
+
+	// Wenn keine Daten gefunden wurden, Fehler auslösen
+	if (!result) {
+		error(404, 'Actor not found');
 	}
 
 	// Relevante Daten zurückgeben

@@ -17,36 +17,32 @@ export const load = (async ({ url }) => {
 	// Zuerst versuchen, den Film lokal zu finden
 	let result = await module.getMovie(id);
 
-	if (!result) {
-		if (online.current) {
-			// Wenn der Film nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
-			try {
-				const tmdb = await import('$lib/tmdb');
-				const fetchedMovie = await tmdb.getMovie(id);
+	if (!result && online.current) {
+		// Wenn der Film nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
 
-				if (!fetchedMovie) {
-					// Wenn der Film auch online nicht gefunden wurde
-					error(404, 'Movie not found');
-				}
+		const tmdb = await import('$lib/tmdb');
+		const fetchedMovie = await tmdb.getMovie(id);
 
-				result = {
-					id,
-					path: null,
-					watched: false,
-					watchTime: 0,
-					tmdb: fetchedMovie,
-					updated: new Date()
-				};
-
-				// Film in die Datenbank speichern
-				module.addMovie(result);
-			} catch {
-				error(404, 'Movie not found');
-			}
-		} else {
-			// Wenn offline und keine Daten gefunden
+		if (!fetchedMovie) {
+			// Wenn der Film auch online nicht gefunden wurde
 			error(404, 'Movie not found');
 		}
+
+		result = {
+			id,
+			path: null,
+			watched: false,
+			watchTime: 0,
+			tmdb: fetchedMovie,
+			updated: new Date()
+		};
+
+		// Film in die Datenbank speichern
+		module.addMovie(result);
+	}
+
+	if (!result) {
+		error(404, 'Movie not found');
 	}
 
 	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
