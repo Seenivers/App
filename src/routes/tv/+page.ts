@@ -15,7 +15,7 @@ export const load = (async ({ url }) => {
 		await openUrl(`https://www.themoviedb.org/tv/${idParam}`);
 
 		// Gehe zurück oder leite auf die vorherige Seite weiter
-		setTimeout(() => window.history.back(), 100);
+		setTimeout(() => window.history.back(), 1000);
 	} catch (err) {
 		// Fehlerbehandlung, falls die URL nicht geöffnet werden kann
 		console.error('Error opening URL:', err);
