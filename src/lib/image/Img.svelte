@@ -11,23 +11,28 @@
 
 	// Props initialisieren
 	let { params, alt, ...attributes }: ImageProps = $props();
+	let src: string | undefined = $state(placeholderURL);
+	let height: number | undefined = $state(450);
+	let width: number | undefined = $state(300);
+
+	(async () => {
+		({ src, height, width } = await image(...params));
+	})();
 </script>
 
-{#await image(...params) then { src, height, width }}
-	<img
-		{src}
-		{height}
-		{width}
-		{alt}
-		onerror={(e) => {
-			if (e.target instanceof HTMLImageElement) {
-				e.target.src = placeholderURL;
-			}
-		}}
-		loading="lazy"
-		decoding="async"
-		draggable="false"
-		aria-roledescription="image"
-		{...attributes}
-	/>
-{/await}
+<img
+	{src}
+	{height}
+	{width}
+	{alt}
+	onerror={(e) => {
+		if (e.target instanceof HTMLImageElement) {
+			e.target.src = placeholderURL;
+		}
+	}}
+	loading="lazy"
+	decoding="async"
+	draggable="false"
+	aria-roledescription="image"
+	{...attributes}
+/>
