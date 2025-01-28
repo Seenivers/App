@@ -38,6 +38,14 @@ export const load = (async ({ url }) => {
 				error(404, 'Actor not found');
 			}
 			result = fetchedActor;
+
+			// Schauspieler in die Datenbank speichern
+			db.addActor({
+				name: result.name,
+				tmdb: result,
+				id: id,
+				updated: new Date()
+			});
 		} else {
 			// Wenn offline und keine Daten gefunden
 			error(404, 'Actor not found and you are offline');
