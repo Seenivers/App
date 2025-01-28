@@ -28,12 +28,14 @@ export const load = (async ({ url }) => {
 
 			result = {
 				id,
-				path: '',
+				path: null,
 				watched: false,
 				watchTime: 0,
 				tmdb: fetchedMovie,
 				updated: new Date()
 			};
+
+			module.addMovie(result);
 		} else {
 			// Wenn offline und keine Daten gefunden
 			error(404, 'Movie not found');
