@@ -10,7 +10,7 @@ export const load = (async ({ url }) => {
 
 	// Prüfen, ob der Code im Browser läuft
 	if (!browser) {
-		error(500, 'This operation is only supported in the browser');
+		error(500, 'This operation is only supported in the browser'); // Fehler auslösen, wenn nicht im Browser
 	}
 
 	// Lokale Datenbank abfragen
@@ -22,7 +22,7 @@ export const load = (async ({ url }) => {
 		try {
 			result = JSON.parse(result);
 		} catch {
-			error(500, 'Invalid data format from database');
+			error(500, 'Invalid data format from database'); // Fehler auslösen, wenn das JSON ungültig ist
 		}
 	}
 
@@ -33,9 +33,9 @@ export const load = (async ({ url }) => {
 		const fetchedActor = await tmdb.getActor(id);
 
 		if (!fetchedActor) {
-			// Wenn der Schauspieler auch online nicht gefunden wurde
-			error(404, 'Actor not found');
+			error(404, 'Actor not found'); // Fehler auslösen, wenn der Schauspieler nicht gefunden wurde
 		}
+
 		result = fetchedActor;
 
 		// Schauspieler in die Datenbank speichern
@@ -49,7 +49,7 @@ export const load = (async ({ url }) => {
 
 	// Wenn keine Daten gefunden wurden, Fehler auslösen
 	if (!result) {
-		error(404, 'Actor not found');
+		error(404, 'Actor not found'); // Fehler auslösen, wenn immer noch keine Daten gefunden wurden
 	}
 
 	// Relevante Daten zurückgeben
