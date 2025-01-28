@@ -1,6 +1,5 @@
 export interface Settings {
 	language: string;
-	online: boolean;
 	keywords: string[];
 	adult: boolean;
 	toastPosition: {
