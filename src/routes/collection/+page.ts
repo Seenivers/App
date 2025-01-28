@@ -2,46 +2,51 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { parseId } from '$lib/load/loadUtils';
-import type { schema } from '$lib/db/schema';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
 
+	// Sicherstellen, dass die Funktion nur im Browser ausgeführt wird
 	if (!browser) {
 		throw error(500, 'This operation is only supported in the browser');
 	}
 
-	const module = await import('$lib/db/funktion');
+	// Import von Modulen, die Datenbankoperationen durchführen
+	const { getCollection, getMovie, addCollection } = await import('$lib/db/funktion');
 
-	let result = await module.getCollection(id);
-
-	const movies: (typeof schema.movies.$inferSelect)[] = [];
+	// Versuchen, die Collection aus der lokalen Datenbank zu laden
+	let result = await getCollection(id);
 
 	if (!result && navigator.onLine) {
-		// Daten von TMDB abrufen
-		const tmdb = await import('$lib/tmdb');
+		// Wenn nicht vorhanden und online, Daten von TMDB abrufen
+		const { getCollection: getTMDBCollection } = await import('$lib/tmdb');
 
-		const collection = await tmdb.getCollection(id);
+		const collection = await getTMDBCollection(id);
 
+		// Wenn keine Daten gefunden wurden, Fehler auslösen
+		if (!collection) {
+			throw error(404, 'Collection not found');
+		}
+
+		// Collection speichern und aktualisiert setzen
 		result = { ...collection, updated: new Date() };
-
-		module.addCollection(result);
+		await addCollection(result);
 	}
 
+	// Wenn selbst nach TMDB-Aufruf keine Daten vorhanden sind, Fehler auslösen
 	if (!result) {
 		throw error(404, 'Collection not found');
 	}
 
-	if (result.parts.length > 0) {
+	// Filme aus der lokalen Datenbank laden, nur mit Pfad
+	const movies = (
 		await Promise.all(
 			result.parts.map(async (part) => {
-				const movie = await module.getMovie(part.id);
-				if (movie?.path) {
-					movies.push(movie);
-				}
+				const movie = await getMovie(part.id);
+				return movie?.path ? movie : null;
 			})
-		);
-	}
+		)
+	).filter(Boolean); // Filtert `null` oder `undefined` heraus
 
 	// Nur relevante Daten zurückgeben
 	return { id, result, movies };
