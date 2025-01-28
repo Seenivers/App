@@ -17,8 +17,7 @@ export const load = (async ({ url }) => {
 		// Daten von TMDB abrufen
 		const tmdb = await import('$lib/tmdb');
 
-		// @ts-expect-error Die Eigenschaft "updated" fehlt im Typ "CollectionDetails", aber wird nicht benötigt
-		result = await tmdb.getCollection(id);
+		result = { ...(await tmdb.getCollection(id)), updated: new Date() };
 	}
 
 	if (!result) {
