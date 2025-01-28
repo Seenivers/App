@@ -1,19 +1,17 @@
 # [0.20.0](https://github.com/Seenivers/App/compare/v0.19.0...v0.20.0) (2025-01-28)
 
-
 ### Bug Fixes
 
-* correct film status check logic before opening modal ([a369a29](https://github.com/Seenivers/App/commit/a369a29f307f059ac3bd80579bfe6d469a7e5dd6))
-* **security:** update Content Security Policy to include seenivers.com ([c333ca6](https://github.com/Seenivers/App/commit/c333ca63a7a8f31b5b3c4bb47e6c93255e65038a))
-* **security:** update img-src in Content Security Policy to allow YouTube images ([ce5278f](https://github.com/Seenivers/App/commit/ce5278fc5e4a0397dbbffbc243d95924985c9dff))
-
+- correct film status check logic before opening modal ([a369a29](https://github.com/Seenivers/App/commit/a369a29f307f059ac3bd80579bfe6d469a7e5dd6))
+- **security:** update Content Security Policy to include seenivers.com ([c333ca6](https://github.com/Seenivers/App/commit/c333ca63a7a8f31b5b3c4bb47e6c93255e65038a))
+- **security:** update img-src in Content Security Policy to allow YouTube images ([ce5278f](https://github.com/Seenivers/App/commit/ce5278fc5e4a0397dbbffbc243d95924985c9dff))
 
 ### Features
 
-* add WEEKS constant for film update duration in database logic ([8d2201a](https://github.com/Seenivers/App/commit/8d2201a9ab7637e615ae45a2e5efa079a4cb2844))
-* extended castImages logic to control the actor images to be downloaded ([53d4367](https://github.com/Seenivers/App/commit/53d43671ac4f94a34df6e3b577440a726bc1f11f))
-* implement fallback to TMDB for collection data retrieval when offline ([10f2ccd](https://github.com/Seenivers/App/commit/10f2ccd54c1f3ae6e9af8a65f3f251169111ea14))
-* update WEEKS constant to extend film update duration to 4 weeks ([f153a74](https://github.com/Seenivers/App/commit/f153a74bdfbaaef84ba95f8b5fe687fd473a9c4f))
+- add WEEKS constant for film update duration in database logic ([8d2201a](https://github.com/Seenivers/App/commit/8d2201a9ab7637e615ae45a2e5efa079a4cb2844))
+- extended castImages logic to control the actor images to be downloaded ([53d4367](https://github.com/Seenivers/App/commit/53d43671ac4f94a34df6e3b577440a726bc1f11f))
+- implement fallback to TMDB for collection data retrieval when offline ([10f2ccd](https://github.com/Seenivers/App/commit/10f2ccd54c1f3ae6e9af8a65f3f251169111ea14))
+- update WEEKS constant to extend film update duration to 4 weeks ([f153a74](https://github.com/Seenivers/App/commit/f153a74bdfbaaef84ba95f8b5fe687fd473a9c4f))
 
 # [0.19.0](https://github.com/Seenivers/App/compare/v0.18.2...v0.19.0) (2025-01-25)
 
