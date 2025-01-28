@@ -72,8 +72,8 @@
 							class:transition-transform={isGridView}
 							class:hover:scale-105={isGridView}
 							class:md:flex-row={!isGridView}
-							class:border-2={movies.some((m) => m.id === movie.id && m.path !== null)}
-							class:border-accent={movies.some((m) => m.id === movie.id && m.path !== null)}
+							class:border-2={movies.some((m) => m && m.id === movie.id && m.path !== null)}
+							class:border-accent={movies.some((m) => m && m.id === movie.id && m.path !== null)}
 						>
 							<Img
 								alt="Poster"
