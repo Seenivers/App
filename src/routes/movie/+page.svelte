@@ -200,9 +200,11 @@
 					<div>
 						<h2 class="text-lg font-bold">Veröffentlichungsdatum</h2>
 						<p>
-							{new Date(movieData.tmdb.release_date).toLocaleDateString(
-								window.navigator.language
-							) || 'Keine Informationen verfügbar'}
+							{movieData.tmdb.release_date
+								? new Date(movieData.tmdb.release_date).toLocaleDateString(
+										window.navigator.language
+									)
+								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
 					<div>
