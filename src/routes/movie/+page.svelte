@@ -107,6 +107,7 @@
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
 			{:else}
+				<!-- Trailer -->
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each movieData.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
@@ -142,6 +143,7 @@
 				</div>
 			{/if}
 
+			<!-- Collection -->
 			{#if movieData.tmdb.belongs_to_collection?.id && data.result.path}
 				<div class="my-4">
 					{#await getCollection(movieData.tmdb.belongs_to_collection.id) then value}
@@ -165,24 +167,27 @@
 				</div>
 			{/if}
 
+			<!-- Hauptdarsteller -->
 			<div class="my-4">
 				<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
-				<div class="carousel carousel-center w-full space-x-3 rounded-box bg-base-100 p-3">
-					{#each movieData.tmdb.credits.cast as cast}
-						<a
-							href="./actor?id={cast.id}"
-							class="carousel-item flex flex-col items-center"
-							data-sveltekit-preload-data="tap"
-						>
-							<Img
-								params={[cast.profile_path, 'actors', false]}
-								alt={cast.name}
-								class="max-w-40 rounded-box sm:max-w-60"
-							/>
-							<p class="text-center text-lg">{cast.name}</p>
-							<p class="text-base italic">{cast.character}</p>
-						</a>
-					{/each}
+				<div class="rounded-box bg-base-100 p-3">
+					<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						{#each movieData.tmdb.credits.cast as cast}
+							<a
+								href="./actor?id={cast.id}"
+								class="carousel-item flex flex-col items-center"
+								data-sveltekit-preload-data="tap"
+							>
+								<Img
+									params={[cast.profile_path, 'actors', false]}
+									alt={cast.name}
+									class="max-w-40 rounded-box sm:max-w-60"
+								/>
+								<p class="text-center text-lg">{cast.name}</p>
+								<p class="text-base italic">{cast.character}</p>
+							</a>
+						{/each}
+					</div>
 				</div>
 			</div>
 
