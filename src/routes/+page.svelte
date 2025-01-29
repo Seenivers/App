@@ -19,7 +19,7 @@
 	let searchCriteria: SearchCriteria = $state(getFilter());
 
 	// Lade die Filme und initialisiere die Fuse-Suche
-	let matchedMovies: (typeof schema.movies.$inferSelect)[] = $state(data.result);
+	let matchedMovies: typeof data.result = $state(data.result);
 	let isLoading = $state(false);
 	let CARDSCALE: Cardscale = $state({
 		aktiv: 2,
@@ -58,28 +58,40 @@
 				threshold: 0.4 // Anpassung des Schwellenwerts für unscharfe Übereinstimmungen
 			});
 
+			// Prüft, ob ein Element ein Film ist
+			function isMovie(
+				item: typeof schema.movies.$inferSelect | typeof schema.collections.$inferSelect
+			): item is typeof schema.movies.$inferSelect {
+				return 'tmdb' in item;
+			}
+
 			// Präziserer Typ statt any
 			const results: FuseResult<typeof schema.movies.$inferSelect>[] = searchCriteria.title
 				? fuse.search(searchCriteria.title)
-				: matchedMovies.map(
-						(movie) => ({ item: movie }) as FuseResult<typeof schema.movies.$inferSelect>
-					);
+				: matchedMovies
+						.filter(isMovie) // Nur Filme durchsuchen
+						.map((movie) => ({ item: movie }) as FuseResult<typeof schema.movies.$inferSelect>);
 
 			matchedMovies = (
 				results.length >= 1 ? results.map((result) => result.item) : data.result
 			).filter((movie) => {
-				// Typ-Deklaration für Genre hinzufügen
+				// Sicherstellen, dass es sich um einen Film handelt
+				if (!isMovie(movie)) return false;
+
+				// Genre-Filterung
 				const genreMatches =
 					searchCriteria.genre === null ||
 					movie.tmdb.genres.some((genre) =>
 						genre.name.toLowerCase().includes(searchCriteria.genre?.toLowerCase() || '')
 					);
 
+				// Watch-Status-Filterung
 				const watchedMatches =
 					searchCriteria.isWatched === null || movie.watched === searchCriteria.isWatched;
 
 				return genreMatches && watchedMatches;
 			});
+
 			isLoading = false;
 		}, 300); // Setzt Debouncing mit 300 ms ein
 	}
@@ -236,7 +248,9 @@
 					class="absolute z-10 max-h-96 overflow-y-auto rounded-b-lg bg-base-100"
 					bind:this={datalistItem}
 				>
-					{#each Array.from(new Set(matchedMovies.flatMap((movie) => movie.tmdb.title))) as title}
+					{#each Array.from(new Set(matchedMovies
+								.filter((movie) => 'tmdb' in movie) // Type Guard: Nur Filme mit `tmdb` zulassen
+								.map((movie) => movie.tmdb.title))) as title}
 						<option
 							class="w-full min-w-fit cursor-pointer px-2 hover:bg-base-content/20"
 							value={title}
@@ -246,16 +260,20 @@
 					{/each}
 				</datalist>
 			</div>
+
 			<select
 				class="join-item select select-bordered"
 				name="genre"
 				bind:value={searchCriteria.genre}
 			>
 				<option value={null}>{$_('main.search.genreDefault')}</option>
-				{#each Array.from(new Set(matchedMovies.flatMap( (item) => item.tmdb.genres.map((i) => i.name) ))) as genre}
+				{#each Array.from(new Set(matchedMovies
+							.filter((item) => 'tmdb' in item) // Type Guard: Nur Filme mit `tmdb` zulassen
+							.flatMap((item) => item.tmdb.genres.map((i) => i.name)))) as genre}
 					<option>{genre}</option>
 				{/each}
 			</select>
+
 			<select
 				class="join-item select select-bordered"
 				name="isWatched"
@@ -311,43 +329,76 @@
 		{#if isLoading}
 			<p>{$_('main.scaling.loading')}</p>
 		{:else if matchedMovies.length >= 1}
-			<!-- Filme -->
 			<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
-				{#each matchedMovies as movie}
-					<a
-						href={'./movie?id=' + movie.id.toString()}
-						draggable="false"
-						class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
-				{CARDSCALE.aktiv === 1
-							? 'min-w-[8rem] max-w-[12rem]'
-							: CARDSCALE.aktiv === 2
-								? 'min-w-[12rem] max-w-[18rem]'
-								: 'min-w-[16rem] max-w-[24rem]'}"
-					>
-						<figure class="relative px-2 pt-2">
-							<Img
-								params={[movie.tmdb.poster_path, 'posters', true]}
-								alt={$_('main.movies.posterAlt', { values: { title: movie.tmdb.title } })}
-								class="rounded-xl"
-							/>
-							{#if movie.watched}
-								<div class="badge badge-outline absolute left-3 top-3 bg-base-300">
-									{$_('main.movies.badgeWatched')}
-								</div>
-							{/if}
-						</figure>
-						<div class="card-body items-center py-2 text-center">
-							<p
-								class="card-title {CARDSCALE.aktiv === 1
-									? 'text-base'
-									: CARDSCALE.aktiv === 2
-										? 'text-lg'
-										: 'text-2xl'}"
-							>
-								{movie.tmdb.title}
-							</p>
-						</div>
-					</a>
+				{#each data.result as item}
+					{#if 'parts' in item}
+						<!-- Collection -->
+						<a
+							href={'./collection?id=' + item.id.toString()}
+							draggable="false"
+							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
+					{CARDSCALE.aktiv === 1
+								? 'min-w-[8rem] max-w-[12rem]'
+								: CARDSCALE.aktiv === 2
+									? 'min-w-[12rem] max-w-[18rem]'
+									: 'min-w-[16rem] max-w-[24rem]'}"
+						>
+							<figure class="relative px-2 pt-2">
+								<Img
+									params={[item.poster_path, 'posters', true]}
+									alt={$_('main.movies.posterAlt', { values: { title: item.name } })}
+									class="rounded-xl"
+								/>
+							</figure>
+							<div class="card-body items-center py-2 text-center">
+								<p
+									class="card-title {CARDSCALE.aktiv === 1
+										? 'text-base'
+										: CARDSCALE.aktiv === 2
+											? 'text-lg'
+											: 'text-2xl'}"
+								>
+									{item.name}
+								</p>
+							</div>
+						</a>
+					{:else if 'tmdb' in item}
+						<!-- Film -->
+						<a
+							href={'./movie?id=' + item.id.toString()}
+							draggable="false"
+							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
+					{CARDSCALE.aktiv === 1
+								? 'min-w-[8rem] max-w-[12rem]'
+								: CARDSCALE.aktiv === 2
+									? 'min-w-[12rem] max-w-[18rem]'
+									: 'min-w-[16rem] max-w-[24rem]'}"
+						>
+							<figure class="relative px-2 pt-2">
+								<Img
+									params={[item.tmdb.poster_path, 'posters', true]}
+									alt={$_('main.movies.posterAlt', { values: { title: item.tmdb.title } })}
+									class="rounded-xl"
+								/>
+								{#if item.watched}
+									<div class="badge badge-outline absolute left-3 top-3 bg-base-300">
+										{$_('main.movies.badgeWatched')}
+									</div>
+								{/if}
+							</figure>
+							<div class="card-body items-center py-2 text-center">
+								<p
+									class="card-title {CARDSCALE.aktiv === 1
+										? 'text-base'
+										: CARDSCALE.aktiv === 2
+											? 'text-lg'
+											: 'text-2xl'}"
+								>
+									{item.tmdb.title}
+								</p>
+							</div>
+						</a>
+					{/if}
 				{/each}
 			</div>
 		{:else}
