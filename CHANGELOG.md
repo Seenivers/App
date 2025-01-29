@@ -1,3 +1,38 @@
+# [0.21.0](https://github.com/Seenivers/App/compare/v0.20.0...v0.21.0) (2025-01-29)
+
+
+### Bug Fixes
+
+* **actor:** improve error handling messages for browser and data validation ([0b38989](https://github.com/Seenivers/App/commit/0b389898d26f145281d84c157a23a1700f8f1c16))
+* **collection:** add badge to indicate movies in the collection ([174e441](https://github.com/Seenivers/App/commit/174e441a3ff01a006719995cf8203838b8ab3a7e))
+* **collection:** ensure safe access to movie properties in class bindings ([c09e847](https://github.com/Seenivers/App/commit/c09e8474a66ecb5981623ae60917e61b6efe6453))
+* **collection:** update preload data behavior based on movie download status ([e6844f0](https://github.com/Seenivers/App/commit/e6844f0d6eddbfcdd911d1d03b625e33cb030e9f))
+* **dependencies:** remove tauri-plugin-single-instance from Cargo files ([b2a6c74](https://github.com/Seenivers/App/commit/b2a6c74dc892ccce84cdbb46c8114e2ffdeaf5c8))
+* **movie:** conditionally render Hauptdarsteller section based on cast availability ([ac7c5ae](https://github.com/Seenivers/App/commit/ac7c5ae98cdb0f6e4f2181b05427caad0136f4df))
+* **movie:** ensure release date displays correctly or shows fallback message ([0fc7c34](https://github.com/Seenivers/App/commit/0fc7c34919b66706382ab3c87ec56703df66c194))
+* **routes:** increase timeout duration before navigating back to improve user experience ([28415c9](https://github.com/Seenivers/App/commit/28415c9cd95465f8d0ad57eb448b8c7bb6b6a704))
+* **routes:** move navigation logic to ensure it executes after URL opening ([5c6ab89](https://github.com/Seenivers/App/commit/5c6ab899ee6eadbfad99ee6f86d70a5085aa9dbc))
+* **routes:** optimize error handling for actor and movie loading logic ([b2e2746](https://github.com/Seenivers/App/commit/b2e27466d376d5ef23426610b2689044fc0a6813))
+* **routes:** refine movie and collection handling with type guards and improved filtering logic ([2ba01d1](https://github.com/Seenivers/App/commit/2ba01d174e4e54b8c7faded1726d943aef5c9390))
+* **routes:** replace throw with error for better error handling in browser checks ([93679e6](https://github.com/Seenivers/App/commit/93679e651dad22cf4e36da9251f4b527ef6d51b9))
+
+
+### Features
+
+* **actor:** add functionality to save actor data to the database upon loading ([6ecf314](https://github.com/Seenivers/App/commit/6ecf314814a9bbc7c59fbd8d4526ebc43fbcdcce))
+* **collection:** add movies array to collection load function ([a3df176](https://github.com/Seenivers/App/commit/a3df1761f8ae9ac9c7ceb31bd811ef37f1498522))
+* **collection:** add movies array to collection page for enhanced movie display ([3c20c60](https://github.com/Seenivers/App/commit/3c20c609b32bcea8e4e8e25f1bc2c8c0aca0b6c3))
+* **collection:** add updated timestamp to collection details ([ed9abb7](https://github.com/Seenivers/App/commit/ed9abb757801423c149a0cb051da7057694b6b14))
+* **collection:** optimize collection loading with modular imports and error handling ([1a33ba9](https://github.com/Seenivers/App/commit/1a33ba954410bf42808a1eddc4cb7acf950254ee))
+* **image:** implement lazy loading for images using Intersection Observer ([c437378](https://github.com/Seenivers/App/commit/c437378b388d3547b0de52f506f2b75c7943a0ee))
+* **image:** refactor image loading to use async/await for improved performance ([65615a3](https://github.com/Seenivers/App/commit/65615a3288dbed62ae8ff230ccbfd0a291c6ae5a))
+* **movie:** enhance movie page layout with trailer and main cast sections ([3c4f281](https://github.com/Seenivers/App/commit/3c4f281383373e1448ae89ccdfb1a6819e44716a))
+* **movie:** improve movie loading logic with error handling and local fallback ([f90a86f](https://github.com/Seenivers/App/commit/f90a86f175437519fbeef4df312f2ddefe728cf0))
+* **movie:** initialize movie path as null and add movie to module ([2f7a52d](https://github.com/Seenivers/App/commit/2f7a52dddb85a0f7a059117efaf7940cea858e0b))
+* **routes:** replace navigator.onLine with online.current for improved online status handling ([2e9452a](https://github.com/Seenivers/App/commit/2e9452a07dcdc563de2d69b1b17fbde0f94ec04a))
+* **workflow:** add cleanup workflow for cache on closed pull requests ([4695d4b](https://github.com/Seenivers/App/commit/4695d4b523006c05f9c2ec134ec251ba62070dbc))
+* **workflow:** improve cache cleanup workflow for pull requests ([80c8543](https://github.com/Seenivers/App/commit/80c85436e314850cb021831347392de04ca12b73))
+
 # [0.20.0](https://github.com/Seenivers/App/compare/v0.19.0...v0.20.0) (2025-01-28)
 
 ### Bug Fixes
