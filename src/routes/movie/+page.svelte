@@ -168,28 +168,30 @@
 			{/if}
 
 			<!-- Hauptdarsteller -->
-			<div class="my-4">
-				<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
-				<div class="rounded-box bg-base-100 p-3">
-					<div class="carousel carousel-center w-full space-x-3 rounded-box">
-						{#each movieData.tmdb.credits.cast as cast}
-							<a
-								href="./actor?id={cast.id}"
-								class="carousel-item flex flex-col items-center"
-								data-sveltekit-preload-data="tap"
-							>
-								<Img
-									params={[cast.profile_path, 'actors', false]}
-									alt={cast.name}
-									class="max-w-40 rounded-box sm:max-w-60"
-								/>
-								<p class="text-center text-lg">{cast.name}</p>
-								<p class="text-base italic">{cast.character}</p>
-							</a>
-						{/each}
+			{#if movieData.tmdb.credits.cast.length > 0}
+				<div class="my-4">
+					<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
+					<div class="rounded-box bg-base-100 p-3">
+						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+							{#each movieData.tmdb.credits.cast as cast}
+								<a
+									href="./actor?id={cast.id}"
+									class="carousel-item flex flex-col items-center"
+									data-sveltekit-preload-data="tap"
+								>
+									<Img
+										params={[cast.profile_path, 'actors', false]}
+										alt={cast.name}
+										class="max-w-40 rounded-box sm:max-w-60"
+									/>
+									<p class="text-center text-lg">{cast.name}</p>
+									<p class="text-base italic">{cast.character}</p>
+								</a>
+							{/each}
+						</div>
 					</div>
 				</div>
-			</div>
+			{/if}
 
 			<div class="space-y-3">
 				<div>
