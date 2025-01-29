@@ -68,19 +68,22 @@
 						<a
 							href="/movie?id={movie.id}"
 							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
-							class="flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md"
+							class="relative flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md"
 							class:transform={isGridView}
 							class:transition-transform={isGridView}
 							class:hover:scale-105={isGridView}
 							class:md:flex-row={!isGridView}
-							class:border-2={downloadedMovie}
-							class:border-accent={downloadedMovie}
 						>
 							<Img
 								alt="Poster"
 								params={[movie.poster_path, 'posters', true]}
 								class="aspect-[2/3] w-full max-w-[15rem] rounded-lg object-cover shadow-2xl"
 							/>
+							{#if downloadedMovie}
+								<div class="badge badge-accent badge-outline absolute right-3 top-3 bg-base-300">
+									Film in der Sammlung
+								</div>
+							{/if}
 							<div
 								class:text-center={isGridView}
 								class:flex={!isGridView}
