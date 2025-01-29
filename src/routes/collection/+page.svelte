@@ -64,16 +64,17 @@
 					class:space-y-4={!isGridView}
 				>
 					{#each collection.parts as movie}
+						{@const downloadedMovie = movies.some((m) => m && m.id === movie.id && m.path !== null)}
 						<a
 							href="/movie?id={movie.id}"
-							data-sveltekit-preload-data="tap"
+							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
 							class="flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md"
 							class:transform={isGridView}
 							class:transition-transform={isGridView}
 							class:hover:scale-105={isGridView}
 							class:md:flex-row={!isGridView}
-							class:border-2={movies.some((m) => m && m.id === movie.id && m.path !== null)}
-							class:border-accent={movies.some((m) => m && m.id === movie.id && m.path !== null)}
+							class:border-2={downloadedMovie}
+							class:border-accent={downloadedMovie}
 						>
 							<Img
 								alt="Poster"
