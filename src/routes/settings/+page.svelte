@@ -103,7 +103,7 @@
 					class="textarea textarea-bordered h-32 w-full"
 					placeholder="Schlüsselwörter (kommagetrennt)"
 					bind:value={settings.keywords}
-					oninput={handleInput}
+					onchange={handleInput}
 				></textarea>
 			</label>
 		</div>
