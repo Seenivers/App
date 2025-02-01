@@ -5,7 +5,7 @@
 	import { db } from '$lib/db/database';
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
-	import Videoplayer from '$lib/player/Plyr.svelte';
+	import Plyr from '$lib/player/Plyr.svelte';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
 	import { getCollection } from '$lib/db/funktion';
@@ -101,7 +101,7 @@
 
 			{#if movieData.path && data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
-					<Videoplayer src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
+					<Plyr src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
 				{/await}
 			{:else if movieData.path}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
