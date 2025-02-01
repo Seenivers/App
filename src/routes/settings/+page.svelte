@@ -6,8 +6,10 @@
 	import { newToast } from '$lib/toast/toast';
 	import { app } from '@tauri-apps/api';
 	import Navbar from '$lib/Navbar.svelte';
+	import { confirm } from '@tauri-apps/plugin-dialog';
 
 	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
+	let isDirty = false; // Überwachungsvariable für Änderungen
 
 	// Automatisch Vorschläge aus navigator.languages generieren
 	const languageSuggestions = Array.from(
@@ -26,19 +28,35 @@
 	async function saveSettings() {
 		await updateSettings(settings);
 		newToast('info', 'Einstellungen gespeichert!');
+		isDirty = false; // Änderungen wurden gespeichert
 	}
 
-	// Schlüsselwörter verarbeiten
+	// Schlüsselwörter verarbeiten und Änderung tracken
 	function handleInput(event: Event) {
 		const target = event.currentTarget as HTMLTextAreaElement | null;
 		if (target) {
 			settings.keywords = target.value.split(',').map((kw) => kw.trim());
+			isDirty = true; // Eine Änderung wurde vorgenommen
 		}
+	}
+
+	// Änderungen tracken für andere Formularelemente
+	function markDirty() {
+		isDirty = true;
 	}
 </script>
 
-<Navbar back={true}>
-	{#snippet right()}
+<Navbar
+	back={true}
+	onclick={async () => {
+		if (isDirty) {
+			if (await confirm('Du hast ungespeicherte Änderungen. Wirklich verlassen?')) {
+				window.location.href = '/';
+			}
+		}
+	}}
+>
+	{#snippet left()}
 		<button class="btn btn-primary" onclick={saveSettings}>Speichern</button>
 	{/snippet}
 </Navbar>
@@ -52,7 +70,11 @@
 				<div class="label">
 					<span class="label-text font-semibold">Sprache</span>
 				</div>
-				<select class="select select-bordered w-full" bind:value={settings.language}>
+				<select
+					class="select select-bordered w-full"
+					bind:value={settings.language}
+					onchange={markDirty}
+				>
 					{#each languageSuggestions as lang}
 						<option value={lang}>{lang}</option>
 					{/each}
@@ -63,7 +85,12 @@
 			<div class="form-control justify-center">
 				<label class="label cursor-pointer">
 					<span class="label-text font-semibold">Inhalte für Erwachsene erlauben</span>
-					<input type="checkbox" class="toggle toggle-primary" bind:checked={settings.adult} />
+					<input
+						type="checkbox"
+						class="toggle toggle-primary"
+						bind:checked={settings.adult}
+						onchange={markDirty}
+					/>
 				</label>
 			</div>
 
@@ -75,6 +102,7 @@
 				<select
 					class="select select-bordered w-full"
 					bind:value={settings.toastPosition.horizontal}
+					onchange={markDirty}
 				>
 					<option value="start">Links</option>
 					<option value="center">Mitte</option>
@@ -87,7 +115,11 @@
 				<div class="label">
 					<span class="label-text font-semibold">Alert-Position (Vertikal)</span>
 				</div>
-				<select class="select select-bordered w-full" bind:value={settings.toastPosition.vertical}>
+				<select
+					class="select select-bordered w-full"
+					bind:value={settings.toastPosition.vertical}
+					onchange={markDirty}
+				>
 					<option value="top">Oben</option>
 					<option value="middle">Mitte</option>
 					<option value="bottom">Unten</option>
