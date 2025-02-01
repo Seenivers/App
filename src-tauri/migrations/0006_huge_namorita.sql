@@ -73,10 +73,17 @@ SELECT
 	"keywords",
 	"adult",
 	"toastPosition",
-	"player",
-	"castImages"
+	COALESCE("player", 'Plyr'),
+	COALESCE("castImages", 5)
 FROM
-	`settings`;
+	(
+		SELECT
+			*,
+			'Plyr' as player,
+			5 as castImages
+		FROM
+			settings
+	);
 
 --> statement-breakpoint
 DROP TABLE `settings`;
