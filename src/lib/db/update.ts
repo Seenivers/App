@@ -20,7 +20,7 @@ import {
 	getActor as getActorTmdb
 } from '$lib/tmdb';
 import { schema } from './schema';
-import { castImages, WEEKS } from '$lib';
+import { WEEKS } from '$lib';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
@@ -113,10 +113,9 @@ export async function updateMovies() {
 				if (movie.tmdb.credits.cast) {
 					// `castImages` bestimmen: 0 bedeutet alle Bilder laden
 					const imagesToLoad =
-						// @ts-expect-error castImages wird später über die Settings verarbeitet
-						castImages === 0
+						settings.castImages === 0
 							? movie.tmdb.credits.cast.length
-							: Math.min(castImages, movie.tmdb.credits.cast.length);
+							: Math.min(settings.castImages, movie.tmdb.credits.cast.length);
 					for (let i = 0; i < imagesToLoad; i++) {
 						await processActor(movie.tmdb.credits.cast[i].id);
 					}
@@ -167,12 +166,10 @@ export async function updateActors() {
 	try {
 		const actors = await getAllActors();
 
-		// @ts-expect-error castImages wird später über die Settings verarbeitet
-		if (actors && actors.length > 0 && castImages !== -1) {
+		if (actors && actors.length > 0 && settings.castImages !== -1) {
 			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
 			const imagesToLoad =
-				// @ts-expect-error castImages wird später über die Settings verarbeitet
-				castImages === 0 ? actors.length : Math.min(castImages, actors.length);
+				settings.castImages === 0 ? actors.length : Math.min(settings.castImages, actors.length);
 			for (let i = 0; i < imagesToLoad; i++) {
 				await updateEntity(actors[i], 'actors');
 			}

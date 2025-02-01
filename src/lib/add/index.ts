@@ -6,7 +6,7 @@ import {
 	isPathUnique,
 	settings
 } from '$lib/db/funktion';
-import { castImages, extensions } from '$lib';
+import { extensions } from '$lib';
 import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
@@ -282,8 +282,9 @@ async function loadImages(result: Movie) {
 		.filter((path) => path != null);
 
 	const imagesToLoad =
-		// @ts-expect-error castImages wird später User abhängig sein
-		castImages === 0 ? castImagePaths.length : Math.min(castImages, castImagePaths.length);
+		settings.castImages === 0
+			? castImagePaths.length
+			: Math.min(settings.castImages, castImagePaths.length);
 
 	for (let i = 0; i < imagesToLoad; i++) {
 		const path = castImagePaths[i];
