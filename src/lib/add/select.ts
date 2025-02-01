@@ -1,7 +1,7 @@
 import { open } from '@tauri-apps/plugin-dialog';
 import { join, videoDir } from '@tauri-apps/api/path';
 import { readDir } from '@tauri-apps/plugin-fs';
-import { extensions } from '$lib';
+import { extensions, plyr, vidstack } from '$lib';
 import { addNewFiles } from '.';
 
 // Handle file selection
@@ -10,7 +10,11 @@ export async function selectFile() {
 		multiple: true,
 		directory: false,
 		defaultPath: await videoDir(),
-		filters: [{ name: 'Video', extensions }]
+		filters: [
+			{ name: 'Video', extensions },
+			{ name: 'Plyr', extensions: plyr },
+			{ name: 'Vidstack', extensions: vidstack }
+		]
 	});
 
 	if (files && files.length > 0) {
