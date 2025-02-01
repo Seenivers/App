@@ -50,10 +50,11 @@
 	back={true}
 	onclick={async () => {
 		if (isDirty) {
-			if (await confirm('Du hast ungespeicherte Änderungen. Wirklich verlassen?')) {
-				window.location.href = '/';
+			if (!(await confirm('Du hast ungespeicherte Änderungen. Wirklich verlassen?'))) {
+				return;
 			}
 		}
+		window.location.href = '/';
 	}}
 >
 	{#snippet left()}
