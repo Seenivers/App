@@ -43,6 +43,13 @@
 			"when": 1734731445631,
 			"tag": "0005_useful_johnny_storm",
 			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "6",
+			"when": 1738450556803,
+			"tag": "0006_huge_namorita",
+			"breakpoints": true
 		}
 	]
 }
