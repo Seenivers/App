@@ -15,6 +15,21 @@
 
 ## Video Player
 
-- **Standard-Player:** Der auf dem Rechner installierte Standard-Player.
-- **[Plyr](https://plyr.io/) ([NPM-Seite](https://www.npmjs.com/package/plyr)):** Ein moderner, funktionsreicher Video-Player.
-- **[Vidstack](https://github.com/vidstack/player#readme) ([NPM-Seite](https://www.npmjs.com/package/vidstack)):** Ein anpassbarer HTML5-Video-Player mit einer einfachen API und Unterstützung für moderne Medienformate.
+### **Standard-Player**
+
+Der auf dem Rechner installierte Standard-Player.
+
+**Unterstützt:** Abhängig vom installierten Player
+
+### **[Plyr](https://plyr.io/) ([NPM-Seite](https://www.npmjs.com/package/plyr))**
+
+Ein moderner, funktionsreicher Video-Player.
+
+**Unterstützte Formate:** `.mp4`, `.ogg`, `.webm`
+
+### **[Vidstack](https://github.com/vidstack/player#readme) ([NPM-Seite](https://www.npmjs.com/package/vidstack))**
+
+Ein anpassbarer HTML5-Video-Player mit einer einfachen API und Unterstützung für moderne Medienformate.
+
+**Unterstützte Formate:**  
+`.mp4`, `.ogg`, `.ogv`, `.webm`, `.mov`, `.m4v`, `.m3u8`
