@@ -127,6 +127,17 @@
 				</select>
 			</label>
 
+			<!-- Player -->
+			<label class="form-control w-full">
+				<div class="label">
+					<span class="label-text font-semibold">Video Player</span>
+				</div>
+				<select class="select select-bordered w-full" bind:value={settings.player}>
+					<option value="Plyr">Plyr</option>
+					<option value="Vidstack">Vidstack</option>
+				</select>
+			</label>
+
 			<!-- Schlüsselwörter für Keywords -->
 			<label class="form-control w-full lg:col-span-2">
 				<div class="label">
