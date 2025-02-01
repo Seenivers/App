@@ -6,6 +6,7 @@ export interface Settings {
 		horizontal: AlertPositionHorizontally;
 		vertical: AlertPositionVertically;
 	};
+	player: 'Plyr' | 'Vidstack';
 }
 
 export type AlertPositionHorizontally =
