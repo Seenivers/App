@@ -8,24 +8,24 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Cleanup
         run: |
           set -eo pipefail
 
-          # Log: Start fetching cache keys
           echo "Fetching list of cache keys for PR branch..."
           cacheKeysForPR=$(gh cache list --ref refs/pull/${{ github.event.pull_request.number }}/merge --limit 100 --json id --jq '.[].id')
 
-          # Check if there are any cache keys
           if [ -z "$cacheKeysForPR" ]; then
               echo "No cache keys found for the branch. Exiting."
               exit 0
           fi
 
-          # Log: Deleting cache keys
           echo "Deleting caches..."
           gh cache delete --confirm --ref refs/pull/${{ github.event.pull_request.number }}/merge
 
           echo "Cleanup completed successfully."
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
