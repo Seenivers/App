@@ -37,5 +37,6 @@ export const settings = sqliteTable('settings', {
 	toastPosition: text('toastPosition', { mode: 'json' })
 		.notNull()
 		.$type<Settings['toastPosition']>()
-		.default({ horizontal: 'end', vertical: 'bottom' })
+		.default({ horizontal: 'end', vertical: 'bottom' }),
+	player: text('player').notNull().$type<Settings['player']>().default('Plyr')
 });
