@@ -6,9 +6,10 @@
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
 	import Plyr from '$lib/player/Plyr.svelte';
+	import Vidstack from '$lib/player/Vidstack.svelte';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
-	import { getCollection } from '$lib/db/funktion';
+	import { getCollection, settings } from '$lib/db/funktion';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { openPath, openUrl } from '@tauri-apps/plugin-opener';
@@ -101,7 +102,11 @@
 
 			{#if movieData.path && data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
-					<Plyr src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
+					{#if settings.player === 'Plyr'}
+						<Plyr src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
+					{:else}
+						<Vidstack src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
+					{/if}
 				{/await}
 			{:else if movieData.path}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
