@@ -42,7 +42,9 @@
 
 	// Änderungen tracken für andere Formularelemente
 	function markDirty() {
-		isDirty = true;
+		if (dbSettings !== settings) {
+			isDirty = true;
+		}
 	}
 </script>
 
