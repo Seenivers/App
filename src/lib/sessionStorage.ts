@@ -1,9 +1,9 @@
 // Typ für die Suchparameter
-export type SearchCriteria = {
+export interface SearchCriteria {
 	title: string;
 	genre: string | null;
 	isWatched: boolean | null;
-};
+}
 
 export function getFilter() {
 	const filter = sessionStorage.getItem('filter');
