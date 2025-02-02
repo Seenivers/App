@@ -1,7 +1,7 @@
 import { DiscordClientID } from '$lib';
 import { debug } from '@tauri-apps/plugin-log';
 import { setActivity, start } from 'tauri-plugin-drpc';
-import { Activity, Assets, Timestamps } from 'tauri-plugin-drpc/activity';
+import { Activity, Assets } from 'tauri-plugin-drpc/activity';
 
 // Erstelle dynamische Assets
 const assets = new Assets()
@@ -12,8 +12,7 @@ const assets = new Assets()
 const activity = new Activity()
 	.setDetails('Schaut gerade den neuesten Blockbuster! 🍿') // Details anzeigen
 	.setState('Genießt spannende Momente in Seenivers') // Statusnachricht
-	.setAssets(assets) // Verwende die Assets
-	.setTimestamps(new Timestamps(Date.now())); // Zeige den Startzeitpunkt der Aktivität
+	.setAssets(assets); // Verwende die Assets
 
 export async function startRPC() {
 	debug('Setting activity');
