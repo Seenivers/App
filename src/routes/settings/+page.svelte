@@ -138,6 +138,33 @@
 				</select>
 			</label>
 
+			<!-- Anzahl der heruntergeladenen Schauspielerbilder -->
+			<label class="form-control w-full">
+				<div class="label">
+					<span class="label-text font-semibold">
+						Anzahl der zu herunterladenen Schauspielerbilder
+					</span>
+				</div>
+				<input
+					type="range"
+					min="-1"
+					max="20"
+					bind:value={settings.castImages}
+					onchange={markDirty}
+					class="range"
+					step="1"
+				/>
+				<div class="flex w-full justify-between px-2 text-xs">
+					<span>
+						{settings.castImages === -1
+							? 'Keine'
+							: settings.castImages === 0
+								? 'Alle'
+								: settings.castImages}
+					</span>
+				</div>
+			</label>
+
 			<!-- Schlüsselwörter für Keywords -->
 			<label class="form-control w-full lg:col-span-2">
 				<div class="label">
