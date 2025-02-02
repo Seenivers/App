@@ -8,7 +8,7 @@ import { getMovie } from '$lib/db/funktion';
  */
 export async function loadWatchTime(id: number, setTime: (time: number) => void) {
 	const movie = await getMovie(id);
-	if (movie && movie.watchTime && movie.watchTime > 0) {
+	if (movie?.watchTime && movie.watchTime > 0) {
 		setTime(movie.watchTime);
 	}
 }
