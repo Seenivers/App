@@ -134,7 +134,11 @@
 				<div class="label">
 					<span class="label-text font-semibold">Video Player</span>
 				</div>
-				<select class="select select-bordered w-full" bind:value={settings.player}>
+				<select
+					class="select select-bordered w-full"
+					bind:value={settings.player}
+					onchange={markDirty}
+				>
 					<option value="Plyr">Plyr</option>
 					<option value="Vidstack">Vidstack</option>
 				</select>
