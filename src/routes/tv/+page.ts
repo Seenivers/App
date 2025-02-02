@@ -19,5 +19,7 @@ export const load = (async ({ url }) => {
 	}
 
 	// Gehe zurück oder leite auf die vorherige Seite weiter
-	setTimeout(() => window.history.back(), 1000);
+	setTimeout(() => {
+		window.history.back();
+	}, 1000);
 }) satisfies PageLoad;
