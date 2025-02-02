@@ -64,7 +64,7 @@
 	{/snippet}
 </Navbar>
 
-<main class="container z-0 mx-auto max-w-screen-md flex-grow flex-col px-4 py-6">
+<main class="xl:2/3 container z-0 mx-auto w-full flex-grow flex-col px-4 py-6 lg:w-4/5">
 	<div class="card bg-base-100 p-6 shadow-lg md:p-8">
 		<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -84,7 +84,7 @@
 				</select>
 			</label>
 
-			<!-- Einstellung für Inhalte für Erwachsene -->
+			<!-- Inhalte für Erwachsene -->
 			<div class="form-control justify-center">
 				<label class="label cursor-pointer">
 					<span class="label-text font-semibold">Inhalte für Erwachsene erlauben</span>
@@ -97,7 +97,7 @@
 				</label>
 			</div>
 
-			<!-- Toast Position Einstellung (Horizontal) -->
+			<!-- Toast Position (Horizontal) -->
 			<label class="form-control w-full">
 				<div class="label">
 					<span class="label-text font-semibold">Alert-Position (Horizontal)</span>
@@ -113,7 +113,7 @@
 				</select>
 			</label>
 
-			<!-- Toast Position Einstellung (Vertikal) -->
+			<!-- Toast Position (Vertikal) -->
 			<label class="form-control w-full">
 				<div class="label">
 					<span class="label-text font-semibold">Alert-Position (Vertikal)</span>
@@ -148,7 +148,7 @@
 			<label class="form-control w-full">
 				<div class="label">
 					<span class="label-text font-semibold">
-						Anzahl der zu herunterladenen Schauspielerbilder
+						Anzahl der herunterzuladenden Schauspielerbilder
 					</span>
 				</div>
 				<input
@@ -171,7 +171,7 @@
 				</div>
 			</label>
 
-			<!-- Schlüsselwörter für Keywords -->
+			<!-- Schlüsselwörter -->
 			<label class="form-control w-full lg:col-span-2">
 				<div class="label">
 					<span class="label-text font-semibold">Schlüsselwörter</span>
