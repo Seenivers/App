@@ -8,3 +8,4 @@ export const vidstack = ['mp4', 'ogg', 'ogv', 'webm', 'mov', 'm4v', 'm3u8'];
 export const extensions = [...new Set([...plyr, ...vidstack])];
 export const clearResultsOnLeave = false;
 export const WEEKS = 4; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
+export const DiscordClientID = '1294754778756284477';
