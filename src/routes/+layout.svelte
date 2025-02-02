@@ -10,6 +10,8 @@
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/log';
 	import { online } from 'svelte/reactivity/window';
+	import { startRPC } from '$lib/discord';
+
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -28,6 +30,8 @@
 		logConsole = await attachConsole();
 		logLogger = await attachLogger(forwardConsole);
 		networkStatus();
+
+		await startRPC();
 
 		trace('App loaded');
 	});
