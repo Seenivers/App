@@ -35,18 +35,12 @@ export const load = (async () => {
 	}
 
 	// Nur Collections mit mindestens zwei Filmen behalten
-	const filteredCollections = collections.filter(
-		(c) => collectionCount.get(c.id) && collectionCount.get(c.id)! > 1
-	);
+	const filteredCollections = collections.filter((c) => (collectionCount.get(c.id) ?? 0) > 1);
 
 	// Filme, die keiner Collection angehören oder deren Collection zu klein ist, als Einzel-Filme speichern
 	for (const movie of moviesWithPath) {
 		const collectionId = movie.tmdb.belongs_to_collection?.id;
-		if (
-			!collectionId ||
-			!collectionCount.get(collectionId) ||
-			collectionCount.get(collectionId)! <= 1
-		) {
+		if (!collectionId || (collectionCount.get(collectionId) ?? 0) <= 1) {
 			standaloneMovies.push(movie);
 		}
 	}
