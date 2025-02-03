@@ -11,6 +11,7 @@
 	import { forwardConsole } from '$lib/log';
 	import { online } from 'svelte/reactivity/window';
 	import { startRPC } from '$lib/discord';
+	import { destory } from 'tauri-plugin-drpc';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -36,8 +37,10 @@
 		trace('App loaded');
 	});
 
-	onDestroy(() => {
+	onDestroy(async () => {
 		trace('App closed');
+
+		await destory();
 
 		logLogger();
 		logConsole();
