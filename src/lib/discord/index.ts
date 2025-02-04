@@ -1,26 +1,58 @@
 import { DiscordClientID } from '$lib';
 import { debug } from '@tauri-apps/plugin-log';
+import { online } from 'svelte/reactivity/window';
 import { setActivity, start } from 'tauri-plugin-drpc';
-import { Activity, Assets } from 'tauri-plugin-drpc/activity';
+import { Activity, ActivityType, Assets } from 'tauri-plugin-drpc/activity';
 
-// Erstelle dynamische Assets
-const assets = new Assets()
-	.setLargeImage('icon') // Dein Icon
-	.setLargeText('Seenivers - Dein Film- & Serien-Paradies'); // Text, der beim Hover auf das Icon erscheint
+/**
+ * Typ für die übergebene Aktivitätskonfiguration
+ */
+interface DiscordActivityOptions {
+	details?: string;
+	state?: string;
+	largeImage?: string;
+	largeText?: string;
+	type?: ActivityType;
+}
 
-// Setze eine coole Aktivität
-const activity = new Activity()
-	.setDetails('Schaut gerade den neuesten Blockbuster! 🍿') // Details anzeigen
-	.setState('Genießt spannende Momente in Seenivers') // Statusnachricht
-	.setAssets(assets); // Verwende die Assets
+/**
+ * Erstellt eine Discord-Rich-Presence-Aktivität basierend auf übergebenen Daten.
+ * @param activityData - Daten für die Discord-Aktivität.
+ */
+export async function discord(activityData: DiscordActivityOptions = {}) {
+	if (!online.current) return;
 
-export async function startRPC() {
-	debug('Setting activity');
+	const {
+		details = 'Schaut gerade einen Film 🍿',
+		state = 'Genießt spannende Momente in Seenivers',
+		largeImage = 'icon',
+		largeText = 'Seenivers - Dein Film- & Serien-Paradies',
+		type = ActivityType.Watching
+	} = activityData;
 
-	// Aktivität setzen
+	// Erstelle die Assets mit den übergebenen Werten
+	const assets = new Assets().setLargeImage(largeImage).setLargeText(largeText);
+
+	// Erstelle die Aktivität mit den übergebenen Werten
+	const activity = new Activity()
+		.setDetails(details)
+		.setState(state)
+		.setAssets(assets)
+		.setActivity(type);
+
+	// Setze die Aktivität bei Discord
 	await setActivity(activity);
+}
+
+/**
+ * Startet das Discord Rich Presence.
+ */
+export async function startRPC() {
+	if (!online.current) return;
+
+	// Standardaktivität setzen
+	await discord();
 
 	debug('Starting Discord RPC');
-	// Starte den Discord RPC mit der Anwendung
 	await start(DiscordClientID);
 }
