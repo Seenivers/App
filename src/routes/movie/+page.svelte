@@ -13,6 +13,8 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { openPath, openUrl } from '@tauri-apps/plugin-opener';
+	import { onMount } from 'svelte';
+	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -58,6 +60,13 @@
 			maximumFractionDigits: 0
 		}).format(money);
 	}
+
+	onMount(async () => {
+		discord({
+			details: `Schaut gerade ${data.result.tmdb.title}! 🍿`,
+			state: `Bewertung ${Math.round(data.result.tmdb.vote_average * 10) / 10}/10`
+		});
+	});
 </script>
 
 <Navbar back={true}>
