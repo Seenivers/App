@@ -4,6 +4,7 @@ import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
 import { parseId } from '$lib/load/loadUtils';
 import { online } from 'svelte/reactivity/window';
+import { discord } from '$lib/discord';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
@@ -47,6 +48,11 @@ export const load = (async ({ url }) => {
 
 	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
 	const pathExists = result.path ? await exists(result.path) : false;
+
+	discord({
+		details: `Schaut gerade ${result.tmdb.title}! 🍿`,
+		state: `Bewertung ${Math.round(result.tmdb.vote_average * 10) / 10}/10`
+	});
 
 	// Nur relevante Daten zurückgeben
 	return { id, result, pathExists };
