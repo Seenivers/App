@@ -28,7 +28,7 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 
 	const {
 		details = 'Schaut gerade einen Film 🍿',
-		state = 'Genießt spannende Momente in Seenivers',
+		state,
 		largeImage = 'icon',
 		largeText = 'Seenivers - Dein Film- & Serien-Paradies',
 		smallImage,
@@ -45,12 +45,13 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 	if (smallImage) assets.setSmallImage(smallImage);
 	if (smallText) assets.setSmallText(smallText);
 
-	// Erstelle die Aktivität mit den übergebenen Werten
-	const activity = new Activity()
-		.setDetails(details)
-		.setState(state)
-		.setAssets(assets)
-		.setActivity(type);
+	// Erstelle die Aktivität
+	const activity = new Activity().setDetails(details).setAssets(assets).setActivity(type);
+
+	// Falls state nicht null ist, füge es hinzu
+	if (state) {
+		activity.setState(state);
+	}
 
 	// Stelle sicher, dass die Timestamps gültige Ganzzahlen sind
 	const validStart = typeof startTimestamp === 'number' ? Math.floor(startTimestamp) : undefined;
