@@ -33,7 +33,7 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 		largeText = 'Seenivers - Dein Film- & Serien-Paradies',
 		smallImage,
 		smallText,
-		type = ActivityType.Playing,
+		type = ActivityType.Watching,
 		startTimestamp,
 		endTimestamp
 	} = activityData;
