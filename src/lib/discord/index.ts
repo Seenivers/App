@@ -52,11 +52,13 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 		.setAssets(assets)
 		.setActivity(type);
 
+	// Stelle sicher, dass die Timestamps gültige Ganzzahlen sind
+	const validStart = typeof startTimestamp === 'number' ? Math.floor(startTimestamp) : undefined;
+	const validEnd = typeof endTimestamp === 'number' ? Math.floor(endTimestamp) : undefined;
+
 	// Setze den Timestamp (mit optionalem Endzeitpunkt)
-	if (startTimestamp) {
-		const timestamps = endTimestamp
-			? new Timestamps(startTimestamp, endTimestamp)
-			: new Timestamps(startTimestamp);
+	if (validStart) {
+		const timestamps = validEnd ? new Timestamps(validStart, validEnd) : new Timestamps(validStart);
 		activity.setTimestamps(timestamps);
 	}
 
