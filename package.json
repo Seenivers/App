@@ -40,7 +40,7 @@
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"semantic-release": "^24.2.1",
-		"svelte": "^5.19.6",
+		"svelte": "^5.19.9",
 		"svelte-check": "^4.1.4",
 		"tailwindcss": "^3.4.17",
 		"typescript": "^5.7.3",
@@ -61,6 +61,7 @@
 		"hls.js": "^1.5.19",
 		"plyr": "^3.7.8",
 		"svelte-i18n": "^4.0.1",
+		"tauri-plugin-drpc": "^1.0.1",
 		"vidstack": "^1.12.12"
 	}
 }

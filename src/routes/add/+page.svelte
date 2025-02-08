@@ -18,6 +18,7 @@
 	import { _ } from 'svelte-i18n';
 	import { online } from 'svelte/reactivity/window';
 	import { selectFile, selectFolder } from '$lib/add/select';
+	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -56,6 +57,11 @@
 
 	// Überprüfe beim Mounten, ob die Daten valide sind und starte den Ladevorgang
 	onMount(async () => {
+		discord({
+			details: `Fügt gerade neue Filme hinzu`,
+			state: searchList.length > 0 ? `${searchList.length} Filme` : undefined
+		});
+
 		if (Array.isArray(data.paths) && data.paths.length > 0) {
 			// Wenn data.paths ein Array ist und nicht leer, starte den Ladevorgang
 			await load(data.paths);

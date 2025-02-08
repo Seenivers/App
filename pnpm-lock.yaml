@@ -47,6 +47,9 @@ importers:
       svelte-i18n:
         specifier: ^4.0.1
         version: 4.0.1(svelte@5.19.9)
+      tauri-plugin-drpc:
+        specifier: ^1.0.1
+        version: 1.0.1(typescript@5.7.3)
       vidstack:
         specifier: ^1.12.12
         version: 1.12.12
@@ -121,7 +124,7 @@ importers:
         specifier: ^24.2.1
         version: 24.2.1(typescript@5.7.3)
       svelte:
-        specifier: ^5.19.6
+        specifier: ^5.19.9
         version: 5.19.9
       svelte-check:
         specifier: ^4.1.4
@@ -3042,6 +3045,11 @@ packages:
   tar-stream@2.2.0:
     resolution: {integrity: sha512-ujeqbceABgwMZxEJnk2HDY2DlnUZ+9oEcb1KzTVfYHio0UE6dG71n60d8D2I4qNvleWrrXpmjpt7vZeF1LnMZQ==}
     engines: {node: '>=6'}
+
+  tauri-plugin-drpc@1.0.1:
+    resolution: {integrity: sha512-TmXa5dGfP6DocHCzRuhlwB/On4rLTUa48D1CtXh111tsJBvgma7sZ9q1hgXXYpQ6DtPUMRSkHSHoefII6Hve7w==}
+    peerDependencies:
+      typescript: ^5.0.0
 
   temp-dir@3.0.0:
     resolution: {integrity: sha512-nHc6S/bwIilKHNRgK/3jlhDoIHcp45YgyiwcAk46Tr0LfEqGBVpmiAyuiuxeVE44m3mXnEeVhaipLOEWmH+Njw==}
@@ -5965,6 +5973,10 @@ snapshots:
       fs-constants: 1.0.0
       inherits: 2.0.4
       readable-stream: 3.6.2
+
+  tauri-plugin-drpc@1.0.1(typescript@5.7.3):
+    dependencies:
+      typescript: 5.7.3
 
   temp-dir@3.0.0: {}
 

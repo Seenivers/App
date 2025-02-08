@@ -4,5 +4,5 @@
 	"description": "enables the desktop capability",
 	"windows": ["main"],
 	"platforms": ["macOS", "windows", "linux"],
-	"permissions": ["updater:default", "process:default"]
+	"permissions": ["updater:default", "process:default", "drpc:default", "drpc:allow-set-activity"]
 }

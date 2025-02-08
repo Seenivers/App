@@ -3,6 +3,8 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
+	import { onMount } from 'svelte';
+	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -29,6 +31,13 @@
 			return dateA === 0 ? -1 : dateB === 0 ? 1 : dateA - dateB;
 		});
 	}
+
+	onMount(() => {
+		discord({
+			details: `Schaut gerade ${data.result.name} an`,
+			state: `${data.result.combined_credits.cast.length + data.result.combined_credits.crew.length} Filme & Serien`
+		});
+	});
 </script>
 
 <Navbar back={true}>

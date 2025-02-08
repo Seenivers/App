@@ -4,6 +4,8 @@
 	import { image } from '$lib/image/image';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
+	import { onMount } from 'svelte';
+	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -12,6 +14,13 @@
 	let { data }: Props = $props();
 
 	let isGridView = $state(false); // Startwert für das Layout
+
+	onMount(() => {
+		discord({
+			details: `Schaut gerade die ${data.result.name} an`,
+			state: `${data.result.parts.length} Filme`
+		});
+	});
 </script>
 
 <Navbar back={true}>

@@ -8,6 +8,7 @@
 	import type { PageData } from './$types';
 	import { getFilter, type SearchCriteria, setFilter } from '$lib/sessionStorage';
 	import { _ } from 'svelte-i18n';
+	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -132,7 +133,12 @@
 	}
 
 	// Initiale Daten und Setup
-	onMount(async () => {
+	onMount(() => {
+		discord({
+			details: `Schaut gerade seine Filme durch 🍿`,
+			state: `Hat ${data.result.length} Filme, Filmreihen und Serien in seiner Sammlung`
+		});
+
 		// Füge das Wheel-Event mit { passive: false } hinzu
 		window.addEventListener('wheel', handleWheel, { passive: false });
 
