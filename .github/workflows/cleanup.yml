@@ -24,7 +24,9 @@ jobs:
           fi
 
           echo "Deleting caches..."
-          gh cache delete --confirm --ref refs/pull/${{ github.event.pull_request.number }}/merge
+          for cacheID in $cacheKeysForPR; do
+            gh cache delete "$cacheID"
+          done
 
           echo "Cleanup completed successfully."
         env:
