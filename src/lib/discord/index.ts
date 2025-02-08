@@ -2,7 +2,7 @@ import { DiscordClientID } from '$lib';
 import { debug } from '@tauri-apps/plugin-log';
 import { online } from 'svelte/reactivity/window';
 import { setActivity, start } from 'tauri-plugin-drpc';
-import { Activity, ActivityType, Assets, Timestamps } from 'tauri-plugin-drpc/activity';
+import { Activity, ActivityType, Assets, Button, Timestamps } from 'tauri-plugin-drpc/activity';
 
 /**
  * Typ für die übergebene Aktivitätskonfiguration
@@ -17,6 +17,7 @@ interface DiscordActivityOptions {
 	type?: ActivityType;
 	startTimestamp?: number;
 	endTimestamp?: number;
+	button?: { label: string; url: string }[];
 }
 
 const dev: DiscordActivityOptions = {
@@ -26,7 +27,8 @@ const dev: DiscordActivityOptions = {
 	smallImage: 'terminal_dev',
 	smallText: 'Debugging... 🐛',
 	type: ActivityType.Playing, // Alternativ: Coding, wenn vorhanden
-	startTimestamp: Date.now()
+	startTimestamp: Date.now(),
+	button: [{ label: 'Seenivers', url: 'https://github.com/seenivers/app' }]
 };
 
 /**
@@ -45,7 +47,8 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 		smallText,
 		type = ActivityType.Watching,
 		startTimestamp,
-		endTimestamp
+		endTimestamp,
+		button
 	} = import.meta.env.DEV ? dev : activityData;
 
 	// Erstelle die Assets mit den übergebenen Werten
@@ -61,6 +64,10 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 	// Falls state nicht null ist, füge es hinzu
 	if (state) {
 		activity.setState(state);
+	}
+
+	if (button) {
+		activity.setButton(button.map(({ label, url }) => new Button(label, url)));
 	}
 
 	// Stelle sicher, dass die Timestamps gültige Ganzzahlen sind
