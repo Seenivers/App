@@ -7,6 +7,8 @@
 	import { app } from '@tauri-apps/api';
 	import Navbar from '$lib/Navbar.svelte';
 	import { confirm } from '@tauri-apps/plugin-dialog';
+	import { onMount } from 'svelte';
+	import { discord } from '$lib/discord';
 
 	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
 	let isDirty = false; // Überwachungsvariable für Änderungen
@@ -46,6 +48,10 @@
 			isDirty = true;
 		}
 	}
+
+	onMount(() => {
+		discord();
+	});
 </script>
 
 <Navbar
