@@ -62,7 +62,7 @@
 				return;
 			}
 		}
-		window.location.href = '/';
+		window.history.length > 1 ? window.history.back() : (window.location.href = '/');
 	}}
 >
 	{#snippet left()}
