@@ -12,6 +12,7 @@
 	import { online } from 'svelte/reactivity/window';
 	import { startRPC } from '$lib/discord';
 	import { destory } from 'tauri-plugin-drpc';
+	import { handleLinks } from '$lib/utils';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -31,6 +32,11 @@
 		logConsole = await attachConsole();
 		logLogger = await attachLogger(forwardConsole);
 		networkStatus();
+		handleLinks();
+
+		handleLinks();
+		const observer = new MutationObserver(() => handleLinks());
+		observer.observe(document.body, { childList: true, subtree: true });
 
 		await startRPC();
 
