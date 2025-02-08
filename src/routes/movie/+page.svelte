@@ -52,7 +52,7 @@
 	}
 
 	function formate(money: number) {
-		if (!money) return 'Keine Informationen verfugbar';
+		if (!money) return 'Keine Informationen verfügbar';
 		return new Intl.NumberFormat(window.navigator.language, {
 			style: 'currency',
 			currency: 'USD',
@@ -132,6 +132,7 @@
 									<img
 										src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
 										alt={`Thumbnail for ${trailer.name}`}
+										draggable="false"
 										class="h-48 w-full rounded-t-lg object-cover"
 									/>
 								</figure>
