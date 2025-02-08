@@ -21,6 +21,7 @@ jobs:
           set -eo pipefail
 
           echo "Fetching all cache keys..."
+          # Holt alle Caches, sortiert nach Erstellungsdatum
           allCaches=$(gh cache list --limit 1000 --json id,ref,createdAt --jq 'sort_by(.createdAt)')
 
           if [ -z "$allCaches" ]; then
@@ -29,6 +30,7 @@ jobs:
           fi
 
           echo "Fetching list of active branches..."
+          # Holt alle aktiven Branches
           activeBranches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##')
 
           echo "Processing caches..."
@@ -40,32 +42,32 @@ jobs:
             cacheRef=$(echo "$cache" | jq -r '.ref')
 
             # Extract branch name from cache reference
-            branchName=$(echo "$cacheRef" | sed -E 's#refs/(heads|pull/[0-9]+/merge)##')
+            branchName=$(echo "$cacheRef" | sed -E 's#refs/heads/##')
 
-            # Check if branch still exists
+            # Check if the branch still exists
             if ! echo "$activeBranches" | grep -q "^$branchName$"; then
-              echo "Branch $branchName no longer exists. Deleting all associated caches..."
+              # If the branch doesn't exist anymore, delete the cache
+              echo "Branch $branchName no longer exists. Deleting cache..."
               gh cache delete "$cacheID"
               deletedCaches=$((deletedCaches + 1))
-              continue
-            fi
+            else
+              # For branches that still exist, get all caches for this branch
+              branchCaches=$(echo "$allCaches" | jq --arg ref "$cacheRef" '[.[] | select(.ref == $ref)]')
 
-            # Get all caches for this branch
-            branchCaches=$(echo "$allCaches" | jq --arg ref "$cacheRef" '[.[] | select(.ref == $ref)]')
+              # Count the caches for this branch
+              cacheCount=$(echo "$branchCaches" | jq 'length')
 
-            # Count caches for the branch
-            cacheCount=$(echo "$branchCaches" | jq 'length')
+              # If there are more than 2 caches, delete the oldest ones
+              if [ "$cacheCount" -gt 2 ]; then
+                echo "Branch $branchName has $cacheCount caches. Keeping only the 2 newest..."
+                cachesToDelete=$(echo "$branchCaches" | jq -r '.[].id' | head -n -2)
 
-            # If more than 2 caches exist, delete the oldest ones
-            if [ "$cacheCount" -gt 2 ]; then
-              echo "Branch $branchName has $cacheCount caches. Keeping only the 2 newest..."
-              cachesToDelete=$(echo "$branchCaches" | jq -r '.[].id' | head -n -2)
-
-              for oldCacheID in $cachesToDelete; do
-                echo "Deleting old cache: $oldCacheID"
-                gh cache delete "$oldCacheID"
-                deletedCaches=$((deletedCaches + 1))
-              done
+                for oldCacheID in $cachesToDelete; do
+                  echo "Deleting old cache: $oldCacheID"
+                  gh cache delete "$oldCacheID"
+                  deletedCaches=$((deletedCaches + 1))
+                done
+              fi
             fi
           done
 
