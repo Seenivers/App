@@ -16,15 +16,20 @@ jobs:
           set -eo pipefail
 
           echo "Fetching list of cache keys for PR branch..."
-          cacheKeysForPR=$(gh cache list --ref refs/pull/${{ github.event.pull_request.number }}/merge --limit 100 --json id --jq '.[].id')
+          cacheKeysForPR=$(gh cache list --ref refs/pull/${{ github.event.pull_request.number }}/merge --limit 100 --json id,createdAt --jq 'sort_by(.createdAt) | .[].id')
 
-          if [ -z "$cacheKeysForPR" ]; then
-              echo "No cache keys found for the branch. Exiting."
+          cacheCount=$(echo "$cacheKeysForPR" | wc -l)
+
+          if [ "$cacheCount" -le 2 ]; then
+              echo "Only $cacheCount caches found. No cleanup needed."
               exit 0
           fi
 
-          echo "Deleting caches..."
-          for cacheID in $cacheKeysForPR; do
+          echo "Deleting oldest caches to keep only the newest two..."
+          cachesToDelete=$(echo "$cacheKeysForPR" | head -n -2)
+
+          for cacheID in $cachesToDelete; do
+            echo "Deleting cache: $cacheID"
             gh cache delete "$cacheID"
           done
 
