@@ -12,7 +12,7 @@
 	import { getCollection, settings } from '$lib/db/funktion';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
-	import { openPath, openUrl } from '@tauri-apps/plugin-opener';
+	import { openPath } from '@tauri-apps/plugin-opener';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
 
@@ -140,12 +140,7 @@
 									<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
 									<a
 										href={`https://www.youtube.com/watch?v=${trailer.key}`}
-										onclick={(e) => {
-											{
-												e.preventDefault();
-												openUrl(`https://www.youtube.com/watch?v=${trailer.key}`);
-											}
-										}}
+										target="_blank"
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
 									>
