@@ -19,6 +19,16 @@ interface DiscordActivityOptions {
 	endTimestamp?: number;
 }
 
+const dev: DiscordActivityOptions = {
+	details: 'Entwickelt Seenivers weiter 🚀',
+	state: 'Tief im Code-Dschungel 🌿',
+	largeText: 'Seenivers - Next Level Entertainment',
+	smallImage: 'terminal_dev',
+	smallText: 'Debugging... 🐛',
+	type: ActivityType.Playing, // Alternativ: Coding, wenn vorhanden
+	startTimestamp: Date.now()
+};
+
 /**
  * Erstellt eine Discord-Rich-Presence-Aktivität basierend auf übergebenen Daten.
  * @param activityData - Daten für die Discord-Aktivität.
@@ -36,7 +46,7 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 		type = ActivityType.Watching,
 		startTimestamp,
 		endTimestamp
-	} = activityData;
+	} = import.meta.env.DEV ? dev : activityData;
 
 	// Erstelle die Assets mit den übergebenen Werten
 	const assets = new Assets().setLargeImage(largeImage).setLargeText(largeText);
