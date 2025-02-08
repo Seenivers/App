@@ -133,7 +133,7 @@
 	}
 
 	// Initiale Daten und Setup
-	onMount(async () => {
+	onMount(() => {
 		discord({
 			details: `Schaut gerade seine Filme durch 🍿`,
 			state: `Hat ${data.result.length} Filme, Filmreihen und Serien in seiner Sammlung`

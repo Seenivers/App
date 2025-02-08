@@ -61,7 +61,7 @@
 		}).format(money);
 	}
 
-	onMount(async () => {
+	onMount(() => {
 		discord({
 			details: `Schaut gerade ${data.result.tmdb.title}! 🍿`,
 			state: `Bewertung ${Math.round(data.result.tmdb.vote_average * 10) / 10}/10`

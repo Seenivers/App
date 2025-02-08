@@ -15,7 +15,7 @@
 
 	let isGridView = $state(false); // Startwert für das Layout
 
-	onMount(async () => {
+	onMount(() => {
 		discord({
 			details: `Schaut gerade die ${data.result.name} an`,
 			state: `${data.result.parts.length} Filme`
