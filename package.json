@@ -17,7 +17,7 @@
 		"prepare": "svelte-kit sync"
 	},
 	"devDependencies": {
-		"@eslint/compat": "^1.2.5",
+		"@eslint/compat": "^1.2.6",
 		"@semantic-release/changelog": "^6.0.3",
 		"@semantic-release/git": "^10.0.1",
 		"@sveltejs/adapter-static": "^3.0.8",
