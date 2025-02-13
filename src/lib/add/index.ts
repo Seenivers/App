@@ -237,6 +237,7 @@ export async function addNewMovie(id: number, index: number) {
 			await addMovieToDatabase(result, index);
 		}
 	} catch (err) {
+		updateMovieStatus(index, 'notFound');
 		handleDownloadError(err, id, index);
 	} finally {
 		updateMovieStatus(index, 'downloaded');
