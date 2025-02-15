@@ -216,34 +216,57 @@ export async function searchMovieStatus(i: number) {
 //#endregion
 
 //#region add Movie
-export async function addNewMovie(id: number, index: number) {
-	if (!id) return;
+export async function addNewMovies(ids: number[]) {
+	if (!ids || ids.length === 0) return;
 
-	if (!(await isMovieIDUnique(id))) {
-		updateMovieStatus(index, 'downloaded');
+	// Prüfen, ob IDs bereits in der Datenbank existieren
+	const uniqueIds = [];
+	const statusUpdates = [];
+
+	for (const id of ids) {
+		if (await isMovieIDUnique(id)) {
+			uniqueIds.push(id);
+		} else {
+			statusUpdates.push({ id });
+		}
+	}
+
+	// Falls alle Filme bereits vorhanden sind, beenden
+	if (uniqueIds.length === 0) {
+		statusUpdates.forEach(({ id }) => updateMovieStatus(id, 'downloaded'));
 		return;
 	}
 
 	// Prüfen, ob der Benutzer online ist
 	if (!online.current) {
-		updateMovieStatus(index, 'notFound');
+		uniqueIds.forEach((id) => updateMovieStatus(id, 'notFound'));
 		return;
 	}
 
-	// Status aktualisieren und Download starten
-	updateMovieStatus(index, 'downloading');
+	// Status auf "downloading" setzen
+	uniqueIds.forEach((id) => updateMovieStatus(id, 'downloading'));
 
 	try {
-		// Hole die Filmdetails
-		const result = await tmdb.getMovie(id);
+		// Mehrere Filme abrufen
+		const { movies, errors }: { movies: Movie[]; errors: { id: number; error: string }[] } =
+			await tmdb.getMovies(uniqueIds);
 
-		// Film zur Datenbank hinzufügen
-		await addMovieToDatabase(result, index);
+		// Erfolgreiche Filme speichern
+		for (const movie of movies) {
+			await addMovieToDatabase(movie, movie.id);
+			updateMovieStatus(movie.id, 'downloaded');
+		}
+
+		// Fehlerhafte Filme auf "notFound" setzen
+		for (const { id } of errors) {
+			updateMovieStatus(id, 'notFound');
+		}
 	} catch (err) {
-		updateMovieStatus(index, 'notFound');
-		handleDownloadError(err, id, index);
-	} finally {
-		updateMovieStatus(index, 'downloaded');
+		// Falls die gesamte Anfrage fehlschlägt, alle Filme als "notFound" markieren
+		uniqueIds.forEach((id) => updateMovieStatus(id, 'notFound'));
+		error(
+			`Fehler beim Abrufen der Filme: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
+		);
 	}
 }
 
