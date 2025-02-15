@@ -219,23 +219,18 @@ export async function searchMovieStatus(i: number) {
 export async function addNewMovies(ids: number[]) {
 	if (!ids || ids.length === 0) return;
 
-	// Prüfen, ob IDs bereits in der Datenbank existieren
-	const uniqueIds = [];
-	const statusUpdates = [];
+	const uniqueIds: number[] = [];
 
 	for (const id of ids) {
 		if (await isMovieIDUnique(id)) {
 			uniqueIds.push(id);
 		} else {
-			statusUpdates.push({ id });
+			updateMovieStatus(id, 'downloaded');
 		}
 	}
 
 	// Falls alle Filme bereits vorhanden sind, beenden
-	if (uniqueIds.length === 0) {
-		statusUpdates.forEach(({ id }) => updateMovieStatus(id, 'downloaded'));
-		return;
-	}
+	if (uniqueIds.length === 0) return;
 
 	// Prüfen, ob der Benutzer online ist
 	if (!online.current) {
@@ -248,8 +243,11 @@ export async function addNewMovies(ids: number[]) {
 
 	try {
 		// Mehrere Filme abrufen
-		const { movies, errors }: { movies: Movie[]; errors: { id: number; error: string }[] } =
+		const response: { movies?: Movie[]; errors?: { id: number; error: string }[] } =
 			await tmdb.getMovies(uniqueIds);
+
+		const movies = response.movies ?? [];
+		const errors = response.errors ?? [];
 
 		// Erfolgreiche Filme speichern
 		for (const movie of movies) {
@@ -262,7 +260,7 @@ export async function addNewMovies(ids: number[]) {
 			updateMovieStatus(id, 'notFound');
 		}
 	} catch (err) {
-		// Falls die gesamte Anfrage fehlschlägt, alle Filme als "notFound" markieren
+		// Falls die gesamte Anfrage fehlschlägt, nur IDs als "notFound" setzen, die noch keinen Status haben
 		uniqueIds.forEach((id) => updateMovieStatus(id, 'notFound'));
 		error(
 			`Fehler beim Abrufen der Filme: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
