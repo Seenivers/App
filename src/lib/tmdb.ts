@@ -57,6 +57,63 @@ export async function getMovie(
 	return await fetchData<Movie>('/api/movie', id, language);
 }
 
+export async function getMovies(
+	ids: number[],
+	language: string = settings.language || window.navigator.language
+) {
+	const url = new URL('/api/movie', seeniversURL);
+
+	let response: Response;
+	try {
+		response = await fetch(url, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ id: ids, language })
+		});
+	} catch (err) {
+		const errorMessage = `Fehler beim Abrufen von Filmen: ${
+			err instanceof Error ? err.message : 'Unbekannter Fehler'
+		}`;
+		error(errorMessage);
+		throw new Error(errorMessage);
+	}
+
+	if (!response.ok) {
+		let errorMessage = `Fehler beim Abrufen von Filmen (Status: ${response.status})`;
+		try {
+			const responseText = await response.text();
+			if (responseText) errorMessage += `: ${responseText}`;
+		} catch {
+			errorMessage += ' (Fehler beim Lesen der Fehlermeldung)';
+		}
+		error(errorMessage);
+		throw new Error(errorMessage);
+	}
+
+	try {
+		const result = (await response.json()) as { id: number; data?: Movie; error?: string }[];
+
+		const movies: Movie[] = [];
+		const errors: { id: number; error: string }[] = [];
+
+		for (const entry of result) {
+			if (entry.data) {
+				movies.push(entry.data);
+			} else if (entry.error) {
+				errors.push({ id: entry.id, error: entry.error });
+			}
+		}
+
+		return { movies, errors };
+	} catch (err) {
+		const errorMessage = `Fehler beim Parsen der JSON-Antwort: ${
+			err instanceof Error ? err.message : 'Unbekannter Fehler'
+		}`;
+		error(errorMessage);
+		throw new Error(errorMessage);
+	}
+}
+
 export async function getCollection(
 	id: number,
 	language: string = settings.language || window.navigator.language
