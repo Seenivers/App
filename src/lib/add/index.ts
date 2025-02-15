@@ -217,7 +217,12 @@ export async function searchMovieStatus(i: number) {
 
 //#region add Movie
 export async function addNewMovie(id: number, index: number) {
-	if (!id || !(await isMovieIDUnique(id))) return;
+	if (!id) return;
+
+	if (!(await isMovieIDUnique(id))) {
+		updateMovieStatus(index, 'downloaded');
+		return;
+	}
 
 	// Prüfen, ob der Benutzer online ist
 	if (!online.current) {
@@ -232,10 +237,8 @@ export async function addNewMovie(id: number, index: number) {
 		// Hole die Filmdetails
 		const result = await tmdb.getMovie(id);
 
-		if (await isMovieIDUnique(result.id)) {
-			// Film zur Datenbank hinzufügen
-			await addMovieToDatabase(result, index);
-		}
+		// Film zur Datenbank hinzufügen
+		await addMovieToDatabase(result, index);
 	} catch (err) {
 		updateMovieStatus(index, 'notFound');
 		handleDownloadError(err, id, index);
