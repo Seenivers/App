@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {
 		addNewFiles,
-		addNewMovie,
+		addNewMovies,
 		buttonClass,
 		getIcon,
 		searchMovieStatus
@@ -80,18 +80,18 @@
 
 		loading = true;
 
-		// Filtere die Einträge mit dem Status "wait"
+		// Filtere die Einträge mit Status "wait"
 		const waitEntries = searchList.filter(
 			(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
 		);
 
-		// Iteriere über alle "wait"-Einträge und starte die Suche für diese
+		const movieIds: number[] = [];
+
 		for (const entry of waitEntries) {
 			const entryIndex = searchList.findIndex((e) => e.options.path === entry.options.path);
 
-			// Falls der Eintrag noch im Status vorhanden ist, starte die Suche
 			if (entryIndex !== -1) {
-				// Suche nach dem Film
+				// Starte die Filmsuche, falls noch keine ID vorhanden ist
 				if (
 					!searchList[entryIndex].options.id &&
 					searchList[entryIndex].status === 'waitForSearching'
@@ -99,29 +99,31 @@
 					await searchMovieStatus(entryIndex);
 				}
 
-				// Wenn der Film gefunden wurde, füge ihn dem Status hinzu
+				// Falls eine ID gefunden wurde und der Status "waitForDownloading" ist, füge sie zur Liste hinzu
 				if (
 					searchList[entryIndex].options.id &&
 					searchList[entryIndex].status === 'waitForDownloading'
 				) {
-					await addNewMovie(searchList[entryIndex].options.id, entryIndex);
+					movieIds.push(searchList[entryIndex].options.id);
 				}
 			}
+		}
+
+		// Falls IDs vorhanden sind, lade die Filme in einem Rutsch
+		if (movieIds.length > 0) {
+			await addNewMovies(movieIds);
 		}
 
 		// Setze den Ladezustand zurück, nachdem alle Einträge verarbeitet wurden
 		loading = false;
 
-		// Wenn noch Filme im Status mit "waitForSearching" oder "waitForDownloading" sind, starte die Funktion erneut
-		const hasUnprocessedMovies = searchList.some(
+		// Falls noch Filme im Status "waitForSearching" oder "waitForDownloading" sind, lade erneut
+		if (
+			searchList.some(
 			(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
-		);
-
-		if (hasUnprocessedMovies) {
-			// Verzögere den erneuten Aufruf, um den Stack zu entlasten
-			setTimeout(() => {
-				load();
-			}, 1000); // 100 ms Verzögerung
+			)
+		) {
+			setTimeout(() => load(), 1000);
 		}
 	}
 
