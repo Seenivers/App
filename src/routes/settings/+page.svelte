@@ -44,9 +44,7 @@
 
 	// Änderungen tracken für andere Formularelemente
 	function markDirty() {
-		if (dbSettings !== settings) {
-			isDirty = true;
-		}
+		isDirty = true;
 	}
 
 	onMount(() => {
@@ -193,7 +191,7 @@
 	</div>
 </main>
 
-<footer class="footer footer-center bg-base-200 p-4 text-base-content">
+<footer class="footer footer-center bg-base-200 text-base-content p-4">
 	<aside>
 		{#await app.getVersion() then version}
 			<p>v{version}</p>
