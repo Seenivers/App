@@ -1,3 +1,32 @@
+# [0.23.0](https://github.com/Seenivers/App/compare/v0.22.0...v0.23.0) (2025-02-16)
+
+
+### Bug Fixes
+
+* **deps:** update borsh and tauri-plugin-log to latest versions ([0bcbd61](https://github.com/Seenivers/App/commit/0bcbd61f6e18a9e4a0f33bf4a80c792f1bfd659e))
+* **deps:** update dependency hls.js to ^1.5.20 ([8c61826](https://github.com/Seenivers/App/commit/8c618265199b8c8fa9d55fed9dc670168c9aec39))
+* **deps:** update rust crate serde_json to 1.0.138 ([48d8c31](https://github.com/Seenivers/App/commit/48d8c316fc28fee9338c38a3e0853e4497006233))
+* **deps:** update rust crate tauri-plugin-drpc to 0.1.3 ([e64a663](https://github.com/Seenivers/App/commit/e64a6633eedd762a01d9a4e5cce2b20a3afb271d))
+* **deps:** update rust crate tauri-plugin-log to 2.2.1 ([747b8a1](https://github.com/Seenivers/App/commit/747b8a1aa4a975a9f1a62a6f38f6d233fee762d1))
+* **deps:** update rust crate tauri-plugin-updater to 2.5.0 ([a0963d6](https://github.com/Seenivers/App/commit/a0963d66baa363ad5baa872edaebf194ed8fb1fe))
+* **deps:** update tauri monorepo ([c2bfeb9](https://github.com/Seenivers/App/commit/c2bfeb9b686fce64beb2a13ae6fe626ee3bab269))
+* improve movie addition logic and handle duplicate IDs ([5c463de](https://github.com/Seenivers/App/commit/5c463de956efe49ea22d94020b96d48bd78349e9))
+* optimize movie addition logic to handle existing IDs and improve error handling ([68d81da](https://github.com/Seenivers/App/commit/68d81da991908dae286a7f897395055d4caaaa2a))
+* refactor addNewMovies function to handle entries with IDs and indices for improved processing ([cdff646](https://github.com/Seenivers/App/commit/cdff646516e860f275e471911ec561cfa35c66c4))
+* refactor getMovies function to structure movie data with IDs for better error tracking ([6d56ace](https://github.com/Seenivers/App/commit/6d56ace1a2b4ac4a6783cadc056af739f365edac))
+* refactor movie addition to handle multiple IDs and improve batch processing ([e466708](https://github.com/Seenivers/App/commit/e4667086f06eab7732f772a827994c1ecdc817bf))
+* refactor movie addition to handle multiple IDs and improve status updates ([dfb3d68](https://github.com/Seenivers/App/commit/dfb3d68749a9c07829d61997dd6336cfb1420be5))
+* refactor movie ID handling to include indices for improved data processing ([89d8917](https://github.com/Seenivers/App/commit/89d891711e6de364465896bef6371df72871c580))
+* simplify dirty tracking logic ([07ba9b9](https://github.com/Seenivers/App/commit/07ba9b98fe18018e0c4c87154169602dfd102f86))
+* update movie status on download error ([c4b9200](https://github.com/Seenivers/App/commit/c4b920012f8db0515080561e2894e907d051c9c9))
+* update seeniversURL for development environment ([ebd500b](https://github.com/Seenivers/App/commit/ebd500b49b96e1cc44cecf62110734e0eba2aec9))
+* **workflow:** improve cache cleanup logic to avoid deleting already removed caches ([1931af8](https://github.com/Seenivers/App/commit/1931af84377d194715b34670e9ed0be9a1cb781b))
+
+
+### Features
+
+* implement getMovies function to fetch multiple movies with error handling ([3b48a71](https://github.com/Seenivers/App/commit/3b48a717b78c3e30f5a6ae38ec7547454726ef5c))
+
 # [0.22.0](https://github.com/Seenivers/App/compare/v0.21.0...v0.22.0) (2025-02-08)
 
 ### Bug Fixes
