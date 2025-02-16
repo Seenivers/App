@@ -216,52 +216,59 @@ export async function searchMovieStatus(i: number) {
 //#endregion
 
 //#region add Movie
-export async function addNewMovies(ids: number[]) {
-	if (!ids || ids.length === 0) return;
+export async function addNewMovies(entries: { id: number; index: number }[]) {
+	if (!entries || entries.length === 0) return;
 
-	const uniqueIds: number[] = [];
+	const uniqueEntries: { id: number; index: number }[] = [];
 
-	for (const id of ids) {
+	for (const { id, index } of entries) {
 		if (await isMovieIDUnique(id)) {
-			uniqueIds.push(id);
+			uniqueEntries.push({ id, index });
 		} else {
-			updateMovieStatus(id, 'downloaded');
+			updateMovieStatus(index, 'downloaded');
 		}
 	}
 
 	// Falls alle Filme bereits vorhanden sind, beenden
-	if (uniqueIds.length === 0) return;
+	if (uniqueEntries.length === 0) return;
 
 	// Prüfen, ob der Benutzer online ist
 	if (!online.current) {
-		uniqueIds.forEach((id) => updateMovieStatus(id, 'notFound'));
+		uniqueEntries.forEach(({ index }) => updateMovieStatus(index, 'notFound'));
 		return;
 	}
 
 	// Status auf "downloading" setzen
-	uniqueIds.forEach((id) => updateMovieStatus(id, 'downloading'));
+	uniqueEntries.forEach(({ index }) => updateMovieStatus(index, 'downloading'));
 
 	try {
 		// Mehrere Filme abrufen
-		const response: { movies?: Movie[]; errors?: { id: number; error: string }[] } =
-			await tmdb.getMovies(uniqueIds);
+		const response: {
+			movies?: { id: number; data: Movie }[];
+			errors?: { id: number; error: string }[];
+		} = await tmdb.getMovies(uniqueEntries.map((entry) => entry.id));
 
 		const movies = response.movies ?? [];
 		const errors = response.errors ?? [];
 
 		// Erfolgreiche Filme speichern
 		for (const movie of movies) {
-			await addMovieToDatabase(movie, movie.id);
-			updateMovieStatus(movie.id, 'downloaded');
+			const entry = uniqueEntries.find((e) => e.id === movie.id);
+
+			if (entry) {
+				await addMovieToDatabase(movie.data, entry.index);
+				updateMovieStatus(entry.index, 'downloaded');
+			}
 		}
 
 		// Fehlerhafte Filme auf "notFound" setzen
 		for (const { id } of errors) {
-			updateMovieStatus(id, 'notFound');
+			const entry = uniqueEntries.find((e) => e.id === id);
+			if (entry) updateMovieStatus(entry.index, 'notFound');
 		}
 	} catch (err) {
-		// Falls die gesamte Anfrage fehlschlägt, nur IDs als "notFound" setzen, die noch keinen Status haben
-		uniqueIds.forEach((id) => updateMovieStatus(id, 'notFound'));
+		// Falls die gesamte Anfrage fehlschlägt, alle Filme als "notFound" markieren
+		uniqueEntries.forEach(({ index }) => updateMovieStatus(index, 'notFound'));
 		error(
 			`Fehler beim Abrufen der Filme: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
 		);
