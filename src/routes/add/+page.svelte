@@ -120,7 +120,7 @@
 		// Falls noch Filme im Status "waitForSearching" oder "waitForDownloading" sind, lade erneut
 		if (
 			searchList.some(
-			(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
+				(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
 			)
 		) {
 			setTimeout(() => load(), 1000);
