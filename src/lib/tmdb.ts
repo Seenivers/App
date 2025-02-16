@@ -93,12 +93,12 @@ export async function getMovies(
 	try {
 		const result = (await response.json()) as { id: number; data?: Movie; error?: string }[];
 
-		const movies: Movie[] = [];
+		const movies: { id: number; data: Movie }[] = [];
 		const errors: { id: number; error: string }[] = [];
 
 		for (const entry of result) {
 			if (entry.data) {
-				movies.push(entry.data);
+				movies.push({ id: entry.id, data: entry.data });
 			} else if (entry.error) {
 				errors.push({ id: entry.id, error: entry.error });
 			}
