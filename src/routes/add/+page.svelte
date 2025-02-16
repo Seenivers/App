@@ -85,7 +85,7 @@
 			(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
 		);
 
-		const movieIds: number[] = [];
+		const movieIds: { id: number; index: number }[] = [];
 
 		for (const entry of waitEntries) {
 			const entryIndex = searchList.findIndex((e) => e.options.path === entry.options.path);
@@ -104,7 +104,7 @@
 					searchList[entryIndex].options.id &&
 					searchList[entryIndex].status === 'waitForDownloading'
 				) {
-					movieIds.push(searchList[entryIndex].options.id);
+					movieIds.push({ id: searchList[entryIndex].options.id, index: entryIndex });
 				}
 			}
 		}
