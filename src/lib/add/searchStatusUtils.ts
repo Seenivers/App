@@ -3,7 +3,6 @@ import type { MovieSearchStatus } from '$lib/types/add';
 export function buttonClass(searchStatus: MovieSearchStatus) {
 	switch (searchStatus) {
 		case 'waitForSearching':
-			return 'btn-neutral';
 		case 'waitForDownloading':
 			return 'btn-neutral';
 		case 'searching':
@@ -24,7 +23,6 @@ export function buttonClass(searchStatus: MovieSearchStatus) {
 export function getIcon(searchStatus: MovieSearchStatus) {
 	switch (searchStatus) {
 		case 'waitForSearching':
-			return '⏳'; // loading icon
 		case 'waitForDownloading':
 			return '⏳'; // loading icon
 		case 'searching':
@@ -38,6 +36,6 @@ export function getIcon(searchStatus: MovieSearchStatus) {
 		case 'downloaded':
 			return '✅'; // found one icon
 		default:
-			return '❓'; // default to search icon
+			return '❓'; // default icon
 	}
 }
