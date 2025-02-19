@@ -15,48 +15,6 @@ import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
 
-export function buttonClass(searchStatus: MovieSearchStatus) {
-	switch (searchStatus) {
-		case 'waitForSearching':
-			return 'btn-neutral';
-		case 'waitForDownloading':
-			return 'btn-neutral';
-		case 'searching':
-			return 'btn-primary';
-		case 'notFound':
-			return 'btn-error';
-		case 'foundMultiple':
-			return 'btn-warning';
-		case 'downloading':
-			return 'btn-info';
-		case 'downloaded':
-			return 'btn-success';
-		default:
-			return 'btn-neutral';
-	}
-}
-
-export function getIcon(searchStatus: MovieSearchStatus) {
-	switch (searchStatus) {
-		case 'waitForSearching':
-			return '⏳'; // loading icon
-		case 'waitForDownloading':
-			return '⏳'; // loading icon
-		case 'searching':
-			return '🔍'; // search icon
-		case 'notFound':
-			return '❌'; // not found icon
-		case 'foundMultiple':
-			return '⚠️'; // multiple results icon
-		case 'downloading':
-			return '📥'; // downloading icon
-		case 'downloaded':
-			return '✅'; // found one icon
-		default:
-			return '❓'; // default to search icon
-	}
-}
-
 //#region add Files
 /**
  * Fügt neue Filme zum Status hinzu, nachdem sie validiert wurden.
