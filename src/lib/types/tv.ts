@@ -2,14 +2,14 @@ export type TopLevel = {
 	adult: boolean;
 	backdrop_path: string;
 	created_by: CreatedBy[];
-	episode_run_time: any[];
-	first_air_date: Date;
+	episode_run_time: number[];
+	first_air_date: string;
 	genres: Genre[];
 	homepage: string;
 	id: number;
 	in_production: boolean;
 	languages: string[];
-	last_air_date: Date;
+	last_air_date: string;
 	last_episode_to_air: LastEpisodeToAir;
 	name: string;
 	next_episode_to_air: null;
@@ -139,7 +139,7 @@ export type LastEpisodeToAir = {
 	overview: string;
 	vote_average: number;
 	vote_count: number;
-	air_date: Date;
+	air_date: string;
 	episode_number: number;
 	episode_type: string;
 	production_code: string;
@@ -166,7 +166,7 @@ export type ProductionCountry = {
 };
 
 export type Season = {
-	air_date: Date | null;
+	air_date: string | null;
 	episode_count: number;
 	id: number;
 	name: string;
