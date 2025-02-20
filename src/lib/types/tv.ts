@@ -1,3 +1,5 @@
+import type { Gender, Department, ISO639_1, Videos, Genre, Status } from './media_type';
+
 export type TopLevel = {
 	adult: boolean;
 	backdrop_path: string;
@@ -17,7 +19,7 @@ export type TopLevel = {
 	number_of_episodes: number;
 	number_of_seasons: number;
 	origin_country: OriginCountry[];
-	original_language: OriginalLanguage;
+	original_language: ISO639_1;
 	original_name: string;
 	overview: string;
 	popularity: number;
@@ -26,7 +28,7 @@ export type TopLevel = {
 	production_countries: ProductionCountry[];
 	seasons: Season[];
 	spoken_languages: SpokenLanguage[];
-	status: string;
+	status: Status;
 	tagline: string;
 	type: string;
 	vote_average: number;
@@ -62,35 +64,6 @@ export type Cast = {
 	job?: string;
 };
 
-/**
- * Gender enumeration representing the following values:
- *
- * - `0`: Unknown - Geschlecht ist nicht angegeben oder unbekannt
- * - `1`: Female - Weiblich
- * - `2`: Male - Männlich
- * - `3`: Non-binary - Nicht-binär
- */
-export declare enum Gender {
-	Unknown = 0,
-	Female = 1,
-	Male = 2,
-	NonBinary = 3
-}
-
-export type Department =
-	| 'Art'
-	| 'Camera'
-	| 'Costume & Make-Up'
-	| 'Crew'
-	| 'Directing'
-	| 'Editing'
-	| 'Production'
-	| 'Sound'
-	| 'Visual Effects'
-	| 'Writing'
-	| 'Acting'
-	| 'Creator';
-
 export type Job = {
 	credit_id: string;
 	job: string;
@@ -124,11 +97,6 @@ export type ExternalIDS = {
 	twitter_id: null | string;
 };
 
-export type Genre = {
-	id: number;
-	name: string;
-};
-
 export type Keywords = {
 	results: Genre[];
 };
@@ -158,8 +126,6 @@ export type Network = {
 
 export type OriginCountry = '' | 'US' | 'GB' | 'ZA';
 
-export type OriginalLanguage = 'de' | 'en';
-
 export type ProductionCountry = {
 	iso_3166_1: OriginCountry;
 	name: string;
@@ -181,24 +147,3 @@ export type SpokenLanguage = {
 	iso_639_1: string;
 	name: string;
 };
-
-export type Videos = {
-	results: Result[];
-};
-
-export type Result = {
-	iso_639_1: OriginalLanguage;
-	iso_3166_1: ISO3166_1;
-	name: string;
-	key: string;
-	site: 'YouTube';
-	size: number;
-	type: Type;
-	official: boolean;
-	published_at: Date;
-	id: string;
-};
-
-export type ISO3166_1 = 'DE' | 'US';
-
-export type Type = 'Trailer' | 'Featurette' | 'Behind the Scenes' | 'Teaser';
