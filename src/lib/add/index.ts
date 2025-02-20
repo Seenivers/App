@@ -14,7 +14,7 @@ import type { SearchList, SearchStatus } from '$lib/types/add';
 import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
-import { updateMovieStatus } from './utils';
+import { isMovie, updateMovieStatus } from './utils';
 
 //#region add Files
 /**
@@ -75,8 +75,6 @@ async function filterNewFiles(files: string[]) {
  */
 function addNewFilesToStatus(newFiles: string[]) {
 	const tempStatus: SearchList[] = newFiles.map((path) => {
-		const fileExtension = path.split('.').pop()?.toLowerCase() ?? '';
-		const isMovie = extensions.includes(fileExtension); // Falls es eine Datei mit Endung ist → Movie
 		const name =
 			path
 				.split('\\')
@@ -95,7 +93,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 
 		return {
 			status: 'waitForSearching',
-			mediaType: isMovie ? 'movie' : 'tv',
+			mediaType: isMovie(path) ? 'movie' : 'tv',
 			search: {
 				page: 1,
 				results: [],
