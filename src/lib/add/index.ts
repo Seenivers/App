@@ -14,7 +14,7 @@ import type { SearchList, SearchStatus } from '$lib/types/add';
 import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
-import { isMovie, updateMovieStatus } from './utils';
+import { isMovie, updateSearchStatus } from './utils';
 
 //#region ADD
 /**
@@ -118,11 +118,11 @@ export function addNewFilesToStatus(newFiles: string[]) {
 export async function searchMovieStatus(i: number) {
 	// Prüfe die Internetverbindung
 	if (!online.current) {
-		updateMovieStatus(i, 'notFound');
+		updateSearchStatus(i, 'notFound');
 		return;
 	}
 
-	updateMovieStatus(i, 'searching');
+	updateSearchStatus(i, 'searching');
 
 	const { fileName, primaryReleaseYear } = searchList[i].options;
 	const page = searchList[i].search?.page || 1;
@@ -187,7 +187,7 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 		if (await isMovieIDUnique(id)) {
 			uniqueEntries.push({ id, index });
 		} else {
-			updateMovieStatus(index, 'downloaded');
+			updateSearchStatus(index, 'downloaded');
 		}
 	}
 
@@ -196,12 +196,12 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 
 	// Prüfen, ob der Benutzer online ist
 	if (!online.current) {
-		uniqueEntries.forEach(({ index }) => updateMovieStatus(index, 'notFound'));
+		uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'notFound'));
 		return;
 	}
 
 	// Status auf "downloading" setzen
-	uniqueEntries.forEach(({ index }) => updateMovieStatus(index, 'downloading'));
+	uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'downloading'));
 
 	try {
 		// Mehrere Filme abrufen
@@ -219,18 +219,18 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 
 			if (entry) {
 				await addMovieToDatabase(movie.data, entry.index);
-				updateMovieStatus(entry.index, 'downloaded');
+				updateSearchStatus(entry.index, 'downloaded');
 			}
 		}
 
 		// Fehlerhafte Filme auf "notFound" setzen
 		for (const { id } of errors) {
 			const entry = uniqueEntries.find((e) => e.id === id);
-			if (entry) updateMovieStatus(entry.index, 'notFound');
+			if (entry) updateSearchStatus(entry.index, 'notFound');
 		}
 	} catch (err) {
 		// Falls die gesamte Anfrage fehlschlägt, alle Filme als "notFound" markieren
-		uniqueEntries.forEach(({ index }) => updateMovieStatus(index, 'notFound'));
+		uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'notFound'));
 		error(
 			`Fehler beim Abrufen der Filme: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
 		);
