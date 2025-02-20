@@ -1,6 +1,6 @@
 import type { Gender, Department, ISO639_1, Videos, Genre, Status } from './media_type';
 
-export type TopLevel = {
+export type Tv = {
 	adult: boolean;
 	backdrop_path: string;
 	created_by: CreatedBy[];
