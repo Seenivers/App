@@ -16,7 +16,7 @@ import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
 import { isMovie, updateMovieStatus } from './utils';
 
-//#region add Files
+//#region ADD
 /**
  * Fügt neue Filme zum Status hinzu, nachdem sie validiert wurden.
  * @param files - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
@@ -114,7 +114,7 @@ export function addNewFilesToStatus(newFiles: string[]) {
 }
 //#endregion
 
-//#region search Movie
+//#region SEARCH
 export async function searchMovieStatus(i: number) {
 	// Prüfe die Internetverbindung
 	if (!online.current) {
@@ -177,7 +177,7 @@ export async function searchMovieStatus(i: number) {
 }
 //#endregion
 
-//#region add Movie
+//#region ADD/DOWNLOAD
 export async function addNewMovies(entries: { id: number; index: number }[]) {
 	if (!entries || entries.length === 0) return;
 
