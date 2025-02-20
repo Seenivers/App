@@ -54,7 +54,7 @@ export interface SearchOptions {
  * Represents the context of a movie search operation,
  * including its state, results, and search options.
  */
-export interface MovieSearchContext {
+export interface SearchList {
 	/** The current state of the search. */
 	status: MovieSearchStatus;
 	/** The list of movie results returned by the search. */

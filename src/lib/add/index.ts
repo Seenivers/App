@@ -10,7 +10,7 @@ import { extensions } from '$lib';
 import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
-import type { MovieSearchContext, MovieSearchStatus } from '$lib/types/add';
+import type { SearchList, MovieSearchStatus } from '$lib/types/add';
 import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
@@ -73,7 +73,7 @@ async function filterNewFiles(files: string[]) {
  * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
  */
 function addNewFilesToStatus(newFiles: string[]) {
-	const tempStatus: MovieSearchContext[] = newFiles.map((path) => {
+	const tempStatus: SearchList[] = newFiles.map((path) => {
 		const name =
 			path
 				.split('\\')
