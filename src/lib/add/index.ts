@@ -74,14 +74,18 @@ async function filterNewFiles(files: string[]) {
  */
 function addNewFilesToStatus(newFiles: string[]) {
 	const tempStatus: SearchList[] = newFiles.map((path) => {
+		const fileExtension = path.split('.').pop()?.toLowerCase() ?? '';
+		const isMovie = extensions.includes(fileExtension); // Falls es eine Datei mit Endung ist → Movie
 		const name =
 			path
 				.split('\\')
 				.pop()
 				?.replace(/\.[^/.]+$/, '') ?? '';
+
+		// Bereinigung des Dateinamens
 		const fileName = name
 			.split(/[.\s]+/)
-			.filter((word) => !settings.keywords.map((k) => k.toLowerCase()).includes(word.toLowerCase()))
+			.filter((word) => !settings.keywords.some((k) => k.toLowerCase() === word.toLowerCase()))
 			.join(' ');
 
 		const yearMatch = /(\d{4})/.exec(fileName);
@@ -90,6 +94,7 @@ function addNewFilesToStatus(newFiles: string[]) {
 
 		return {
 			status: 'waitForSearching',
+			mediaType: isMovie ? 'movie' : 'tv',
 			search: {
 				page: 1,
 				results: [],

@@ -16,6 +16,8 @@ export interface DropPayload {
 	};
 }
 
+type MediaType = 'movie' | 'tv';
+
 /**
  * Represents the state of a movie search operation.
  * - `wait`: The search is on hold, waiting for the next action or condition to proceed.
@@ -46,7 +48,7 @@ export interface SearchOptions {
 	includeAdult: boolean;
 	/** The primary release year of the movie (optional). */
 	primaryReleaseYear?: string | number;
-
+	/** The ID of the movie being searched for (optional). */
 	id?: number;
 }
 
@@ -58,7 +60,9 @@ export interface SearchList {
 	/** The current state of the search. */
 	status: SearchStatus;
 	/** The list of movie results returned by the search. */
-	search: Search<Movie>;
+	search: Search<Movie>; // <- `Movie` muss jetzt auch Serien unterstützen
 	/** The search options used for the query. */
 	options: SearchOptions;
+	/** The type of media being searched for, either 'movie' or 'tv'. */
+	mediaType: MediaType;
 }
