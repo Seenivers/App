@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import { clearResultsOnLeave } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
-	import type { MovieSearchStatus } from '$lib/types/add';
+	import type { SearchStatus } from '$lib/types/add';
 	import { error, warn } from '@tauri-apps/plugin-log';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
@@ -23,7 +23,7 @@
 	let modal = $state(false);
 	let modalID: number | null = $state(null);
 	let loading = false;
-	let filter: MovieSearchStatus | null = $state(null);
+	let filter: SearchStatus | null = $state(null);
 
 	// Zähle die Anzahl der Filme für jeden Zustand
 	let counts = $derived(

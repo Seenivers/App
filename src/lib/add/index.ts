@@ -10,7 +10,7 @@ import { extensions } from '$lib';
 import * as tmdb from '$lib/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
-import type { SearchList, MovieSearchStatus } from '$lib/types/add';
+import type { SearchList, SearchStatus } from '$lib/types/add';
 import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
@@ -126,7 +126,7 @@ export async function searchMovieStatus(i: number) {
 	try {
 		const search = await tmdb.searchMovies(fileName, primaryReleaseYear, page);
 
-		let status: MovieSearchStatus;
+		let status: SearchStatus;
 		let results = [...(searchList[i].search?.results || []), ...search.results];
 
 		if (search.results.length === 1) {
@@ -233,7 +233,7 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 	}
 }
 
-function updateMovieStatus(index: number, newState: MovieSearchStatus) {
+function updateMovieStatus(index: number, newState: SearchStatus) {
 	searchList[index].status = newState;
 }
 

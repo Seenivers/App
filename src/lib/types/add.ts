@@ -25,7 +25,7 @@ export interface DropPayload {
  * - `foundMultiple`: Multiple results were found.
  * - `downloading`: Results are being downloaded.
  */
-export type MovieSearchStatus =
+export type SearchStatus =
 	| 'waitForSearching'
 	| 'searching'
 	| 'notFound'
@@ -56,7 +56,7 @@ export interface SearchOptions {
  */
 export interface SearchList {
 	/** The current state of the search. */
-	status: MovieSearchStatus;
+	status: SearchStatus;
 	/** The list of movie results returned by the search. */
 	search: Search<Movie>;
 	/** The search options used for the query. */

@@ -1,6 +1,6 @@
-import type { MovieSearchStatus } from '$lib/types/add';
+import type { SearchStatus } from '$lib/types/add';
 
-export function buttonClass(searchStatus: MovieSearchStatus) {
+export function buttonClass(searchStatus: SearchStatus) {
 	switch (searchStatus) {
 		case 'waitForSearching':
 		case 'waitForDownloading':
@@ -20,7 +20,7 @@ export function buttonClass(searchStatus: MovieSearchStatus) {
 	}
 }
 
-export function getIcon(searchStatus: MovieSearchStatus) {
+export function getIcon(searchStatus: SearchStatus) {
 	switch (searchStatus) {
 		case 'waitForSearching':
 		case 'waitForDownloading':
