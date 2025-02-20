@@ -73,7 +73,7 @@ async function filterNewFiles(files: string[]) {
  *
  * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
  */
-function addNewFilesToStatus(newFiles: string[]) {
+export function addNewFilesToStatus(newFiles: string[]) {
 	const tempStatus: SearchList[] = newFiles.map((path) => {
 		const name =
 			path
