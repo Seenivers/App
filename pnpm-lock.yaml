@@ -36,8 +36,8 @@ importers:
         specifier: ^11.8.1
         version: 11.8.1
       drizzle-orm:
-        specifier: ^0.38.4
-        version: 0.38.4(@types/better-sqlite3@7.6.12)(better-sqlite3@11.8.1)
+        specifier: ^0.39.3
+        version: 0.39.3(@types/better-sqlite3@7.6.12)(better-sqlite3@11.8.1)
       hls.js:
         specifier: ^1.5.20
         version: 1.5.20
@@ -1487,8 +1487,8 @@ packages:
     resolution: {integrity: sha512-B2oJN5UkvwwNHscPWXDG5KqAixu7AUzZ3qbe++KU9SsQ+cZWR4DXEPYcvWplyFAno0dhRJECNEhNxiDmFaPGyQ==}
     hasBin: true
 
-  drizzle-orm@0.38.4:
-    resolution: {integrity: sha512-s7/5BpLKO+WJRHspvpqTydxFob8i1vo2rEx4pY6TGY7QSMuUfWUuzaY0DIpXCkgHOo37BaFC+SJQb99dDUXT3Q==}
+  drizzle-orm@0.39.3:
+    resolution: {integrity: sha512-EZ8ZpYvDIvKU9C56JYLOmUskazhad+uXZCTCRN4OnRMsL+xAJ05dv1eCpAG5xzhsm1hqiuC5kAZUCS924u2DTw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -1503,7 +1503,6 @@ packages:
       '@tidbcloud/serverless': '*'
       '@types/better-sqlite3': '*'
       '@types/pg': '*'
-      '@types/react': '>=18'
       '@types/sql.js': '*'
       '@vercel/postgres': '>=0.8.0'
       '@xata.io/client': '*'
@@ -1516,7 +1515,6 @@ packages:
       pg: '>=8'
       postgres: '>=3'
       prisma: '*'
-      react: '>=18'
       sql.js: '>=1'
       sqlite3: '>=5'
     peerDependenciesMeta:
@@ -1546,8 +1544,6 @@ packages:
         optional: true
       '@types/pg':
         optional: true
-      '@types/react':
-        optional: true
       '@types/sql.js':
         optional: true
       '@vercel/postgres':
@@ -1571,8 +1567,6 @@ packages:
       postgres:
         optional: true
       prisma:
-        optional: true
-      react:
         optional: true
       sql.js:
         optional: true
@@ -4498,7 +4492,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.38.4(@types/better-sqlite3@7.6.12)(better-sqlite3@11.8.1):
+  drizzle-orm@0.39.3(@types/better-sqlite3@7.6.12)(better-sqlite3@11.8.1):
     optionalDependencies:
       '@types/better-sqlite3': 7.6.12
       better-sqlite3: 11.8.1
