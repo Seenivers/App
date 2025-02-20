@@ -16,7 +16,6 @@
 	let height: number | undefined = $state(450); // Standardhöhe
 	let width: number | undefined = $state(300); // Standardbreite
 	let imgRef: HTMLImageElement | null = null; // Referenz für das Bild
-	let isVisible = false; // Sichtbarkeitsstatus des Bildes
 
 	// Intersection Observer verwenden
 	onMount(() => {
@@ -25,7 +24,6 @@
 				(entries) => {
 					entries.forEach(async (entry) => {
 						if (entry.isIntersecting) {
-							isVisible = true; // Bild wird sichtbar
 							observer.unobserve(entry.target); // Beobachtung stoppen
 
 							// Lade die echten Bilddaten
