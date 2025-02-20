@@ -281,14 +281,4 @@ async function loadImages(result: Movie) {
 		await image(path, 'actors', true);
 	}
 }
-
-function handleDownloadError(err: unknown, id: number, index: number) {
-	const message =
-		err instanceof Error
-			? `Fehler beim Hinzufügen des Films mit ID ${id}: ${err.message}`
-			: `Unbekannter Fehler beim Hinzufügen des Films mit ID ${id}`;
-	error(message);
-
-	updateMovieStatus(index, 'notFound');
-}
 //#endregion
