@@ -14,6 +14,7 @@ import type { SearchList, SearchStatus } from '$lib/types/add';
 import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
+import { updateMovieStatus } from './utils';
 
 //#region add Files
 /**
@@ -236,10 +237,6 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 			`Fehler beim Abrufen der Filme: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
 		);
 	}
-}
-
-function updateMovieStatus(index: number, newState: SearchStatus) {
-	searchList[index].status = newState;
 }
 
 async function addMovieToDatabase(result: Movie, index: number) {
