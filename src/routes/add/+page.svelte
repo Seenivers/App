@@ -341,6 +341,8 @@
 			{:else if modalID !== null && searchList[modalID]?.search?.results.length > 0}
 				<div class="grid gap-4">
 					{#each searchList[modalID].search.results as result, i}
+						{@const title = 'title' in result ? result.title : result.name}
+						{@const year = 'release_date' in result ? result.release_date : result.first_air_date}
 						<button
 							class="border-base-300 bg-base-200 flex cursor-pointer space-y-2 rounded-lg border p-3"
 							onclick={async () => {
@@ -357,9 +359,9 @@
 							/>
 
 							<div class="px-3 text-left">
-								<p><strong>{result.title}</strong></p>
+								<p><strong>{title}</strong></p>
 								<p class="text-sm text-gray-500">
-									{$_('add.modal.inputs.year')}: {result.release_date}
+									{$_('add.modal.inputs.year')}: {year}
 								</p>
 								<p class="text-gray-400">{result.overview}</p>
 							</div>
