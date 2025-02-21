@@ -115,7 +115,7 @@ export function addNewFilesToStatus(newFiles: string[]) {
 //#endregion
 
 //#region SEARCH
-export async function searchMovieStatus(i: number) {
+export async function searchMediaStatus(i: number) {
 	// Prüfe die Internetverbindung
 	if (!online.current) {
 		updateSearchStatus(i, 'notFound');

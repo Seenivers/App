@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addNewFiles, addNewMovies, searchMovieStatus } from '$lib/add/index';
+	import { addNewFiles, addNewMovies, searchMediaStatus } from '$lib/add/index';
 	import { buttonClass, getIcon } from '$lib/add/searchStatusUtils';
 	import { searchList } from '$lib/stores.svelte';
 	import type { PageData } from './$types';
@@ -91,7 +91,7 @@
 					!searchList[entryIndex].options.id &&
 					searchList[entryIndex].status === 'waitForSearching'
 				) {
-					await searchMovieStatus(entryIndex);
+					await searchMediaStatus(entryIndex);
 				}
 
 				// Falls eine ID gefunden wurde und der Status "waitForDownloading" ist, füge sie zur Liste hinzu
@@ -284,7 +284,7 @@
 				onsubmit={async (event) => {
 					event.preventDefault();
 					if (modalID !== null) {
-						await searchMovieStatus(modalID);
+						await searchMediaStatus(modalID);
 					}
 				}}
 				class="my-3 grid gap-3"
@@ -373,7 +373,7 @@
 							onclick={() => {
 								if (modalID === null) return;
 								searchList[modalID].search.page++;
-								searchMovieStatus(modalID);
+								searchMediaStatus(modalID);
 							}}>Lade weiter ergebnisse</button
 						>
 					{/if}
