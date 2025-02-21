@@ -1,4 +1,4 @@
-import type { Movie, Search } from './searchMovie';
+import type { Movie, Search, TV } from './searchMovie';
 
 /**
  * Represents the payload for a drag-and-drop operation,
@@ -60,7 +60,7 @@ export interface SearchList {
 	/** The current state of the search. */
 	status: SearchStatus;
 	/** The list of movie results returned by the search. */
-	search: Search<Movie>; // <- `Movie` muss jetzt auch Serien unterstützen
+	search: Search<Movie | TV>;
 	/** The search options used for the query. */
 	options: SearchOptions;
 	/** The type of media being searched for, either 'movie' or 'tv'. */
