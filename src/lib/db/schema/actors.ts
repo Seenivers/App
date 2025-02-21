@@ -6,5 +6,7 @@ export const actors = sqliteTable('actors', {
 	id: int('id').notNull().primaryKey().unique(),
 	name: text('name').notNull(),
 	tmdb: text('tmdb').notNull().$type<Actor>(),
-	updated: int('updated', { mode: 'timestamp' }).notNull().default(new Date(0))
+	updated: int('updated', { mode: 'timestamp' })
+		.notNull()
+		.$defaultFn(() => new Date(0))
 });
