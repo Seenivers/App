@@ -8,6 +8,7 @@ export interface Settings {
 	};
 	player: 'Plyr' | 'Vidstack';
 	castImages: number;
+	discordAktiv: boolean;
 }
 
 export type AlertPositionHorizontally =

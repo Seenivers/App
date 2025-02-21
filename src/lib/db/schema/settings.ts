@@ -39,5 +39,6 @@ export const settings = sqliteTable('settings', {
 		.$type<Settings['toastPosition']>()
 		.default({ horizontal: 'end', vertical: 'bottom' }),
 	player: text('player').notNull().$type<Settings['player']>().default('Plyr'),
-	castImages: int('castImages').notNull().default(5) // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
+	castImages: int('castImages').notNull().default(5), // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
+	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true)
 });

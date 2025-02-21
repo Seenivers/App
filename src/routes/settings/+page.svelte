@@ -175,6 +175,22 @@
 				</div>
 			</label>
 
+			<!-- Discord RPC -->
+			<!-- if abfrage weil es db seitig noch nicht gibt -->
+			{#if settings.discordAktiv}
+				<div class="form-control justify-center">
+					<label class="label cursor-pointer">
+						<span class="label-text font-semibold">Discord RPC aktivieren</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={settings.discordAktiv}
+							onchange={markDirty}
+						/>
+					</label>
+				</div>
+			{/if}
+
 			<!-- Schlüsselwörter -->
 			<label class="form-control w-full lg:col-span-2">
 				<div class="label">
