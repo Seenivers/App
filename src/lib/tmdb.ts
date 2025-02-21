@@ -3,7 +3,7 @@ import type { Movie } from '$lib/types/movie';
 import { settings } from '$lib/db/funktion';
 import { seeniversURL } from '$lib';
 import type { CollectionDetails } from '$lib/types/collection';
-import type { Search, Movie as SearchMovie } from '$lib/types/searchMovie';
+import type { Search, Movie as SearchMovie, TV as SearchTV } from '$lib/types/searchMovie';
 import type { Actor } from '$lib/types/actor';
 
 async function fetchData<T>(endpoint: string, id: number, language: string) {
@@ -146,4 +146,24 @@ export async function getActor(
 	language: string = settings.language || window.navigator.language
 ) {
 	return await fetchData<Actor>('/api/actor', id, language);
+}
+
+/**
+ * Suche TV-Sendungen in der TMDB basierend auf einem Namen und optionalen Parametern.
+ */
+export async function searchTv(
+	name: string,
+	first_air_date_year?: string | number,
+	page = 1
+): Promise<Search<SearchTV>> {
+	const url = new URL(seeniversURL + '/api/tv/search');
+	url.searchParams.append('name', name);
+	url.searchParams.append('language', settings.language);
+	url.searchParams.append('includeAdult', String(settings.adult));
+	url.searchParams.append('first_air_date_year', first_air_date_year?.toString() ?? '');
+	url.searchParams.append('page', page.toString());
+
+	const result = await fetch(url.toString());
+
+	return (await result.json()) as Search<SearchTV>;
 }
