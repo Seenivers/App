@@ -128,22 +128,26 @@ export async function searchMovieStatus(i: number) {
 	const page = searchList[i].search?.page || 1;
 
 	try {
-		const search = await tmdb.searchMovies(fileName, primaryReleaseYear, page);
+		// Bestimme die richtige TMDB-Suchfunktion basierend auf `mediaType`
+		const search =
+			searchList[i].mediaType === 'movie'
+				? await tmdb.searchMovies(fileName, primaryReleaseYear, page)
+				: await tmdb.searchTv(fileName, primaryReleaseYear, page);
 
 		let status: SearchStatus;
 		let results = [...(searchList[i].search?.results || []), ...search.results];
 
 		if (search.results.length === 1) {
-			// Nur einen Film gefunden
+			// Genau ein Ergebnis gefunden
 			status = 'waitForDownloading';
 			searchList[i].options.id = search.results[0].id;
 		} else if (search.results.length > 1) {
-			// Mehrere Filme gefunden
+			// Mehrere Ergebnisse gefunden
 			status = 'foundMultiple';
 		} else {
-			// Keine Filme gefunden
+			// Keine Ergebnisse gefunden
 			status = 'notFound';
-			results = []; // Ergebnisse leeren
+			results = [];
 		}
 
 		// Gemeinsame Eigenschaften setzen
@@ -169,7 +173,7 @@ export async function searchMovieStatus(i: number) {
 			...searchList[i],
 			search: {
 				...searchList[i].search,
-				results: [] // Leeres Array, da keine Filme gefunden wurden
+				results: [] // Leeres Array, da keine Ergebnisse gefunden wurden
 			},
 			status: 'notFound'
 		};
