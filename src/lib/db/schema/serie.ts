@@ -5,7 +5,7 @@ export const serie = sqliteTable('series', {
 	id: int('id').notNull().primaryKey().unique(),
 	path: text('path'),
 	watched: int('watched', { mode: 'boolean' }).notNull().default(false),
-	watchTime: int('watchTime').notNull().default(0),
+	season: int('season').notNull().default(0),
 	tmdb: text('tmdb', { mode: 'json' }).$type<Serie>().notNull(),
 	updated: int('updated', { mode: 'timestamp' })
 		.notNull()
