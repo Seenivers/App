@@ -1,6 +1,9 @@
+import type { themes } from '$lib';
+
 export interface Settings {
 	language: string;
 	keywords: string[];
+	ignoredKeywords: string[];
 	adult: boolean;
 	toastPosition: {
 		horizontal: AlertPositionHorizontally;
@@ -9,6 +12,7 @@ export interface Settings {
 	player: 'Plyr' | 'Vidstack';
 	castImages: number;
 	discordAktiv: boolean;
+	theme: (typeof themes)[number];
 }
 
 export type AlertPositionHorizontally =
