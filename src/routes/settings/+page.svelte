@@ -9,6 +9,8 @@
 	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
+	import { themes } from '$lib';
+	import { setTheme } from '$lib/themeUtils';
 
 	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
 	let isDirty = false; // Überwachungsvariable für Änderungen
@@ -184,6 +186,27 @@
 						/>
 					</label>
 				</div>
+			{/if}
+
+			<!-- Themen -->
+			{#if themes.map((theme) => theme).includes(settings.theme)}
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text">Themen</span>
+					</div>
+					<select
+						class="select select-bordered"
+						onchange={() => {
+							setTheme(settings.theme);
+							markDirty();
+						}}
+						bind:value={settings.theme}
+					>
+						{#each themes as theme}
+							<option value={theme.toLowerCase()}>{theme}</option>
+						{/each}
+					</select>
+				</label>
 			{/if}
 
 			<!-- Schlüsselwörter -->

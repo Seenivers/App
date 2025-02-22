@@ -33,6 +33,7 @@ export const settings = sqliteTable('settings', {
 			'hevc',
 			'Trailer'
 		]),
+	theme: text('theme').notNull().$type<Settings['theme']>().default('default'),
 	adult: int('adult', { mode: 'boolean' }).notNull().default(false),
 	toastPosition: text('toastPosition', { mode: 'json' })
 		.notNull()
