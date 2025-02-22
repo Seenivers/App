@@ -221,6 +221,21 @@
 					onchange={handleInput}
 				></textarea>
 			</label>
+
+			<!-- Ignorierte Schlüsselwörter -->
+			{#if settings.ignoredKeywords.length > 15}
+				<label class="form-control w-full lg:col-span-2">
+					<div class="label">
+						<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
+					</div>
+					<textarea
+						class="textarea textarea-bordered h-32 w-full"
+						placeholder="Schlüsselwörter (kommagetrennt)"
+						bind:value={settings.ignoredKeywords}
+						onchange={handleInput}
+					></textarea>
+				</label>
+			{/if}
 		</div>
 	</div>
 </main>

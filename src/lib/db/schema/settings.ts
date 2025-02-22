@@ -33,6 +33,10 @@ export const settings = sqliteTable('settings', {
 			'hevc',
 			'Trailer'
 		]),
+	ignoredKeywords: text('ignoredKeywords', { mode: 'json' })
+		.notNull()
+		.$type<string[]>()
+		.default(['Trailer', 'Preview', 'Sample']),
 	theme: text('theme').notNull().$type<Settings['theme']>().default('default'),
 	adult: int('adult', { mode: 'boolean' }).notNull().default(false),
 	toastPosition: text('toastPosition', { mode: 'json' })
