@@ -21,14 +21,9 @@
 	// Standard-Sprache auswählen
 	settings.language = settings.language || languageSuggestions[0] || 'en'; // Fallback auf Englisch
 
-	// Einstellungen in der Datenbank aktualisieren
-	async function updateSettings(newSettings: typeof schema.settings.$inferSelect) {
-		await db.update(schema.settings).set(newSettings).where(eq(schema.settings.id, 1));
-	}
-
 	// Funktion zum Speichern der geänderten Einstellungen
 	async function saveSettings() {
-		await updateSettings(settings);
+		await db.update(schema.settings).set(settings).where(eq(schema.settings.id, 1));
 		newToast('info', 'Einstellungen gespeichert!');
 		isDirty = false; // Änderungen wurden gespeichert
 	}
