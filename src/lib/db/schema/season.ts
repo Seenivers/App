@@ -1,4 +1,4 @@
-import type { Serie } from '$lib/types/tv';
+import type { Season } from '$lib/types/season';
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const season = sqliteTable('season', {
@@ -6,7 +6,7 @@ export const season = sqliteTable('season', {
 	path: text('path'),
 	watched: int('watched', { mode: 'boolean' }).notNull().default(false),
 	episode: int('episode').notNull().default(1),
-	tmdb: text('tmdb', { mode: 'json' }).$type<Serie>().notNull(),
+	tmdb: text('tmdb', { mode: 'json' }).$type<Season>().notNull(),
 	updated: int('updated', { mode: 'timestamp' })
 		.notNull()
 		.$defaultFn(() => new Date(0))
