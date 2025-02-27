@@ -29,7 +29,7 @@ export const load = (async ({ url }) => {
 	// Wenn kein Ergebnis in der lokalen Datenbank und online
 	if (!result && online.current) {
 		// Daten von TMDB abrufen
-		const tmdb = await import('$lib/tmdb');
+		const tmdb = await import('$lib/utils/tmdb');
 		const fetchedActor = await tmdb.getActor(id);
 
 		if (!fetchedActor) {

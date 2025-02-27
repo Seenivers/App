@@ -20,7 +20,7 @@ export const load = (async ({ url }) => {
 
 	if (!result && online.current) {
 		// Wenn nicht vorhanden und online, Daten von TMDB abrufen
-		const { getCollection: getTMDBCollection } = await import('$lib/tmdb');
+		const { getCollection: getTMDBCollection } = await import('$lib/utils/tmdb');
 
 		const collection = await getTMDBCollection(id);
 

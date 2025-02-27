@@ -7,7 +7,7 @@ import {
 	settings
 } from '$lib/db/funktion';
 import { extensions } from '$lib';
-import * as tmdb from '$lib/tmdb';
+import * as tmdb from '$lib/utils/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
 import type { SearchList, SearchStatus } from '$lib/types/add';

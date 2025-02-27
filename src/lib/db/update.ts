@@ -18,7 +18,7 @@ import {
 	getMovie as getMovieTmdb,
 	getCollection as getCollectionTmdb,
 	getActor as getActorTmdb
-} from '$lib/tmdb';
+} from '$lib/utils/tmdb';
 import { schema } from './schema';
 import { WEEKS } from '$lib';
 
