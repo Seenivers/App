@@ -1,4 +1,4 @@
-import type { Gender, Department, ISO639_1, Videos, Genre, Status } from './media_type';
+import type { Gender, Department, ISO639_1, Videos, Genre, Status, ISO3166_1 } from './media_type';
 
 export type Serie = {
 	adult: boolean;
@@ -127,7 +127,7 @@ export type Network = {
 export type OriginCountry = '' | 'US' | 'GB' | 'ZA';
 
 export type ProductionCountry = {
-	iso_3166_1: OriginCountry;
+	iso_3166_1: ISO3166_1;
 	name: string;
 };
 
@@ -144,6 +144,6 @@ export type Season = {
 
 export type SpokenLanguage = {
 	english_name: string;
-	iso_639_1: string;
+	iso_639_1: ISO3166_1;
 	name: string;
 };
