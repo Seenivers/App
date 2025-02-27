@@ -5,9 +5,9 @@ import { seeniversURL } from '$lib';
 import type { CollectionDetails } from '$lib/types/collection';
 import type { Search, Movie as SearchMovie, TV as SearchTV } from '$lib/types/searchMovie';
 import type { Actor } from '$lib/types/actor';
-import type { Serie } from './types/tv';
-import type { Season } from './types/season';
-import type { Episode } from './types/episode';
+import type { Serie } from './types/tv/tv';
+import type { Season } from './types/tv/season';
+import type { Episode } from './types/tv/episode';
 
 async function fetchData<T>(endpoint: string, id: number, language: string) {
 	// Erstelle die URL mit den Query-Parametern id und language

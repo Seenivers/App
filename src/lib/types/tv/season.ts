@@ -1,4 +1,4 @@
-import type { Videos } from './media_type';
+import type { Videos } from '../media_type';
 import type { Cast, Credits, ExternalIDS } from './tv';
 
 export type Season = {

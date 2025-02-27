@@ -1,4 +1,4 @@
-import type { Videos } from './media_type';
+import type { Videos } from '../media_type';
 
 export type Episode = {
 	air_date: string;

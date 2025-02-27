@@ -1,4 +1,4 @@
-import type { Serie } from '$lib/types/tv';
+import type { Serie } from '$lib/types/tv/tv';
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const serie = sqliteTable('series', {

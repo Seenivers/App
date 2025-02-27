@@ -1,4 +1,4 @@
-import type { Gender, Department, ISO639_1, Videos, Genre, Status, ISO3166_1 } from './media_type';
+import type { Gender, Department, ISO639_1, Videos, Genre, Status, ISO3166_1 } from '../media_type';
 
 export type Serie = {
 	adult: boolean;
