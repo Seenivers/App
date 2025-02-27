@@ -64,19 +64,19 @@ export type Cast = {
 	job?: string;
 };
 
-export type Job = {
+type Job = {
 	credit_id: string;
 	job: string;
 	episode_count: number;
 };
 
-export type Role = {
+type Role = {
 	credit_id: string;
 	character: string;
 	episode_count: number;
 };
 
-export type CreatedBy = {
+type CreatedBy = {
 	id: number;
 	credit_id: string;
 	name: string;
@@ -97,11 +97,11 @@ export type ExternalIDS = {
 	twitter_id: null | string;
 };
 
-export type Keywords = {
+type Keywords = {
 	results: Genre[];
 };
 
-export type LastEpisodeToAir = {
+type LastEpisodeToAir = {
 	id: number;
 	name: string;
 	overview: string;
@@ -117,21 +117,21 @@ export type LastEpisodeToAir = {
 	still_path: string;
 };
 
-export type Network = {
+type Network = {
 	id: number;
 	logo_path: null | string;
 	name: string;
 	origin_country: OriginCountry;
 };
 
-export type OriginCountry = '' | 'US' | 'GB' | 'ZA';
+type OriginCountry = '' | 'US' | 'GB' | 'ZA';
 
 export type ProductionCountry = {
 	iso_3166_1: ISO3166_1;
 	name: string;
 };
 
-export type Season = {
+type Season = {
 	air_date: string | null;
 	episode_count: number;
 	id: number;
