@@ -51,14 +51,14 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2(typescript@5.7.3)
       vidstack:
-        specifier: ^1.12.12
-        version: 1.12.12
+        specifier: ^1.12.13
+        version: 1.12.13
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.6
         version: 1.2.6(eslint@9.20.1(jiti@1.21.7))
       '@eslint/js':
-        specifier: ^9.18.0
+        specifier: ^9.20.0
         version: 9.20.0
       '@semantic-release/changelog':
         specifier: ^6.0.3
@@ -70,7 +70,7 @@ importers:
         specifier: ^3.0.8
         version: 3.0.8(@sveltejs/kit@2.17.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.9)(vite@6.1.0(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.6.1)))(svelte@5.19.9)(vite@6.1.0(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.6.1)))
       '@sveltejs/kit':
-        specifier: ^2.17.1
+        specifier: ^2.17.2
         version: 2.17.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.9)(vite@6.1.0(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.6.1)))(svelte@5.19.9)(vite@6.1.0(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.6.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
@@ -85,7 +85,7 @@ importers:
         specifier: ^6.11.3
         version: 6.11.3
       '@types/node':
-        specifier: ^22.13.1
+        specifier: ^22.13.4
         version: 22.13.4
       autoprefixer:
         specifier: ^10.4.20
@@ -124,7 +124,7 @@ importers:
         specifier: ^0.6.11
         version: 0.6.11(prettier-plugin-svelte@3.3.3(prettier@3.4.2)(svelte@5.19.9))(prettier@3.4.2)
       semantic-release:
-        specifier: ^24.2.2
+        specifier: ^24.2.3
         version: 24.2.3(typescript@5.7.3)
       svelte:
         specifier: ^5.19.9
@@ -3202,8 +3202,8 @@ packages:
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
-  vidstack@1.12.12:
-    resolution: {integrity: sha512-7413cfsyk6F0TtjiAA1QK1uyxgiTb6i0YFJSsQlXSJQaQQ/ZeQ/Fa4KDfC6EFCLPHoHPyW0Ejs5a6HFF64JXLQ==}
+  vidstack@1.12.13:
+    resolution: {integrity: sha512-vuNeyRmWoH/7EoFVDYjp9nkgcqtCMmal518LDeb78dYKgWb+p6+vtY0AzDhrkBv5q1UiCn+xwmjMmwvSlPLuhQ==}
     engines: {node: '>=18'}
 
   vite@6.1.0:
@@ -6114,7 +6114,7 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vidstack@1.12.12:
+  vidstack@1.12.13:
     dependencies:
       '@floating-ui/dom': 1.6.12
       lit-html: 2.8.0
