@@ -1,5 +1,5 @@
 import type { Videos } from '../media_type';
-import type { Cast, Credits, ExternalIDS } from './tv';
+import type { Cast, Credits, ExternalIDS } from './serie';
 
 export type Season = {
 	_id: string;
