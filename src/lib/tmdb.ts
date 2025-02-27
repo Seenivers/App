@@ -6,6 +6,7 @@ import type { CollectionDetails } from '$lib/types/collection';
 import type { Search, Movie as SearchMovie, TV as SearchTV } from '$lib/types/searchMovie';
 import type { Actor } from '$lib/types/actor';
 import type { Serie } from './types/tv';
+import type { Season } from './types/season';
 
 async function fetchData<T>(endpoint: string, id: number, language: string) {
 	// Erstelle die URL mit den Query-Parametern id und language
@@ -180,4 +181,19 @@ export async function getSerie(
 	const result = await fetch(url.toString());
 
 	return (await result.json()) as Search<Serie>;
+}
+
+export async function getSerieSeason(
+	tvShowID: number,
+	seasonNumber: number,
+	language: string = settings.language || window.navigator.language
+): Promise<Search<Season>> {
+	const url = new URL(seeniversURL + '/api/tv/season');
+	url.searchParams.append('tvShowID', tvShowID.toString());
+	url.searchParams.append('seasonNumber', seasonNumber.toString());
+	url.searchParams.append('language', language);
+
+	const result = await fetch(url.toString());
+
+	return (await result.json()) as Search<Season>;
 }
