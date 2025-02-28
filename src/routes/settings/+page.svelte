@@ -10,7 +10,7 @@
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
 	import { themes } from '$lib';
-	import { setTheme } from '$lib/themeUtils';
+	import { setTheme } from '$lib/utils/themeUtils';
 
 	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
 	let isDirty = false; // Überwachungsvariable für Änderungen

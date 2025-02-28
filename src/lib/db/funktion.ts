@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '$lib/db/database';
 import { migrate } from '$lib/db/migrate';
 import { updateActors, updateCollections, updateMovies, updateOldDB } from './update';
-import { setTheme } from '$lib/themeUtils';
+import { setTheme } from '$lib/utils/themeUtils';
 
 async function createDefaultSettings() {
 	const language = navigator.language.substring(0, 2);

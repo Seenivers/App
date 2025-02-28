@@ -6,7 +6,7 @@
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { getFilter, type SearchCriteria, setFilter } from '$lib/sessionStorage';
+	import { getFilter, type SearchCriteria, setFilter } from '$lib/utils/sessionStorage';
 	import { _ } from 'svelte-i18n';
 	import { discord } from '$lib/discord';
 
