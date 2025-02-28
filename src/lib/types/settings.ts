@@ -13,6 +13,7 @@ export interface Settings {
 	castImages: number;
 	discordAktiv: boolean;
 	theme: (typeof themes)[number];
+	backupInterval: 'manual' | 'onStartup' | 'daily' | 'weekly' | 'monthly';
 }
 
 export type AlertPositionHorizontally =

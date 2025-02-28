@@ -45,5 +45,9 @@ export const settings = sqliteTable('settings', {
 		.default({ horizontal: 'end', vertical: 'bottom' }),
 	player: text('player').notNull().$type<Settings['player']>().default('Plyr'),
 	castImages: int('castImages').notNull().default(5), // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
-	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true)
+	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true),
+	backupInterval: text('backupInterval')
+		.notNull()
+		.$type<Settings['backupInterval']>()
+		.default('manual')
 });
