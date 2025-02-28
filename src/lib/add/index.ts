@@ -84,7 +84,9 @@ export function addNewFilesToStatus(newFiles: string[]) {
 		// Bereinigung des Dateinamens
 		const fileName = name
 			.split(/[.\s]+/)
-			.filter((word) => !settings.keywords.some((k) => k.toLowerCase() === word.toLowerCase()))
+			.filter(
+				(word) => !(settings.keywords ?? []).some((k) => k.toLowerCase() === word.toLowerCase())
+			)
 			.join(' ');
 
 		const yearMatch = /(\d{4})/.exec(fileName);
