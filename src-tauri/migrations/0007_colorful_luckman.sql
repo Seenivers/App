@@ -88,7 +88,7 @@ CREATE TABLE `__new_settings` (
 	`backupInterval` text DEFAULT 'manual' NOT NULL
 );
 --> statement-breakpoint
-INSERT INTO `__new_settings`("id", "language", "keywords", "ignoredKeywords", "theme", "adult", "toastPosition", "player", "castImages", "discordAktiv", "backupInterval") SELECT "id", "language", "keywords", "ignoredKeywords", "theme", "adult", "toastPosition", "player", "castImages", "discordAktiv", "backupInterval" FROM `settings`;--> statement-breakpoint
+INSERT INTO `__new_settings`("id", "language", "keywords", "ignoredKeywords", "theme", "adult", "toastPosition", "player", "castImages", "discordAktiv", "backupInterval") SELECT "id", "language", "keywords", CASE WHEN "ignoredKeywords" IS NULL OR TRIM("ignoredKeywords") = '' OR NOT json_valid ("ignoredKeywords") THEN '["Trailer", "Preview", "Sample"]' ELSE "ignoredKeywords" END, "theme", "adult", "toastPosition", "player", "castImages", "discordAktiv", "backupInterval" FROM `settings`;--> statement-breakpoint
 DROP TABLE `settings`;--> statement-breakpoint
 ALTER TABLE `__new_settings` RENAME TO `settings`;--> statement-breakpoint
 CREATE UNIQUE INDEX `settings_id_unique` ON `settings` (`id`);
