@@ -174,7 +174,6 @@
 
 			<!-- Discord RPC -->
 			<!-- if abfrage weil es db seitig noch nicht gibt -->
-			{#if settings.discordAktiv}
 				<div class="form-control justify-center">
 					<label class="label cursor-pointer">
 						<span class="label-text font-semibold">Discord RPC aktivieren</span>
@@ -186,10 +185,8 @@
 						/>
 					</label>
 				</div>
-			{/if}
 
 			<!-- Themen -->
-			{#if themes.map((theme) => theme).includes(settings.theme)}
 				<label class="form-control w-full">
 					<div class="label">
 						<span class="label-text">Themen</span>
@@ -207,7 +204,6 @@
 						{/each}
 					</select>
 				</label>
-			{/if}
 
 			<!-- Schlüsselwörter -->
 			<label class="form-control w-full lg:col-span-2">
@@ -223,7 +219,6 @@
 			</label>
 
 			<!-- Ignorierte Schlüsselwörter -->
-			{#if settings.ignoredKeywords.length > 15}
 				<label class="form-control w-full lg:col-span-2">
 					<div class="label">
 						<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
@@ -235,7 +230,6 @@
 						onchange={handleInput}
 					></textarea>
 				</label>
-			{/if}
 		</div>
 	</div>
 </main>
