@@ -30,8 +30,7 @@ export const settings = sqliteTable('settings', {
 			'bluray',
 			'x264',
 			'x265',
-			'hevc',
-			'Trailer'
+			'hevc'
 		]),
 	ignoredKeywords: text('ignoredKeywords', { mode: 'json' })
 		.notNull()
