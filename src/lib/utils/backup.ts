@@ -17,7 +17,7 @@ export const backup = {
 			}
 
 			const timestamp = new Date().toISOString().replace(/:/g, '-');
-			const isDev = import.meta.env.DEV ? 'DEV-' : 'DB';
+			const isDev = import.meta.env.DEV ? 'DEV' : 'DB';
 			const dbPath = await join(appDir, `${isDev}sqlite.db`);
 			const backupPath = await join(backupDir, `${isDev}_${timestamp}.db`);
 
