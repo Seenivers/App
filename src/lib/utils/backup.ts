@@ -8,52 +8,57 @@ import { eq } from 'drizzle-orm/sql';
 export const backup = {
 	create: async () => {
 		try {
-			const folderExists = await exists('backups', { baseDir: BaseDirectory.AppData });
-			if (!folderExists) {
-				await mkdir('backups', {
-					baseDir: BaseDirectory.AppData,
-					recursive: true
-				});
+			const appDir = await appDataDir();
+			const backupDir = await join(appDir, 'backups');
+
+			// Backup-Ordner erstellen, falls nicht vorhanden
+			if (!(await exists(backupDir, { baseDir: BaseDirectory.AppData }))) {
+				await mkdir(backupDir, { baseDir: BaseDirectory.AppData, recursive: true });
 			}
+
+			const timestamp = new Date().toISOString().replace(/:/g, '-');
+			const isDev = import.meta.env.DEV ? 'DEV-' : 'DB';
+			const dbPath = await join(appDir, `${isDev}sqlite.db`);
+			const backupPath = await join(backupDir, `${isDev}_${timestamp}.db`);
+
+			// Backup-Datei kopieren
+			await copyFile(dbPath, backupPath);
+
+			// Backup in der DB speichern
+			await db.insert(schema.backups).values({ path: backupPath });
+
+			return true;
 		} catch (err) {
-			error(`Error checking or creating directory: ${err}`);
-			return;
+			error(`Create Backup: ${err}`);
+			return false;
 		}
-
-		const dbPath = await join(await appDataDir(), `${import.meta.env.DEV ? 'DEV-' : ''}sqlite.db`);
-		const backupPath = await join(
-			await appDataDir(),
-			await join(
-				'backups',
-				`${import.meta.env.DEV ? 'DEV-' : 'DB'}_${new Date().toISOString().replace(/:/g, '-')}.db`
-			)
-		);
-
-		await copyFile(dbPath, backupPath);
-
-		await db
-			.insert(schema.backups)
-			.values({ path: backupPath })
-			.catch((err) => {
-				error(`Create Backup: ` + err);
-			});
 	},
+
 	get: async () => {
-		return (await db.select().from(schema.backups).limit(1))[0];
+		try {
+			return (await db.select().from(schema.backups).limit(1))[0] ?? null;
+		} catch (err) {
+			error(`Get Backup: ${err}`);
+			return null;
+		}
 	},
+
 	getAll: async () => {
-		return await db.select().from(schema.backups).orderBy(schema.backups.createdAt);
+		try {
+			return await db.select().from(schema.backups).orderBy(schema.backups.createdAt);
+		} catch (err) {
+			error(`Get All Backups: ${err}`);
+			return [];
+		}
 	},
+
 	delete: async (id: number) => {
-		return await db
-			.delete(schema.backups)
-			.where(eq(schema.backups.id, id))
-			.catch((err) => {
-				error(`Delete Backup: ` + err);
-				return false;
-			})
-			.finally(() => {
-				return true;
-			});
+		try {
+			await db.delete(schema.backups).where(eq(schema.backups.id, id));
+			return true;
+		} catch (err) {
+			error(`Delete Backup: ${err}`);
+			return false;
+		}
 	}
 };
