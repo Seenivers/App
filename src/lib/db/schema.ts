@@ -5,6 +5,7 @@ import { collections } from './schema/collections';
 import { serie } from './schema/serie';
 import { episode } from './schema/episode';
 import { season } from './schema/season';
+import { backups } from './schema/backup';
 
 export const schema = {
 	settings,
@@ -13,7 +14,8 @@ export const schema = {
 	collections,
 	serie,
 	season,
-	episode
+	episode,
+	backups
 };
 
-export { settings, movies, actors, collections, serie, season, episode };
+export { settings, movies, actors, collections, serie, season, episode, backups };
