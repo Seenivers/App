@@ -5,7 +5,6 @@ export const settings = sqliteTable('settings', {
 	id: int('id').primaryKey().default(1).unique().notNull(),
 	language: text('language').notNull().default('en'),
 	keywords: text('keywords', { mode: 'json' })
-		.notNull()
 		.$type<string[]>()
 		.default([
 			'mp4',
@@ -33,7 +32,6 @@ export const settings = sqliteTable('settings', {
 			'hevc'
 		]),
 	ignoredKeywords: text('ignoredKeywords', { mode: 'json' })
-		.notNull()
 		.$type<string[]>()
 		.default(['Trailer', 'Preview', 'Sample']),
 	theme: text('theme').notNull().$type<Settings['theme']>().default('default'),
