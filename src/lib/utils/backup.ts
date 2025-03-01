@@ -17,9 +17,9 @@ export const backup = {
 			}
 
 			const timestamp = new Date().toISOString().replace(/:/g, '-');
-			const isDev = import.meta.env.DEV ? 'DEV' : 'DB';
+			const isDev = import.meta.env.DEV ? 'DEV-' : '';
 			const dbPath = await join(appDir, `${isDev}sqlite.db`);
-			const backupPath = await join(backupDir, `${isDev}_${timestamp}.db`);
+			const backupPath = await join(backupDir, `${isDev}${timestamp}.db`);
 
 			// Backup-Datei kopieren
 			await copyFile(dbPath, backupPath);
