@@ -164,7 +164,7 @@
 	}}
 >
 	{#snippet right()}
-		<button
+		<!-- <button
 			class="btn grow"
 			onclick={async () => {
 				await selectTvFolder();
@@ -172,7 +172,7 @@
 			}}
 		>
 			Serien Ordner auswählen
-		</button>
+		</button> -->
 		<button
 			class="btn grow"
 			onclick={async () => {
