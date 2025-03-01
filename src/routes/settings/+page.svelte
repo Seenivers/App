@@ -31,10 +31,10 @@
 	}
 
 	// Schlüsselwörter verarbeiten und Änderung tracken
-	function handleInput(event: Event) {
+	function handleInput(event: Event, type: 'keywords' | 'ignoredKeywords') {
 		const target = event.currentTarget as HTMLTextAreaElement | null;
 		if (target) {
-			settings.keywords = target.value.split(',').map((kw) => kw.trim());
+			settings[type] = target.value.split(',').map((kw) => kw.trim());
 			isDirty = true; // Eine Änderung wurde vorgenommen
 		}
 	}
@@ -214,7 +214,7 @@
 					class="textarea textarea-bordered h-32 w-full"
 					placeholder="Schlüsselwörter (kommagetrennt)"
 					bind:value={settings.keywords}
-					onchange={handleInput}
+					onchange={(event) => handleInput(event, 'keywords')}
 				></textarea>
 			</label>
 
@@ -227,7 +227,7 @@
 						class="textarea textarea-bordered h-32 w-full"
 						placeholder="Schlüsselwörter (kommagetrennt)"
 						bind:value={settings.ignoredKeywords}
-						onchange={handleInput}
+					onchange={(event) => handleInput(event, 'ignoredKeywords')}
 					></textarea>
 				</label>
 		</div>
