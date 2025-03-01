@@ -174,36 +174,36 @@
 
 			<!-- Discord RPC -->
 			<!-- if abfrage weil es db seitig noch nicht gibt -->
-				<div class="form-control justify-center">
-					<label class="label cursor-pointer">
-						<span class="label-text font-semibold">Discord RPC aktivieren</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-primary"
-							bind:checked={settings.discordAktiv}
-							onchange={markDirty}
-						/>
-					</label>
-				</div>
+			<div class="form-control justify-center">
+				<label class="label cursor-pointer">
+					<span class="label-text font-semibold">Discord RPC aktivieren</span>
+					<input
+						type="checkbox"
+						class="toggle toggle-primary"
+						bind:checked={settings.discordAktiv}
+						onchange={markDirty}
+					/>
+				</label>
+			</div>
 
 			<!-- Themen -->
-				<label class="form-control w-full">
-					<div class="label">
-						<span class="label-text">Themen</span>
-					</div>
-					<select
-						class="select select-bordered"
-						onchange={() => {
-							setTheme(settings.theme);
-							markDirty();
-						}}
-						bind:value={settings.theme}
-					>
-						{#each themes as theme}
-							<option value={theme.toLowerCase()}>{theme}</option>
-						{/each}
-					</select>
-				</label>
+			<label class="form-control w-full">
+				<div class="label">
+					<span class="label-text">Themen</span>
+				</div>
+				<select
+					class="select select-bordered"
+					onchange={() => {
+						setTheme(settings.theme);
+						markDirty();
+					}}
+					bind:value={settings.theme}
+				>
+					{#each themes as theme}
+						<option value={theme.toLowerCase()}>{theme}</option>
+					{/each}
+				</select>
+			</label>
 
 			<!-- Schlüsselwörter -->
 			<label class="form-control w-full lg:col-span-2">
@@ -219,17 +219,17 @@
 			</label>
 
 			<!-- Ignorierte Schlüsselwörter -->
-				<label class="form-control w-full lg:col-span-2">
-					<div class="label">
-						<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
-					</div>
-					<textarea
-						class="textarea textarea-bordered h-32 w-full"
-						placeholder="Schlüsselwörter (kommagetrennt)"
-						bind:value={settings.ignoredKeywords}
+			<label class="form-control w-full lg:col-span-2">
+				<div class="label">
+					<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
+				</div>
+				<textarea
+					class="textarea textarea-bordered h-32 w-full"
+					placeholder="Schlüsselwörter (kommagetrennt)"
+					bind:value={settings.ignoredKeywords}
 					onchange={(event) => handleInput(event, 'ignoredKeywords')}
-					></textarea>
-				</label>
+				></textarea>
+			</label>
 		</div>
 	</div>
 </main>
