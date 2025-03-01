@@ -1,3 +1,10 @@
+## [0.24.1](https://github.com/Seenivers/App/compare/v0.24.0...v0.24.1) (2025-03-01)
+
+
+### Bug Fixes
+
+* **backup:** adjust backup file naming for development environment ([0fa171c](https://github.com/Seenivers/App/commit/0fa171cd921c2aab9a5bc337477552882fdaf49b))
+
 # [0.24.0](https://github.com/Seenivers/App/compare/v0.23.0...v0.24.0) (2025-03-01)
 
 ### Bug Fixes
