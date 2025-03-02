@@ -60,5 +60,34 @@ export const backup = {
 			error(`Delete Backup: ${err}`);
 			return false;
 		}
+	},
+
+	restore: async (id: number) => {
+		try {
+			const data = await backup.get(id);
+
+			if (!data) {
+				error(`Restore Backup: No backup found for ID ${id}`);
+				return false;
+			}
+
+			// Backup-Datei überprüfen
+			if (!(await exists(data.path, { baseDir: BaseDirectory.AppData }))) {
+				await backup.delete(id);
+				error(`Restore Backup: File not found`);
+				return false;
+			}
+
+			const appDir = await appDataDir();
+			const dbPath = await join(appDir, `${import.meta.env.DEV ? 'DEV-' : ''}sqlite.db`);
+
+			// Backup-Datei kopieren
+			await copyFile(data.path, dbPath);
+
+			return true;
+		} catch (err) {
+			error(`Restore Backup: ${err}`);
+			return false;
+		}
 	}
 };
