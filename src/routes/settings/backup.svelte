@@ -39,7 +39,10 @@
 
 <div class="flex items-center justify-between">
 	<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Backup</h1>
-	<button class="btn" onclick={createBackup}>Erstelle Backup</button>
+	<div>
+		<button class="btn" onclick={backupfn.validateBackups}>Vallidiere Backups</button>
+		<button class="btn" onclick={createBackup}>Erstelle Backup</button>
+	</div>
 </div>
 
 <div class="overflow-x-auto">
