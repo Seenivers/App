@@ -11,6 +11,7 @@
 	import { discord } from '$lib/discord';
 	import { themes } from '$lib';
 	import { setTheme } from '$lib/utils/themeUtils';
+	import Backup from './backup.svelte';
 
 	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
 	let isDirty = false; // Überwachungsvariable für Änderungen
@@ -66,7 +67,16 @@
 </Navbar>
 
 <main class="xl:2/3 container z-0 mx-auto w-full flex-grow flex-col px-4 py-6 lg:w-4/5">
-	<div class="card bg-base-100 p-6 shadow-lg md:p-8">
+	<div role="tablist" class="tabs tabs-lifted">
+		<input
+			type="radio"
+			name="my_tabs"
+			role="tab"
+			class="tab"
+			aria-label="Einstellungen"
+			checked={true}
+		/>
+		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
 		<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 			<!-- Spracheinstellung -->
@@ -230,6 +240,12 @@
 					onchange={(event) => handleInput(event, 'ignoredKeywords')}
 				></textarea>
 			</label>
+		</div>
+	</div>
+
+		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Backup" />
+		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+			<Backup />
 		</div>
 	</div>
 </main>
