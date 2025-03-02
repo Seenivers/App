@@ -1,7 +1,7 @@
 import { db } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
 import { appDataDir, join } from '@tauri-apps/api/path';
-import { BaseDirectory, copyFile, exists, mkdir } from '@tauri-apps/plugin-fs';
+import { BaseDirectory, copyFile, exists, mkdir, remove } from '@tauri-apps/plugin-fs';
 import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm/sql';
 
@@ -57,6 +57,15 @@ export const backup = {
 
 	delete: async (id: number) => {
 		try {
+			const data = await backup.get(id);
+
+			if (!data) {
+				error(`Delete Backup: No backup found for ID ${id}`);
+				return false;
+			}
+
+			await remove(data.path, { baseDir: BaseDirectory.AppData });
+
 			await db.delete(schema.backups).where(eq(schema.backups.id, id));
 			return true;
 		} catch (err) {
