@@ -34,9 +34,12 @@ export const backup = {
 		}
 	},
 
-	get: async () => {
+	get: async (id: number) => {
 		try {
-			return (await db.select().from(schema.backups).limit(1))[0] ?? null;
+			return (
+				(await db.select().from(schema.backups).where(eq(schema.backups.id, id)).limit(1))[0] ??
+				null
+			);
 		} catch (err) {
 			error(`Get Backup: ${err}`);
 			return null;
