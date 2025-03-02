@@ -93,16 +93,17 @@ export const backup = {
 
 			// Falls Datei nicht existiert, lösche den DB-Eintrag
 			if (!(await exists(data.path, { baseDir: BaseDirectory.AppData }))) {
-				await backup.delete(id);
 				error(`Restore Backup: File not found`);
+				await backup.validateBackups();
 				return false;
 			}
 
 			const appDir = await appDataDir();
 			const dbPath = await join(appDir, `${import.meta.env.DEV ? 'DEV-' : ''}sqlite.db`);
 
-			// Backup-Datei kopieren
+			// Backup-Datei verschieben
 			await copyFile(data.path, dbPath);
+			await remove(data.path, { baseDir: BaseDirectory.AppData });
 
 			return true;
 		} catch (err) {
