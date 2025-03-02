@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { schema } from '$lib/db/schema';
 	import { backup as backupfn } from '$lib/utils/backup';
+	import { sep } from '@tauri-apps/api/path';
 	import { onMount } from 'svelte';
 
 	let backups: (typeof schema.backups.$inferSelect)[] = [];
+	let separator: string = sep();
 
 	// Backup-Liste beim Laden abrufen
 	async function loadBackups() {
@@ -29,7 +31,6 @@
 	}
 
 	function extractFileName(path: string) {
-		const separator = path.includes('\\') ? '\\' : '/';
 		return path.split(separator).pop();
 	}
 
