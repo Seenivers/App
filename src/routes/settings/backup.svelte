@@ -39,7 +39,7 @@
 
 <div class="flex items-center justify-between">
 	<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Backup</h1>
-	<button class="btn" on:click={createBackup}>Erstelle Backup</button>
+	<button class="btn" onclick={createBackup}>Erstelle Backup</button>
 </div>
 
 <div class="overflow-x-auto">
@@ -59,10 +59,10 @@
 					<td>{extractFileName(backup.path)}</td>
 					<td>{new Date(backup.createdAt).toLocaleString()}</td>
 					<td>
-						<button class="btn btn-sm" on:click={() => restoreBackup(backup.id)}
+						<button class="btn btn-sm" onclick={() => restoreBackup(backup.id)}
 							>Wiederherstellen</button
 						>
-						<button class="btn btn-sm hover:btn-error" on:click={() => deleteBackup(backup.id)}
+						<button class="btn btn-sm hover:btn-error" onclick={() => deleteBackup(backup.id)}
 							>Löschen</button
 						>
 					</td>
