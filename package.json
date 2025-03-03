@@ -62,7 +62,7 @@
 		"hls.js": "^1.5.20",
 		"plyr": "^3.7.8",
 		"svelte-i18n": "^4.0.1",
-		"tauri-plugin-drpc": "^1.0.2",
+		"tauri-plugin-drpc": "^1.0.3",
 		"vidstack": "^1.12.13"
 	}
 }
