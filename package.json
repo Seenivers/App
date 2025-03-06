@@ -29,7 +29,7 @@
 		"@types/eslint-config-prettier": "^6.11.3",
 		"@types/node": "^22.13.5",
 		"autoprefixer": "^10.4.20",
-		"daisyui": "^4.12.23",
+		"daisyui": "^4.12.24",
 		"drizzle-kit": "^0.30.4",
 		"eslint": "^9.20.1",
 		"eslint-config-prettier": "^10.0.1",
