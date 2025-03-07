@@ -76,175 +76,175 @@
 			aria-label="Einstellungen"
 			checked={true}
 		/>
-		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
-		<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
-		<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-			<!-- Spracheinstellung -->
-			<label class="form-control w-full">
-				<div class="label">
-					<span class="label-text font-semibold">Sprache</span>
-				</div>
-				<select
-					class="select select-bordered w-full"
-					bind:value={settings.language}
-					onchange={markDirty}
-				>
-					{#each languageSuggestions as lang}
-						<option value={lang}>{lang}</option>
-					{/each}
-				</select>
-			</label>
-
-			<!-- Inhalte für Erwachsene -->
-			<div class="form-control justify-center">
-				<label class="label cursor-pointer">
-					<span class="label-text font-semibold">Inhalte für Erwachsene erlauben</span>
-					<input
-						type="checkbox"
-						class="toggle toggle-primary"
-						bind:checked={settings.adult}
+		<div role="tabpanel" class="tab-content rounded-box border-base-300 bg-base-100 p-6">
+			<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
+			<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+				<!-- Spracheinstellung -->
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text font-semibold">Sprache</span>
+					</div>
+					<select
+						class="select select-bordered w-full"
+						bind:value={settings.language}
 						onchange={markDirty}
+					>
+						{#each languageSuggestions as lang}
+							<option value={lang}>{lang}</option>
+						{/each}
+					</select>
+				</label>
+
+				<!-- Inhalte für Erwachsene -->
+				<div class="form-control justify-center">
+					<label class="label cursor-pointer">
+						<span class="label-text font-semibold">Inhalte für Erwachsene erlauben</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={settings.adult}
+							onchange={markDirty}
+						/>
+					</label>
+				</div>
+
+				<!-- Toast Position (Horizontal) -->
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text font-semibold">Alert-Position (Horizontal)</span>
+					</div>
+					<select
+						class="select select-bordered w-full"
+						bind:value={settings.toastPosition.horizontal}
+						onchange={markDirty}
+					>
+						<option value="start">Links</option>
+						<option value="center">Mitte</option>
+						<option value="end">Rechts</option>
+					</select>
+				</label>
+
+				<!-- Toast Position (Vertikal) -->
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text font-semibold">Alert-Position (Vertikal)</span>
+					</div>
+					<select
+						class="select select-bordered w-full"
+						bind:value={settings.toastPosition.vertical}
+						onchange={markDirty}
+					>
+						<option value="top">Oben</option>
+						<option value="middle">Mitte</option>
+						<option value="bottom">Unten</option>
+					</select>
+				</label>
+
+				<!-- Player -->
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text font-semibold">Video Player</span>
+					</div>
+					<select
+						class="select select-bordered w-full"
+						bind:value={settings.player}
+						onchange={markDirty}
+					>
+						<option value="Plyr">Plyr</option>
+						<option value="Vidstack">Vidstack</option>
+					</select>
+				</label>
+
+				<!-- Anzahl der heruntergeladenen Schauspielerbilder -->
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text font-semibold">
+							Anzahl der herunterzuladenden Schauspielerbilder
+						</span>
+					</div>
+					<input
+						type="range"
+						min="-1"
+						max="20"
+						bind:value={settings.castImages}
+						onchange={markDirty}
+						class="range"
+						step="1"
 					/>
+					<div class="flex w-full justify-between px-2 text-xs">
+						<span>
+							{settings.castImages === -1
+								? 'Keine'
+								: settings.castImages === 0
+									? 'Alle'
+									: settings.castImages}
+						</span>
+					</div>
+				</label>
+
+				<!-- Discord RPC -->
+				<!-- if abfrage weil es db seitig noch nicht gibt -->
+				<div class="form-control justify-center">
+					<label class="label cursor-pointer">
+						<span class="label-text font-semibold">Discord RPC aktivieren</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={settings.discordAktiv}
+							onchange={markDirty}
+						/>
+					</label>
+				</div>
+
+				<!-- Themen -->
+				<label class="form-control w-full">
+					<div class="label">
+						<span class="label-text">Themen</span>
+					</div>
+					<select
+						class="select select-bordered"
+						onchange={() => {
+							setTheme(settings.theme);
+							markDirty();
+						}}
+						bind:value={settings.theme}
+					>
+						{#each themes as theme}
+							<option value={theme.toLowerCase()}>{theme}</option>
+						{/each}
+					</select>
+				</label>
+
+				<!-- Schlüsselwörter -->
+				<label class="form-control w-full lg:col-span-2">
+					<div class="label">
+						<span class="label-text font-semibold">Schlüsselwörter</span>
+					</div>
+					<textarea
+						class="textarea textarea-bordered h-32 w-full"
+						placeholder="Schlüsselwörter (kommagetrennt)"
+						bind:value={settings.keywords}
+						onchange={(event) => handleInput(event, 'keywords')}
+					></textarea>
+				</label>
+
+				<!-- Ignorierte Schlüsselwörter -->
+				<label class="form-control w-full lg:col-span-2">
+					<div class="label">
+						<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
+					</div>
+					<textarea
+						class="textarea textarea-bordered h-32 w-full"
+						placeholder="Schlüsselwörter (kommagetrennt)"
+						bind:value={settings.ignoredKeywords}
+						onchange={(event) => handleInput(event, 'ignoredKeywords')}
+					></textarea>
 				</label>
 			</div>
-
-			<!-- Toast Position (Horizontal) -->
-			<label class="form-control w-full">
-				<div class="label">
-					<span class="label-text font-semibold">Alert-Position (Horizontal)</span>
-				</div>
-				<select
-					class="select select-bordered w-full"
-					bind:value={settings.toastPosition.horizontal}
-					onchange={markDirty}
-				>
-					<option value="start">Links</option>
-					<option value="center">Mitte</option>
-					<option value="end">Rechts</option>
-				</select>
-			</label>
-
-			<!-- Toast Position (Vertikal) -->
-			<label class="form-control w-full">
-				<div class="label">
-					<span class="label-text font-semibold">Alert-Position (Vertikal)</span>
-				</div>
-				<select
-					class="select select-bordered w-full"
-					bind:value={settings.toastPosition.vertical}
-					onchange={markDirty}
-				>
-					<option value="top">Oben</option>
-					<option value="middle">Mitte</option>
-					<option value="bottom">Unten</option>
-				</select>
-			</label>
-
-			<!-- Player -->
-			<label class="form-control w-full">
-				<div class="label">
-					<span class="label-text font-semibold">Video Player</span>
-				</div>
-				<select
-					class="select select-bordered w-full"
-					bind:value={settings.player}
-					onchange={markDirty}
-				>
-					<option value="Plyr">Plyr</option>
-					<option value="Vidstack">Vidstack</option>
-				</select>
-			</label>
-
-			<!-- Anzahl der heruntergeladenen Schauspielerbilder -->
-			<label class="form-control w-full">
-				<div class="label">
-					<span class="label-text font-semibold">
-						Anzahl der herunterzuladenden Schauspielerbilder
-					</span>
-				</div>
-				<input
-					type="range"
-					min="-1"
-					max="20"
-					bind:value={settings.castImages}
-					onchange={markDirty}
-					class="range"
-					step="1"
-				/>
-				<div class="flex w-full justify-between px-2 text-xs">
-					<span>
-						{settings.castImages === -1
-							? 'Keine'
-							: settings.castImages === 0
-								? 'Alle'
-								: settings.castImages}
-					</span>
-				</div>
-			</label>
-
-			<!-- Discord RPC -->
-			<!-- if abfrage weil es db seitig noch nicht gibt -->
-			<div class="form-control justify-center">
-				<label class="label cursor-pointer">
-					<span class="label-text font-semibold">Discord RPC aktivieren</span>
-					<input
-						type="checkbox"
-						class="toggle toggle-primary"
-						bind:checked={settings.discordAktiv}
-						onchange={markDirty}
-					/>
-				</label>
-			</div>
-
-			<!-- Themen -->
-			<label class="form-control w-full">
-				<div class="label">
-					<span class="label-text">Themen</span>
-				</div>
-				<select
-					class="select select-bordered"
-					onchange={() => {
-						setTheme(settings.theme);
-						markDirty();
-					}}
-					bind:value={settings.theme}
-				>
-					{#each themes as theme}
-						<option value={theme.toLowerCase()}>{theme}</option>
-					{/each}
-				</select>
-			</label>
-
-			<!-- Schlüsselwörter -->
-			<label class="form-control w-full lg:col-span-2">
-				<div class="label">
-					<span class="label-text font-semibold">Schlüsselwörter</span>
-				</div>
-				<textarea
-					class="textarea textarea-bordered h-32 w-full"
-					placeholder="Schlüsselwörter (kommagetrennt)"
-					bind:value={settings.keywords}
-					onchange={(event) => handleInput(event, 'keywords')}
-				></textarea>
-			</label>
-
-			<!-- Ignorierte Schlüsselwörter -->
-			<label class="form-control w-full lg:col-span-2">
-				<div class="label">
-					<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
-				</div>
-				<textarea
-					class="textarea textarea-bordered h-32 w-full"
-					placeholder="Schlüsselwörter (kommagetrennt)"
-					bind:value={settings.ignoredKeywords}
-					onchange={(event) => handleInput(event, 'ignoredKeywords')}
-				></textarea>
-			</label>
 		</div>
-	</div>
 
 		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Backup" />
-		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+		<div role="tabpanel" class="tab-content rounded-box border-base-300 bg-base-100 p-6">
 			<Backup />
 		</div>
 	</div>
