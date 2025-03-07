@@ -48,8 +48,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(svelte@5.19.9)
       tauri-plugin-drpc:
-        specifier: ^1.0.2
-        version: 1.0.2(typescript@5.7.3)
+        specifier: ^1.0.3
+        version: 1.0.3(typescript@5.7.3)
       vidstack:
         specifier: ^1.12.13
         version: 1.12.13
@@ -3077,8 +3077,8 @@ packages:
     resolution: {integrity: sha512-ujeqbceABgwMZxEJnk2HDY2DlnUZ+9oEcb1KzTVfYHio0UE6dG71n60d8D2I4qNvleWrrXpmjpt7vZeF1LnMZQ==}
     engines: {node: '>=6'}
 
-  tauri-plugin-drpc@1.0.2:
-    resolution: {integrity: sha512-yRhuRH4+eoFc2R7+x5PhgNRXjifI7Gy0Sr3N6sGpffzzAhGovXO5RrFgPkv5v3xbRh59yUxGK/z4h/bZz4WGqg==}
+  tauri-plugin-drpc@1.0.3:
+    resolution: {integrity: sha512-vl5dXhjKbl7+Nf9veW12usdmIUtZXwEf91SzxQPZlbRRJ/sjizbbQlnkUTtx6baJuGzz0KXXgP9xUhF39BdiXQ==}
     peerDependencies:
       typescript: ^5.0.0
 
@@ -6040,7 +6040,7 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
 
-  tauri-plugin-drpc@1.0.2(typescript@5.7.3):
+  tauri-plugin-drpc@1.0.3(typescript@5.7.3):
     dependencies:
       typescript: 5.7.3
 
