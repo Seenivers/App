@@ -5,27 +5,18 @@ const debug = import.meta.env.DEV;
 export function forwardConsole({ level, message }: RecordPayload) {
 	switch (level) {
 		case LogLevel.Trace:
-			if (debug) newToast('info', message);
-			break;
-
 		case LogLevel.Debug:
-			if (debug) newToast('info', message);
-			break;
-
 		case LogLevel.Info:
 			if (debug) newToast('info', message);
 			break;
-
 		case LogLevel.Warn:
 			newToast('warning', message);
 			break;
-
 		case LogLevel.Error:
 			newToast('error', message);
 			break;
-
 		default:
-			throw new Error(`unknown log level ${String(level)}`);
+			throw new Error(`Unknown log level: ${String(level)}`);
 	}
 }
 
@@ -35,34 +26,14 @@ interface RecordPayload {
 }
 
 enum LogLevel {
-	/**
-	 * The "trace" level.
-	 *
-	 * Designates very low priority, often extremely verbose, information.
-	 */
+	/** Very low priority, often extremely verbose information. */
 	Trace = 1,
-	/**
-	 * The "debug" level.
-	 *
-	 * Designates lower priority information.
-	 */
+	/** Lower priority debug information. */
 	Debug = 2,
-	/**
-	 * The "info" level.
-	 *
-	 * Designates useful information.
-	 */
+	/** Useful informational messages. */
 	Info = 3,
-	/**
-	 * The "warn" level.
-	 *
-	 * Designates hazardous situations.
-	 */
+	/** Indicates hazardous situations. */
 	Warn = 4,
-	/**
-	 * The "error" level.
-	 *
-	 * Designates very serious errors.
-	 */
+	/** Indicates serious errors. */
 	Error = 5
 }

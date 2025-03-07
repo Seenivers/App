@@ -17,6 +17,10 @@ export default {
 
 	plugins: [daisyui],
 
+	daisyui: {
+		themes: ['light', 'dark']
+	},
+
 	safelist: [
 		'contents',
 		'toast-start',

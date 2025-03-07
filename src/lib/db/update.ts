@@ -13,12 +13,12 @@ import {
 	settings
 } from './funktion';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
-import type { OldData } from '$lib/types';
+import type { OldData } from '$lib/types/types';
 import {
 	getMovie as getMovieTmdb,
 	getCollection as getCollectionTmdb,
 	getActor as getActorTmdb
-} from '$lib/tmdb';
+} from '$lib/utils/tmdb';
 import { schema } from './schema';
 import { WEEKS } from '$lib';
 

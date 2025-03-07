@@ -1,4 +1,4 @@
-import type { Gender } from './movie';
+import type { Gender } from './media_type';
 
 export interface Actor {
 	adult: boolean;

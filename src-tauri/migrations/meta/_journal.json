@@ -50,6 +50,13 @@
 			"when": 1738450556803,
 			"tag": "0006_huge_namorita",
 			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "6",
+			"when": 1740762518963,
+			"tag": "0007_colorful_luckman",
+			"breakpoints": true
 		}
 	]
 }

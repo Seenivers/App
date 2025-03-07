@@ -3,16 +3,16 @@
 	import Updater from '$lib/updater.svelte';
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
-	import { networkStatus } from '$lib/networkStatus';
+	import { networkStatus } from '$lib/utils/networkStatus';
 	import { db } from '$lib/db/database';
 	import { settings } from '$lib/db/funktion';
 	import { attachConsole, attachLogger, trace } from '@tauri-apps/plugin-log';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
-	import { forwardConsole } from '$lib/log';
+	import { forwardConsole } from '$lib/utils/log';
 	import { online } from 'svelte/reactivity/window';
 	import { startRPC } from '$lib/discord';
-	import { destory } from 'tauri-plugin-drpc';
-	import { handleElements } from '$lib/utils';
+	import { destroy } from 'tauri-plugin-drpc';
+	import { handleElements } from '$lib/utils/utils';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -45,7 +45,7 @@
 	onDestroy(async () => {
 		trace('App closed');
 
-		await destory();
+		await destroy();
 
 		logLogger();
 		logConsole();

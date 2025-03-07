@@ -8,5 +8,7 @@ export const collections = sqliteTable('collection', {
 	poster_path: text('poster_path'),
 	backdrop_path: text('backdrop_path'),
 	parts: text('parts', { mode: 'json' }).notNull().$type<Movie[]>(),
-	updated: int('updated', { mode: 'timestamp' }).notNull().default(new Date(0))
+	updated: int('updated', { mode: 'timestamp' })
+		.notNull()
+		.$defaultFn(() => new Date(0))
 });

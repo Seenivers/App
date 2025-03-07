@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
-	import { getMovie } from '$lib/tmdb';
+	import { getMovie } from '$lib/utils/tmdb';
 	import { db } from '$lib/db/database';
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';

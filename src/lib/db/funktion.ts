@@ -4,6 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '$lib/db/database';
 import { migrate } from '$lib/db/migrate';
 import { updateActors, updateCollections, updateMovies, updateOldDB } from './update';
+import { setTheme } from '$lib/utils/themeUtils';
 
 async function createDefaultSettings() {
 	const language = navigator.language.substring(0, 2);
@@ -27,6 +28,7 @@ async function initializeSettings() {
 export const settings = await initializeSettings();
 
 (async () => {
+	setTheme(settings.theme);
 	if (settings && import.meta.env.PROD) {
 		await updateOldDB();
 		await updateMovies();
