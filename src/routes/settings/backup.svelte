@@ -18,8 +18,8 @@
 		}
 	}
 
-	async function restoreBackup(id: number) {
-		if (await backupfn.restore(id)) {
+	async function validateBackup() {
+		if (await backupfn.validateBackups()) {
 			await loadBackups(); // Optional: Nach Wiederherstellung Liste aktualisieren
 		}
 	}
@@ -40,7 +40,7 @@
 <div class="flex items-center justify-between">
 	<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Backup</h1>
 	<div>
-		<button class="btn" onclick={backupfn.validateBackups}>Vallidiere Backups</button>
+		<button class="btn" onclick={validateBackup}>Vallidiere Backups</button>
 		<button class="btn" onclick={createBackup}>Erstelle Backup</button>
 	</div>
 </div>
@@ -62,12 +62,12 @@
 					<td>{extractFileName(backup.path)}</td>
 					<td>{new Date(backup.createdAt).toLocaleString()}</td>
 					<td>
-						<button class="btn btn-sm" onclick={() => restoreBackup(backup.id)}
-							>Wiederherstellen</button
-						>
-						<button class="btn btn-sm hover:btn-error" onclick={() => deleteBackup(backup.id)}
-							>Löschen</button
-						>
+						<button class="btn btn-sm" onclick={() => backupfn.restore(backup.id)}>
+							Wiederherstellen
+						</button>
+						<button class="btn btn-sm hover:btn-error" onclick={() => deleteBackup(backup.id)}>
+							Löschen
+						</button>
 					</td>
 				</tr>
 			{/each}
