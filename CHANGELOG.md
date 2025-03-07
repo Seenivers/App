@@ -1,3 +1,37 @@
+# [0.25.0](https://github.com/Seenivers/App/compare/v0.24.1...v0.25.0) (2025-03-07)
+
+
+### Bug Fixes
+
+* **backup:** close DB connection and reload app after restore ([6248a90](https://github.com/Seenivers/App/commit/6248a906ead90704bc5cf5474b3a95ade8d05607))
+* **backup:** ensure backup validation returns a boolean value ([a735e8d](https://github.com/Seenivers/App/commit/a735e8d56c38a24ac46f64cecc86c2f28927f09f))
+* **backup:** rename restoreBackup to validateBackup and update button functionality ([c5a4499](https://github.com/Seenivers/App/commit/c5a4499c0cac3fbf344e150c4ec95deddfa4fa31))
+* **backup:** replace 'on:click' with 'onclick' for backup button event handling ([bc1f0be](https://github.com/Seenivers/App/commit/bc1f0be1d057220b06131f37f807c08eb9882e77))
+* **backup:** update get method to retrieve backup by ID ([0c9fb8d](https://github.com/Seenivers/App/commit/0c9fb8d82b64018398877722b16f85aa015ca56a))
+* **backup:** use platform-specific path separator in extractFileName function ([8cca32c](https://github.com/Seenivers/App/commit/8cca32c404466d69be1374c12dce03c4d0c90f81))
+* **backup:** validate backups before restoring and move backup files instead of copying ([884db6e](https://github.com/Seenivers/App/commit/884db6e4521a47b825fc82350760e2dad8a5d4c6))
+* correct typo in destroy function import from tauri-plugin-drpc ([76a4d5e](https://github.com/Seenivers/App/commit/76a4d5eeaef192e191f5ac291b5ecf0309dbf2db))
+* **deps:** update dependency @tauri-apps/plugin-log to ^2.2.3 ([692496e](https://github.com/Seenivers/App/commit/692496eab4f09c1bb19a14f36438ae69e7f52797))
+* **deps:** update dependency @tauri-apps/plugin-opener to ^2.2.6 ([8045363](https://github.com/Seenivers/App/commit/80453635e7fa9504c285c42d7ac1ef742882ba5d))
+* **deps:** update dependency @tauri-apps/plugin-updater to ^2.5.1 ([a8dc53a](https://github.com/Seenivers/App/commit/a8dc53a64d061635daf65c62a7bef1a57ca96e2c))
+* **deps:** update dependency tauri-plugin-drpc to ^1.0.3 ([64e1e32](https://github.com/Seenivers/App/commit/64e1e320d4fd91dda600cbc85e4319e57b0e105d))
+* **deps:** update rust crate serde to 1.0.218 ([edfd407](https://github.com/Seenivers/App/commit/edfd407dee50a7f9822547f265be24b5a07976c7))
+* **deps:** update rust crate tauri-plugin-drpc to 0.1.4 ([d08095c](https://github.com/Seenivers/App/commit/d08095cb8310fb01d5352f10e68ff6000bab04ab))
+* **deps:** update rust crate tauri-plugin-log to 2.2.3 ([898b86f](https://github.com/Seenivers/App/commit/898b86f40f1fe0d05e7ebcc89ebc9820a6d37aad))
+* **deps:** update rust crate tauri-plugin-opener to 2.2.6 ([7f22b57](https://github.com/Seenivers/App/commit/7f22b57cf49675b1af57bad35628e2042e2cb3e3))
+* **deps:** update rust crate tauri-plugin-updater to 2.5.1 ([c478159](https://github.com/Seenivers/App/commit/c47815921971bd7cbe23962871245b817da01b20))
+* **deps:** update tauri monorepo ([3ea4923](https://github.com/Seenivers/App/commit/3ea492353bb0ab4c4d09bb422af08715c1ac7f52))
+
+
+### Features
+
+* **backup:** add backup validation button to the backup settings ([41437f1](https://github.com/Seenivers/App/commit/41437f1b7ecc1e4693e5bcffef0ebab735637d02))
+* **backup:** implement backup management interface with create, restore, and delete functionalities ([6ea9130](https://github.com/Seenivers/App/commit/6ea91306f1d7f53325d7541345861aa863574c0b))
+* **backup:** implement backup validation to clean up missing or unused entries ([8d20553](https://github.com/Seenivers/App/commit/8d205534e65bc523f4b09b4638d0ea7c818f3b1d))
+* **backup:** implement delete functionality for backups ([55e8c04](https://github.com/Seenivers/App/commit/55e8c04991f1962ac3035ff64f6abe83ce974fc1))
+* **backup:** implement restore functionality for backups ([cf8b16e](https://github.com/Seenivers/App/commit/cf8b16e642a62169a85bd8d81762941a47e262d0))
+* **settings:** add backup tab to settings page ([fa5fac5](https://github.com/Seenivers/App/commit/fa5fac57b5fcc4ae81c1a029df4067a421926a0a))
+
 ## [0.24.1](https://github.com/Seenivers/App/compare/v0.24.0...v0.24.1) (2025-03-01)
 
 ### Bug Fixes
