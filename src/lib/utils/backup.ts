@@ -156,8 +156,11 @@ export const backup = {
 					info(`🗑️ Gelöschte unreferenzierte Backup-Datei: ${filePath}`);
 				}
 			}
+
+			return true;
 		} catch (err) {
 			error(`Validate Backups: ${err}`);
+			return false;
 		}
 	}
 };
