@@ -7,7 +7,7 @@ import {
 	settings
 } from '$lib/db/funktion';
 import { extensions } from '$lib';
-import * as tmdb from '$lib/tmdb';
+import * as tmdb from '$lib/utils/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
 import type { SearchList, SearchStatus } from '$lib/types/add';
@@ -84,7 +84,9 @@ export function addNewFilesToStatus(newFiles: string[]) {
 		// Bereinigung des Dateinamens
 		const fileName = name
 			.split(/[.\s]+/)
-			.filter((word) => !settings.keywords.some((k) => k.toLowerCase() === word.toLowerCase()))
+			.filter(
+				(word) => !(settings.keywords ?? []).some((k) => k.toLowerCase() === word.toLowerCase())
+			)
 			.join(' ');
 
 		const yearMatch = /(\d{4})/.exec(fileName);
@@ -115,7 +117,7 @@ export function addNewFilesToStatus(newFiles: string[]) {
 //#endregion
 
 //#region SEARCH
-export async function searchMovieStatus(i: number) {
+export async function searchMediaStatus(i: number) {
 	// Prüfe die Internetverbindung
 	if (!online.current) {
 		updateSearchStatus(i, 'notFound');
@@ -128,22 +130,26 @@ export async function searchMovieStatus(i: number) {
 	const page = searchList[i].search?.page || 1;
 
 	try {
-		const search = await tmdb.searchMovies(fileName, primaryReleaseYear, page);
+		// Bestimme die richtige TMDB-Suchfunktion basierend auf `mediaType`
+		const search =
+			searchList[i].mediaType === 'movie'
+				? await tmdb.searchMovies(fileName, primaryReleaseYear, page)
+				: await tmdb.searchTv(fileName, primaryReleaseYear, page);
 
 		let status: SearchStatus;
 		let results = [...(searchList[i].search?.results || []), ...search.results];
 
 		if (search.results.length === 1) {
-			// Nur einen Film gefunden
+			// Genau ein Ergebnis gefunden
 			status = 'waitForDownloading';
 			searchList[i].options.id = search.results[0].id;
 		} else if (search.results.length > 1) {
-			// Mehrere Filme gefunden
+			// Mehrere Ergebnisse gefunden
 			status = 'foundMultiple';
 		} else {
-			// Keine Filme gefunden
+			// Keine Ergebnisse gefunden
 			status = 'notFound';
-			results = []; // Ergebnisse leeren
+			results = [];
 		}
 
 		// Gemeinsame Eigenschaften setzen
@@ -169,7 +175,7 @@ export async function searchMovieStatus(i: number) {
 			...searchList[i],
 			search: {
 				...searchList[i].search,
-				results: [] // Leeres Array, da keine Filme gefunden wurden
+				results: [] // Leeres Array, da keine Ergebnisse gefunden wurden
 			},
 			status: 'notFound'
 		};

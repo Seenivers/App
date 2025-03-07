@@ -5,7 +5,6 @@ export const settings = sqliteTable('settings', {
 	id: int('id').primaryKey().default(1).unique().notNull(),
 	language: text('language').notNull().default('en'),
 	keywords: text('keywords', { mode: 'json' })
-		.notNull()
 		.$type<string[]>()
 		.default([
 			'mp4',
@@ -30,14 +29,22 @@ export const settings = sqliteTable('settings', {
 			'bluray',
 			'x264',
 			'x265',
-			'hevc',
-			'Trailer'
+			'hevc'
 		]),
+	ignoredKeywords: text('ignoredKeywords', { mode: 'json' })
+		.$type<string[]>()
+		.default(['Trailer', 'Preview', 'Sample']),
+	theme: text('theme').notNull().$type<Settings['theme']>().default('default'),
 	adult: int('adult', { mode: 'boolean' }).notNull().default(false),
 	toastPosition: text('toastPosition', { mode: 'json' })
 		.notNull()
 		.$type<Settings['toastPosition']>()
 		.default({ horizontal: 'end', vertical: 'bottom' }),
 	player: text('player').notNull().$type<Settings['player']>().default('Plyr'),
-	castImages: int('castImages').notNull().default(5) // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
+	castImages: int('castImages').notNull().default(5), // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
+	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true),
+	backupInterval: text('backupInterval')
+		.notNull()
+		.$type<Settings['backupInterval']>()
+		.default('manual')
 });

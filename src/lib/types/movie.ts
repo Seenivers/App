@@ -1,3 +1,5 @@
+import type { Gender, Department, ISO3166_1, ISO639_1, Videos, Genre, Status } from './media_type';
+
 export interface Movie {
 	adult: boolean;
 	backdrop_path: string;
@@ -63,47 +65,12 @@ export interface Cast {
 	job?: string;
 }
 
-/**
- * Gender enumeration representing the following values:
- *
- * - `0`: Unknown - Geschlecht ist nicht angegeben oder unbekannt
- * - `1`: Female - Weiblich
- * - `2`: Male - Männlich
- * - `3`: Non-binary - Nicht-binär
- */
-export declare enum Gender {
-	Unknown = 0,
-	Female = 1,
-	Male = 2,
-	NonBinary = 3
-}
-
-export type Department =
-	| 'Acting'
-	| 'Art'
-	| 'Camera'
-	| 'Costume & Make-Up'
-	| 'Creator'
-	| 'Crew'
-	| 'Directing'
-	| 'Editing'
-	| 'Lighting'
-	| 'Production'
-	| 'Sound'
-	| 'Visual Effects'
-	| 'Writing';
-
 export interface ExternalIDS {
 	imdb_id: null | string;
 	wikidata_id: null | string;
 	facebook_id: null | string;
 	instagram_id: null | string;
 	twitter_id: null | string;
-}
-
-export interface Genre {
-	id: number;
-	name: string;
 }
 
 export interface Images {
@@ -121,8 +88,6 @@ export interface Backdrop {
 	vote_count: number;
 	width: number;
 }
-
-export type ISO639_1 = 'de' | '' | 'en' | 'es' | 'fr' | 'it' | 'nl' | 'pt' | 'uk' | 'ur';
 
 export interface Keywords {
 	keywords: Genre[];
@@ -187,28 +152,3 @@ export interface SpokenLanguage {
 	iso_639_1: ISO639_1;
 	name: string;
 }
-
-export type Status = 'Released';
-
-export interface Videos {
-	results: VideosResult[];
-}
-
-export interface VideosResult {
-	iso_639_1: ISO639_1;
-	iso_3166_1: ISO3166_1;
-	name: string;
-	key: string;
-	site: Site;
-	size: number;
-	type: Type;
-	official: boolean;
-	published_at: string;
-	id: string;
-}
-
-export type ISO3166_1 = 'DE' | 'ES' | 'FR' | 'US';
-
-export type Site = 'YouTube';
-
-export type Type = 'Featurette' | 'Teaser' | 'Trailer';

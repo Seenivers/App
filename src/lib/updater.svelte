@@ -7,6 +7,7 @@
 	import '$lib/css/md.css';
 	import { openUrl } from '@tauri-apps/plugin-opener';
 	import { online } from 'svelte/reactivity/window';
+	import { backup } from './utils/backup';
 
 	let update: Update | null = $state(null);
 	let downloadProgress = $state(0);
@@ -51,6 +52,9 @@
 			error('You are not connected to the internet.');
 			return;
 		}
+
+		await backup.create();
+
 		if (update && !downloadStarted) {
 			downloadStarted = true;
 			downloadFinished = false;

@@ -1,4 +1,5 @@
 import { DiscordClientID } from '$lib';
+import { settings } from '$lib/db/funktion';
 import { debug } from '@tauri-apps/plugin-log';
 import { online } from 'svelte/reactivity/window';
 import { setActivity, start } from 'tauri-plugin-drpc';
@@ -36,7 +37,7 @@ const dev: DiscordActivityOptions = {
  * @param activityData - Daten für die Discord-Aktivität.
  */
 export async function discord(activityData: DiscordActivityOptions = {}): Promise<void> {
-	if (!online.current) return;
+	if (!online.current || !settings.discordAktiv) return;
 
 	const {
 		details = 'Schaut gerade einen Film 🍿',
@@ -88,7 +89,7 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
  * Startet das Discord Rich Presence.
  */
 export async function startRPC() {
-	if (!online.current) return;
+	if (!online.current || !settings.discordAktiv) return;
 
 	// Standardaktivität setzen
 	await discord();

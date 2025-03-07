@@ -9,6 +9,9 @@
 	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
+	import { themes } from '$lib';
+	import { setTheme } from '$lib/utils/themeUtils';
+	import Backup from './backup.svelte';
 
 	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
 	let isDirty = false; // Überwachungsvariable für Änderungen
@@ -21,23 +24,18 @@
 	// Standard-Sprache auswählen
 	settings.language = settings.language || languageSuggestions[0] || 'en'; // Fallback auf Englisch
 
-	// Einstellungen in der Datenbank aktualisieren
-	async function updateSettings(newSettings: typeof schema.settings.$inferSelect) {
-		await db.update(schema.settings).set(newSettings).where(eq(schema.settings.id, 1));
-	}
-
 	// Funktion zum Speichern der geänderten Einstellungen
 	async function saveSettings() {
-		await updateSettings(settings);
+		await db.update(schema.settings).set(settings).where(eq(schema.settings.id, 1));
 		newToast('info', 'Einstellungen gespeichert!');
 		isDirty = false; // Änderungen wurden gespeichert
 	}
 
 	// Schlüsselwörter verarbeiten und Änderung tracken
-	function handleInput(event: Event) {
+	function handleInput(event: Event, type: 'keywords' | 'ignoredKeywords') {
 		const target = event.currentTarget as HTMLTextAreaElement | null;
 		if (target) {
-			settings.keywords = target.value.split(',').map((kw) => kw.trim());
+			settings[type] = target.value.split(',').map((kw) => kw.trim());
 			isDirty = true; // Eine Änderung wurde vorgenommen
 		}
 	}
@@ -69,7 +67,16 @@
 </Navbar>
 
 <main class="xl:2/3 container z-0 mx-auto w-full flex-grow flex-col px-4 py-6 lg:w-4/5">
-	<div class="card bg-base-100 p-6 shadow-lg md:p-8">
+	<div role="tablist" class="tabs tabs-lifted">
+		<input
+			type="radio"
+			name="my_tabs"
+			role="tab"
+			class="tab"
+			aria-label="Einstellungen"
+			checked={true}
+		/>
+		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
 		<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 			<!-- Spracheinstellung -->
@@ -175,6 +182,39 @@
 				</div>
 			</label>
 
+			<!-- Discord RPC -->
+			<!-- if abfrage weil es db seitig noch nicht gibt -->
+			<div class="form-control justify-center">
+				<label class="label cursor-pointer">
+					<span class="label-text font-semibold">Discord RPC aktivieren</span>
+					<input
+						type="checkbox"
+						class="toggle toggle-primary"
+						bind:checked={settings.discordAktiv}
+						onchange={markDirty}
+					/>
+				</label>
+			</div>
+
+			<!-- Themen -->
+			<label class="form-control w-full">
+				<div class="label">
+					<span class="label-text">Themen</span>
+				</div>
+				<select
+					class="select select-bordered"
+					onchange={() => {
+						setTheme(settings.theme);
+						markDirty();
+					}}
+					bind:value={settings.theme}
+				>
+					{#each themes as theme}
+						<option value={theme.toLowerCase()}>{theme}</option>
+					{/each}
+				</select>
+			</label>
+
 			<!-- Schlüsselwörter -->
 			<label class="form-control w-full lg:col-span-2">
 				<div class="label">
@@ -184,9 +224,28 @@
 					class="textarea textarea-bordered h-32 w-full"
 					placeholder="Schlüsselwörter (kommagetrennt)"
 					bind:value={settings.keywords}
-					onchange={handleInput}
+					onchange={(event) => handleInput(event, 'keywords')}
 				></textarea>
 			</label>
+
+			<!-- Ignorierte Schlüsselwörter -->
+			<label class="form-control w-full lg:col-span-2">
+				<div class="label">
+					<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
+				</div>
+				<textarea
+					class="textarea textarea-bordered h-32 w-full"
+					placeholder="Schlüsselwörter (kommagetrennt)"
+					bind:value={settings.ignoredKeywords}
+					onchange={(event) => handleInput(event, 'ignoredKeywords')}
+				></textarea>
+			</label>
+		</div>
+	</div>
+
+		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Backup" />
+		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+			<Backup />
 		</div>
 	</div>
 </main>

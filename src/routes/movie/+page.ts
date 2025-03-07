@@ -20,7 +20,7 @@ export const load = (async ({ url }) => {
 	if (!result && online.current) {
 		// Wenn der Film nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
 
-		const tmdb = await import('$lib/tmdb');
+		const tmdb = await import('$lib/utils/tmdb');
 		const fetchedMovie = await tmdb.getMovie(id);
 
 		if (!fetchedMovie) {
