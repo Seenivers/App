@@ -1,4 +1,4 @@
-import { db } from '$lib/db/database';
+import { db, sqlite } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
 import { appDataDir, join } from '@tauri-apps/api/path';
 import { BaseDirectory, copyFile, exists, mkdir, remove, readDir } from '@tauri-apps/plugin-fs';
@@ -91,6 +91,8 @@ export const backup = {
 				return false;
 			}
 
+			sqlite.close(); // Schließe die aktuelle DB-Verbindung
+
 			// Falls Datei nicht existiert, lösche den DB-Eintrag
 			if (!(await exists(data.path, { baseDir: BaseDirectory.AppData }))) {
 				error(`Restore Backup: File not found`);
@@ -104,6 +106,8 @@ export const backup = {
 			// Backup-Datei verschieben
 			await copyFile(data.path, dbPath);
 			await remove(data.path, { baseDir: BaseDirectory.AppData });
+
+			window.location.reload(); // Lade die App neu
 
 			return true;
 		} catch (err) {
