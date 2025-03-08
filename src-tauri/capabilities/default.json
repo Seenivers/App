@@ -22,6 +22,16 @@
 		"fs:allow-write",
 		"fs:allow-stat",
 		"fs:allow-copy-file",
+		"fs:allow-appdata-read",
+		"fs:allow-appdata-write",
+		"fs:allow-app-read",
+		"fs:allow-app-write",
+		"fs:allow-read-dir",
+		"fs:allow-localdata-read",
+		"fs:allow-localdata-write",
+		"fs:allow-resource-read",
+		"fs:allow-resource-write",
+		"fs:allow-mkdir",
 		{
 			"identifier": "fs:scope",
 			"allow": [{ "path": "$APPDATA" }, { "path": "$APPDATA/**" }, { "path": "*/**" }]
