@@ -243,3 +243,16 @@ export async function getSerie(id: number) {
 		error('Get Serie: ' + err);
 	});
 }
+
+/**
+ * Überprüft, ob eine Serie mit der angegebenen `id` einzigartig in der Datenbank ist.
+ * Gibt `true` zurück, wenn die Serie mit dieser ID noch nicht existiert (d.h., die Serie ist einzigartig),
+ * andernfalls `false`.
+ *
+ * @param id - Die ID der Serie, der überprüft werden soll.
+ * @returns Ein `Promise`, das `true` zurückgibt, wenn die Serie einzigartig ist (noch nicht vorhanden), andernfalls `false`.
+ */
+export async function isSerieIDUnique(id: number): Promise<boolean> {
+	const existingSerie = await getSerie(id);
+	return !existingSerie; // Gibt true zurück, wenn die Serie nicht existiert, andernfalls false
+}
