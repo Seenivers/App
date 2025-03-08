@@ -4,6 +4,7 @@ import {
 	isCollectionIDUnique,
 	isMovieIDUnique,
 	isMoviePathUnique,
+	isSerieIDUnique,
 	isSeriePathUnique,
 	settings
 } from '$lib/db/funktion';
@@ -17,6 +18,7 @@ import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
 import { isMovie, updateSearchStatus } from './utils';
 import type { Serie } from '$lib/types/tv/serie';
+import { serie } from '$lib/utils/db/serie';
 
 //#region ADD
 /**
@@ -187,7 +189,7 @@ export async function searchMediaStatus(i: number) {
 }
 //#endregion
 
-//#region ADD/DOWNLOAD
+//#region ADD Movies
 export async function addNewMovies(entries: { id: number; index: number }[]) {
 	if (!entries?.length || !online.current) return;
 
@@ -261,6 +263,7 @@ async function addMovieToDatabase(result: Movie, index: number) {
 
 	await loadImages(result);
 }
+//#endregion
 
 async function loadImages(result: Movie | Serie) {
 	if (result.poster_path) {
@@ -284,5 +287,44 @@ async function loadImages(result: Movie | Serie) {
 		const path = castImagePaths[i];
 		await image(path, 'actors', true);
 	}
+}
+
+//#region ADD Serie
+export async function addNewSerie(entrie: { id: number; index: number }) {
+	if (!entrie || !online.current) return;
+
+	if (!(await isSerieIDUnique(entrie.id))) {
+		updateSearchStatus(entrie.index, 'downloaded');
+		return;
+	}
+
+	// Status auf "downloading" setzen
+	updateSearchStatus(entrie.index, 'downloading');
+
+	try {
+		// Serie abrufen
+		const response = await tmdb.getSerie(entrie.id);
+
+		// Serie speichern
+		await addSerieToDatabase(response, entrie.index);
+		updateSearchStatus(entrie.index, 'downloaded');
+	} catch (err) {
+		// Falls die gesamte Anfrage fehlschlägt, Serie als "notFound" markieren
+		updateSearchStatus(entrie.index, 'notFound');
+		error(
+			`Fehler beim Abrufen der Serie: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
+		);
+	}
+}
+
+async function addSerieToDatabase(result: Serie, index: number) {
+	await serie.add({
+		id: result.id,
+		path: searchList[index].options.path,
+		tmdb: result
+		// ,updated: new Date()
+	});
+
+	await loadImages(result);
 }
 //#endregion
