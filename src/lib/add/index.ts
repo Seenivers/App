@@ -46,7 +46,7 @@ export async function addNewFiles(paths: string[]) {
 	}
 
 	// Füge neue Filme zum Status hinzu
-	addNewFilesToStatus(newFiles);
+	addNewPathsToStatus(newFiles);
 }
 
 /**
@@ -77,7 +77,7 @@ async function filterNewFiles(paths: string[]) {
  *
  * @param newPaths - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
  */
-export function addNewFilesToStatus(newPaths: string[]) {
+export function addNewPathsToStatus(newPaths: string[]) {
 	const tempStatus: SearchList[] = newPaths.map((path) => {
 		const name =
 			path
