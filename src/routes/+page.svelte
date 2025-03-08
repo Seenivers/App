@@ -8,7 +8,6 @@
 	import type { PageData } from './$types';
 	import { getFilter, type SearchCriteria, setFilter } from '$lib/utils/sessionStorage';
 	import { _ } from 'svelte-i18n';
-	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -134,11 +133,6 @@
 
 	// Initiale Daten und Setup
 	onMount(() => {
-		discord({
-			details: `Schaut gerade seine Filme durch 🍿`,
-			state: `Hat ${data.result.length} Filme, Filmreihen und Serien in seiner Sammlung`
-		});
-
 		// Füge das Wheel-Event mit { passive: false } hinzu
 		window.addEventListener('wheel', handleWheel, { passive: false });
 
@@ -251,14 +245,14 @@
 					bind:this={searchInput}
 				/>
 				<datalist
-					class="absolute z-10 max-h-96 overflow-y-auto rounded-b-lg bg-base-100"
+					class="bg-base-100 absolute z-10 max-h-96 overflow-y-auto rounded-b-lg"
 					bind:this={datalistItem}
 				>
 					{#each Array.from(new Set(matchedMovies
 								.filter((movie) => 'tmdb' in movie) // Type Guard: Nur Filme mit `tmdb` zulassen
 								.map((movie) => movie.tmdb.title))) as title}
 						<option
-							class="w-full min-w-fit cursor-pointer px-2 hover:bg-base-content/20"
+							class="hover:bg-base-content/20 w-full min-w-fit cursor-pointer px-2"
 							value={title}
 						>
 							{title}
@@ -342,7 +336,7 @@
 						<a
 							href={'./collection?id=' + item.id.toString()}
 							draggable="false"
-							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
+							class="card bg-base-100 hover:bg-base-content/20 h-fit flex-grow select-none shadow-xl transition-all duration-300 hover:scale-105
 					{CARDSCALE.aktiv === 1
 								? 'min-w-[8rem] max-w-[12rem]'
 								: CARDSCALE.aktiv === 2
@@ -373,7 +367,7 @@
 						<a
 							href={'./movie?id=' + item.id.toString()}
 							draggable="false"
-							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
+							class="card bg-base-100 hover:bg-base-content/20 h-fit flex-grow select-none shadow-xl transition-all duration-300 hover:scale-105
 					{CARDSCALE.aktiv === 1
 								? 'min-w-[8rem] max-w-[12rem]'
 								: CARDSCALE.aktiv === 2
@@ -387,7 +381,7 @@
 									class="rounded-xl"
 								/>
 								{#if item.watched}
-									<div class="badge badge-outline absolute left-3 top-3 bg-base-300">
+									<div class="badge badge-outline bg-base-300 absolute left-3 top-3">
 										{$_('main.movies.badgeWatched')}
 									</div>
 								{/if}

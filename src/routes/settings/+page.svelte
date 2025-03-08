@@ -7,8 +7,6 @@
 	import { app } from '@tauri-apps/api';
 	import Navbar from '$lib/Navbar.svelte';
 	import { confirm } from '@tauri-apps/plugin-dialog';
-	import { onMount } from 'svelte';
-	import { discord } from '$lib/discord';
 	import { themes } from '$lib';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import Backup from './backup.svelte';
@@ -44,10 +42,6 @@
 	function markDirty() {
 		isDirty = true;
 	}
-
-	onMount(() => {
-		discord();
-	});
 </script>
 
 <Navbar
@@ -250,7 +244,7 @@
 	</div>
 </main>
 
-<footer class="footer footer-center bg-base-200 p-4 text-base-content">
+<footer class="footer footer-center bg-base-200 text-base-content p-4">
 	<aside>
 		{#await app.getVersion() then version}
 			<p>v{version}</p>

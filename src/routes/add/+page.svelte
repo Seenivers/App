@@ -13,7 +13,6 @@
 	import { _ } from 'svelte-i18n';
 	import { online } from 'svelte/reactivity/window';
 	import { selectFile, selectFolder, selectTvFolder } from '$lib/add/select';
-	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -52,11 +51,6 @@
 
 	// Überprüfe beim Mounten, ob die Daten valide sind und starte den Ladevorgang
 	onMount(async () => {
-		discord({
-			details: `Fügt gerade neue Filme hinzu`,
-			state: searchList.length > 0 ? `${searchList.length} Filme` : undefined
-		});
-
 		if (Array.isArray(data.paths) && data.paths.length > 0) {
 			// Wenn data.paths ein Array ist und nicht leer, starte den Ladevorgang
 			await load(data.paths);
@@ -247,7 +241,7 @@
 		<div class="grid w-full gap-3">
 			{#each searchList as item, index}
 				{#if item.status === filter || filter === null}
-					<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
+					<div class="bg-base-200 flex justify-between gap-3 rounded-md p-3">
 						<span>
 							<p class="text-lg">
 								{$_('add.main.movie.title', { values: { title: item.options.fileName } })}
@@ -321,11 +315,11 @@
 				</button>
 			</form>
 
-			<hr class="my-3 border-2 border-base-content" />
+			<hr class="border-base-content my-3 border-2" />
 
 			{#if searchList[modalID].status === 'searching'}
 				<div
-					class="mx-auto flex max-w-md flex-col items-center rounded-lg bg-base-200 p-5 shadow-md"
+					class="bg-base-200 mx-auto flex max-w-md flex-col items-center rounded-lg p-5 shadow-md"
 				>
 					<h2 class="mb-2 text-2xl font-semibold">{$_('add.modal.state.searching.title')}</h2>
 					<p class="mb-4 text-sm text-gray-600">
@@ -344,7 +338,7 @@
 						{@const title = 'title' in result ? result.title : result.name}
 						{@const year = 'release_date' in result ? result.release_date : result.first_air_date}
 						<button
-							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
+							class="border-base-300 bg-base-200 flex cursor-pointer space-y-2 rounded-lg border p-3"
 							onclick={async () => {
 								if (modalID !== null) {
 									await selectMovie(modalID, i);
@@ -383,7 +377,7 @@
 					{$_('add.modal.state.notSearched')}
 				</p>
 			{:else}
-				<p class="text-center text-error">
+				<p class="text-error text-center">
 					{$_('add.modal.state.noResults')}
 				</p>
 			{/if}

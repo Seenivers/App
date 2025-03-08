@@ -3,8 +3,6 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
-	import { onMount } from 'svelte';
-	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -31,13 +29,6 @@
 			return dateA === 0 ? -1 : dateB === 0 ? 1 : dateA - dateB;
 		});
 	}
-
-	onMount(() => {
-		discord({
-			details: `Schaut gerade ${data.result.name} an`,
-			state: `${data.result.combined_credits.cast.length + data.result.combined_credits.crew.length} Filme & Serien`
-		});
-	});
 </script>
 
 <Navbar back={true}>
@@ -56,7 +47,7 @@
 		{@const actor = data.result}
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 			<!-- Linke Spalte: Bild, Grunddaten und Social Links -->
-			<div class="card sticky top-24 h-fit w-full bg-base-200 p-5 shadow-md">
+			<div class="card bg-base-200 sticky top-24 h-fit w-full p-5 shadow-md">
 				<div class="flex justify-center">
 					<Img
 						params={[actor.profile_path, 'actors', false]}
@@ -181,11 +172,11 @@
 			</div>
 
 			<!-- Mittlere Spalte: Name und Biografie -->
-			<div class="card w-full bg-base-200 p-5 shadow-md lg:col-span-2">
+			<div class="card bg-base-200 w-full p-5 shadow-md lg:col-span-2">
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 				<div class="mt-5">
 					<h2 class="text-2xl font-semibold">{$_('actor.biography.label')}</h2>
-					<p class="whitespace-pre-wrap text-base-content">
+					<p class="text-base-content whitespace-pre-wrap">
 						{actor.biography || $_('actor.biography.none')}
 					</p>
 				</div>

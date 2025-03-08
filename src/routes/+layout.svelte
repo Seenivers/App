@@ -10,8 +10,6 @@
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/utils/log';
 	import { online } from 'svelte/reactivity/window';
-	import { startRPC } from '$lib/discord';
-	import { destroy } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
 
 	interface Props {
@@ -37,22 +35,18 @@
 		const observer = new MutationObserver(() => handleElements());
 		observer.observe(document.body, { childList: true, subtree: true });
 
-		await startRPC();
-
 		trace('App loaded');
 	});
 
 	onDestroy(async () => {
 		trace('App closed');
 
-		await destroy();
-
 		logLogger();
 		logConsole();
 	});
 </script>
 
-<div class="flex h-fit min-h-screen flex-col bg-base-300">
+<div class="bg-base-300 flex h-fit min-h-screen flex-col">
 	{#if db && settings}
 		{@render children?.()}
 		<Toast />

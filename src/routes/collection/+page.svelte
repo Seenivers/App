@@ -4,8 +4,6 @@
 	import { image } from '$lib/image/image';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
-	import { onMount } from 'svelte';
-	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -14,13 +12,6 @@
 	let { data }: Props = $props();
 
 	let isGridView = $state(false); // Startwert für das Layout
-
-	onMount(() => {
-		discord({
-			details: `Schaut gerade die ${data.result.name} an`,
-			state: `${data.result.parts.length} Filme`
-		});
-	});
 </script>
 
 <Navbar back={true}>
@@ -51,7 +42,7 @@
 							params={[collection.poster_path, 'backdrops', true]}
 							class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 						/>
-						<div class="text-center text-neutral-content lg:text-left">
+						<div class="text-neutral-content text-center lg:text-left">
 							<h1 class="text-4xl font-bold md:text-5xl">{collection.name}</h1>
 							<p class="py-6 text-lg md:text-2xl">{collection.overview}</p>
 						</div>
@@ -77,7 +68,7 @@
 						<a
 							href="/movie?id={movie.id}"
 							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
-							class="relative flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md"
+							class="bg-base-200 relative flex flex-col items-center gap-4 rounded-lg p-4 shadow-md"
 							class:transform={isGridView}
 							class:transition-transform={isGridView}
 							class:hover:scale-105={isGridView}
@@ -89,7 +80,7 @@
 								class="aspect-[2/3] w-full max-w-[15rem] rounded-lg object-cover shadow-2xl"
 							/>
 							{#if downloadedMovie}
-								<div class="badge badge-accent badge-outline absolute right-3 top-3 bg-base-300">
+								<div class="badge badge-accent badge-outline bg-base-300 absolute right-3 top-3">
 									Film in der Sammlung
 								</div>
 							{/if}
