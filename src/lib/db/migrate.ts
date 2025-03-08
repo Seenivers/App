@@ -1,5 +1,5 @@
-import { readDir, readFile } from '@tauri-apps/plugin-fs';
-import { join, resourceDir } from '@tauri-apps/api/path';
+import { exists, mkdir, readDir, readFile } from '@tauri-apps/plugin-fs';
+import { BaseDirectory, join, resourceDir } from '@tauri-apps/api/path';
 import { sqlite } from '$lib/db/database';
 import { error, info } from '@tauri-apps/plugin-log';
 
@@ -10,7 +10,21 @@ import { error, info } from '@tauri-apps/plugin-log';
  */
 export async function migrate() {
 	const resourcePath = await resourceDir();
-	const files = await readDir(await join(resourcePath, 'migrations'));
+
+	// Check if the migrations directory exists and create it if it doesn't
+	const migrationsDir = await join(resourcePath, 'migrations');
+
+	console.log('Resource path:', await exists(resourcePath));
+	console.log('Migrations dir:', await exists(migrationsDir));
+
+	if (!(await exists(await join(resourcePath, 'migrations')))) {
+		await mkdir(migrationsDir, {
+			baseDir: BaseDirectory.AppData,
+			recursive: true
+		});
+	}
+
+	const files = await readDir(migrationsDir);
 	let migrations = files.filter((file) => file.name?.endsWith('.sql'));
 
 	// Sort migrations by the first 4 characters of the file name
