@@ -3,7 +3,7 @@ import {
 	addMovie,
 	isCollectionIDUnique,
 	isMovieIDUnique,
-	isPathUnique,
+	isMoviePathUnique,
 	settings
 } from '$lib/db/funktion';
 import { extensions } from '$lib';
@@ -59,7 +59,7 @@ async function filterNewFiles(paths: string[]) {
 	const newFiles = await Promise.all(
 		paths.map(async (path) => {
 			// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
-			const unique = await isPathUnique(path);
+			const unique = await isMoviePathUnique(path);
 			return unique && !existingPaths.has(path) ? path : undefined;
 		})
 	);

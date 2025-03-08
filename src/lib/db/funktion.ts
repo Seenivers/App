@@ -80,7 +80,7 @@ export async function getAllMovies() {
 		});
 }
 
-export async function isPathUnique(path: string): Promise<boolean> {
+export async function isMoviePathUnique(path: string): Promise<boolean> {
 	const existingMovie = await db.query.movies
 		.findFirst({
 			where: eq(schema.movies.path, path)
