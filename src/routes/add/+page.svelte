@@ -71,8 +71,8 @@
 		loading = true;
 
 		// Filtere die Einträge mit Status "wait"
-		const waitEntries = searchList.filter(
-			(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
+		const waitEntries = searchList.filter(({ status }) =>
+			['waitForSearching', 'waitForDownloading'].includes(status)
 		);
 
 		const movieIds: { id: number; index: number }[] = [];
@@ -109,9 +109,7 @@
 
 		// Falls noch Filme im Status "waitForSearching" oder "waitForDownloading" sind, lade erneut
 		if (
-			searchList.some(
-				(entry) => entry.status === 'waitForSearching' || entry.status === 'waitForDownloading'
-			)
+			searchList.some(({ status }) => ['waitForSearching', 'waitForDownloading'].includes(status))
 		) {
 			setTimeout(() => load(), 1000);
 		}
