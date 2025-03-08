@@ -221,3 +221,16 @@ export async function isActorIDUnique(id: number): Promise<boolean> {
 	const existingActor = await getActor(id);
 	return !existingActor;
 }
+
+export async function isSeriePathUnique(path: string): Promise<boolean> {
+	const existingSerie = await db.query.serie
+		.findFirst({
+			where: eq(schema.serie.path, path)
+		})
+		.catch((err) => {
+			error(`Is Path Unique: ` + err);
+		});
+
+	// Gibt `true` zurück, wenn keine Serie mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
+	return !existingSerie;
+}
