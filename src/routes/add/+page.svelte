@@ -58,18 +58,13 @@
 		});
 
 		if (Array.isArray(data.paths) && data.paths.length > 0) {
-			// Wenn data.paths ein Array ist und nicht leer, starte den Ladevorgang
-			await load(data.paths);
+			// Wenn data.paths ein Array ist und nicht leer, füge die Dateien hinzu
+			await addNewFiles(data.paths);
 		}
 	});
 
 	// Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
-	async function load(newFiles?: string[]) {
-		// Falls neue Dateien übergeben werden, füge sie dem Status hinzu
-		if (newFiles && newFiles.length > 0) {
-			await addNewFiles(newFiles);
-		}
-
+	async function load() {
 		// Verhindere, dass die Funktion startet, wenn bereits geladen wird oder die Verbindung offline ist
 		if (loading || !online.current) return;
 
