@@ -174,21 +174,21 @@ export async function searchTv(
 export async function getSerie(
 	tvShowID: number,
 	language: string = settings.language || window.navigator.language
-): Promise<Search<Serie>> {
+): Promise<Serie> {
 	const url = new URL(seeniversURL + '/api/tv');
 	url.searchParams.append('id', tvShowID.toString());
 	url.searchParams.append('language', language);
 
 	const result = await fetch(url.toString());
 
-	return (await result.json()) as Search<Serie>;
+	return (await result.json()) as Serie;
 }
 
 export async function getSerieSeason(
 	tvShowID: number,
 	seasonNumber: number,
 	language: string = settings.language || window.navigator.language
-): Promise<Search<Season>> {
+): Promise<Season> {
 	const url = new URL(seeniversURL + '/api/tv/season');
 	url.searchParams.append('tvShowID', tvShowID.toString());
 	url.searchParams.append('seasonNumber', seasonNumber.toString());
@@ -196,7 +196,7 @@ export async function getSerieSeason(
 
 	const result = await fetch(url.toString());
 
-	return (await result.json()) as Search<Season>;
+	return (await result.json()) as Season;
 }
 
 export async function getSerieSeasonEpisode(
@@ -204,7 +204,7 @@ export async function getSerieSeasonEpisode(
 	seasonNumber: number,
 	episodeNumber: number,
 	language: string = settings.language || window.navigator.language
-): Promise<Search<Episode>> {
+): Promise<Episode> {
 	const url = new URL(seeniversURL + '/api/tv/season/episode');
 	url.searchParams.append('tvShowID', tvShowID.toString());
 	url.searchParams.append('seasonNumber', seasonNumber.toString());
@@ -213,5 +213,5 @@ export async function getSerieSeasonEpisode(
 
 	const result = await fetch(url.toString());
 
-	return (await result.json()) as Search<Episode>;
+	return (await result.json()) as Episode;
 }
