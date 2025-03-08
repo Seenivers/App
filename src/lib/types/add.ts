@@ -44,8 +44,6 @@ export interface SearchOptions {
 	path: string;
 	/** The search file Name. */
 	fileName: string;
-	/** Whether to include adult content in the search results. */
-	includeAdult: boolean;
 	/** The primary release year of the movie (optional). */
 	primaryReleaseYear?: string | number;
 	/** The ID of the movie being searched for (optional). */

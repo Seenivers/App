@@ -109,7 +109,6 @@ export function addNewPathsToStatus(newPaths: string[]) {
 			options: {
 				path,
 				fileName: cleanedFileName || name,
-				includeAdult: settings.adult,
 				primaryReleaseYear: year
 			}
 		};
