@@ -16,6 +16,7 @@ import { searchList } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
 import { isMovie, updateSearchStatus } from './utils';
+import type { Serie } from '$lib/types/tv/serie';
 
 //#region ADD
 /**
@@ -261,7 +262,7 @@ async function addMovieToDatabase(result: Movie, index: number) {
 	await loadImages(result);
 }
 
-async function loadImages(result: Movie) {
+async function loadImages(result: Movie | Serie) {
 	if (result.poster_path) {
 		await image(result.poster_path, 'posters', true);
 	}
