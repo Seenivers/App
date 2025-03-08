@@ -4,7 +4,6 @@ import {
 	isCollectionIDUnique,
 	isMovieIDUnique,
 	isMoviePathUnique,
-	isSerieIDUnique,
 	isSeriePathUnique,
 	settings
 } from '$lib/db/funktion';
@@ -194,11 +193,7 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 	const uniqueEntries: { id: number; index: number }[] = [];
 
 	for (const { id, index } of entries) {
-		if (
-			searchList[index].mediaType === 'movie'
-				? await isMovieIDUnique(id)
-				: await isSerieIDUnique(id)
-		) {
+		if (await isMovieIDUnique(id)) {
 			uniqueEntries.push({ id, index });
 		} else {
 			updateSearchStatus(index, 'downloaded');
