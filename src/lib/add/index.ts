@@ -19,12 +19,12 @@ import { isMovie, updateSearchStatus } from './utils';
 //#region ADD
 /**
  * Fügt neue Filme zum Status hinzu, nachdem sie validiert wurden.
- * @param files - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
+ * @param paths - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
  */
-export async function addNewFiles(files: string[]) {
+export async function addNewFiles(paths: string[]) {
 	// Filtere und validiere die Dateien
-	const validFiles = files.filter((file) => {
-		const fileExtension = file.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
+	const validFiles = paths.filter((path) => {
+		const fileExtension = path.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
 		return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
 	});
 
@@ -48,16 +48,16 @@ export async function addNewFiles(files: string[]) {
 /**
  * Filtert nur die Dateien, die nicht bereits im Status enthalten sind und einzigartig sind.
  *
- * @param files - Die Liste der zu überprüfenden Dateipfade.
+ * @param paths - Die Liste der zu überprüfenden Dateipfade.
  * @returns Ein Array von Dateipfaden, die einzigartig sind und noch nicht im Status enthalten sind.
  */
-async function filterNewFiles(files: string[]) {
+async function filterNewFiles(paths: string[]) {
 	// Erstelle ein Set für bereits existierende Pfade, um die Suche effizienter zu machen
 	const existingPaths = new Set(searchList.map((item) => item.options.path));
 
 	// Filtere die Dateien parallel
 	const newFiles = await Promise.all(
-		files.map(async (path) => {
+		paths.map(async (path) => {
 			// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
 			const unique = await isPathUnique(path);
 			return unique && !existingPaths.has(path) ? path : undefined;
@@ -71,10 +71,10 @@ async function filterNewFiles(files: string[]) {
 /**
  * Fügt die neuen Dateien dem Status hinzu.
  *
- * @param newFiles - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
+ * @param newPaths - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
  */
-export function addNewFilesToStatus(newFiles: string[]) {
-	const tempStatus: SearchList[] = newFiles.map((path) => {
+export function addNewFilesToStatus(newPaths: string[]) {
+	const tempStatus: SearchList[] = newPaths.map((path) => {
 		const name =
 			path
 				.split('\\')
