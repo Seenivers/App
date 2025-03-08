@@ -2,7 +2,7 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { join, videoDir } from '@tauri-apps/api/path';
 import { readDir } from '@tauri-apps/plugin-fs';
 import { extensions, plyr, vidstack } from '$lib';
-import { addNewFiles, addNewFilesToStatus } from '.';
+import { addNewFiles } from '.';
 
 // Handle file selection
 export async function selectFile() {
@@ -55,7 +55,7 @@ export async function selectTvFolder() {
 
 		if (entries && entries.length > 0) {
 			// Neuen Ordner hinzufügen
-			addNewFilesToStatus([folder]);
+			addNewFiles([folder]);
 		}
 	}
 }
