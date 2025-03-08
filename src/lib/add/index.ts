@@ -19,18 +19,21 @@ import { isMovie, updateSearchStatus } from './utils';
 
 //#region ADD
 /**
- * Fügt neue Filme zum Status hinzu, nachdem sie validiert wurden.
+ * Fügt neue Filme & Serien zum Status hinzu, nachdem sie validiert wurden.
  * @param paths - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
  */
 export async function addNewFiles(paths: string[]) {
 	// Filtere und validiere die Dateien
 	const validFiles = paths.filter((path) => {
-		const fileExtension = path.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
-		return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
+		if (isMovie(path)) {
+			// Überprüfe, ob die Datei eine gültige Erweiterung hat
+			const fileExtension = path.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
+			return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
+		} else return true;
 	});
 
 	if (validFiles.length === 0) {
-		alert('Keine gültigen Dateien gefunden.');
+		alert('Keine gültigen Dateie Pfade gefunden.');
 		return;
 	}
 
@@ -38,7 +41,7 @@ export async function addNewFiles(paths: string[]) {
 	const newFiles = await filterNewFiles(validFiles);
 
 	if (newFiles.length === 0) {
-		alert('Keine neuen Filme zum Hinzufügen gefunden.');
+		alert('Keine neuen Filme und Serien zum Hinzufügen gefunden.');
 		return;
 	}
 
