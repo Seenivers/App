@@ -189,7 +189,7 @@ export async function searchMediaStatus(i: number) {
 
 //#region ADD/DOWNLOAD
 export async function addNewMovies(entries: { id: number; index: number }[]) {
-	if (!entries || entries.length === 0) return;
+	if (!entries?.length || !online.current) return;
 
 	const uniqueEntries: { id: number; index: number }[] = [];
 
@@ -207,12 +207,6 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 
 	// Falls alle Filme bereits vorhanden sind, beenden
 	if (uniqueEntries.length === 0) return;
-
-	// Prüfen, ob der Benutzer online ist
-	if (!online.current) {
-		uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'notFound'));
-		return;
-	}
 
 	// Status auf "downloading" setzen
 	uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'downloading'));
