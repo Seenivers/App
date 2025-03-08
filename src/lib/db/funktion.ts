@@ -234,3 +234,12 @@ export async function isSeriePathUnique(path: string): Promise<boolean> {
 	// Gibt `true` zurück, wenn keine Serie mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
 	return !existingSerie;
 }
+
+/**
+ * Get Serie from db
+ */
+export async function getSerie(id: number) {
+	return await db.query.serie.findFirst({ where: eq(schema.serie.id, id) }).catch((err) => {
+		error('Get Serie: ' + err);
+	});
+}
