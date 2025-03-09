@@ -6,7 +6,8 @@ import {
 	isMoviePathUnique,
 	isSerieIDUnique,
 	isSeriePathUnique,
-	settings
+	settings,
+	updateMovie
 } from '$lib/db/funktion';
 import { extensions } from '$lib';
 import * as tmdb from '$lib/utils/tmdb';
@@ -201,6 +202,7 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 		if (await isMovieIDUnique(id)) {
 			uniqueEntries.push({ id, index });
 		} else {
+			updateMovie(id, { path: searchList[index].options.path });
 			updateSearchStatus(index, 'downloaded');
 		}
 	}
