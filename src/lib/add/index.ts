@@ -19,6 +19,7 @@ import type { Movie } from '$lib/types/movie';
 import { isMovie, updateSearchStatus } from './utils';
 import type { Serie } from '$lib/types/tv/serie';
 import { serie } from '$lib/utils/db/serie';
+import { season } from '$lib/utils/db/season';
 
 //#region ADD
 /**
@@ -325,6 +326,21 @@ async function addSerieToDatabase(result: Serie, index: number) {
 		// ,updated: new Date()
 	});
 
+	await addEpisodesToDatabase(result.id, result.number_of_seasons);
+
 	await loadImages(result);
+}
+
+async function addEpisodesToDatabase(serieId: number, seasons: number) {
+	for (let index = 1; index < seasons; index++) {
+		const resultSeason = await tmdb.getSerieSeason(serieId, index);
+
+		if (!resultSeason) continue;
+
+		await season.add({
+			id: resultSeason.id,
+			tmdb: resultSeason
+		});
+	}
 }
 //#endregion
