@@ -313,7 +313,7 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 			tmdb: response
 		});
 
-		await addEpisodesToDatabase(response.id, response.number_of_seasons);
+		await addSeasonToDatabase(response.id, response.number_of_seasons);
 
 		await loadImages(response);
 
@@ -327,7 +327,7 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 	}
 }
 
-async function addEpisodesToDatabase(serieId: number, seasons: number) {
+async function addSeasonToDatabase(serieId: number, seasons: number) {
 	for (let index = 1; index < seasons; index++) {
 		const resultSeason = await tmdb.getSerieSeason(serieId, index);
 
