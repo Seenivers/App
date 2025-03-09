@@ -1,8 +1,4 @@
-import {
-	isSerieIDUnique,
-	isSeriePathUnique,
-	settings
-} from '$lib/db/funktion';
+import { settings } from '$lib/db/funktion';
 import { extensions } from '$lib';
 import * as tmdb from '$lib/utils/tmdb';
 import { error } from '@tauri-apps/plugin-log';
@@ -65,7 +61,9 @@ async function filterNewFiles(paths: string[]) {
 	const newFiles = await Promise.all(
 		paths.map(async (path) => {
 			// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
-			const unique = isMovie(path) ? await movie.isPathUnique(path) : await isSeriePathUnique(path);
+			const unique = isMovie(path)
+				? await movie.isPathUnique(path)
+				: await serie.isPathUnique(path);
 			return unique && !existingPaths.has(path) ? path : undefined;
 		})
 	);
@@ -293,7 +291,7 @@ async function loadImages(result: Movie | Serie) {
 export async function addNewSerie(entrie: { id: number; index: number }) {
 	if (!entrie || !online.current) return;
 
-	if (!(await isSerieIDUnique(entrie.id))) {
+	if (!(await serie.isIDUnique(entrie.id))) {
 		updateSearchStatus(entrie.index, 'downloaded');
 		return;
 	}
