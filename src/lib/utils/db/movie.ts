@@ -19,8 +19,8 @@ export const movie = {
 		}
 	},
 	isIDUnique: async (id: number) => {
-		const existingmovie = await movie.get(id);
-		return !existingmovie;
+		const existingMovie = await movie.get(id);
+		return !existingMovie;
 	},
 	isPathUnique: async (path: string) => {
 		const existingMovie = await db.query.movies.findFirst({ where: eq(schema.movies.path, path) });
