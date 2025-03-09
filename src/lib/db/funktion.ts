@@ -93,38 +93,3 @@ export async function isActorIDUnique(id: number): Promise<boolean> {
 	const existingActor = await getActor(id);
 	return !existingActor;
 }
-
-export async function isSeriePathUnique(path: string): Promise<boolean> {
-	const existingSerie = await db.query.serie
-		.findFirst({
-			where: eq(schema.serie.path, path)
-		})
-		.catch((err) => {
-			error(`Is Path Unique: ` + err);
-		});
-
-	// Gibt `true` zurück, wenn keine Serie mit diesem Pfad gefunden wurde (d.h., der Pfad ist eindeutig)
-	return !existingSerie;
-}
-
-/**
- * Get Serie from db
- */
-export async function getSerie(id: number) {
-	return await db.query.serie.findFirst({ where: eq(schema.serie.id, id) }).catch((err) => {
-		error('Get Serie: ' + err);
-	});
-}
-
-/**
- * Überprüft, ob eine Serie mit der angegebenen `id` einzigartig in der Datenbank ist.
- * Gibt `true` zurück, wenn die Serie mit dieser ID noch nicht existiert (d.h., die Serie ist einzigartig),
- * andernfalls `false`.
- *
- * @param id - Die ID der Serie, der überprüft werden soll.
- * @returns Ein `Promise`, das `true` zurückgibt, wenn die Serie einzigartig ist (noch nicht vorhanden), andernfalls `false`.
- */
-export async function isSerieIDUnique(id: number): Promise<boolean> {
-	const existingSerie = await getSerie(id);
-	return !existingSerie; // Gibt true zurück, wenn die Serie nicht existiert, andernfalls false
-}
