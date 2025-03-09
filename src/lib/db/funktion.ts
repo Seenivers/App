@@ -37,65 +37,6 @@ export const settings = await initializeSettings();
 	}
 })();
 
-// Add Collection to db
-export async function addCollection(data: typeof schema.collections.$inferInsert) {
-	return await db
-		.insert(schema.collections)
-		.values(data)
-		.catch((err) => {
-			error(`Add Collection: ` + err);
-		});
-}
-
-export async function getCollection(id: number) {
-	return await db.query.collections
-		.findFirst({ where: eq(schema.collections.id, id) })
-		.catch((err) => {
-			error('Get Collection: ' + err);
-		});
-}
-
-export async function getAllCollections() {
-	return await db
-		.select()
-		.from(schema.collections)
-		.catch((err) => {
-			error('Get All Collections: ' + err);
-		});
-}
-
-export async function deleteCollection(id: number) {
-	return await db
-		.delete(schema.collections)
-		.where(eq(schema.collections.id, id))
-		.catch((err) => {
-			error(`Delete Collection: ` + err);
-		});
-}
-
-export async function updateCollection(id: number, data: typeof schema.collections.$inferInsert) {
-	return await db
-		.update(schema.collections)
-		.set(data)
-		.where(eq(schema.collections.id, id))
-		.catch((err) => {
-			error(`Update Collection: ` + err);
-		});
-}
-
-/**
- * Überprüft, ob eine Sammlung mit der angegebenen `id` einzigartig in der Datenbank ist.
- * Gibt `true` zurück, wenn keine Sammlung mit dieser ID existiert (d.h., die Sammlung ist einzigartig),
- * andernfalls `false`.
- *
- * @param id - Die ID der Sammlung, die überprüft werden soll.
- * @returns Ein `Promise`, das `true` zurückgibt, wenn die Sammlung einzigartig ist (noch nicht vorhanden), andernfalls `false`.
- */
-export async function isCollectionIDUnique(id: number): Promise<boolean> {
-	const existingCollection = await getCollection(id);
-	return !existingCollection;
-}
-
 /**
  * Get Actor from db
  */
