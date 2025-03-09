@@ -307,7 +307,16 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 		const response = await tmdb.getSerie(entrie.id);
 
 		// Serie speichern
-		await addSerieToDatabase(response, entrie.index);
+		await serie.add({
+			id: response.id,
+			path: searchList[entrie.index].options.path,
+			tmdb: response
+		});
+
+		await addEpisodesToDatabase(response.id, response.number_of_seasons);
+
+		await loadImages(response);
+
 		updateSearchStatus(entrie.index, 'downloaded');
 	} catch (err) {
 		// Falls die gesamte Anfrage fehlschlägt, Serie als "notFound" markieren
@@ -316,19 +325,6 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 			`Fehler beim Abrufen der Serie: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
 		);
 	}
-}
-
-async function addSerieToDatabase(result: Serie, index: number) {
-	await serie.add({
-		id: result.id,
-		path: searchList[index].options.path,
-		tmdb: result
-		// ,updated: new Date()
-	});
-
-	await addEpisodesToDatabase(result.id, result.number_of_seasons);
-
-	await loadImages(result);
 }
 
 async function addEpisodesToDatabase(serieId: number, seasons: number) {
