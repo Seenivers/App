@@ -14,8 +14,8 @@ export const load = (async ({ url }) => {
 	}
 
 	// Lokale Datenbank abfragen
-	const db = await import('$lib/db/funktion');
-	let result = (await db.getActor(id))?.tmdb;
+	const { actor } = await import('$lib/utils/db/actor');
+	let result = (await actor.get(id))?.tmdb;
 
 	// Prüfen, ob das Ergebnis ein JSON-String ist, und konvertieren
 	if (typeof result === 'string') {
@@ -39,7 +39,7 @@ export const load = (async ({ url }) => {
 		result = fetchedActor;
 
 		// Schauspieler in die Datenbank speichern
-		db.addActor({
+		actor.add({
 			name: result.name,
 			tmdb: result,
 			id: id,
