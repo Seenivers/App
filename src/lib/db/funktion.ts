@@ -55,14 +55,17 @@ export async function deleteMovie(id: number) {
 		});
 }
 
-export async function updateMovie(id: number, data: typeof schema.movies.$inferInsert) {
-	return await db
-		.update(schema.movies)
-		.set(data)
-		.where(eq(schema.movies.id, id))
-		.catch((err) => {
-			error(`Update Movie: ` + err);
-		});
+export async function updateMovie(id: number, data: Partial<typeof schema.movies.$inferInsert>) {
+	if (Object.keys(data).length === 0) {
+		error('Update Movie: No fields provided for update.');
+		return;
+	}
+
+	try {
+		return await db.update(schema.movies).set(data).where(eq(schema.movies.id, id));
+	} catch (err) {
+		error(`Update Movie: ${err}`);
+	}
 }
 
 export async function getMovie(id: number) {
