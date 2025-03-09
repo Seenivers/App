@@ -15,7 +15,7 @@ export const load = (async ({ url }) => {
 	const module = await import('$lib/db/funktion');
 
 	// Zuerst versuchen, den Film lokal zu finden
-	let result = await module.getMovie(id);
+	const result = await module.getMovie(id);
 
 	if (!result && online.current) {
 		// Wenn der Film nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
@@ -28,17 +28,12 @@ export const load = (async ({ url }) => {
 			error(404, 'Movie not found');
 		}
 
-		result = {
+		// Film in die Datenbank speichern
+		module.addMovie({
 			id,
 			path: null,
-			watched: false,
-			watchTime: 0,
-			tmdb: fetchedMovie,
-			updated: new Date()
-		};
-
-		// Film in die Datenbank speichern
-		module.addMovie(result);
+			tmdb: fetchedMovie
+		});
 	}
 
 	if (!result) {
