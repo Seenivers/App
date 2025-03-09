@@ -4,11 +4,9 @@ import { db } from './database';
 import {
 	addActor,
 	addCollection,
-	addMovie,
 	getActor,
 	getAllActors,
 	getAllCollections,
-	getAllMovies,
 	getCollection,
 	settings
 } from './funktion';
@@ -21,6 +19,7 @@ import {
 } from '$lib/utils/tmdb';
 import { schema } from './schema';
 import { WEEKS } from '$lib';
+import { movie as movieDB } from '$lib/utils/db/movie';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
@@ -41,7 +40,7 @@ export async function updateOldDB() {
 						throw new Error(`Movie with ID ${movie.id} could not be fetched.`);
 					}
 
-					await addMovie({
+					await movieDB.add({
 						id: movie.id,
 						path: movie.path,
 						tmdb: result,
@@ -103,7 +102,7 @@ async function updateEntity(
 
 export async function updateMovies() {
 	try {
-		const movies = await getAllMovies();
+		const movies = await movieDB.getAll();
 		if (movies && movies.length > 0) {
 			for (const movie of movies) {
 				await updateEntity(movie, 'movies');

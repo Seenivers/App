@@ -9,11 +9,12 @@ export const load = (async () => {
 	}
 
 	const module = await import('$lib/db/funktion');
+	const { movie } = await import('$lib/utils/db/movie');
 
 	// Sicherstellen, dass diese Funktionen existieren und Collections & Movies zurückgeben
 	const collections: (typeof schema.collections.$inferSelect)[] =
 		(await module.getAllCollections()) ?? [];
-	const movies: (typeof schema.movies.$inferSelect)[] = (await module.getAllMovies()) ?? [];
+	const movies: (typeof schema.movies.$inferSelect)[] = (await movie.getAll()) ?? [];
 
 	if (movies.length === 0) {
 		return { result: [] };

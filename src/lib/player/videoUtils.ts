@@ -1,13 +1,13 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/database';
 import { schema } from '../db/schema';
-import { getMovie } from '$lib/db/funktion';
+import { movie as movieDB } from '$lib/utils/db/movie';
 
 /**
  * Lädt die gespeicherte Watch-Time und setzt sie, falls vorhanden.
  */
 export async function loadWatchTime(id: number, setTime: (time: number) => void) {
-	const movie = await getMovie(id);
+	const movie = await movieDB.get(id);
 	if (movie?.watchTime && movie.watchTime > 0) {
 		setTime(movie.watchTime);
 	}

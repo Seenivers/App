@@ -1,13 +1,9 @@
 import {
 	addCollection,
-	addMovie,
 	isCollectionIDUnique,
-	isMovieIDUnique,
-	isMoviePathUnique,
 	isSerieIDUnique,
 	isSeriePathUnique,
-	settings,
-	updateMovie
+	settings
 } from '$lib/db/funktion';
 import { extensions } from '$lib';
 import * as tmdb from '$lib/utils/tmdb';
@@ -22,6 +18,7 @@ import type { Serie } from '$lib/types/tv/serie';
 import { serie } from '$lib/utils/db/serie';
 import { season } from '$lib/utils/db/season';
 import { episode } from '$lib/utils/db/episode';
+import { movie } from '$lib/utils/db/movie';
 
 //#region ADD
 /**
@@ -69,7 +66,7 @@ async function filterNewFiles(paths: string[]) {
 	const newFiles = await Promise.all(
 		paths.map(async (path) => {
 			// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
-			const unique = isMovie(path) ? await isMoviePathUnique(path) : await isSeriePathUnique(path);
+			const unique = isMovie(path) ? await movie.isPathUnique(path) : await isSeriePathUnique(path);
 			return unique && !existingPaths.has(path) ? path : undefined;
 		})
 	);
@@ -199,10 +196,10 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 	const uniqueEntries: { id: number; index: number }[] = [];
 
 	for (const { id, index } of entries) {
-		if (await isMovieIDUnique(id)) {
+		if (await movie.isIDUnique(id)) {
 			uniqueEntries.push({ id, index });
 		} else {
-			updateMovie(id, { path: searchList[index].options.path });
+			movie.update(id, { path: searchList[index].options.path });
 			updateSearchStatus(index, 'downloaded');
 		}
 	}
@@ -248,7 +245,7 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 }
 
 async function addMovieToDatabase(result: Movie, index: number) {
-	await addMovie({
+	await movie.add({
 		id: result.id,
 		path: searchList[index].options.path,
 		tmdb: result,

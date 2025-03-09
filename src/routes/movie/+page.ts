@@ -12,10 +12,10 @@ export const load = (async ({ url }) => {
 		error(500, 'This operation is only supported in the browser');
 	}
 
-	const module = await import('$lib/db/funktion');
+	const { movie } = await import('$lib/utils/db/movie');
 
 	// Zuerst versuchen, den Film lokal zu finden
-	const result = await module.getMovie(id);
+	const result = await movie.get(id);
 
 	if (!result && online.current) {
 		// Wenn der Film nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
@@ -29,7 +29,7 @@ export const load = (async ({ url }) => {
 		}
 
 		// Film in die Datenbank speichern
-		module.addMovie({
+		movie.add({
 			id,
 			path: null,
 			tmdb: fetchedMovie

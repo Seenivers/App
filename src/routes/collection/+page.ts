@@ -13,7 +13,8 @@ export const load = (async ({ url }) => {
 	}
 
 	// Import von Modulen, die Datenbankoperationen durchführen
-	const { getCollection, getMovie, addCollection } = await import('$lib/db/funktion');
+	const { getCollection, addCollection } = await import('$lib/db/funktion');
+	const { movie: movieDB } = await import('$lib/utils/db/movie');
 
 	// Versuchen, die Collection aus der lokalen Datenbank zu laden
 	let result = await getCollection(id);
@@ -43,7 +44,7 @@ export const load = (async ({ url }) => {
 	const movies = (
 		await Promise.all(
 			result.parts.map(async (part) => {
-				const movie = await getMovie(part.id);
+				const movie = await movieDB.get(part.id);
 				return movie?.path ? movie : null;
 			})
 		)
