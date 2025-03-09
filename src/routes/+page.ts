@@ -8,12 +8,11 @@ export const load = (async () => {
 		error(500, 'This operation is only supported in the browser');
 	}
 
-	const module = await import('$lib/db/funktion');
+	const { collection } = await import('$lib/utils/db/collection');
 	const { movie } = await import('$lib/utils/db/movie');
 
 	// Sicherstellen, dass diese Funktionen existieren und Collections & Movies zurückgeben
-	const collections: (typeof schema.collections.$inferSelect)[] =
-		(await module.getAllCollections()) ?? [];
+	const collections: (typeof schema.collections.$inferSelect)[] = (await collection.getAll()) ?? [];
 	const movies: (typeof schema.movies.$inferSelect)[] = (await movie.getAll()) ?? [];
 
 	if (movies.length === 0) {

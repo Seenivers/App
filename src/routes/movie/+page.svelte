@@ -9,12 +9,13 @@
 	import Vidstack from '$lib/player/Vidstack.svelte';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
-	import { getCollection, settings } from '$lib/db/funktion';
+	import { settings } from '$lib/db/funktion';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
+	import { collection } from '$lib/utils/db/collection';
 
 	interface Props {
 		data: PageData;
@@ -156,7 +157,7 @@
 			<!-- Collection -->
 			{#if movieData.tmdb.belongs_to_collection?.id && data.result.path}
 				<div class="my-4">
-					{#await getCollection(movieData.tmdb.belongs_to_collection.id) then value}
+					{#await collection.get(movieData.tmdb.belongs_to_collection.id) then value}
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
 							<div class="hero rounded-box" style="background-image: url({image.src});">
 								<div class="hero-overlay rounded-box bg-opacity-90"></div>

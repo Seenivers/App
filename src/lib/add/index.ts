@@ -1,6 +1,4 @@
 import {
-	addCollection,
-	isCollectionIDUnique,
 	isSerieIDUnique,
 	isSeriePathUnique,
 	settings
@@ -19,6 +17,7 @@ import { serie } from '$lib/utils/db/serie';
 import { season } from '$lib/utils/db/season';
 import { episode } from '$lib/utils/db/episode';
 import { movie } from '$lib/utils/db/movie';
+import { collection } from '$lib/utils/db/collection';
 
 //#region ADD
 /**
@@ -254,11 +253,11 @@ async function addMovieToDatabase(result: Movie, index: number) {
 
 	if (
 		result.belongs_to_collection?.id &&
-		(await isCollectionIDUnique(result.belongs_to_collection.id))
+		(await collection.isIDUnique(result.belongs_to_collection.id))
 	) {
-		const collection = await tmdb.getCollection(result.belongs_to_collection.id);
-		if (collection) {
-			await addCollection({ ...collection, updated: new Date() });
+		const collectionResult = await tmdb.getCollection(result.belongs_to_collection.id);
+		if (collectionResult) {
+			await collection.add({ ...collectionResult, updated: new Date() });
 		}
 	}
 

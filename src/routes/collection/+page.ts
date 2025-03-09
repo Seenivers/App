@@ -13,11 +13,11 @@ export const load = (async ({ url }) => {
 	}
 
 	// Import von Modulen, die Datenbankoperationen durchführen
-	const { getCollection, addCollection } = await import('$lib/db/funktion');
+	const { collection: collectionDB } = await import('$lib/utils/db/collection');
 	const { movie: movieDB } = await import('$lib/utils/db/movie');
 
 	// Versuchen, die Collection aus der lokalen Datenbank zu laden
-	let result = await getCollection(id);
+	let result = await collectionDB.get(id);
 
 	if (!result && online.current) {
 		// Wenn nicht vorhanden und online, Daten von TMDB abrufen
@@ -32,7 +32,7 @@ export const load = (async ({ url }) => {
 
 		// Collection speichern und aktualisiert setzen
 		result = { ...collection, updated: new Date() };
-		await addCollection(result);
+		await collectionDB.add(result);
 	}
 
 	// Wenn selbst nach TMDB-Aufruf keine Daten vorhanden sind, Fehler auslösen

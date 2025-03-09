@@ -1,15 +1,7 @@
 import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 import { db } from './database';
-import {
-	addActor,
-	addCollection,
-	getActor,
-	getAllActors,
-	getAllCollections,
-	getCollection,
-	settings
-} from './funktion';
+import { addActor, getActor, getAllActors, settings } from './funktion';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types/types';
 import {
@@ -20,6 +12,7 @@ import {
 import { schema } from './schema';
 import { WEEKS } from '$lib';
 import { movie as movieDB } from '$lib/utils/db/movie';
+import { collection } from '$lib/utils/db/collection';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
@@ -127,11 +120,11 @@ export async function updateMovies() {
 }
 
 async function processCollection(collectionId: number) {
-	const collection = await getCollection(collectionId);
-	if (!collection) {
+	const collectionResult = await collection.get(collectionId);
+	if (!collectionResult) {
 		const result = await getCollectionTmdb(collectionId, settings?.language);
 		if (result) {
-			await addCollection({ ...result, updated: new Date() });
+			await collection.add({ ...result, updated: new Date() });
 		}
 	}
 }
@@ -148,7 +141,7 @@ async function processActor(actorId: number) {
 
 export async function updateCollections() {
 	try {
-		const collections = await getAllCollections();
+		const collections = await collection.getAll();
 		if (collections && collections.length > 0) {
 			// Collectionen nacheinander durchgehen
 			for (const collection of collections) {
