@@ -7,7 +7,7 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import { join } from '@tauri-apps/api/path';
 	import { extensions } from '$lib';
-	import { addNewFiles } from '.';
+	import { addNewFiles, load } from '.';
 
 	let isDraggingOver = $state(false);
 	let handleDrop: UnlistenFn | undefined;
@@ -67,6 +67,7 @@
 			if (files.length > 0) {
 				// Danach Suche starten
 				await addNewFiles(files);
+				await load();
 			} else {
 				alert('Keine Dateien zum Hinzufügen gefunden.');
 			}
