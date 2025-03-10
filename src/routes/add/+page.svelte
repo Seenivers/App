@@ -144,7 +144,7 @@
 	}
 </script>
 
-<Dnd {load} />
+<Dnd />
 
 <Navbar
 	back={true}

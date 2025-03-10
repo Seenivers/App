@@ -7,17 +7,12 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import { join } from '@tauri-apps/api/path';
 	import { extensions } from '$lib';
+	import { addNewFiles } from '.';
 
 	let isDraggingOver = $state(false);
 	let handleDrop: UnlistenFn | undefined;
 	let handleDragEnter: UnlistenFn | undefined;
 	let handleDragLeave: UnlistenFn | undefined;
-
-	interface Props {
-		load: (newFiles?: string[]) => Promise<void>;
-	}
-
-	let { load }: Props = $props();
 
 	onMount(async () => {
 		const supportedExtensions = new Set(extensions.map((ext) => ext.toLowerCase()));
@@ -71,7 +66,7 @@
 			// Wenn gültige Dateien gefunden wurden, übergebe sie an die Ladefunktion
 			if (files.length > 0) {
 				// Danach Suche starten
-				await load(files);
+				await addNewFiles(files);
 			} else {
 				alert('Keine Dateien zum Hinzufügen gefunden.');
 			}
