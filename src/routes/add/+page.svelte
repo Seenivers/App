@@ -12,7 +12,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
 	import { online } from 'svelte/reactivity/window';
-	import { selectFile, selectFolder } from '$lib/add/select';
+	import { selectFile, selectFolder, selectTvFolder } from '$lib/add/select';
 	import { discord } from '$lib/discord';
 
 	interface Props {
@@ -104,7 +104,7 @@
 	}}
 >
 	{#snippet right()}
-		<!-- <button
+		<button
 			class="btn grow"
 			onclick={async () => {
 				await selectTvFolder();
@@ -112,7 +112,7 @@
 			}}
 		>
 			Serien Ordner auswählen
-		</button> -->
+		</button>
 		<button
 			class="btn grow"
 			onclick={async () => {
