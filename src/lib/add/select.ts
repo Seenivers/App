@@ -45,17 +45,17 @@ export async function selectFolder() {
 
 export async function selectTvFolder() {
 	const folder = await open({
-		multiple: false,
+		multiple: true,
 		directory: true,
 		defaultPath: await videoDir()
 	});
 
 	if (folder) {
-		const entries = await readDir(folder);
+		const entries = await Promise.all(folder.map(async (entry) => await readDir(entry)));
 
 		if (entries && entries.length > 0) {
 			// Neuen Ordner hinzufügen
-			addNewFiles([folder]);
+			await addNewFiles(folder);
 		}
 	}
 }
