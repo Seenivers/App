@@ -50,7 +50,11 @@ export async function load() {
 				searchList[entryIndex].options.id &&
 				searchList[entryIndex].status === 'waitForDownloading'
 			) {
-				movieIds.push({ id: searchList[entryIndex].options.id, index: entryIndex });
+				if (searchList[entryIndex].mediaType === 'tv') {
+					await addNewSerie({ id: searchList[entryIndex].options.id, index: entryIndex });
+				} else {
+					movieIds.push({ id: searchList[entryIndex].options.id, index: entryIndex });
+				}
 			}
 		}
 	}
