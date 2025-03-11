@@ -42,8 +42,7 @@ export const load = (async ({ url }) => {
 		actor.add({
 			name: result.name,
 			tmdb: result,
-			id: id,
-			updated: new Date()
+			id: id
 		});
 	}
 

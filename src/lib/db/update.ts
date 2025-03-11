@@ -125,7 +125,7 @@ async function processCollection(collectionId: number) {
 	if (!collectionResult) {
 		const result = await getCollectionTmdb(collectionId, settings?.language);
 		if (result) {
-			await collection.add({ ...result, updated: new Date() });
+			await collection.add({ ...result });
 		}
 	}
 }
@@ -135,7 +135,7 @@ async function processActor(actorId: number) {
 	if (!actorResult) {
 		const result = await getActorTmdb(actorId, settings?.language);
 		if (result) {
-			await actor.add({ id: result.id, name: result.name, tmdb: result, updated: new Date() });
+			await actor.add({ id: result.id, name: result.name, tmdb: result });
 		}
 	}
 }

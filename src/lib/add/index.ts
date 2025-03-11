@@ -306,8 +306,7 @@ async function addMovieToDatabase(result: Movie, index: number) {
 	await movie.add({
 		id: result.id,
 		path: searchList[index].options.path,
-		tmdb: result,
-		updated: new Date()
+		tmdb: result
 	});
 
 	if (
@@ -316,7 +315,7 @@ async function addMovieToDatabase(result: Movie, index: number) {
 	) {
 		const collectionResult = await tmdb.getCollection(result.belongs_to_collection.id);
 		if (collectionResult) {
-			await collection.add({ ...collectionResult, updated: new Date() });
+			await collection.add({ ...collectionResult });
 		}
 	}
 
