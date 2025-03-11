@@ -8,5 +8,5 @@ export const actors = sqliteTable('actors', {
 	tmdb: text('tmdb').notNull().$type<Actor>(),
 	updated: int('updated', { mode: 'timestamp' })
 		.notNull()
-		.$defaultFn(() => new Date(0))
+		.$defaultFn(() => new Date())
 });

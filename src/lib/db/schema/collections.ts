@@ -10,5 +10,5 @@ export const collections = sqliteTable('collection', {
 	parts: text('parts', { mode: 'json' }).notNull().$type<Movie[]>(),
 	updated: int('updated', { mode: 'timestamp' })
 		.notNull()
-		.$defaultFn(() => new Date(0))
+		.$defaultFn(() => new Date())
 });

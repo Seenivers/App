@@ -9,5 +9,5 @@ export const season = sqliteTable('season', {
 	tmdb: text('tmdb', { mode: 'json' }).$type<Season>().notNull(),
 	updated: int('updated', { mode: 'timestamp' })
 		.notNull()
-		.$defaultFn(() => new Date(0))
+		.$defaultFn(() => new Date())
 });

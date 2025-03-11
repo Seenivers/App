@@ -9,5 +9,5 @@ export const movies = sqliteTable('movies', {
 	tmdb: text('tmdb', { mode: 'json' }).$type<Movie>().notNull(),
 	updated: int('updated', { mode: 'timestamp' })
 		.notNull()
-		.$defaultFn(() => new Date(0))
+		.$defaultFn(() => new Date())
 });
