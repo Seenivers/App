@@ -367,7 +367,7 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 			tmdb: response
 		});
 
-		await addSeasonToDatabase(response.id, response.number_of_seasons);
+		await addSeasonToDatabase(response.id, response.seasons.length);
 
 		await loadImages(response);
 
@@ -382,7 +382,7 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 }
 
 async function addSeasonToDatabase(serieId: number, seasons: number) {
-	for (let index = 1; index < seasons; index++) {
+	for (let index = 1; index < seasons + 1; index++) {
 		const resultSeason = await tmdb.getSerieSeason(serieId, index);
 
 		if (!resultSeason) continue;
@@ -392,12 +392,12 @@ async function addSeasonToDatabase(serieId: number, seasons: number) {
 			tmdb: resultSeason
 		});
 
-		await addEpisodeToDatabase(resultSeason.id, index, resultSeason.episodes.length);
+		await addEpisodeToDatabase(serieId, index, resultSeason.episodes.length);
 	}
 }
 
 async function addEpisodeToDatabase(serieId: number, season: number, episodes: number) {
-	for (let index = 1; index < episodes; index++) {
+	for (let index = 1; index < episodes + 1; index++) {
 		const resultEpisode = await tmdb.getSerieSeasonEpisode(serieId, season, index);
 
 		if (!resultEpisode) continue;
