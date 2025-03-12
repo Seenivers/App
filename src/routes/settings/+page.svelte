@@ -34,10 +34,11 @@
 	// Schlüsselwörter verarbeiten und Änderung tracken
 	function handleInput(event: Event, type: 'keywords' | 'ignoredKeywords') {
 		const target = event.currentTarget as HTMLTextAreaElement | null;
-		if (target) {
-			settings[type] = Array.from(new Set(target.value.split(',').map((kw) => kw.trim())));
-			isDirty = true; // Eine Änderung wurde vorgenommen
-		}
+		if (!target) return; // Falls target null ist, direkt beenden
+
+		settings[type] = [...new Set(target.value.split(',').map((kw) => kw.trim()))];
+
+		isDirty = true; // Eine Änderung wurde vorgenommen
 	}
 
 	// Änderungen tracken für andere Formularelemente
