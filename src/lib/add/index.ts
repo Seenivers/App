@@ -372,7 +372,7 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 			tmdb: response
 		});
 
-		await addSeasonToDatabase(response.id, response.seasons.length);
+		await addSeasonToDatabase(entrie.index, response.id, response.seasons.length);
 
 		await loadImages(response);
 
@@ -386,29 +386,59 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 	}
 }
 
-async function addSeasonToDatabase(serieId: number, seasons: number) {
-	for (let index = 1; index < seasons + 1; index++) {
-		const resultSeason = await tmdb.getSerieSeason(serieId, index);
+async function addSeasonToDatabase(index: number, serieId: number, seasons: number) {
+	const seriesPath = searchList[index]?.options?.path;
+	if (!seriesPath) {
+		warn(`Kein gültiger Pfad für Serie mit ID ${serieId} gefunden.`);
+		return;
+	}
 
+	// Finde die Staffel- und Episodenpfade
+	const seasonData = await findSeasonsAndEpisodes(seriesPath);
+
+	// Durchlaufe alle Staffeln
+	for (let seasonNumber = 1; seasonNumber <= seasons; seasonNumber++) {
+		const resultSeason = await tmdb.getSerieSeason(serieId, seasonNumber);
 		if (!resultSeason) continue;
 
+		// Überprüfe, ob für diese Staffel spezielle Episodenpfade existieren
+		// Wenn es keine speziellen Staffelordner gibt, verwende den Serienordner
+		const seasonPath = seasonData[seasonNumber]
+			? await join(seriesPath, seasonNumber.toString())
+			: seriesPath;
+
+		// Staffel hinzufügen
 		await season.add({
 			id: resultSeason.id,
+			path: seasonPath, // Den Pfad zur Staffel setzen
 			tmdb: resultSeason
 		});
 
-		await addEpisodeToDatabase(serieId, index, resultSeason.episodes.length);
+		// Episoden hinzufügen
+		await addEpisodeToDatabase(serieId, seasonNumber, seasonData[seasonNumber] || {});
 	}
 }
 
-async function addEpisodeToDatabase(serieId: number, season: number, episodes: number) {
-	for (let index = 1; index < episodes + 1; index++) {
-		const resultEpisode = await tmdb.getSerieSeasonEpisode(serieId, season, index);
-
+async function addEpisodeToDatabase(
+	serieId: number,
+	seasonNumber: number,
+	episodePaths: Record<number, string>
+) {
+	for (const episodeNumber in episodePaths) {
+		const resultEpisode = await tmdb.getSerieSeasonEpisode(
+			serieId,
+			seasonNumber,
+			Number(episodeNumber)
+		);
 		if (!resultEpisode) continue;
 
+		// Pfad zur Episode hinzufügen
+		const episodePath = episodePaths[Number(episodeNumber)] || null;
+
+		// Episode hinzufügen
 		await episode.add({
 			id: resultEpisode.id,
+			path: episodePath, // Den Pfad zur Episode speichern
 			tmdb: resultEpisode
 		});
 	}
