@@ -1,25 +1,48 @@
-import { openUrl } from '@tauri-apps/plugin-opener';
-import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
+import { browser } from '$app/environment';
+import { exists } from '@tauri-apps/plugin-fs';
+import { parseId } from '$lib/load/loadUtils';
+import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
-	const idParam = url.searchParams.get('id');
+	const id = parseId(url); // ID validieren und parsen
 
-	// Überprüfe, ob die ID vorhanden ist
-	if (!idParam) {
-		error(302, 'Missing TV show ID');
+	if (!browser) {
+		error(500, 'This operation is only supported in the browser');
 	}
 
-	try {
-		// Öffne die URL mit der gegebenen ID
-		await openUrl(`https://www.themoviedb.org/tv/${idParam}`);
-	} catch (err) {
-		// Fehlerbehandlung, falls die URL nicht geöffnet werden kann
-		console.error('Error opening URL:', err);
+	const { serie } = await import('$lib/utils/db/serie');
+
+	// Zuerst versuchen, den Film lokal zu finden
+	const result = await serie.get(id);
+
+	if (!result && online.current) {
+		// Wenn die Serie nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
+
+		const tmdb = await import('$lib/utils/tmdb');
+		const fetchedSerie = await tmdb.getSerie(id);
+
+		if (!fetchedSerie) {
+			// Wenn die Serie auch online nicht gefunden wurde
+			error(404, 'Serie not found');
+		}
+
+		// Film in die Datenbank speichern
+		serie.add({
+			id,
+			path: null,
+			tmdb: fetchedSerie
+		});
 	}
 
-	// Gehe zurück oder leite auf die vorherige Seite weiter
-	setTimeout(() => {
-		window.history.back();
-	}, 1000);
+	if (!result) {
+		error(404, 'Movie not found');
+	}
+
+	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
+	const pathExists = result.path ? await exists(result.path) : false;
+
+	// Nur relevante Daten zurückgeben
+	return { id, result, pathExists };
 }) satisfies PageLoad;
