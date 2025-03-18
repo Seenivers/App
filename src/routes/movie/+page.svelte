@@ -2,8 +2,6 @@
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie } from '$lib/utils/tmdb';
-	import { db } from '$lib/db/database';
-	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
@@ -16,6 +14,7 @@
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
 	import { collection } from '$lib/utils/db/collection';
+	import { movie } from '$lib/utils/db/movie';
 
 	let { data }: { data: PageData } = $props();
 
@@ -28,12 +27,12 @@
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
 		watched = !watched;
-		await db.update(schema.movies).set({ watched }).where(eq(schema.movies.id, id));
+		await movie.update(id, { watched });
 	}
 
 	// Entferne Film anhand der ID
 	async function removeElementById() {
-		await db.delete(schema.movies).where(eq(schema.movies.id, id));
+		await movie.delete(id);
 		window.location.href = '/';
 	}
 
@@ -321,10 +320,8 @@
 				try {
 					if (id !== -1 && newID && newID !== movieData.id) {
 						const newMovieByTmdb = await getMovie(newID);
-						await db
-							.update(schema.movies)
-							.set({ id: newID, tmdb: newMovieByTmdb })
-							.where(eq(schema.movies.id, id));
+
+						await movie.update(id, { id: newID, tmdb: newMovieByTmdb });
 
 						modal = false;
 						window.location.href = newID.toString();
