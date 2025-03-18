@@ -17,11 +17,7 @@
 	import { discord } from '$lib/discord';
 	import { collection } from '$lib/utils/db/collection';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data }: { data: PageData } = $props();
 
 	const id = data.id;
 	let watched: boolean = $state(data.result.watched ?? false);
