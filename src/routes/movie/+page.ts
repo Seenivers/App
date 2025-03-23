@@ -15,7 +15,7 @@ export const load = (async ({ url }) => {
 	const { movie } = await import('$lib/utils/db/movie');
 
 	// Zuerst versuchen, den Film lokal zu finden
-	const result = await movie.get(id);
+	let result = await movie.get(id);
 
 	if (!result && online.current) {
 		// Wenn der Film nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
@@ -34,6 +34,8 @@ export const load = (async ({ url }) => {
 			path: null,
 			tmdb: fetchedMovie
 		});
+
+		result = await movie.get(id);
 	}
 
 	if (!result) {
