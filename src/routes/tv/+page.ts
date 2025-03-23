@@ -15,7 +15,7 @@ export const load = (async ({ url }) => {
 	const { serie } = await import('$lib/utils/db/serie');
 
 	// Zuerst versuchen, den Film lokal zu finden
-	const result = await serie.get(id);
+	let result = await serie.get(id);
 
 	if (!result && online.current) {
 		// Wenn die Serie nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
@@ -34,10 +34,12 @@ export const load = (async ({ url }) => {
 			path: null,
 			tmdb: fetchedSerie
 		});
+
+		result = await serie.get(id);
 	}
 
 	if (!result) {
-		error(404, 'Movie not found');
+		error(404, 'Serie not found');
 	}
 
 	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
