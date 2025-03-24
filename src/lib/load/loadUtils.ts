@@ -17,3 +17,15 @@ export function parseId(url: URL): number {
 	}
 	return parsedId;
 }
+
+export function parseSerieId(url: URL): number {
+	const idParam = url.searchParams.get('tvShowID');
+	if (!idParam) {
+		error(400, 'Serien ID must be provided');
+	}
+	const parsedId = parseInt(idParam, 10);
+	if (isNaN(parsedId)) {
+		error(400, 'Serien ID must be a valid number');
+	}
+	return parsedId;
+}
