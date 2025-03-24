@@ -43,8 +43,6 @@ export const load = (async ({ url }) => {
 		error(404, 'Season not found');
 	}
 
-	console.log(result);
-
 	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
 	const pathExists = result.path ? await exists(result.path) : false;
 
