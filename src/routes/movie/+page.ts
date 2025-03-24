@@ -29,7 +29,7 @@ export const load = (async ({ url }) => {
 		}
 
 		// Film in die Datenbank speichern
-		movie.add({
+		await movie.add({
 			id,
 			path: null,
 			tmdb: fetchedMovie
