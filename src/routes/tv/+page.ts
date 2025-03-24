@@ -29,7 +29,7 @@ export const load = (async ({ url }) => {
 		}
 
 		// Film in die Datenbank speichern
-		serie.add({
+		await serie.add({
 			id,
 			path: null,
 			tmdb: fetchedSerie
