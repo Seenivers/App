@@ -19,28 +19,28 @@ export const load = (async ({ url }) => {
 	let result = await season.get(id);
 
 	if (!result && online.current) {
-		// Wenn die Serie nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
+		// Wenn die Season nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
 
 		const tmdb = await import('$lib/utils/tmdb');
-		const fetchedSerie = await tmdb.getSerieSeason(tvShowID, id);
+		const fetchedSeason = await tmdb.getSerieSeason(tvShowID, id);
 
-		if (!fetchedSerie) {
-			// Wenn die Serie auch online nicht gefunden wurde
-			error(404, 'Serie not found');
+		if (!fetchedSeason) {
+			// Wenn die Season auch online nicht gefunden wurde
+			error(404, 'Season not found');
 		}
 
 		// Film in die Datenbank speichern
 		await season.add({
 			id,
 			path: null,
-			tmdb: fetchedSerie
+			tmdb: fetchedSeason
 		});
 
 		result = await season.get(id);
 	}
 
 	if (!result) {
-		error(404, 'Serie not found');
+		error(404, 'Season not found');
 	}
 
 	console.log(result);
