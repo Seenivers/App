@@ -2,12 +2,13 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
-import { parseId, parseSerieId } from '$lib/load/loadUtils';
+import { parseId, parseSeasonId, parseSerieId } from '$lib/load/loadUtils';
 import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
 	const tvShowID = parseSerieId(url); // ID validieren und parsen
+	const seasonID = parseSeasonId(url); // ID validieren und parsen
 
 	if (!browser) {
 		error(500, 'This operation is only supported in the browser');
@@ -16,7 +17,7 @@ export const load = (async ({ url }) => {
 	const { season } = await import('$lib/utils/db/season');
 
 	// Zuerst versuchen, den Film lokal zu finden
-	let result = await season.get(id);
+	let result = await season.get(seasonID);
 
 	if (!result && online.current) {
 		// Wenn die Season nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
@@ -31,12 +32,12 @@ export const load = (async ({ url }) => {
 
 		// Film in die Datenbank speichern
 		await season.add({
-			id,
+			id: seasonID,
 			path: null,
 			tmdb: fetchedSeason
 		});
 
-		result = await season.get(id);
+		result = await season.get(seasonID);
 	}
 
 	if (!result) {
@@ -47,5 +48,5 @@ export const load = (async ({ url }) => {
 	const pathExists = result.path ? await exists(result.path) : false;
 
 	// Nur relevante Daten zurückgeben
-	return { id, result, pathExists, tvShowID };
+	return { id, result, pathExists, tvShowID, seasonID };
 }) satisfies PageLoad;

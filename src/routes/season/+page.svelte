@@ -169,7 +169,7 @@
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 						{#each serieData.tmdb.episodes as episode}
 							<a
-								href="./episode?id={episode.episode_number}&tvShowID={data.tvShowID}&seasonNumber={id}"
+								href="./episode?id={episode.episode_number}&tvShowID={data.tvShowID}&seasonNumber={id}&seasonID={data.seasonID}&episodeID={episode.id}"
 								data-sveltekit-preload-data="tap"
 								class="card card-compact bg-base-100 shadow-xl"
 							>
