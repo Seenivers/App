@@ -53,3 +53,15 @@ export function parseSeasonNumber(url: URL): number {
 	}
 	return parsedId;
 }
+
+export function parseEpisodeId(url: URL): number {
+	const idParam = url.searchParams.get('episodeID');
+	if (!idParam) {
+		error(400, 'Season ID must be provided');
+	}
+	const parsedId = parseInt(idParam, 10);
+	if (isNaN(parsedId)) {
+		error(400, 'Season ID must be a valid number');
+	}
+	return parsedId;
+}
