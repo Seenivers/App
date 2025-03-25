@@ -41,3 +41,15 @@ export function parseSeasonId(url: URL): number {
 	}
 	return parsedId;
 }
+
+export function parseSeasonNumber(url: URL): number {
+	const idParam = url.searchParams.get('seasonNumber');
+	if (!idParam) {
+		error(400, 'Season Number must be provided');
+	}
+	const parsedId = parseInt(idParam, 10);
+	if (isNaN(parsedId)) {
+		error(400, 'Season Number must be a valid number');
+	}
+	return parsedId;
+}
