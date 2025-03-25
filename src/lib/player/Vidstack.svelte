@@ -5,14 +5,16 @@
 	import 'vidstack/player/styles/default/theme.css';
 	import 'vidstack/player/styles/default/layouts/video.css';
 	import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player';
+	import type { MediaType } from '$lib/types/add';
 
 	interface Props {
 		id: number;
 		src: string;
 		poster: string;
+		type: MediaType;
 	}
 
-	let { id, src, poster }: Props = $props(); // mp4, ogg, ogv, webm, mov, m4v
+	let { id, src, poster, type }: Props = $props(); // mp4, ogg, ogv, webm, mov, m4v
 	let videoElement: HTMLVideoElement;
 	let player: MediaPlayerElement;
 
@@ -30,21 +32,21 @@
 			});
 
 			player.addEventListener('loaded-metadata', async () => {
-				await loadWatchTime(id, (time) => (player.currentTime = time));
+				await loadWatchTime(id, type, (time) => (player.currentTime = time));
 			});
 
 			player.addEventListener('pause', async () => {
-				await saveWatchTime(id, player.currentTime, player.duration);
+				await saveWatchTime(id, type, player.currentTime, player.duration);
 			});
 
 			player.addEventListener('ended', async () => {
-				await markAsWatched(id);
+				await markAsWatched(id, type);
 			});
 		}
 	});
 
 	onDestroy(() => {
-		saveWatchTime(id, player.currentTime, player.duration).finally(() => player.destroy());
+		saveWatchTime(id, type, player.currentTime, player.duration).finally(() => player.destroy());
 	});
 </script>
 

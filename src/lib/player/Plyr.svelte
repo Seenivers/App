@@ -5,14 +5,16 @@
 	import blankVideo from '$lib/videos/blank.mp4';
 	import { onMount, onDestroy } from 'svelte';
 	import { loadWatchTime, saveWatchTime, markAsWatched } from './videoUtils';
+	import type { MediaType } from '$lib/types/add';
 
 	interface Props {
 		id: number;
 		src: string;
 		poster: string;
+		type: MediaType;
 	}
 
-	let { id, src, poster }: Props = $props();
+	let { id, src, poster, type }: Props = $props();
 	let videoElement: HTMLVideoElement;
 	let player: Plyr;
 
@@ -48,21 +50,21 @@
 		});
 
 		player.on('loadedmetadata', async () => {
-			await loadWatchTime(id, (time) => (player.currentTime = time));
+			await loadWatchTime(id, type, (time) => (player.currentTime = time));
 		});
 
 		player.on('pause', async () => {
-			await saveWatchTime(id, player.currentTime, player.duration);
+			await saveWatchTime(id, type, player.currentTime, player.duration);
 		});
 
 		player.on('ended', async () => {
-			await markAsWatched(id);
+			await markAsWatched(id, type);
 		});
 	});
 
 	onDestroy(() => {
 		if (player) {
-			saveWatchTime(id, player.currentTime, player.duration).finally(() => player.destroy());
+			saveWatchTime(id, type, player.currentTime, player.duration).finally(() => player.destroy());
 		}
 	});
 </script>
