@@ -31,7 +31,7 @@ export function parseSerieId(url: URL): number {
 }
 
 export function parseSeasonId(url: URL): number {
-	const idParam = url.searchParams.get('seasonNumber');
+	const idParam = url.searchParams.get('seasonID');
 	if (!idParam) {
 		error(400, 'Season ID must be provided');
 	}
