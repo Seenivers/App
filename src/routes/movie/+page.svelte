@@ -108,9 +108,9 @@
 			{#if movieData.path && data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					{#if settings.player === 'Plyr'}
-						<Plyr src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
+						<Plyr src={convertFileSrc(movieData.path)} poster={poster.src} {id} type="movie" />
 					{:else}
-						<Vidstack src={convertFileSrc(movieData.path)} poster={poster.src} {id} />
+						<Vidstack src={convertFileSrc(movieData.path)} poster={poster.src} {id} type="movie" />
 					{/if}
 				{/await}
 			{:else if movieData.path}
