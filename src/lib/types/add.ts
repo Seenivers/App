@@ -16,7 +16,7 @@ export interface DropPayload {
 	};
 }
 
-type MediaType = 'movie' | 'tv';
+export type MediaType = 'movie' | 'tv';
 
 /**
  * Represents the state of a movie search operation.
