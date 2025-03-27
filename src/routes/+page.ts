@@ -10,17 +10,20 @@ export const load = (async () => {
 
 	const { collection } = await import('$lib/utils/db/collection');
 	const { movie } = await import('$lib/utils/db/movie');
+	const { serie } = await import('$lib/utils/db/serie');
 
 	// Sicherstellen, dass diese Funktionen existieren und Collections & Movies zurückgeben
 	const collections: (typeof schema.collections.$inferSelect)[] = (await collection.getAll()) ?? [];
 	const movies: (typeof schema.movies.$inferSelect)[] = (await movie.getAll()) ?? [];
+	const series: (typeof schema.serie.$inferSelect)[] = (await serie.getAll()) ?? [];
 
-	if (movies.length === 0) {
+	if (movies.length === 0 || collections.length === 0 || series.length === 0) {
 		return { result: [] };
 	}
 
 	// Nur Filme mit gesetztem Pfad berücksichtigen
 	const moviesWithPath = movies.filter((movie) => movie.path);
+	const seriesWithPath = series.filter((serie) => serie.path);
 
 	// Map für die Zählung der Filme in Collections
 	const collectionCount = new Map<number, number>();
@@ -46,7 +49,7 @@ export const load = (async () => {
 	}
 
 	// Ergebnisliste: Erst Collections (ohne Filme), dann einzelne Filme
-	const result = [...filteredCollections, ...standaloneMovies];
+	const result = [...filteredCollections, ...standaloneMovies, ...seriesWithPath];
 
 	return { result };
 }) satisfies PageLoad;

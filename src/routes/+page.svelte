@@ -259,7 +259,7 @@
 				>
 					{#each Array.from(new Set(matchedMovies
 								.filter((movie) => 'tmdb' in movie) // Type Guard: Nur Filme mit `tmdb` zulassen
-								.map((movie) => movie.tmdb.title))) as title}
+								.map( (item) => ('title' in item.tmdb ? item.tmdb.title : item.tmdb.name) ))) as title}
 						<option
 							class="w-full min-w-fit cursor-pointer px-2 hover:bg-base-content/20"
 							value={title}
@@ -372,9 +372,10 @@
 							</div>
 						</a>
 					{:else if 'tmdb' in item}
-						<!-- Film -->
+						{@const title = 'title' in item.tmdb ? item.tmdb.title : item.tmdb.name}
+						<!-- Film oder Serie -->
 						<a
-							href={'./movie?id=' + item.id.toString()}
+							href={isMovie(item) ? './movie?id=' : './tv?id=' + item.id.toString()}
 							draggable="false"
 							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
 					{CARDSCALE.aktiv === 1
@@ -386,7 +387,7 @@
 							<figure class="relative px-2 pt-2">
 								<Img
 									params={[item.tmdb.poster_path, 'posters', true]}
-									alt={$_('main.movies.posterAlt', { values: { title: item.tmdb.title } })}
+									alt={$_('main.movies.posterAlt', { values: { title: title } })}
 									class="rounded-xl"
 								/>
 								{#if item.watched}
@@ -403,7 +404,7 @@
 											? 'text-lg'
 											: 'text-2xl'}"
 								>
-									{item.tmdb.title}
+									{title}
 								</p>
 							</div>
 						</a>
