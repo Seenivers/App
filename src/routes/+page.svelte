@@ -43,6 +43,16 @@
 	let searchInput: HTMLInputElement | undefined = $state();
 	let datalistItem: HTMLDataListElement | undefined = $state();
 
+	// Prüft, ob ein Element ein Film ist
+	function isMovie(
+		item:
+			| typeof schema.movies.$inferSelect
+			| typeof schema.collections.$inferSelect
+			| typeof schema.serie.$inferSelect
+	): item is typeof schema.movies.$inferSelect {
+		return 'tmdb' in item && 'title' in item.tmdb;
+	}
+
 	// Funktion zum Filtern der Filme
 	async function filterMovies() {
 		setFilter(searchCriteria);
@@ -58,13 +68,6 @@
 				keys: ['tmdb.title', 'tmdb.genres.name'],
 				threshold: 0.4 // Anpassung des Schwellenwerts für unscharfe Übereinstimmungen
 			});
-
-			// Prüft, ob ein Element ein Film ist
-			function isMovie(
-				item: typeof schema.movies.$inferSelect | typeof schema.collections.$inferSelect
-			): item is typeof schema.movies.$inferSelect {
-				return 'tmdb' in item;
-			}
 
 			// Präziserer Typ statt any
 			const results: FuseResult<typeof schema.movies.$inferSelect>[] = searchCriteria.title
