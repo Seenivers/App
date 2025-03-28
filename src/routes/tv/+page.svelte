@@ -9,6 +9,7 @@
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
 	import { placeholderURL } from '$lib';
+	import { online } from 'svelte/reactivity/window';
 
 	let { data }: { data: PageData } = $props();
 
@@ -86,31 +87,35 @@
 			<Img params={[serieData.tmdb.backdrop_path, 'backdrops', true]} alt={serieData.tmdb.name} />
 
 			<!-- Trailer -->
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{#each serieData.tmdb.videos.results as trailer}
-					{#if trailer.site === 'YouTube'}
-						<div class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl">
-							<img
-								src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
-								alt={`Thumbnail for ${trailer.name}`}
-								draggable="false"
-								class="h-48 w-full rounded-t-lg object-cover"
-							/>
-							<div class="card-body">
-								<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
-								<a
-									href={`https://www.youtube.com/watch?v=${trailer.key}`}
-									target="_blank"
-									class="btn btn-primary mt-2"
-									rel="noopener noreferrer"
-								>
-									Watch on YouTube
-								</a>
+			{#if online.current}
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{#each serieData.tmdb.videos.results as trailer}
+						{#if trailer.site === 'YouTube'}
+							<div
+								class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+							>
+								<img
+									src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
+									alt={`Thumbnail for ${trailer.name}`}
+									draggable="false"
+									class="h-48 w-full rounded-t-lg object-cover"
+								/>
+								<div class="card-body">
+									<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
+									<a
+										href={`https://www.youtube.com/watch?v=${trailer.key}`}
+										target="_blank"
+										class="btn btn-primary mt-2"
+										rel="noopener noreferrer"
+									>
+										Watch on YouTube
+									</a>
+								</div>
 							</div>
-						</div>
-					{/if}
-				{/each}
-			</div>
+						{/if}
+					{/each}
+				</div>
+			{/if}
 
 			<!-- Serienbesetzung -->
 			{#if serieData.tmdb.credits.cast.length > 0}

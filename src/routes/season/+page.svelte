@@ -9,6 +9,7 @@
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
 	import { placeholderURL } from '$lib';
+	import { online } from 'svelte/reactivity/window';
 
 	let { data }: { data: PageData } = $props();
 
@@ -79,7 +80,7 @@
 			<h1 class="text-x1 font-bold sm:text-2xl md:text-3xl">{serieData.tmdb.name}</h1>
 
 			<!-- Trailer -->
-			{#if serieData.tmdb.videos.results.length > 0}
+			{#if serieData.tmdb.videos.results.length > 0 && online.current}
 				<h2 class="my-2 text-2xl font-bold">Trailer</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each serieData.tmdb.videos.results as trailer}

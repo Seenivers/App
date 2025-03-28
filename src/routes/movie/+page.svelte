@@ -15,6 +15,7 @@
 	import { discord } from '$lib/discord';
 	import { collection } from '$lib/utils/db/collection';
 	import { movie } from '$lib/utils/db/movie';
+	import { online } from 'svelte/reactivity/window';
 
 	let { data }: { data: PageData } = $props();
 
@@ -116,7 +117,7 @@
 			{:else if movieData.path}
 				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
-			{:else}
+			{:else if online.current}
 				<!-- Trailer -->
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each movieData.tmdb.videos.results as trailer}
