@@ -64,7 +64,7 @@
 			</button>
 		{/if}
 		<a
-			href="https://www.themoviedb.org/tv/{id}"
+			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
 			rel="noopener noreferrer">Bei TMDB öffnen</a
