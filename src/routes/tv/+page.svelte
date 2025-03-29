@@ -2,7 +2,6 @@
 	import { db } from '$lib/db/database';
 	import { eq } from 'drizzle-orm';
 	import { schema } from '$lib/db/schema';
-	import { settings } from '$lib/db/funktion';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { PageData } from './$types';
 	import { error } from '@tauri-apps/plugin-log';

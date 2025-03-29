@@ -8,7 +8,6 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
-	import { placeholderURL } from '$lib';
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import Vidstack from '$lib/player/Vidstack.svelte';
