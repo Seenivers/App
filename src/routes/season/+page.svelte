@@ -143,22 +143,69 @@
 					<h2 class="text-lg font-bold">Handlung</h2>
 					<p>{seasonData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
 				</div>
+
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
-						<h2 class="text-lg font-bold">air_date</h2>
+						<h2 class="text-lg font-bold">Erstausstrahlung</h2>
 						<p>
 							{seasonData.tmdb.air_date
-								? new Date(seasonData.tmdb.air_date).toLocaleDateString(window.navigator.language)
+								? new Date(seasonData.tmdb.air_date).toLocaleDateString(window.navigator.language, {
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric'
+									})
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
+
 					<div>
-						<h2 class="text-lg font-bold">vote_average</h2>
+						<h2 class="text-lg font-bold">Episodenanzahl</h2>
+						<p>{seasonData.tmdb.episodes?.length || 'Keine Informationen verfügbar'}</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Staffelnummer</h2>
+						<p>
+							{seasonData.tmdb.season_number !== undefined
+								? `Staffel ${seasonData.tmdb.season_number}`
+								: 'Keine Informationen verfügbar'}
+						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Durchschnittliche Bewertung</h2>
 						<p>
 							{seasonData.tmdb.vote_average
 								? `${Math.round(seasonData.tmdb.vote_average * 10) / 10}/10`
+								: 'Keine Bewertungen'}
+						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Durchschnittliche Laufzeit</h2>
+						<p>
+							{seasonData.tmdb.episodes?.length && seasonData.tmdb.episodes.some((e) => e.runtime)
+								? `${Math.round(
+										seasonData.tmdb.episodes
+											.filter((e) => e.runtime)
+											.reduce((sum, e) => sum + e.runtime, 0) /
+											seasonData.tmdb.episodes.filter((e) => e.runtime).length
+									)} Minuten`
 								: 'Keine Informationen verfügbar'}
 						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Produktions-Crew</h2>
+						{#if seasonData.tmdb.credits?.crew.length}
+							<ul class="list-inside list-disc">
+								{#each seasonData.tmdb.credits.crew.slice(0, 3) as person}
+									<li>{person.name} ({person.job})</li>
+								{/each}
+							</ul>
+						{:else}
+							<p>Keine Informationen verfügbar</p>
+						{/if}
 					</div>
 				</div>
 			</div>
