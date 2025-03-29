@@ -17,7 +17,7 @@ export const load = (async () => {
 	const movies: (typeof schema.movies.$inferSelect)[] = (await movie.getAll()) ?? [];
 	const series: (typeof schema.serie.$inferSelect)[] = (await serie.getAll()) ?? [];
 
-	if (movies.length === 0 || collections.length === 0 || series.length === 0) {
+	if (movies.length === 0 && collections.length === 0 && series.length === 0) {
 		return { result: [] };
 	}
 
