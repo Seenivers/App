@@ -115,7 +115,7 @@
 					{/if}
 				{/await}
 			{:else if movieData.path}
-				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
@@ -159,7 +159,7 @@
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
 							<div class="hero rounded-box" style="background-image: url({image.src});">
 								<div class="hero-overlay rounded-box bg-opacity-90"></div>
-								<div class="hero-content text-center text-neutral-content">
+								<div class="hero-content text-neutral-content text-center">
 									<div class="max-w-md">
 										<h2 class="mb-5 text-3xl font-bold">{value?.name}</h2>
 										<p class="mb-5 text-lg">
@@ -181,7 +181,7 @@
 				<div class="my-4">
 					<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each movieData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -191,7 +191,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
@@ -202,13 +202,16 @@
 				</div>
 			{/if}
 
-			<div class="space-y-3">
-				<div>
+			<div class="space-y-6">
+				<!-- Handlung -->
+				<section>
 					<h2 class="text-lg font-bold">Handlung</h2>
 					<p>{movieData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
-				</div>
-				<div class="col-span-1 grid gap-3 md:grid-cols-2">
-					<div>
+				</section>
+
+				<div class="grid gap-6 md:grid-cols-2">
+					<!-- Veröffentlichungsdatum -->
+					<section>
 						<h2 class="text-lg font-bold">Veröffentlichungsdatum</h2>
 						<p>
 							{movieData.tmdb.release_date
@@ -217,8 +220,10 @@
 									)
 								: 'Keine Informationen verfügbar'}
 						</p>
-					</div>
-					<div>
+					</section>
+
+					<!-- Laufzeit -->
+					<section>
 						<h2 class="text-lg font-bold">Laufzeit</h2>
 						<p>
 							{#if movieData.tmdb.runtime}
@@ -231,68 +236,90 @@
 								<span>Keine Informationen verfügbar</span>
 							{/if}
 						</p>
-					</div>
-					<div>
-						<h2 class="text-lg font-bold">Durchschnittliche Bewertung</h2>
+					</section>
+
+					<!-- Bewertung -->
+					<section>
+						<h2 class="text-lg font-bold">Bewertung</h2>
 						<p>
 							{movieData.tmdb.vote_average
 								? `${Math.round(movieData.tmdb.vote_average * 10) / 10}/10`
 								: 'Keine Informationen verfügbar'}
-							{movieData.tmdb.vote_count ? `(${movieData.tmdb.vote_count} Bewertungen)` : ''}
+							{movieData.tmdb.vote_count ? ` (${movieData.tmdb.vote_count} Bewertungen)` : ''}
 						</p>
-					</div>
-					<div>
+					</section>
+
+					<!-- Genres -->
+					<section>
 						<h2 class="text-lg font-bold">Genres</h2>
-						{#if movieData.tmdb.genres}
-							<div class="space-x-1">
+						{#if movieData.tmdb.genres?.length}
+							<div class="flex flex-wrap gap-2">
 								{#each movieData.tmdb.genres as genre}
-									<span class="badge">{genre.name} </span>
+									<span class="badge">{genre.name}</span>
 								{/each}
 							</div>
 						{:else}
 							<p>Keine Informationen verfügbar</p>
 						{/if}
-					</div>
-					<div>
+					</section>
+
+					<!-- Produktionsfirmen -->
+					<section>
 						<h2 class="text-lg font-bold">Produktionsfirmen</h2>
 						<p>
 							{movieData.tmdb.production_companies?.map((c) => c.name).join(', ') ||
 								'Keine Informationen verfügbar'}
 						</p>
-					</div>
-					<div>
+					</section>
+
+					<!-- Produktionsländer -->
+					<section>
 						<h2 class="text-lg font-bold">Produktionsländer</h2>
 						<p>
 							{movieData.tmdb.production_countries?.map((c) => c.name).join(', ') ||
 								'Keine Informationen verfügbar'}
 						</p>
-					</div>
-					<div>
+					</section>
+
+					<!-- Beliebtheit -->
+					<section>
 						<h2 class="text-lg font-bold">Beliebtheit</h2>
 						<p>{movieData.tmdb.popularity || 'Keine Informationen verfügbar'}</p>
-					</div>
-					<div>
+					</section>
+
+					<!-- Budget -->
+					<section>
 						<h2 class="text-lg font-bold">Budget</h2>
-						<p>
-							{formate(movieData.tmdb.budget)}
-						</p>
-					</div>
-					<div>
+						<p>{formate(movieData.tmdb.budget) || 'Keine Informationen verfügbar'}</p>
+					</section>
+
+					<!-- Einnahmen -->
+					<section>
+						<h2 class="text-lg font-bold">Einnahmen</h2>
+						<p>{formate(movieData.tmdb.revenue) || 'Keine Informationen verfügbar'}</p>
+					</section>
+
+					<!-- Originalsprache -->
+					<section>
 						<h2 class="text-lg font-bold">Originalsprache</h2>
-						<p>{movieData.tmdb.original_language || 'Keine Informationen verfügbar'}</p>
-					</div>
-					<div>
+						<p>
+							{new Intl.DisplayNames([window.navigator.language], { type: 'language' }).of(
+								movieData.tmdb.original_language
+							) || 'Keine Informationen verfügbar'}
+						</p>
+					</section>
+
+					<!-- Originaltitel -->
+					<section>
 						<h2 class="text-lg font-bold">Originaltitel</h2>
 						<p>{movieData.tmdb.original_title || 'Keine Informationen verfügbar'}</p>
-					</div>
-					<div>
-						<h2 class="text-lg font-bold">Einnahmen</h2>
-						<p>{formate(movieData.tmdb.revenue)}</p>
-					</div>
-					<div>
+					</section>
+
+					<!-- Status -->
+					<section>
 						<h2 class="text-lg font-bold">Status</h2>
 						<p>{movieData.tmdb.status || 'Keine Informationen verfügbar'}</p>
-					</div>
+					</section>
 				</div>
 			</div>
 		</div>
