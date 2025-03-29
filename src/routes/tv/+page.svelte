@@ -295,13 +295,10 @@
 								class="card card-compact bg-base-100 shadow-lg transition-shadow hover:shadow-xl"
 							>
 								<figure>
-									<img
-										src={season.poster_path
-											? `https://image.tmdb.org/t/p/w500${season.poster_path}`
-											: placeholderURL}
-										alt={season.name || 'Kein Bild verfügbar'}
+									<Img
+										alt={season.name}
 										class="h-full w-auto rounded-t-lg object-cover"
-										loading="lazy"
+										params={[season.poster_path, 'posters', true]}
 									/>
 								</figure>
 								<div class="card-body">
