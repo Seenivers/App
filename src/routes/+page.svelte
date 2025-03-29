@@ -375,7 +375,7 @@
 						{@const title = 'title' in item.tmdb ? item.tmdb.title : item.tmdb.name}
 						<!-- Film oder Serie -->
 						<a
-							href={isMovie(item) ? './movie?id=' : './tv?id=' + item.id.toString()}
+							href={(isMovie(item) ? './movie?id=' : './tv?id=') + item.id.toString()}
 							draggable="false"
 							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
 					{CARDSCALE.aktiv === 1
