@@ -67,16 +67,10 @@
 	{/snippet}
 </Navbar>
 
-<main class="xl:2/3 container z-0 mx-auto w-full flex-grow flex-col px-4 py-6 lg:w-4/5">
+<main class="container mx-auto w-full flex-grow px-4 py-6 lg:w-4/5 xl:w-2/3">
 	<div role="tablist" class="tabs tabs-lifted">
-		<input
-			type="radio"
-			name="my_tabs"
-			role="tab"
-			class="tab"
-			aria-label="Einstellungen"
-			checked={true}
-		/>
+		<!-- Einstellungen Tab -->
+		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Einstellungen" checked />
 		<div role="tabpanel" class="tab-content rounded-box border-base-300 bg-base-100 p-6">
 			<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
 			<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -97,19 +91,19 @@
 				</label>
 
 				<!-- Inhalte für Erwachsene -->
-				<div class="form-control justify-center">
-					<label class="label cursor-pointer">
+				<label class="form-control w-full">
+					<div class="label">
 						<span class="label-text font-semibold">Inhalte für Erwachsene erlauben</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-primary"
-							bind:checked={settings.adult}
-							onchange={markDirty}
-						/>
-					</label>
-				</div>
+					</div>
+					<input
+						type="checkbox"
+						class="toggle toggle-primary"
+						bind:checked={settings.adult}
+						onchange={markDirty}
+					/>
+				</label>
 
-				<!-- Toast Position (Horizontal) -->
+				<!-- Toast-Position (Horizontal) -->
 				<label class="form-control w-full">
 					<div class="label">
 						<span class="label-text font-semibold">Alert-Position (Horizontal)</span>
@@ -125,7 +119,7 @@
 					</select>
 				</label>
 
-				<!-- Toast Position (Vertikal) -->
+				<!-- Toast-Position (Vertikal) -->
 				<label class="form-control w-full">
 					<div class="label">
 						<span class="label-text font-semibold">Alert-Position (Vertikal)</span>
@@ -141,7 +135,7 @@
 					</select>
 				</label>
 
-				<!-- Player -->
+				<!-- Video Player -->
 				<label class="form-control w-full">
 					<div class="label">
 						<span class="label-text font-semibold">Video Player</span>
@@ -184,31 +178,30 @@
 				</label>
 
 				<!-- Discord RPC -->
-				<!-- if abfrage weil es db seitig noch nicht gibt -->
-				<div class="form-control justify-center">
-					<label class="label cursor-pointer">
+				<label class="form-control w-full">
+					<div class="label">
 						<span class="label-text font-semibold">Discord RPC aktivieren</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-primary"
-							bind:checked={settings.discordAktiv}
-							onchange={markDirty}
-						/>
-					</label>
-				</div>
+					</div>
+					<input
+						type="checkbox"
+						class="toggle toggle-primary"
+						bind:checked={settings.discordAktiv}
+						onchange={markDirty}
+					/>
+				</label>
 
 				<!-- Themen -->
 				<label class="form-control w-full">
 					<div class="label">
-						<span class="label-text">Themen</span>
+						<span class="label-text font-semibold">Themen</span>
 					</div>
 					<select
 						class="select select-bordered"
+						bind:value={settings.theme}
 						onchange={() => {
 							setTheme(settings.theme);
 							markDirty();
 						}}
-						bind:value={settings.theme}
 					>
 						{#each themes as theme}
 							<option value={theme.toLowerCase()}>{theme}</option>
@@ -244,6 +237,7 @@
 			</div>
 		</div>
 
+		<!-- Backup Tab -->
 		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Backup" />
 		<div role="tabpanel" class="tab-content rounded-box border-base-300 bg-base-100 p-6">
 			<Backup />
@@ -251,7 +245,7 @@
 	</div>
 </main>
 
-<footer class="footer footer-center bg-base-200 p-4 text-base-content">
+<footer class="footer footer-center bg-base-200 text-base-content p-4">
 	<aside>
 		{#await app.getVersion() then version}
 			<p>v{version}</p>
