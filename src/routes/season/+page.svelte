@@ -115,7 +115,7 @@
 				<div>
 					<h2 class="my-2 text-2xl font-bold">Staffelbesetzung</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each seasonData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -125,7 +125,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
@@ -209,37 +209,35 @@
 				</div>
 			</div>
 
-			<!-- Episodes -->
-			<div>
-				<h2 class="my-2 text-2xl font-bold">Episodes</h2>
-				{#if seasonData.tmdb.episodes.length > 0}
-					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<!-- Episoden -->
+			<section>
+				<h2 class="my-4 text-2xl font-bold">Episoden</h2>
+				{#if seasonData.tmdb.episodes?.length}
+					<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{#each seasonData.tmdb.episodes as episode}
 							<a
 								href="./episode?id={episode.episode_number}&tvShowID={data.tvShowID}&seasonNumber={id}&seasonID={data.seasonID}&episodeID={episode.id}"
 								data-sveltekit-preload-data="tap"
-								class="card card-compact bg-base-100 shadow-xl"
+								class="card card-compact bg-base-100 shadow-lg transition-shadow hover:shadow-xl"
 							>
 								<figure>
-									<img
-										src={episode.still_path
-											? `https://image.tmdb.org/t/p/w500${episode.still_path}`
-											: placeholderURL}
-										alt={episode.name}
-										class="h-48 w-full rounded-t-lg object-cover"
+									<Img
+										params={[episode.still_path, 'posters', true]}
+										alt={episode.name || 'Kein Bild verfügbar'}
+										class="h-full w-auto rounded-t-lg object-cover"
 									/>
 								</figure>
 								<div class="card-body">
-									<h2 class="card-title">{episode.name}</h2>
-									<p>Episode: {episode.episode_number}</p>
+									<h3 class="card-title">{episode.name || `Episode ${episode.episode_number}`}</h3>
+									<p>Episode {episode.episode_number}</p>
 								</div>
 							</a>
 						{/each}
 					</div>
 				{:else}
-					<p>Keine Informationen verfügbar</p>
+					<p class="text-gray-500">Keine Informationen verfügbar</p>
 				{/if}
-			</div>
+			</section>
 		</div>
 	{:else}
 		<div class="flex justify-center p-5">
