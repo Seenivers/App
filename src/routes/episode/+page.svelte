@@ -173,22 +173,103 @@
 					<h2 class="text-lg font-bold">Handlung</h2>
 					<p>{episodeData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
 				</div>
+
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
-						<h2 class="text-lg font-bold">air_date</h2>
+						<h2 class="text-lg font-bold">Erstausstrahlung</h2>
 						<p>
 							{episodeData.tmdb.air_date
-								? new Date(episodeData.tmdb.air_date).toLocaleDateString(window.navigator.language)
+								? new Date(episodeData.tmdb.air_date).toLocaleDateString(
+										window.navigator.language,
+										{
+											year: 'numeric',
+											month: 'long',
+											day: 'numeric'
+										}
+									)
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
+
 					<div>
-						<h2 class="text-lg font-bold">vote_average</h2>
+						<h2 class="text-lg font-bold">Episodennummer</h2>
 						<p>
-							{episodeData.tmdb.vote_average
-								? `${Math.round(episodeData.tmdb.vote_average * 10) / 10}/10`
+							{episodeData.tmdb.episode_number !== undefined
+								? `Episode ${episodeData.tmdb.episode_number}`
 								: 'Keine Informationen verfügbar'}
 						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Staffel</h2>
+						<p>
+							{episodeData.tmdb.season_number !== undefined
+								? `Staffel ${episodeData.tmdb.season_number}`
+								: 'Keine Informationen verfügbar'}
+						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Laufzeit</h2>
+						<p>
+							{episodeData.tmdb.runtime
+								? `${episodeData.tmdb.runtime} Minuten`
+								: 'Keine Informationen verfügbar'}
+						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Bewertung</h2>
+						<p>
+							{episodeData.tmdb.vote_average
+								? `${Math.round(episodeData.tmdb.vote_average * 10) / 10}/10 (${episodeData.tmdb.vote_count} Stimmen)`
+								: 'Keine Bewertungen'}
+						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Externe IDs</h2>
+						{#if episodeData.tmdb.external_ids?.imdb_id}
+							<a
+								href={`https://www.imdb.com/title/${episodeData.tmdb.external_ids.imdb_id}`}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link">IMDb</a
+							>{:else}
+							<p>Keine Informationen verfügbar</p>
+						{/if}
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Hauptdarsteller</h2>
+						{#if episodeData.tmdb.credits?.cast.length}
+							<ul class="list-inside list-disc">
+								{#each episodeData.tmdb.credits.cast.slice(0, 3) as actor}
+									<li>
+										{actor.name}
+										{#if actor.character}
+											als {actor.character}{/if}
+									</li>
+								{/each}
+							</ul>
+						{:else}
+							<p>Keine Informationen verfügbar</p>
+						{/if}
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Regie</h2>
+						{#if episodeData.tmdb.credits?.crew.length}
+							<ul class="list-inside list-disc">
+								{#each episodeData.tmdb.credits.crew
+									.filter((person) => person.job === 'Director')
+									.slice(0, 2) as director}
+									<li>{director.name}</li>
+								{/each}
+							</ul>
+						{:else}
+							<p>Keine Informationen verfügbar</p>
+						{/if}
 					</div>
 				</div>
 			</div>
