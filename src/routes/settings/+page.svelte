@@ -85,7 +85,9 @@
 						onchange={markDirty}
 					>
 						{#each languageSuggestions as lang}
-							<option value={lang}>{lang}</option>
+							<option value={lang}>
+								{new Intl.DisplayNames([window.navigator.language], { type: 'language' }).of(lang)}
+							</option>
 						{/each}
 					</select>
 				</label>
