@@ -2,7 +2,13 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
-import { parseEpisodeId, parseId, parseSeasonId, parseSeasonNumber, parseSerieId } from '$lib/load/loadUtils';
+import {
+	parseEpisodeId,
+	parseId,
+	parseSeasonId,
+	parseSeasonNumber,
+	parseSerieId
+} from '$lib/load/loadUtils';
 import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
@@ -50,5 +56,5 @@ export const load = (async ({ url }) => {
 	const pathExists = result.path ? await exists(result.path) : false;
 
 	// Nur relevante Daten zurückgeben
-	return { id, result, pathExists, tvShowID,seasonID ,episodeID};
+	return { id, result, pathExists, tvShowID, seasonID, episodeID };
 }) satisfies PageLoad;
