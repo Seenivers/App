@@ -111,10 +111,10 @@
 				</div>
 			{/if}
 
-			<!-- Serienbesetzung -->
+			<!-- Staffelbesetzung -->
 			{#if seasonData.tmdb.credits.cast.length > 0}
 				<div>
-					<h2 class="my-2 text-2xl font-bold">Serienbesetzung</h2>
+					<h2 class="my-2 text-2xl font-bold">Staffelbesetzung</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each seasonData.tmdb.credits.cast as cast}
