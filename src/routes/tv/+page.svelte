@@ -149,63 +149,137 @@
 					<h2 class="text-lg font-bold">Handlung</h2>
 					<p>{serieData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
 				</div>
+
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
-						<h2 class="text-lg font-bold">Erscheinungsdatum</h2>
+						<h2 class="text-lg font-bold">Erstausstrahlung</h2>
 						<p>
 							{serieData.tmdb.first_air_date
 								? new Date(serieData.tmdb.first_air_date).toLocaleDateString(
-										window.navigator.language
+										window.navigator.language,
+										{
+											year: 'numeric',
+											month: 'long',
+											day: 'numeric'
+										}
 									)
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Letzte Episode</h2>
+						<p>
+							{serieData.tmdb.last_air_date
+								? new Date(serieData.tmdb.last_air_date).toLocaleDateString(
+										window.navigator.language,
+										{
+											year: 'numeric',
+											month: 'long',
+											day: 'numeric'
+										}
+									)
+								: 'Noch nicht ausgestrahlt'}
+						</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Staffeln & Episoden</h2>
+						<p>
+							{serieData.tmdb.number_of_seasons
+								? `${serieData.tmdb.number_of_seasons} Staffeln`
+								: 'Keine Informationen verfügbar'} /
+							{serieData.tmdb.number_of_episodes
+								? `${serieData.tmdb.number_of_episodes} Episoden`
+								: 'Keine Informationen verfügbar'}
+						</p>
+					</div>
+
 					<div>
 						<h2 class="text-lg font-bold">Durchschnittliche Bewertung</h2>
 						<p>
 							{serieData.tmdb.vote_average
 								? `${Math.round(serieData.tmdb.vote_average * 10) / 10}/10`
-								: 'Keine Informationen verfügbar'}
-							{serieData.tmdb.vote_count ? `(${serieData.tmdb.vote_count} Bewertungen)` : ''}
+								: 'Keine Bewertungen'}
+							{serieData.tmdb.vote_count ? ` (${serieData.tmdb.vote_count} Bewertungen)` : ''}
 						</p>
 					</div>
+
 					<div>
 						<h2 class="text-lg font-bold">Genres</h2>
 						{#if serieData.tmdb.genres}
-							<div class="space-x-1">
+							<div class="flex flex-wrap gap-1">
 								{#each serieData.tmdb.genres as genre}
-									<span class="badge">{genre.name} </span>
+									<span class="badge badge-outline">{genre.name}</span>
 								{/each}
 							</div>
 						{:else}
 							<p>Keine Informationen verfügbar</p>
 						{/if}
 					</div>
+
 					<div>
 						<h2 class="text-lg font-bold">Produktionsfirmen</h2>
 						<p>
-							{serieData.tmdb.production_companies?.map((c) => c.name).join(', ') ||
-								'Keine Informationen verfügbar'}
+							{serieData.tmdb.production_companies?.length
+								? serieData.tmdb.production_companies.map((c) => c.name).join(', ')
+								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
+
 					<div>
 						<h2 class="text-lg font-bold">Produktionsländer</h2>
 						<p>
-							{serieData.tmdb.production_countries?.map((c) => c.name).join(', ') ||
-								'Keine Informationen verfügbar'}
+							{serieData.tmdb.production_countries?.length
+								? serieData.tmdb.production_countries.map((c) => c.name).join(', ')
+								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Laufzeit (pro Episode)</h2>
+						<p>
+							{serieData.tmdb.episode_run_time?.length
+								? `${Math.round(serieData.tmdb.episode_run_time.reduce((a, b) => a + b, 0) / serieData.tmdb.episode_run_time.length)} Minuten`
+								: 'Keine Informationen verfügbar'}
+						</p>
+					</div>
+
 					<div>
 						<h2 class="text-lg font-bold">Beliebtheit</h2>
 						<p>{serieData.tmdb.popularity || 'Keine Informationen verfügbar'}</p>
 					</div>
+
 					<div>
 						<h2 class="text-lg font-bold">Originalsprache</h2>
-						<p>{serieData.tmdb.original_language || 'Keine Informationen verfügbar'}</p>
+						<p>
+							{serieData.tmdb.original_language
+								? new Intl.DisplayNames([window.navigator.language], { type: 'language' }).of(
+										serieData.tmdb.original_language
+									)
+								: 'Keine Informationen verfügbar'}
+						</p>
 					</div>
+
 					<div>
 						<h2 class="text-lg font-bold">Status</h2>
 						<p>{serieData.tmdb.status || 'Keine Informationen verfügbar'}</p>
+					</div>
+
+					<div>
+						<h2 class="text-lg font-bold">Offizielle Webseite</h2>
+						{#if serieData.tmdb.homepage}
+							<a
+								href={serieData.tmdb.homepage}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link"
+							>
+								{serieData.tmdb.homepage}
+							</a>
+						{:else}
+							<p>Keine Informationen verfügbar</p>
+						{/if}
 					</div>
 				</div>
 			</div>
