@@ -15,7 +15,7 @@
 
 	const id = data.id;
 	let watched: boolean = $state(data.result.watched ?? false);
-	let serieData: typeof schema.season.$inferSelect = $state(data.result);
+	let seasonData: typeof schema.season.$inferSelect = $state(data.result);
 	let modal = $state(false);
 
 	// Markiere Film als gesehen/ungesehen
@@ -32,10 +32,10 @@
 
 	// Öffne die Datei mit dem Standardplayer
 	async function openSeriePath() {
-		if (!serieData || !serieData.path) return;
+		if (!seasonData || !seasonData.path) return;
 		try {
 			// Öffne die Datei mit dem Standardplayer
-			await openPath(serieData.path);
+			await openPath(seasonData.path);
 		} catch (err) {
 			error('Failed to open Path: ' + err);
 		}
@@ -52,15 +52,15 @@
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
-					disabled={!serieData}
+					disabled={!seasonData}
 				>
 					Löschen
 				</button>
 			</div>
-			<button class="btn btn-sm md:btn-md" disabled={!serieData} onclick={() => (modal = true)}>
+			<button class="btn btn-sm md:btn-md" disabled={!seasonData} onclick={() => (modal = true)}>
 				Bearbeiten
 			</button>
-			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!serieData}>
+			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!seasonData}>
 				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 			</button>
 		{/if}
@@ -75,15 +75,15 @@
 
 <!-- Main -->
 <main class="z-0">
-	{#if serieData}
+	{#if seasonData}
 		<div class="mx-auto w-full space-y-4 py-5 md:w-[80%] lg:w-[70%]">
-			<h1 class="text-x1 font-bold sm:text-2xl md:text-3xl">{serieData.tmdb.name}</h1>
+			<h1 class="text-x1 font-bold sm:text-2xl md:text-3xl">{seasonData.tmdb.name}</h1>
 
 			<!-- Trailer -->
-			{#if serieData.tmdb.videos.results.length > 0 && online.current}
+			{#if seasonData.tmdb.videos.results.length > 0 && online.current}
 				<h2 class="my-2 text-2xl font-bold">Trailer</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{#each serieData.tmdb.videos.results as trailer}
+					{#each seasonData.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
 							<div
 								class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
@@ -112,12 +112,12 @@
 			{/if}
 
 			<!-- Serienbesetzung -->
-			{#if serieData.tmdb.credits.cast.length > 0}
+			{#if seasonData.tmdb.credits.cast.length > 0}
 				<div>
 					<h2 class="my-2 text-2xl font-bold">Serienbesetzung</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
-							{#each serieData.tmdb.credits.cast as cast}
+							{#each seasonData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
 									class="carousel-item flex flex-col items-center"
@@ -141,22 +141,22 @@
 			<div class="space-y-3">
 				<div>
 					<h2 class="text-lg font-bold">Handlung</h2>
-					<p>{serieData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
+					<p>{seasonData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
 				</div>
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
 						<h2 class="text-lg font-bold">air_date</h2>
 						<p>
-							{serieData.tmdb.air_date
-								? new Date(serieData.tmdb.air_date).toLocaleDateString(window.navigator.language)
+							{seasonData.tmdb.air_date
+								? new Date(seasonData.tmdb.air_date).toLocaleDateString(window.navigator.language)
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
 					<div>
 						<h2 class="text-lg font-bold">vote_average</h2>
 						<p>
-							{serieData.tmdb.vote_average
-								? `${Math.round(serieData.tmdb.vote_average * 10) / 10}/10`
+							{seasonData.tmdb.vote_average
+								? `${Math.round(seasonData.tmdb.vote_average * 10) / 10}/10`
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
@@ -166,9 +166,9 @@
 			<!-- Episodes -->
 			<div>
 				<h2 class="my-2 text-2xl font-bold">Episodes</h2>
-				{#if serieData.tmdb.episodes.length > 0}
+				{#if seasonData.tmdb.episodes.length > 0}
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-						{#each serieData.tmdb.episodes as episode}
+						{#each seasonData.tmdb.episodes as episode}
 							<a
 								href="./episode?id={episode.episode_number}&tvShowID={data.tvShowID}&seasonNumber={id}&seasonID={data.seasonID}&episodeID={episode.id}"
 								data-sveltekit-preload-data="tap"
