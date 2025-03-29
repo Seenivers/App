@@ -121,7 +121,7 @@
 				<div>
 					<h2 class="my-2 text-2xl font-bold">Serienbesetzung</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each serieData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -131,7 +131,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
@@ -283,37 +283,38 @@
 				</div>
 			</div>
 
-			<!-- Seasons -->
-			<div>
-				<h2 class="my-2 text-2xl font-bold">Seasons</h2>
-				{#if serieData.tmdb.seasons.length > 0}
-					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<!-- Staffeln -->
+			<section>
+				<h2 class="my-4 text-2xl font-bold">Staffeln</h2>
+				{#if serieData.tmdb.seasons?.length}
+					<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{#each serieData.tmdb.seasons as season}
 							<a
 								href="./season?id={season.season_number}&tvShowID={id}&seasonID={season.id}"
 								data-sveltekit-preload-data="tap"
-								class="card card-compact bg-base-100 shadow-xl"
+								class="card card-compact bg-base-100 shadow-lg transition-shadow hover:shadow-xl"
 							>
 								<figure>
 									<img
 										src={season.poster_path
 											? `https://image.tmdb.org/t/p/w500${season.poster_path}`
 											: placeholderURL}
-										alt={season.name}
-										class="h-48 w-full rounded-t-lg object-cover"
+										alt={season.name || 'Kein Bild verfügbar'}
+										class="h-full w-auto rounded-t-lg object-cover"
+										loading="lazy"
 									/>
 								</figure>
 								<div class="card-body">
-									<h2 class="card-title">{season.name}</h2>
-									<p>{season.episode_count} Episodes</p>
+									<h3 class="card-title">{season.name}</h3>
+									<p>{season.episode_count} Episoden</p>
 								</div>
 							</a>
 						{/each}
 					</div>
 				{:else}
-					<p>Keine Informationen verfügbar</p>
+					<p class="text-gray-500">Keine Informationen verfügbar</p>
 				{/if}
-			</div>
+			</section>
 		</div>
 	{:else}
 		<div class="flex justify-center p-5">
