@@ -1,3 +1,10 @@
+## [0.26.1](https://github.com/Seenivers/App/compare/v0.26.0...v0.26.1) (2025-03-29)
+
+
+### Bug Fixes
+
+* **tv:** update condition to check for empty movies, collections, and series ([7ec363a](https://github.com/Seenivers/App/commit/7ec363a9616e3d6409d4e7265378292ecc83a434))
+
 # [0.26.0](https://github.com/Seenivers/App/compare/v0.25.0...v0.26.0) (2025-03-29)
 
 ### Bug Fixes
