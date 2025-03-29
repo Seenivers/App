@@ -106,8 +106,10 @@
 			{:else if episodeData.path}
 				<p class="text-error text-lg font-bold underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{episodeData.path}</p>
-			{:else if online.current}
-				<!-- Trailer -->
+			{/if}
+
+			<!-- Trailer -->
+			{#if data.pathExists && online.current}
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each episodeData.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
