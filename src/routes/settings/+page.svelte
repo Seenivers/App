@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { db } from '$lib/db/database';
 	import { schema } from '$lib/db/schema';
-	import { eq } from 'drizzle-orm';
-	import { settings as dbSettings } from '$lib/db/funktion';
+	import { settings } from '$lib/stores.svelte';
 	import { newToast } from '$lib/toast/toast';
 	import { app } from '@tauri-apps/api';
 	import Navbar from '$lib/Navbar.svelte';
@@ -13,20 +11,17 @@
 	import { setTheme } from '$lib/utils/themeUtils';
 	import Backup from './backup.svelte';
 
-	let settings: typeof schema.settings.$inferSelect = $state(dbSettings);
-	let isDirty = false; // Überwachungsvariable für Änderungen
+	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
+	let isDirty = $state(false); // Überwachungsvariable für Änderungen
 
 	// Automatisch Vorschläge aus navigator.languages generieren
 	const languageSuggestions = Array.from(
 		new Set(navigator.languages.map((lang) => lang.split('-')[0]))
 	);
 
-	// Standard-Sprache auswählen
-	settings.language = settings.language || languageSuggestions[0] || 'en'; // Fallback auf Englisch
-
 	// Funktion zum Speichern der geänderten Einstellungen
-	async function saveSettings() {
-		await db.update(schema.settings).set(settings).where(eq(schema.settings.id, 1));
+	function saveSettings() {
+		Object.assign(settings, settingsTemp); // Eigenschaften von settingsTemp in settings kopieren
 		newToast('info', 'Einstellungen gespeichert!');
 		isDirty = false; // Änderungen wurden gespeichert
 	}
@@ -36,7 +31,7 @@
 		const target = event.currentTarget as HTMLTextAreaElement | null;
 		if (!target) return; // Falls target null ist, direkt beenden
 
-		settings[type] = [...new Set(target.value.split(',').map((kw) => kw.trim()))];
+		settingsTemp[type] = [...new Set(target.value.split(',').map((kw) => kw.trim()))];
 
 		isDirty = true; // Eine Änderung wurde vorgenommen
 	}
@@ -54,9 +49,9 @@
 <Navbar
 	back={true}
 	onclick={async () => {
-		if (isDirty && !(await confirm('Du hast ungespeicherte Änderungen. Wirklich verlassen?'))) {
+		if (isDirty && !(await confirm('Du hast ungespeicherte Änderungen. Wirklich verlassen?')))
 			return;
-		}
+		setTheme(settings.theme);
 		window.history.length > 1 ? window.history.back() : (window.location.href = '/');
 	}}
 >
@@ -79,12 +74,14 @@
 					</div>
 					<select
 						class="select select-bordered w-full"
-						bind:value={settings.language}
+						bind:value={settingsTemp.language}
 						onchange={markDirty}
 					>
 						{#each languageSuggestions as lang}
 							<option value={lang}>
-								{new Intl.DisplayNames([window.navigator.language], { type: 'language' }).of(lang)}
+								{new Intl.DisplayNames([settings.language, window.navigator.language], {
+									type: 'language'
+								}).of(lang)}
 							</option>
 						{/each}
 					</select>
@@ -98,7 +95,7 @@
 					<input
 						type="checkbox"
 						class="toggle toggle-primary"
-						bind:checked={settings.adult}
+						bind:checked={settingsTemp.adult}
 						onchange={markDirty}
 					/>
 				</label>
@@ -110,7 +107,7 @@
 					</div>
 					<select
 						class="select select-bordered w-full"
-						bind:value={settings.toastPosition.horizontal}
+						bind:value={settingsTemp.toastPosition.horizontal}
 						onchange={markDirty}
 					>
 						<option value="start">Links</option>
@@ -126,7 +123,7 @@
 					</div>
 					<select
 						class="select select-bordered w-full"
-						bind:value={settings.toastPosition.vertical}
+						bind:value={settingsTemp.toastPosition.vertical}
 						onchange={markDirty}
 					>
 						<option value="top">Oben</option>
@@ -142,7 +139,7 @@
 					</div>
 					<select
 						class="select select-bordered w-full"
-						bind:value={settings.player}
+						bind:value={settingsTemp.player}
 						onchange={markDirty}
 					>
 						<option value="Plyr">Plyr</option>
@@ -161,18 +158,18 @@
 						type="range"
 						min="-1"
 						max="20"
-						bind:value={settings.castImages}
+						bind:value={settingsTemp.castImages}
 						onchange={markDirty}
 						class="range"
 						step="1"
 					/>
 					<div class="flex w-full justify-between px-2 text-xs">
 						<span>
-							{settings.castImages === -1
+							{settingsTemp.castImages === -1
 								? 'Keine'
-								: settings.castImages === 0
+								: settingsTemp.castImages === 0
 									? 'Alle'
-									: settings.castImages}
+									: settingsTemp.castImages}
 						</span>
 					</div>
 				</label>
@@ -185,7 +182,7 @@
 					<input
 						type="checkbox"
 						class="toggle toggle-primary"
-						bind:checked={settings.discordAktiv}
+						bind:checked={settingsTemp.discordAktiv}
 						onchange={markDirty}
 					/>
 				</label>
@@ -197,9 +194,9 @@
 					</div>
 					<select
 						class="select select-bordered"
-						bind:value={settings.theme}
+						bind:value={settingsTemp.theme}
 						onchange={() => {
-							setTheme(settings.theme);
+							setTheme(settingsTemp.theme);
 							markDirty();
 						}}
 					>
@@ -217,7 +214,7 @@
 					<textarea
 						class="textarea textarea-bordered h-32 w-full"
 						placeholder="Schlüsselwörter (kommagetrennt)"
-						bind:value={settings.keywords}
+						bind:value={settingsTemp.keywords}
 						onchange={(event) => handleInput(event, 'keywords')}
 					></textarea>
 				</label>
@@ -230,7 +227,7 @@
 					<textarea
 						class="textarea textarea-bordered h-32 w-full"
 						placeholder="Schlüsselwörter (kommagetrennt)"
-						bind:value={settings.ignoredKeywords}
+						bind:value={settingsTemp.ignoredKeywords}
 						onchange={(event) => handleInput(event, 'ignoredKeywords')}
 					></textarea>
 				</label>
@@ -245,7 +242,7 @@
 	</div>
 </main>
 
-<footer class="footer footer-center bg-base-200 p-4 text-base-content">
+<footer class="footer footer-center bg-base-200 text-base-content p-4">
 	<aside>
 		{#await app.getVersion() then version}
 			<p>v{version}</p>
