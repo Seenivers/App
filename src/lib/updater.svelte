@@ -121,7 +121,7 @@
 			<h3 class="text-lg font-semibold md:text-xl">Version {update.version}</h3>
 			<h4 class="text-lg">Änderungen</h4>
 
-			<div class="body bg-base-200 my-3 max-h-[70vh] flex-1 overflow-y-auto rounded-md px-3">
+			<div class="body my-3 max-h-[70vh] flex-1 overflow-y-auto rounded-md bg-base-200 px-3">
 				{#await marked.parse(update.body)}
 					<p>Lade Änderungsprotokoll...</p>
 				{:then body}
@@ -134,7 +134,7 @@
 				<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
 				></progress>
 			{:else if downloadFinished}
-				<p class="text-success mt-4 text-lg font-semibold">Update erfolgreich heruntergeladen!</p>
+				<p class="mt-4 text-lg font-semibold text-success">Update erfolgreich heruntergeladen!</p>
 			{/if}
 
 			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">

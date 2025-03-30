@@ -1,16 +1,14 @@
 # [0.27.0](https://github.com/Seenivers/App/compare/v0.26.1...v0.27.0) (2025-03-30)
 
-
 ### Bug Fixes
 
-* **deps:** update dependency @tauri-apps/plugin-updater to ^2.6.1 ([8e5056f](https://github.com/Seenivers/App/commit/8e5056f5122084fa61d13d4f3e6613378a78dcd3))
-* **deps:** update rust crate tauri-plugin-log to 2.3.1 ([a72060a](https://github.com/Seenivers/App/commit/a72060ae257a3555ab01f5dc6536f10d492c7f2e))
-* update copyright notice from Seenivers.net to Seenivers.com ([26554be](https://github.com/Seenivers/App/commit/26554be3d432f7ac7b728994f2fe061d86301072))
-
+- **deps:** update dependency @tauri-apps/plugin-updater to ^2.6.1 ([8e5056f](https://github.com/Seenivers/App/commit/8e5056f5122084fa61d13d4f3e6613378a78dcd3))
+- **deps:** update rust crate tauri-plugin-log to 2.3.1 ([a72060a](https://github.com/Seenivers/App/commit/a72060ae257a3555ab01f5dc6536f10d492c7f2e))
+- update copyright notice from Seenivers.net to Seenivers.com ([26554be](https://github.com/Seenivers/App/commit/26554be3d432f7ac7b728994f2fe061d86301072))
 
 ### Features
 
-* **updater:** enhance update handling with download progress tracking and improved UI ([f7740f4](https://github.com/Seenivers/App/commit/f7740f47eac950d98e977c3c76123aac9fa892fc))
+- **updater:** enhance update handling with download progress tracking and improved UI ([f7740f4](https://github.com/Seenivers/App/commit/f7740f47eac950d98e977c3c76123aac9fa892fc))
 
 ## [0.26.1](https://github.com/Seenivers/App/compare/v0.26.0...v0.26.1) (2025-03-29)
 
