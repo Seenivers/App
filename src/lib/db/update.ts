@@ -1,7 +1,7 @@
 import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 import { db } from './database';
-import { settings } from './funktion';
+import { settings } from '$lib/stores.svelte';
 import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types/types';
 import {

@@ -1,6 +1,6 @@
 <!-- https://daisyui.com/components/toast/ -->
 <script lang="ts">
-	import { settings } from '$lib/db/funktion';
+	import { settings } from '$lib/stores.svelte';
 	import type { AlertPositionHorizontally, AlertPositionVertically } from '$lib/types/settings';
 	import { messages } from '$lib/toast/toast';
 	import { fly } from 'svelte/transition';

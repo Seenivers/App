@@ -1,10 +1,9 @@
-import { settings } from '$lib/db/funktion';
 import { extensions } from '$lib';
 import * as tmdb from '$lib/utils/tmdb';
 import { error, warn } from '@tauri-apps/plugin-log';
 import { image } from '$lib/image/image';
 import type { SearchList, SearchStatus } from '$lib/types/add';
-import { searchList } from '$lib/stores.svelte';
+import { searchList, settings } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
 import { isMovie, updateSearchStatus } from './utils';

@@ -1,5 +1,5 @@
 import { DiscordClientID } from '$lib';
-import { settings } from '$lib/db/funktion';
+import { settings } from '$lib/stores.svelte';
 import { debug } from '@tauri-apps/plugin-log';
 import { online } from 'svelte/reactivity/window';
 import { isRunning, setActivity, start } from 'tauri-plugin-drpc';

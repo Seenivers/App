@@ -5,7 +5,7 @@
 	import '../app.css';
 	import { networkStatus } from '$lib/utils/networkStatus';
 	import { db } from '$lib/db/database';
-	import { settings } from '$lib/db/funktion';
+	import { settings } from '$lib/stores.svelte';
 	import { attachConsole, attachLogger, trace } from '@tauri-apps/plugin-log';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/utils/log';
@@ -14,6 +14,9 @@
 	import { destroy } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
 	import { settingsDB } from '$lib/utils/db/settings';
+	import { migrate } from '$lib/db/migrate';
+	import { setTheme } from '$lib/utils/themeUtils';
+	import { updateActors, updateCollections, updateMovies, updateOldDB } from '$lib/db/update';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -30,6 +33,16 @@
 	let logConsole: UnlistenFn;
 
 	onMount(async () => {
+		await migrate();
+
+		setTheme(settings.theme);
+		if (settings && import.meta.env.PROD) {
+			await updateOldDB();
+			await updateMovies();
+			await updateCollections();
+			await updateActors();
+		}
+
 		logConsole = await attachConsole();
 		logLogger = await attachLogger(forwardConsole);
 		networkStatus();

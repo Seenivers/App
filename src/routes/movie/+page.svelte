@@ -7,7 +7,7 @@
 	import Vidstack from '$lib/player/Vidstack.svelte';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
-	import { settings } from '$lib/db/funktion';
+	import { settings } from '$lib/stores.svelte';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { openPath } from '@tauri-apps/plugin-opener';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { settings } from '$lib/db/funktion';
+	import { settings } from '$lib/stores.svelte';
 	import { image } from '$lib/image/image';
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';

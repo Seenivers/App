@@ -1,6 +1,6 @@
 import { error } from '@tauri-apps/plugin-log';
 import type { Movie } from '$lib/types/movie';
-import { settings } from '$lib/db/funktion';
+import { settings } from '$lib/stores.svelte';
 import { seeniversURL } from '$lib';
 import type { CollectionDetails } from '$lib/types/collection';
 import type { Search, Movie as SearchMovie, TV as SearchTV } from '$lib/types/searchMovie';
