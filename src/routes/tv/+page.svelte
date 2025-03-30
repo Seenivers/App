@@ -9,6 +9,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { placeholderURL } from '$lib';
 	import { online } from 'svelte/reactivity/window';
+	import { image } from '$lib/image/image';
 
 	let { data }: { data: PageData } = $props();
 
@@ -76,14 +77,30 @@
 <main class="z-0">
 	{#if serieData}
 		<div class="mx-auto w-full space-y-4 py-5 md:w-[80%] lg:w-[70%]">
-			<h1 class="text-x1 mb-2 font-bold sm:text-2xl md:text-3xl">{serieData.tmdb.name}</h1>
-			{#if serieData.tmdb.tagline}
-				<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
-					{serieData.tmdb.tagline}
-				</h2>
-			{/if}
-
-			<Img params={[serieData.tmdb.backdrop_path, 'backdrops', true]} alt={serieData.tmdb.name} />
+			{#await image(serieData.tmdb.backdrop_path, 'backdrops', true) then backdropImage}
+				<div
+					class="hero rounded-box bg-base-200"
+					style="background-image: url({backdropImage.src});"
+				>
+					<div class="hero-overlay rounded-box bg-opacity-90"></div>
+					<div class="hero-content flex-col gap-4 lg:flex-row">
+						<Img
+							alt="Poster"
+							params={[serieData.tmdb.poster_path, 'posters', true]}
+							class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
+						/>
+						<div class="text-neutral-content text-center lg:text-left">
+							<h1 class="text-4xl font-bold md:text-5xl">{serieData.tmdb.name}</h1>
+							{#if serieData.tmdb.tagline}
+								<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
+									{serieData.tmdb.tagline}
+								</h2>
+							{/if}
+							<p class="py-6 text-lg md:text-2xl">{serieData.tmdb.overview}</p>
+						</div>
+					</div>
+				</div>
+			{/await}
 
 			<!-- Trailer -->
 			{#if !data.pathExists && online.current}
