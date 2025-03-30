@@ -1,20 +1,12 @@
 import type { themes } from '$lib';
 
-export interface Settings {
-	language: string;
-	keywords: string[];
-	ignoredKeywords: string[];
-	adult: boolean;
-	toastPosition: {
-		horizontal: AlertPositionHorizontally;
-		vertical: AlertPositionVertically;
-	};
-	player: 'Plyr' | 'Vidstack';
-	castImages: number;
-	discordAktiv: boolean;
-	theme: (typeof themes)[number];
-	backupInterval: 'manual' | 'onStartup' | 'daily' | 'weekly' | 'monthly';
+export interface ToastPosition {
+	horizontal: AlertPositionHorizontally;
+	vertical: AlertPositionVertically;
 }
+export type Player = 'Plyr' | 'Vidstack';
+export type Theme = (typeof themes)[number];
+export type BackupInterval = 'manual' | 'onStartup' | 'daily' | 'weekly' | 'monthly';
 
 export type AlertPositionHorizontally =
 	| 'start' // align horizontally to the left

@@ -1,5 +1,5 @@
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import type { Settings } from '$lib/types/settings';
+import type { BackupInterval, Player, Theme, ToastPosition } from '$lib/types/settings';
 
 export const settings = sqliteTable('settings', {
 	id: int('id').primaryKey().default(1).unique().notNull(),
@@ -34,17 +34,14 @@ export const settings = sqliteTable('settings', {
 	ignoredKeywords: text('ignoredKeywords', { mode: 'json' })
 		.$type<string[]>()
 		.default(['Trailer', 'Preview', 'Sample']),
-	theme: text('theme').notNull().$type<Settings['theme']>().default('default'),
+	theme: text('theme').notNull().$type<Theme>().default('default'),
 	adult: int('adult', { mode: 'boolean' }).notNull().default(false),
 	toastPosition: text('toastPosition', { mode: 'json' })
 		.notNull()
-		.$type<Settings['toastPosition']>()
+		.$type<ToastPosition>()
 		.default({ horizontal: 'end', vertical: 'bottom' }),
-	player: text('player').notNull().$type<Settings['player']>().default('Plyr'),
+	player: text('player').notNull().$type<Player>().default('Plyr'),
 	castImages: int('castImages').notNull().default(5), // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
 	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true),
-	backupInterval: text('backupInterval')
-		.notNull()
-		.$type<Settings['backupInterval']>()
-		.default('manual')
+	backupInterval: text('backupInterval').notNull().$type<BackupInterval>().default('manual')
 });
