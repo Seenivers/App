@@ -13,6 +13,7 @@
 	import { startRPC } from '$lib/discord';
 	import { destroy } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
+	import { settingsDB } from '$lib/utils/db/settings';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -44,6 +45,8 @@
 
 	onDestroy(async () => {
 		trace('App closed');
+
+		await settingsDB.update(settings);
 
 		await destroy();
 
