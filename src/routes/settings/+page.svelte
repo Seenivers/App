@@ -54,10 +54,8 @@
 <Navbar
 	back={true}
 	onclick={async () => {
-		if (isDirty) {
-			if (!(await confirm('Du hast ungespeicherte Änderungen. Wirklich verlassen?'))) {
-				return;
-			}
+		if (isDirty && !(await confirm('Du hast ungespeicherte Änderungen. Wirklich verlassen?'))) {
+			return;
 		}
 		window.history.length > 1 ? window.history.back() : (window.location.href = '/');
 	}}
