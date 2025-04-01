@@ -9,6 +9,7 @@
 	import { getFilter, type SearchCriteria, setFilter } from '$lib/utils/sessionStorage';
 	import { _ } from 'svelte-i18n';
 	import { discord } from '$lib/discord';
+	import { isMovieEntry } from '$lib/utils/is';
 
 	interface Props {
 		data: PageData;
@@ -43,16 +44,6 @@
 	let searchInput: HTMLInputElement | undefined = $state();
 	let datalistItem: HTMLDataListElement | undefined = $state();
 
-	// Prüft, ob ein Element ein Film ist
-	function isMovie(
-		item:
-			| typeof schema.movies.$inferSelect
-			| typeof schema.collections.$inferSelect
-			| typeof schema.serie.$inferSelect
-	): item is typeof schema.movies.$inferSelect {
-		return 'tmdb' in item && 'title' in item.tmdb;
-	}
-
 	// Funktion zum Filtern der Filme
 	async function filterMovies() {
 		setFilter(searchCriteria);
@@ -73,14 +64,14 @@
 			const results: FuseResult<typeof schema.movies.$inferSelect>[] = searchCriteria.title
 				? fuse.search(searchCriteria.title)
 				: matchedMovies
-						.filter(isMovie) // Nur Filme durchsuchen
+						.filter(isMovieEntry) // Nur Filme durchsuchen
 						.map((movie) => ({ item: movie }) as FuseResult<typeof schema.movies.$inferSelect>);
 
 			matchedMovies = (
 				results.length >= 1 ? results.map((result) => result.item) : data.result
 			).filter((movie) => {
 				// Sicherstellen, dass es sich um einen Film handelt
-				if (!isMovie(movie)) return false;
+				if (!isMovieEntry(movie)) return false;
 
 				// Genre-Filterung
 				const genreMatches =
@@ -375,7 +366,7 @@
 						{@const title = 'title' in item.tmdb ? item.tmdb.title : item.tmdb.name}
 						<!-- Film oder Serie -->
 						<a
-							href={(isMovie(item) ? './movie?id=' : './tv?id=') + item.id.toString()}
+							href={(isMovieEntry(item) ? './movie?id=' : './tv?id=') + item.id.toString()}
 							draggable="false"
 							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
 					{CARDSCALE.aktiv === 1
