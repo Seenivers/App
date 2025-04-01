@@ -80,7 +80,7 @@
 			{#await image(serieData.tmdb.backdrop_path, 'backdrops', true) then backdropImage}
 				<div
 					class="hero rounded-box bg-base-200"
-					style="background-image: url({backdropImage.src});"
+					style={backdropImage?.src ? `background-image: url(${backdropImage.src});` : ''}
 				>
 					<div class="hero-overlay rounded-box bg-opacity-90"></div>
 					<div class="hero-content flex-col gap-4 lg:flex-row">
@@ -96,7 +96,9 @@
 									{serieData.tmdb.tagline}
 								</h2>
 							{/if}
-							<p class="py-6 text-lg md:text-2xl">{serieData.tmdb.overview}</p>
+							<p class="py-6 text-lg md:text-2xl">
+								{serieData.tmdb.overview || 'Keine Beschreibung verfügbar'}
+							</p>
 						</div>
 					</div>
 				</div>
