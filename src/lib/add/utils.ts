@@ -6,7 +6,7 @@ export function updateSearchStatus(index: number, newState: SearchStatus) {
 	searchList[index].status = newState;
 }
 
-export function isMovie(path: string) {
+export function hasMovieExtension(path: string) {
 	const fileExtension = path.split('.').pop()?.toLowerCase() ?? '';
 	return extensions.includes(fileExtension); // Falls es eine Datei mit Endung ist → Movie
 }

@@ -6,7 +6,7 @@ import type { SearchList, SearchStatus } from '$lib/types/add';
 import { searchList, settings } from '$lib/stores.svelte';
 import { online } from 'svelte/reactivity/window';
 import type { Movie } from '$lib/types/movie';
-import { isMovie, updateSearchStatus } from './utils';
+import { hasMovieExtension, updateSearchStatus } from './utils';
 import type { Serie } from '$lib/types/tv/serie';
 import { serie } from '$lib/utils/db/serie';
 import { season } from '$lib/utils/db/season';
@@ -85,7 +85,7 @@ export async function load() {
 export async function addNewFiles(paths: string[]) {
 	// Filtere und validiere die Dateien
 	const validFiles = paths.filter((path) => {
-		if (isMovie(path)) {
+		if (hasMovieExtension(path)) {
 			// Überprüfe, ob die Datei eine gültige Erweiterung hat
 			const fileExtension = path.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
 			return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
@@ -123,7 +123,7 @@ async function filterNewFiles(paths: string[]) {
 	const newFiles = await Promise.all(
 		paths.map(async (path) => {
 			// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
-			const unique = isMovie(path)
+			const unique = hasMovieExtension(path)
 				? await movie.isPathUnique(path)
 				: await serie.isPathUnique(path);
 			return unique && !existingPaths.has(path) ? path : undefined;
@@ -161,7 +161,7 @@ export function addNewPathsToStatus(newPaths: string[]) {
 
 		return {
 			status: 'waitForSearching',
-			mediaType: isMovie(path) ? 'movie' : 'tv',
+			mediaType: hasMovieExtension(path) ? 'movie' : 'tv',
 			search: {
 				page: 1,
 				results: [],
