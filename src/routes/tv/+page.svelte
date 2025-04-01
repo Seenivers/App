@@ -103,7 +103,7 @@
 			{/await}
 
 			<!-- Trailer -->
-			{#if !data.pathExists && online.current}
+			{#if !data.pathExists && online.current && serieData.tmdb.videos.results.some((trailer) => trailer.site === 'YouTube')}
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each serieData.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
