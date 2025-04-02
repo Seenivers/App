@@ -10,6 +10,7 @@
 	import { _ } from 'svelte-i18n';
 	import { discord } from '$lib/discord';
 	import { isMovieEntry } from '$lib/utils/is';
+	import Card from '$lib/utils/card.svelte';
 
 	interface Props {
 		data: PageData;
@@ -333,72 +334,23 @@
 				{#each data.result as item}
 					{#if 'parts' in item}
 						<!-- Collection -->
-						<a
+						<Card
+							bind:CARDSCALE
+							title={item.name}
 							href={'./collection?id=' + item.id.toString()}
-							draggable="false"
-							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
-					{CARDSCALE.aktiv === 1
-								? 'min-w-[8rem] max-w-[12rem]'
-								: CARDSCALE.aktiv === 2
-									? 'min-w-[12rem] max-w-[18rem]'
-									: 'min-w-[16rem] max-w-[24rem]'}"
-						>
-							<figure class="relative px-2 pt-2">
-								<Img
-									params={[item.poster_path, 'posters', true]}
-									alt={$_('main.movies.posterAlt', { values: { title: item.name } })}
-									class="rounded-xl"
-								/>
-							</figure>
-							<div class="card-body items-center py-2 text-center">
-								<p
-									class="card-title {CARDSCALE.aktiv === 1
-										? 'text-base'
-										: CARDSCALE.aktiv === 2
-											? 'text-lg'
-											: 'text-2xl'}"
-								>
-									{item.name}
-								</p>
-							</div>
-						</a>
+							params={[item.poster_path, 'posters', true]}
+							alt={$_('main.movies.posterAlt', { values: { title: item.name } })}
+						/>
 					{:else if 'tmdb' in item}
 						{@const title = 'title' in item.tmdb ? item.tmdb.title : item.tmdb.name}
 						<!-- Film oder Serie -->
-						<a
+						<Card
+							bind:CARDSCALE
+							{title}
 							href={(isMovieEntry(item) ? './movie?id=' : './tv?id=') + item.id.toString()}
-							draggable="false"
-							class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20
-					{CARDSCALE.aktiv === 1
-								? 'min-w-[8rem] max-w-[12rem]'
-								: CARDSCALE.aktiv === 2
-									? 'min-w-[12rem] max-w-[18rem]'
-									: 'min-w-[16rem] max-w-[24rem]'}"
-						>
-							<figure class="relative px-2 pt-2">
-								<Img
-									params={[item.tmdb.poster_path, 'posters', true]}
-									alt={$_('main.movies.posterAlt', { values: { title: title } })}
-									class="rounded-xl"
-								/>
-								{#if item.watched}
-									<div class="badge badge-outline absolute left-3 top-3 bg-base-300">
-										{$_('main.movies.badgeWatched')}
-									</div>
-								{/if}
-							</figure>
-							<div class="card-body items-center py-2 text-center">
-								<p
-									class="card-title {CARDSCALE.aktiv === 1
-										? 'text-base'
-										: CARDSCALE.aktiv === 2
-											? 'text-lg'
-											: 'text-2xl'}"
-								>
-									{title}
-								</p>
-							</div>
-						</a>
+							params={[item.tmdb.poster_path, 'posters', true]}
+							alt={$_('main.movies.posterAlt', { values: { title: title } })}
+						/>
 					{/if}
 				{/each}
 			</div>
