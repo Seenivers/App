@@ -13,5 +13,5 @@ export function isMovieEntry(
 		return extensions.includes(fileExtension);
 	}
 
-	return 'tmdb' in item && 'title' in item.tmdb;
+	return 'tmdb' in item && item.tmdb !== undefined && 'title' in item.tmdb;
 }
