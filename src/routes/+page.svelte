@@ -358,6 +358,9 @@
 			<p>{$_('main.movies.noneFound')}</p>
 		{/if}
 	{:else}
-		<p>{$_('main.movies.noneAdded')}</p>
+		<div class="flex flex-col items-center space-y-4">
+			<p>{$_('main.movies.noneAdded')}</p>
+			<a href="./add" class="btn">Hinzufügen</a>
+		</div>
 	{/if}
 </main>
