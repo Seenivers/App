@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { schema } from '$lib/db/schema';
-	import Img from '$lib/image/Img.svelte';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { Cardscale } from '$lib/types/cardscale';
 	import type { PageData } from './$types';
@@ -22,6 +21,20 @@
 			{ number: 3, size: 'Large' }
 		]
 	});
+
+	let search = $state('');
+
+	const filteredCollections = $derived(() =>
+		data.collections.filter((item) => item.tmdb?.name?.toLowerCase().includes(search.toLowerCase()))
+	);
+
+	const filteredMovies = $derived(() =>
+		data.movies.filter((item) => item.tmdb?.title?.toLowerCase().includes(search.toLowerCase()))
+	);
+
+	const filteredSeries = $derived(() =>
+		data.series.filter((item) => item.tmdb?.name?.toLowerCase().includes(search.toLowerCase()))
+	);
 </script>
 
 <Navbar>
@@ -35,31 +48,79 @@
 
 <main class="z-0 flex-grow flex-col p-5">
 	{#if data}
+		<!-- Sucheingabe -->
+		<div class="form-control mx-auto mb-8 w-full max-w-xl">
+			<label class="input input-bordered flex items-center gap-2">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-5 w-5 opacity-60"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1116.65 2.5a7.5 7.5 0 010 14.15z"
+					/>
+				</svg>
+				<input type="text" class="grow" placeholder="Titel suchen..." bind:value={search} />
+			</label>
+		</div>
+
+		<!-- Ergebnisse -->
 		<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
-			{#each [data.collections, data.movies, data.series] as category}
-				{#each category as item}
-					{@const isCollection = 'parts' in item}
-					{@const title = isMovieEntry(item) ? item.tmdb.title : item.tmdb?.name}
-					{@const alt = $_('main.movies.posterAlt', { values: { title } })}
+			<!-- Collections -->
+			{#if filteredCollections().length > 0}
+				{#each filteredCollections() as item (item.id)}
+					<Card
+						bind:CARDSCALE
+						title={item.tmdb?.name}
+						href={`./collection?id=${item.id}`}
+						params={[item.poster_path, 'posters', true]}
+						alt={$_('main.movies.posterAlt', { values: { title: item.tmdb?.name } })}
+					/>
+				{/each}
+			{/if}
 
-					{@const href = isCollection
-						? `./collection?id=${item.id}`
-						: `${isMovieEntry(item) ? './movie?id=' : './tv?id='}${item.id}`}
-
+			<!-- Movies -->
+			{#if filteredMovies().length > 0}
+				{#each filteredMovies() as item (item.id)}
+					{@const title = item.tmdb?.title}
 					<Card
 						bind:CARDSCALE
 						{title}
-						{href}
-						params={[isCollection ? item.poster_path : item.tmdb?.poster_path, 'posters', true]}
-						{alt}
+						href={`./movie?id=${item.id}`}
+						params={[item.tmdb.poster_path, 'posters', true]}
+						alt={$_('main.movies.posterAlt', { values: { title } })}
 					/>
 				{/each}
-			{/each}
+			{/if}
+
+			<!-- Series -->
+			{#if filteredSeries().length > 0}
+				{#each filteredSeries() as item (item.id)}
+					{@const title = item.tmdb?.name}
+					<Card
+						bind:CARDSCALE
+						{title}
+						href={`./tv?id=${item.id}`}
+						params={[item.tmdb.poster_path, 'posters', true]}
+						alt={$_('main.movies.posterAlt', { values: { title } })}
+					/>
+				{/each}
+			{/if}
+
+			<!-- Keine Ergebnisse -->
+			{#if filteredCollections().length === 0 && filteredMovies().length === 0 && filteredSeries().length === 0}
+				<p class="mt-10 w-full text-center text-gray-400">{$_('main.movies.noneFound')}</p>
+			{/if}
 		</div>
 	{:else}
 		<div class="flex flex-col items-center space-y-4">
 			<p>{$_('main.movies.noneAdded')}</p>
-			<a href="./add" class="btn">Hinzufügen</a>
+			<a href="./add" class="btn">{$_('main.nav.add')}</a>
 		</div>
 	{/if}
 </main>
