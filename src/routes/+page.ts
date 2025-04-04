@@ -22,7 +22,13 @@ export const load = (async () => {
 	}
 
 	// Nur Filme & Serien mit gesetztem `path`
-	const moviesWithPath = movies.filter((movie) => movie.path);
+	const moviesWithPath = movies
+		.filter((movie) => movie.path)
+		.map((c) => ({
+			...c,
+			tmdb: { ...c.tmdb, name: c.tmdb.title } // Platzhalter-Struktur für spätere Nutzung
+		}));
+
 	const seriesWithPath = series.filter((serie) => serie.path);
 
 	// Collections filtern: Nur, wenn mindestens ein Film mit `path` existiert
