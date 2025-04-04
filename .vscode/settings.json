@@ -8,8 +8,8 @@
 		"**/target": true,
 		"**/docs": true,
 		"**/locales": true,
-		"CHANGELOG.md": true,
-		"llms-full.txt": true
+		"**/CHANGELOG*": true,
+		"**/llms*": true
 	},
 	"sonarlint.connectedMode.project": {
 		"connectionId": "seenivers",
