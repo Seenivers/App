@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { schema } from '$lib/db/schema';
 	import Navbar from '$lib/Navbar.svelte';
-	import type { Cardscale } from '$lib/types/cardscale';
 	import type { PageData } from './$types';
 	import { isMovieEntry } from '$lib/utils/is';
 	import Card from '$lib/utils/card.svelte';
 	import { _ } from 'svelte-i18n';
+	import { type CardscaleNumbers } from '$lib/types/cardscale';
+	import { CARD_SCALE } from '$lib/utils/cardscale';
 
 	interface Props {
 		data: PageData;
@@ -13,28 +14,45 @@
 
 	let { data }: Props = $props();
 
-	let CARDSCALE: Cardscale = $state({
-		aktiv: 2,
-		sizes: [
-			{ number: 1, size: 'Small' },
-			{ number: 2, size: 'Medium' },
-			{ number: 3, size: 'Large' }
-		]
-	});
-
+	let CARDSCALE: CardscaleNumbers = $state(2);
 	let search = $state('');
+	let showCollections = $state(false);
+	let showMovies = $state(true);
+	let showSeries = $state(true);
+	let sortOption = $state<'added' | 'rating' | 'duration'>('added');
+	let selectedGenres = $state<string[]>([]);
 
-	const filteredCollections = $derived(() =>
-		data.collections.filter((item) => item.tmdb?.name?.toLowerCase().includes(search.toLowerCase()))
-	);
+	// Genre-Filter
+	const genreFilter = (genres: { name: string }[]) =>
+		selectedGenres.length === 0 || genres.some((g) => selectedGenres.includes(g.name));
 
+	// Filter für Filme, Serien und Sammlungen
 	const filteredMovies = $derived(() =>
-		data.movies.filter((item) => item.tmdb?.title?.toLowerCase().includes(search.toLowerCase()))
+		data.movies
+			.filter((m) => showMovies && m.tmdb.title?.toLowerCase().includes(search.toLowerCase()))
+			.filter((m) => genreFilter(m.tmdb.genres || []))
+			.sort(sortBy)
 	);
 
 	const filteredSeries = $derived(() =>
-		data.series.filter((item) => item.tmdb?.name?.toLowerCase().includes(search.toLowerCase()))
+		data.series
+			.filter((s) => showSeries && s.tmdb.name?.toLowerCase().includes(search.toLowerCase()))
+			.filter((s) => genreFilter(s.tmdb.genres || []))
+			.sort(sortBy)
 	);
+
+	const filteredCollections = $derived(() =>
+		data.collections
+			.filter((c) => showCollections && c.tmdb?.name?.toLowerCase().includes(search.toLowerCase()))
+			.filter(() => genreFilter([]))
+			.sort(sortBy)
+	);
+
+	function sortBy(a: any, b: any) {
+		if (sortOption === 'rating') return (b.tmdb.vote_average ?? 0) - (a.tmdb.vote_average ?? 0);
+		if (sortOption === 'duration') return (b.tmdb.runtime ?? 0) - (a.tmdb.runtime ?? 0);
+		return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+	}
 </script>
 
 <Navbar>
@@ -46,11 +64,11 @@
 	{/snippet}
 </Navbar>
 
-<main class="z-0 flex-grow flex-col p-5">
+<main class="z-0 flex flex-col space-y-2 p-4 sm:p-5">
 	{#if data}
 		<!-- Sucheingabe -->
-		<div class="form-control mx-auto mb-8 w-full max-w-xl">
-			<label class="input input-bordered flex items-center gap-2">
+		<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
+			<label class="input input-bordered flex w-full items-center gap-2">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-5 w-5 opacity-60"
@@ -65,57 +83,83 @@
 						d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1116.65 2.5a7.5 7.5 0 010 14.15z"
 					/>
 				</svg>
-				<input type="text" class="grow" placeholder="Titel suchen..." bind:value={search} />
+				<input type="text" class="w-full" placeholder="Titel suchen..." bind:value={search} />
 			</label>
 		</div>
 
+		<!-- Filter & Sortierung -->
+		<div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+			<!-- Typ Filter -->
+			<div class="flex flex-wrap gap-2">
+				<label class="label cursor-pointer space-x-2">
+					<span class="label-text">Filme</span>
+					<input type="checkbox" class="toggle toggle-sm" bind:checked={showMovies} />
+				</label>
+				<label class="label cursor-pointer space-x-2">
+					<span class="label-text">Serien</span>
+					<input type="checkbox" class="toggle toggle-sm" bind:checked={showSeries} />
+				</label>
+				<label class="label cursor-pointer space-x-2">
+					<span class="label-text">Sammlungen</span>
+					<input type="checkbox" class="toggle toggle-sm" bind:checked={showCollections} />
+				</label>
+			</div>
+
+			<!-- Sortierung -->
+			<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={sortOption}>
+				<option value="added">Neu hinzugefügt</option>
+				<option value="rating">Beste Bewertung</option>
+				<option value="duration">Längste Dauer</option>
+			</select>
+		</div>
+
 		<!-- Ergebnisse -->
-		<div class="flex flex-wrap justify-center gap-5 p-5 pb-20">
-			<!-- Collections -->
-			{#if filteredCollections().length > 0}
-				{#each filteredCollections() as item (item.id)}
-					<Card
-						bind:CARDSCALE
-						title={item.tmdb?.name}
-						href={`./collection?id=${item.id}`}
-						params={[item.poster_path, 'posters', true]}
-						alt={$_('main.movies.posterAlt', { values: { title: item.tmdb?.name } })}
-					/>
-				{/each}
-			{/if}
+		<div class="flex flex-wrap justify-center gap-4 pb-2 sm:gap-5">
+			{#if filteredCollections().length > 0 || filteredMovies().length > 0 || filteredSeries().length > 0}
+				<!-- Collections -->
+				{#if filteredCollections().length > 0}
+					{#each filteredCollections() as item (item.id)}
+						{@const title = item.tmdb?.name}
+						<Card
+							{CARDSCALE}
+							{title}
+							href={`./collection?id=${item.id}`}
+							params={[item.poster_path, 'posters', true]}
+							alt={$_('main.movies.posterAlt', { values: { title } })}
+						/>
+					{/each}
+				{/if}
 
-			<!-- Movies -->
-			{#if filteredMovies().length > 0}
-				{#each filteredMovies() as item (item.id)}
-					{@const title = item.tmdb?.title}
-					<Card
-						bind:CARDSCALE
-						{title}
-						href={`./movie?id=${item.id}`}
-						params={[item.tmdb.poster_path, 'posters', true]}
-						watched={item.watched}
-						alt={$_('main.movies.posterAlt', { values: { title } })}
-					/>
-				{/each}
-			{/if}
+				<!-- Movies -->
+				{#if filteredMovies().length > 0}
+					{#each filteredMovies() as item (item.id)}
+						{@const title = item.tmdb?.name}
+						<Card
+							bind:CARDSCALE
+							{title}
+							href={`./movie?id=${item.id}`}
+							params={[item.tmdb.poster_path, 'posters', true]}
+							watched={item.watched}
+							alt={$_('main.movies.posterAlt', { values: { title } })}
+						/>
+					{/each}
+				{/if}
 
-			<!-- Series -->
-			{#if filteredSeries().length > 0}
-				{#each filteredSeries() as item (item.id)}
-					{@const title = item.tmdb?.name}
-					<Card
-						bind:CARDSCALE
-						{title}
-						href={`./tv?id=${item.id}`}
-						params={[item.tmdb.poster_path, 'posters', true]}
-						watched={item.watched}
-						alt={$_('main.movies.posterAlt', { values: { title } })}
-					/>
-				{/each}
-			{/if}
-
-			<!-- Keine Ergebnisse -->
-			{#if filteredCollections().length === 0 && filteredMovies().length === 0 && filteredSeries().length === 0}
+				<!-- Series -->
+				{#if filteredSeries().length > 0}
+					{#each filteredSeries() as item (item.id)}
+						{@const title = item.tmdb?.name}
+						<Card
+							bind:CARDSCALE
+							{title}
+							href={`./tv?id=${item.id}`}
+							params={[item.tmdb.poster_path, 'posters', true]}
+							watched={item.watched}
+							alt={$_('main.movies.posterAlt', { values: { title } })}
+						/>
+					{/each}
+				{/if}
+			{:else}
 				<p class="mt-10 w-full text-center text-gray-400">{$_('main.movies.noneFound')}</p>
 			{/if}
 		</div>
