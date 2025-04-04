@@ -93,6 +93,7 @@
 						{title}
 						href={`./movie?id=${item.id}`}
 						params={[item.tmdb.poster_path, 'posters', true]}
+						watched={item.watched}
 						alt={$_('main.movies.posterAlt', { values: { title } })}
 					/>
 				{/each}
@@ -107,6 +108,7 @@
 						{title}
 						href={`./tv?id=${item.id}`}
 						params={[item.tmdb.poster_path, 'posters', true]}
+						watched={item.watched}
 						alt={$_('main.movies.posterAlt', { values: { title } })}
 					/>
 				{/each}
