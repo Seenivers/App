@@ -18,7 +18,7 @@ export const load = (async () => {
 	const series: (typeof schema.serie.$inferSelect)[] = (await serie.getAll()) ?? [];
 
 	if (movies.length === 0 && collections.length === 0 && series.length === 0) {
-		return { movies: [], series: [], collections: [] };
+		return { movies: [], series: [], collections: [], genres: [] };
 	}
 
 	// Nur Filme & Serien mit gesetztem `path`
@@ -33,9 +33,27 @@ export const load = (async () => {
 			tmdb: { name: c.name } // Platzhalter-Struktur für spätere Nutzung
 		}));
 
+	// 🎯 Alle Genres aus Filmen & Serien extrahieren
+	const genreSet = new Set<string>();
+
+	for (const item of [...moviesWithPath, ...seriesWithPath]) {
+		if (item.tmdb?.genres && Array.isArray(item.tmdb.genres)) {
+			for (const genre of item.tmdb.genres) {
+				if (genre?.name) {
+					genreSet.add(genre.name);
+				}
+			}
+		}
+	}
+
+	const genres = Array.from(genreSet)
+		.sort((a, b) => a.localeCompare(b))
+		.map((name) => ({ name }));
+
 	return {
 		movies: moviesWithPath,
 		series: seriesWithPath,
-		collections: filteredCollections
+		collections: filteredCollections,
+		genres
 	};
 }) satisfies PageLoad;
