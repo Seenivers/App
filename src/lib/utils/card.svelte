@@ -2,18 +2,21 @@
 	import { image } from '$lib/image/image';
 	import Img from '$lib/image/Img.svelte';
 	import type { Cardscale } from '$lib/types/cardscale';
+	import { _ } from 'svelte-i18n';
 
 	let {
 		CARDSCALE = $bindable(),
 		href,
 		alt,
 		title,
+		watched = false,
 		params
 	}: {
 		CARDSCALE: Cardscale;
 		href: string;
 		alt: string;
 		title: string;
+		watched?: boolean;
 		params: Parameters<typeof image>;
 	} = $props();
 
@@ -32,6 +35,11 @@
 >
 	<figure class="relative px-2 pt-2">
 		<Img {params} {alt} class="rounded-xl" />
+		{#if watched}
+			<div class="badge badge-outline bg-base-300 absolute left-3 top-3">
+				{$_('main.movies.badgeWatched')}
+			</div>
+		{/if}
 	</figure>
 	<div class="card-body items-center py-2 text-center">
 		<p class="card-title {scaleClasses.text}">{title}</p>
