@@ -29,6 +29,12 @@
 		<button class="btn btn-outline" onclick={() => (isGridView = !isGridView)}>
 			{isGridView ? 'Wechsel zu Listenansicht' : 'Wechsel zu Grid-Ansicht'}
 		</button>
+		<a
+			href="https://www.themoviedb.org/collection/{data.id}"
+			class="btn btn-sm md:btn-md"
+			target="_blank"
+			rel="noopener noreferrer">Bei TMDB öffnen</a
+		>
 	{/snippet}
 </Navbar>
 
