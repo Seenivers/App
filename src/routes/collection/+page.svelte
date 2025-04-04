@@ -26,7 +26,7 @@
 <Navbar back={true}>
 	{#snippet right()}
 		<!-- Toggle für Grid/List-Ansicht -->
-		<button class="btn btn-outline" onclick={() => (isGridView = !isGridView)}>
+		<button class="btn" onclick={() => (isGridView = !isGridView)}>
 			{isGridView ? 'Wechsel zu Listenansicht' : 'Wechsel zu Grid-Ansicht'}
 		</button>
 		<a
