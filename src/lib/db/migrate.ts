@@ -52,7 +52,9 @@ export async function migrate() {
 		if (hash && hasBeenRun(hash) === undefined) {
 			try {
 				// Lese die Datei als Uint8Array
-				const fileData: Uint8Array = await readFile(`${resourcePath}/migrations/${migration.name}`);
+				const fileData: Uint8Array = await readFile(
+					await join(resourcePath, 'migrations', migration.name)
+				);
 
 				// Konvertiere den ArrayBuffer zu einem String
 				const sql = arrayBufferToString(fileData.buffer as ArrayBuffer);
