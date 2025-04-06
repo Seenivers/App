@@ -5,6 +5,6 @@
 		"rust-lang.rust-analyzer",
 		"esbenp.prettier-vscode",
 		"svelte.svelte-vscode",
-		"bradlc.vscode-tailwindcss",
+		"bradlc.vscode-tailwindcss"
 	]
 }

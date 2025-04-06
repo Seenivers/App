@@ -242,7 +242,7 @@
 	</div>
 </main>
 
-<footer class="footer footer-center bg-base-200 text-base-content p-4">
+<footer class="footer footer-center bg-base-200 p-4 text-base-content">
 	<aside>
 		{#await app.getVersion() then version}
 			<p>v{version}</p>

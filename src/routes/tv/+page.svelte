@@ -89,7 +89,7 @@
 							params={[serieData.tmdb.poster_path, 'posters', true]}
 							class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 						/>
-						<div class="text-neutral-content text-center lg:text-left">
+						<div class="text-center text-neutral-content lg:text-left">
 							<h1 class="text-4xl font-bold md:text-5xl">{serieData.tmdb.name}</h1>
 							{#if serieData.tmdb.tagline}
 								<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
