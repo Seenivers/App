@@ -112,34 +112,39 @@
 					class:gap-4={isGridView}
 					class:space-y-4={!isGridView}
 				>
-				{#each sortedMovies() as movie (movie.id)}
+					{#each sortedMovies() as movie (movie.id)}
 						{@const downloadedMovie = movies.some((m) => m && m.id === movie.id && m.path !== null)}
+						{@const watched = movies.some((m) => m && m.id === movie.id && m.watched)}
 						<a
 							href="/movie?id={movie.id}"
 							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
-							class="relative flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md"
-							class:transform={isGridView}
-							class:transition-transform={isGridView}
-							class:hover:scale-105={isGridView}
-							class:md:flex-row={!isGridView}
+							class="relative flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md transition-all duration-300 {isGridView
+								? 'transform hover:scale-105'
+								: 'md:flex-row'}"
 						>
 							<Img
 								alt="Poster"
 								params={[movie.poster_path, 'posters', true]}
 								class="aspect-[2/3] w-full max-w-[15rem] rounded-lg object-cover shadow-2xl"
 							/>
-							{#if downloadedMovie}
-								<div class="badge badge-accent badge-outline absolute right-3 top-3 bg-base-300">
-									Film in der Sammlung
+
+							<!-- Badge-Container: beide Badges werden hier gruppiert -->
+							{#if watched || downloadedMovie}
+								<div
+									class="absolute right-3 top-3 flex w-full flex-col items-end justify-end gap-1"
+								>
+									{#if downloadedMovie}
+										<div class="badge badge-accent badge-outline bg-base-300">
+											Film in der Sammlung
+										</div>
+									{/if}
+									{#if watched}
+										<div class="badge badge-accent badge-outline bg-base-300">Film gesehen</div>
+									{/if}
 								</div>
 							{/if}
-							<div
-								class:text-center={isGridView}
-								class:flex={!isGridView}
-								class:flex-col={!isGridView}
-								class:gap-2={!isGridView}
-								class:text-left={!isGridView}
-							>
+
+							<div class={isGridView ? 'text-center' : 'flex flex-col gap-2 text-left'}>
 								<h3 class="text-2xl font-bold">{movie.title}</h3>
 								{#if movie.title !== movie.original_title}
 									<p class="font-semibold italic">{movie.original_title}</p>
