@@ -14,8 +14,35 @@
 	let { data }: Props = $props();
 
 	let isGridView = $state(false); // Startwert für das Layout
+	let moviesStore = $state(data.result.parts);
+	let sortNewestFirst = $state(true);
+
+	// Verwende $derived mit einer einzigen Funktion, die beide Zustände referenziert:
+	let sortedMovies = $derived(() => {
+		// Zugriff auf die reaktiven Werte:
+		const movies = moviesStore;
+		const sortNewest = sortNewestFirst;
+		// Kopiere das Array, um keine direkte Mutation vorzunehmen:
+		return [...movies].sort((a, b) => {
+			const dateA = a.release_date ? new Date(a.release_date).getTime() : 0;
+			const dateB = b.release_date ? new Date(b.release_date).getTime() : 0;
+			// Wenn sortNewestFirst true ist, werden die ältesten zuerst angezeigt (d.h. Datum aufsteigend)
+			return sortNewest ? dateA - dateB : dateB - dateA;
+		});
+	});
+
+	// Umschalt-Funktion: Toggle und speichern in localStorage
+	function toggleSort() {
+		sortNewestFirst = !sortNewestFirst;
+		localStorage.setItem('sortNewestFirst', sortNewestFirst.toString());
+	}
 
 	onMount(() => {
+		const stored = localStorage.getItem('sortNewestFirst');
+		if (stored !== null) {
+			sortNewestFirst = stored === 'true';
+		}
+
 		discord({
 			details: `Schaut gerade die ${data.result.name} an`,
 			state: `${data.result.parts.length} Filme`
@@ -25,6 +52,13 @@
 
 <Navbar back={true}>
 	{#snippet right()}
+		<button class="btn" onclick={toggleSort}>
+			{#if sortNewestFirst}
+				Sortiere: Älteste zuerst
+			{:else}
+				Sortiere: Neueste zuerst
+			{/if}
+		</button>
 		<!-- Toggle für Grid/List-Ansicht -->
 		<button class="btn" onclick={() => (isGridView = !isGridView)}>
 			{isGridView ? 'Wechsel zu Listenansicht' : 'Wechsel zu Grid-Ansicht'}
@@ -78,7 +112,7 @@
 					class:gap-4={isGridView}
 					class:space-y-4={!isGridView}
 				>
-					{#each collection.parts as movie}
+				{#each sortedMovies() as movie (movie.id)}
 						{@const downloadedMovie = movies.some((m) => m && m.id === movie.id && m.path !== null)}
 						<a
 							href="/movie?id={movie.id}"
