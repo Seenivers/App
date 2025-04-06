@@ -35,23 +35,26 @@
 	onMount(async () => {
 		await migrate();
 
-		setTheme(settings.theme);
-		if (settings && import.meta.env.PROD) {
-			await updateOldDB();
-			await updateMovies();
-			await updateCollections();
-			await updateActors();
-		}
+		if (settings) {
+			setTheme(settings.theme);
 
-		logConsole = await attachConsole();
-		logLogger = await attachLogger(forwardConsole);
+			if (import.meta.env.PROD) {
+				await updateOldDB();
+				await updateMovies();
+				await updateCollections();
+				await updateActors();
+			}
+
+			logConsole = await attachConsole();
+			logLogger = await attachLogger(forwardConsole);
+
+			await startRPC();
+		}
 		networkStatus();
 
 		handleElements();
 		const observer = new MutationObserver(() => handleElements());
 		observer.observe(document.body, { childList: true, subtree: true });
-
-		await startRPC();
 
 		trace('App loaded');
 	});
