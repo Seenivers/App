@@ -8,10 +8,14 @@ import { browser } from '$app/environment';
 import '$lib/i18n';
 import { locale, waitLocale } from 'svelte-i18n';
 import type { LayoutLoad } from './$types';
+import { error } from '@sveltejs/kit';
 
 export const load: LayoutLoad = async () => {
-	if (browser) {
-		locale.set(window.navigator.language);
+	if (!browser) {
+		error(500, 'This operation is only supported in the browser');
 	}
+
+	locale.set(window.navigator.language);
+
 	await waitLocale();
 };
