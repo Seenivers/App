@@ -163,11 +163,6 @@
 
 			<!-- Beschreibung -->
 			<div class="space-y-3">
-				<div>
-					<h2 class="text-lg font-bold">Handlung</h2>
-					<p>{serieData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
-				</div>
-
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
 						<h2 class="text-lg font-bold">Erstausstrahlung</h2>
