@@ -1,14 +1,49 @@
 import { db } from '$lib/db/database';
+import { migrate } from '$lib/db/migrate';
 import { schema } from '$lib/db/schema';
-import { error } from '@tauri-apps/plugin-log';
+import { error, warn, info } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 
-async function createDefaultSettings() {
-	const language = navigator.language.substring(0, 2);
-	const defaultSettings: typeof schema.settings.$inferInsert = { id: 1, language };
+async function createDefaultSettings(retries = 5) {
+	for (let attempt = 1; attempt <= retries; attempt++) {
+		const language = navigator.language.substring(0, 2) ?? 'en';
+		const defaultSettings: typeof schema.settings.$inferInsert = { id: 1, language };
 
-	await db.insert(schema.settings).values(defaultSettings);
-	return (await db.select().from(schema.settings).limit(1))[0];
+		info(`Versuch ${attempt}/${retries}: Erstelle Default-Settings ` + defaultSettings);
+
+		try {
+			await db.insert(schema.settings).values(defaultSettings);
+		} catch (err) {
+			warn(`Einfügen fehlgeschlagen (evtl. Duplikat oder Race Condition): ` + err);
+			// kein Problem – es wird trotzdem unten getestet
+		}
+
+		const result = (await db.select().from(schema.settings).limit(1))[0];
+		if (result !== undefined) {
+			info('Settings erfolgreich erstellt/gelesen: ' + result);
+			return result;
+		}
+
+		warn('Noch keine Settings gefunden, warte 1 Sekunde…');
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+	}
+
+	error('Alle Versuche fehlgeschlagen. Versuche Migration...');
+	try {
+		await migrate();
+
+		const resultAfterMigrate = (await db.select().from(schema.settings).limit(1))[0];
+		if (resultAfterMigrate !== undefined) {
+			info('Settings nach Migration gefunden: ' + resultAfterMigrate);
+			return resultAfterMigrate;
+		}
+	} catch (err) {
+		error('Migration fehlgeschlagen: ' + err);
+	}
+
+	error('Konnte Settings nicht erstellen. Seite wird neu geladen.');
+	location.reload();
+	throw new Error('Unrecoverable settings creation failure');
 }
 
 export const settingsDB = {
