@@ -84,16 +84,22 @@ export async function load() {
  */
 export async function addNewFiles(paths: string[]) {
 	// Filtere und validiere die Dateien
-	const validFiles = paths.filter((path) => {
-		if (isFile(path)) {
-			// Überprüfe, ob die Datei eine gültige Erweiterung hat
-			const fileExtension = path.split('.').pop()?.toLowerCase(); // Extrahiere die Dateierweiterung
-			return extensions.includes(fileExtension ?? ''); // Überprüfe, ob die Erweiterung gültig ist
-		} else return true;
-	});
+	const validResults = await Promise.all(
+		paths.map(async (path) => {
+			const file = await isFile(path);
+			if (file) {
+				const fileExtension = path.split('.').pop()?.toLowerCase();
+				return extensions.includes(fileExtension ?? '') ? path : null;
+			}
+			return path; // Ordner immer zulassen
+		})
+	);
+
+	// Filtere nur gültige (nicht-null) Pfade
+	const validFiles = validResults.filter((p): p is string => !!p);
 
 	if (validFiles.length === 0) {
-		alert('Keine gültigen Dateie Pfade gefunden.');
+		alert('Keine gültigen Dateipfade gefunden.');
 		return;
 	}
 
