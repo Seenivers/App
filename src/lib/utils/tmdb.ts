@@ -9,209 +9,153 @@ import type { Serie } from '../types/tv/serie';
 import type { Season } from '../types/tv/season';
 import type { Episode } from '../types/tv/episode';
 
-async function fetchData<T>(endpoint: string, id: number, language: string) {
-	// Erstelle die URL mit den Query-Parametern id und language
-	const url = new URL(endpoint, seeniversURL);
-	url.searchParams.set('id', id.toString());
-	url.searchParams.set('language', language);
+// 🔧 Fehlerbehandlung + JSON Parsing
+async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
+	if (!response.ok) {
+		let message = `Fehler beim Abrufen von ${endpoint} (Status: ${response.status})`;
+		try {
+			const text = await response.text();
+			if (text) message += `: ${text}`;
+		} catch {
+			message += ' (Fehler beim Lesen der Fehlermeldung)';
+		}
+		error(message);
+		throw new Error(message);
+	}
 
-	// Führe den GET-Request aus
+	try {
+		return await response.json();
+	} catch (err) {
+		const msg = `Fehler beim Parsen von JSON (${endpoint}): ${err instanceof Error ? err.message : 'Unbekannt'}`;
+		error(msg);
+		throw new Error(msg);
+	}
+}
+
+// 📦 GET-Request mit URL-Parametern
+async function fetchData<T>(endpoint: string, params: Record<string, string | number>): Promise<T> {
+	const url = new URL(endpoint, seeniversURL);
+	for (const [key, value] of Object.entries(params)) {
+		url.searchParams.set(key, String(value));
+	}
+
 	let response: Response;
 	try {
-		response = await fetch(url, {
+		response = await fetch(url.toString(), {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json' }
 		});
 	} catch (err) {
-		// Fehlerbehandlung für den Fetch-Aufruf
-		const errorMessage = `Fehler beim Abrufen von ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		error(errorMessage);
-		throw new Error(errorMessage); // Fehler weiterwerfen
+		const msg = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannt'}`;
+		error(msg);
+		throw new Error(msg);
 	}
 
-	// Überprüfe den HTTP-Status der Antwort
-	if (!response.ok) {
-		// Optional: Versuche, die Fehlermeldung aus der Antwort zu lesen
-		let errorMessage = `Fehler beim Abrufen von ${endpoint} (Status: ${response.status})`;
-		try {
-			const responseText = await response.text();
-			if (responseText) errorMessage += `: ${responseText}`;
-		} catch {
-			errorMessage += ' (Fehler beim Lesen der Fehlermeldung)';
-		}
-		error(errorMessage);
-		throw new Error(errorMessage); // Fehler weiterwerfen
-	}
-
-	// Versuche, die JSON-Antwort zu parsen
-	try {
-		return (await response.json()) as T;
-	} catch (err) {
-		const errorMessage = `Fehler beim Parsen der JSON-Antwort von ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		error(errorMessage);
-		throw new Error(errorMessage); // Fehler weiterwerfen
-	}
+	return await parseResponse<T>(response, endpoint);
 }
 
-export async function getMovie(
-	id: number,
-	language: string = settings.language || window.navigator.language
-) {
-	return await fetchData<Movie>('/api/movie', id, language);
-}
-
-export async function getMovies(
-	ids: number[],
-	language: string = settings.language || window.navigator.language
-) {
-	const url = new URL('/api/movie', seeniversURL);
+// 📤 POST-Request mit Payload
+async function postData<T>(endpoint: string, body: unknown): Promise<T> {
+	const url = new URL(endpoint, seeniversURL);
 
 	let response: Response;
 	try {
-		response = await fetch(url, {
+		response = await fetch(url.toString(), {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id: ids, language })
+			body: JSON.stringify(body)
 		});
 	} catch (err) {
-		const errorMessage = `Fehler beim Abrufen von Filmen: ${
-			err instanceof Error ? err.message : 'Unbekannter Fehler'
-		}`;
-		error(errorMessage);
-		throw new Error(errorMessage);
+		const msg = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannt'}`;
+		error(msg);
+		throw new Error(msg);
 	}
 
-	if (!response.ok) {
-		let errorMessage = `Fehler beim Abrufen von Filmen (Status: ${response.status})`;
-		try {
-			const responseText = await response.text();
-			if (responseText) errorMessage += `: ${responseText}`;
-		} catch {
-			errorMessage += ' (Fehler beim Lesen der Fehlermeldung)';
-		}
-		error(errorMessage);
-		throw new Error(errorMessage);
-	}
-
-	try {
-		const result = (await response.json()) as { id: number; data?: Movie; error?: string }[];
-
-		const movies: { id: number; data: Movie }[] = [];
-		const errors: { id: number; error: string }[] = [];
-
-		for (const entry of result) {
-			if (entry.data) {
-				movies.push({ id: entry.id, data: entry.data });
-			} else if (entry.error) {
-				errors.push({ id: entry.id, error: entry.error });
-			}
-		}
-
-		return { movies, errors };
-	} catch (err) {
-		const errorMessage = `Fehler beim Parsen der JSON-Antwort: ${
-			err instanceof Error ? err.message : 'Unbekannter Fehler'
-		}`;
-		error(errorMessage);
-		throw new Error(errorMessage);
-	}
+	return await parseResponse<T>(response, endpoint);
 }
 
-export async function getCollection(
+// 📽 Einzelner Film
+export const getMovie = (id: number, language = settings.language || window.navigator.language) =>
+	fetchData<Movie>('/api/movie', { id, language });
+
+// 📽 Mehrere Filme
+export const getMovies = async (
+	ids: number[],
+	language = settings.language || window.navigator.language
+) => {
+	const result = await postData<{ id: number; data?: Movie; error?: string }[]>('/api/movie', {
+		id: ids,
+		language
+	});
+
+	const movies: { id: number; data: Movie }[] = [];
+	const errors: { id: number; error: string }[] = [];
+
+	for (const entry of result) {
+		if (entry.data) movies.push({ id: entry.id, data: entry.data });
+		else if (entry.error) errors.push({ id: entry.id, error: entry.error });
+	}
+
+	return { movies, errors };
+};
+
+// 📚 Collection
+export const getCollection = (
 	id: number,
-	language: string = settings.language || window.navigator.language
-) {
-	return await fetchData<CollectionDetails>('/api/collection', id, language);
-}
+	language = settings.language || window.navigator.language
+) => fetchData<CollectionDetails>('/api/collection', { id, language });
 
-/**
- * Suche Filme in der TMDB basierend auf einem Namen und optionalen Parametern.
- */
-export async function searchMovies(
-	name: string,
-	primaryReleaseYear?: string | number,
-	page = 1
-): Promise<Search<SearchMovie>> {
-	const url = new URL(seeniversURL + '/api/movie/search');
-	url.searchParams.append('name', name);
-	url.searchParams.append('language', settings.language);
-	url.searchParams.append('includeAdult', String(settings.adult));
-	url.searchParams.append('primaryReleaseYear', primaryReleaseYear?.toString() ?? '');
-	url.searchParams.append('page', page.toString());
+// 🔎 Suche Filme
+export const searchMovies = (name: string, primaryReleaseYear?: string | number, page = 1) => {
+	const params = {
+		name,
+		language: settings.language,
+		includeAdult: String(settings.adult),
+		primaryReleaseYear: primaryReleaseYear?.toString() ?? '',
+		page: String(page)
+	};
+	return fetchData<Search<SearchMovie>>('/api/movie/search', params);
+};
 
-	const result = await fetch(url.toString());
+// 👤 Schauspieler
+export const getActor = (id: number, language = settings.language || window.navigator.language) =>
+	fetchData<Actor>('/api/actor', { id, language });
 
-	return (await result.json()) as Search<SearchMovie>;
-}
+// 📺 Suche Serien
+export const searchTv = (name: string, first_air_date_year?: string | number, page = 1) => {
+	const params = {
+		name,
+		language: settings.language,
+		includeAdult: String(settings.adult),
+		first_air_date_year: first_air_date_year?.toString() ?? '',
+		page: String(page)
+	};
+	return fetchData<Search<SearchTV>>('/api/tv/search', params);
+};
 
-export async function getActor(
-	id: number,
-	language: string = settings.language || window.navigator.language
-) {
-	return await fetchData<Actor>('/api/actor', id, language);
-}
-
-/**
- * Suche TV-Sendungen in der TMDB basierend auf einem Namen und optionalen Parametern.
- */
-export async function searchTv(
-	name: string,
-	first_air_date_year?: string | number,
-	page = 1
-): Promise<Search<SearchTV>> {
-	const url = new URL(seeniversURL + '/api/tv/search');
-	url.searchParams.append('name', name);
-	url.searchParams.append('language', settings.language);
-	url.searchParams.append('includeAdult', String(settings.adult));
-	url.searchParams.append('first_air_date_year', first_air_date_year?.toString() ?? '');
-	url.searchParams.append('page', page.toString());
-
-	const result = await fetch(url.toString());
-
-	return (await result.json()) as Search<SearchTV>;
-}
-
-export async function getSerie(
+// 📺 Serie
+export const getSerie = (
 	tvShowID: number,
-	language: string = settings.language || window.navigator.language
-): Promise<Serie> {
-	const url = new URL(seeniversURL + '/api/tv');
-	url.searchParams.append('id', tvShowID.toString());
-	url.searchParams.append('language', language);
+	language = settings.language || window.navigator.language
+) => fetchData<Serie>('/api/tv', { id: tvShowID, language });
 
-	const result = await fetch(url.toString());
-
-	return (await result.json()) as Serie;
-}
-
-export async function getSerieSeason(
+// 📅 Staffel
+export const getSerieSeason = (
 	tvShowID: number,
 	seasonNumber: number,
-	language: string = settings.language || window.navigator.language
-): Promise<Season> {
-	const url = new URL(seeniversURL + '/api/tv/season');
-	url.searchParams.append('tvShowID', tvShowID.toString());
-	url.searchParams.append('seasonNumber', seasonNumber.toString());
-	url.searchParams.append('language', language);
+	language = settings.language || window.navigator.language
+) => fetchData<Season>('/api/tv/season', { tvShowID, seasonNumber, language });
 
-	const result = await fetch(url.toString());
-
-	return (await result.json()) as Season;
-}
-
-export async function getSerieSeasonEpisode(
+// 🎬 Episode
+export const getSerieSeasonEpisode = (
 	tvShowID: number,
 	seasonNumber: number,
 	episodeNumber: number,
-	language: string = settings.language || window.navigator.language
-): Promise<Episode> {
-	const url = new URL(seeniversURL + '/api/tv/season/episode');
-	url.searchParams.append('tvShowID', tvShowID.toString());
-	url.searchParams.append('seasonNumber', seasonNumber.toString());
-	url.searchParams.append('episodeNumber', episodeNumber.toString());
-	url.searchParams.append('language', language);
-
-	const result = await fetch(url.toString());
-
-	return (await result.json()) as Episode;
-}
+	language = settings.language || window.navigator.language
+) =>
+	fetchData<Episode>('/api/tv/season/episode', {
+		tvShowID,
+		seasonNumber,
+		episodeNumber,
+		language
+	});
