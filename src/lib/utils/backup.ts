@@ -133,20 +133,20 @@ export const backup = {
 
 			// Alle gespeicherten Backups aus der DB abrufen.
 			let dbBackups = await backup.getAll();
-			// Filtere DB-Backups je nach Modus (DEV vs. Production).
-			dbBackups = dbBackups.filter((b) =>
-				import.meta.env.DEV ? b.path.includes('DEV-') : !b.path.includes('DEV-')
-			);
+			// In Prod: Filtere DB-Backups, sodass nur Einträge ohne "DEV-" berücksichtigt werden.
+			if (!import.meta.env.DEV) {
+				dbBackups = dbBackups.filter((b) => !b.path.includes('DEV-'));
+			}
 			const dbBackupPaths = dbBackups.map((b) => b.path);
 
 			// Alle Dateien im Backup-Ordner abrufen.
 			let fsBackupFiles = (await readDir(backupDir, { baseDir: BaseDirectory.AppData })).map(
 				(entry) => entry.name
 			);
-			// Filtere Dateien je nach Modus.
-			fsBackupFiles = fsBackupFiles.filter((file) =>
-				import.meta.env.DEV ? file.includes('DEV-') : !file.includes('DEV-')
-			);
+			// In Prod: Filtere Dateien, sodass nur die ohne "DEV-" berücksichtigt werden.
+			if (!import.meta.env.DEV) {
+				fsBackupFiles = fsBackupFiles.filter((file) => !file.includes('DEV-'));
+			}
 
 			// 1️⃣ DB-Einträge löschen, wenn die Datei fehlt.
 			for (const dbBackup of dbBackups) {
@@ -160,7 +160,6 @@ export const backup = {
 			for (const file of fsBackupFiles) {
 				const filePath = await join(backupDir, file);
 				if (!dbBackupPaths.includes(filePath)) {
-					// Hier nehmen wir die Datei in die DB auf.
 					await db.insert(schema.backups).values({ path: filePath });
 					info(`✅ Neuer DB-Eintrag für Backup-Datei erstellt: ${filePath}`);
 				}
