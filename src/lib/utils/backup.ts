@@ -119,36 +119,36 @@ export const backup = {
 	/**
 	 * 🔍 Überprüft gespeicherte Backups:
 	 * - Löscht DB-Einträge, wenn die Datei fehlt.
-	 * - Löscht nicht referenzierte Backup-Dateien aus dem Dateisystem.
+	 * - Nimmt Dateien, die existieren aber keinen DB-Eintrag haben, in die DB auf.
 	 */
 	validateBackups: async () => {
 		try {
 			const appDir = await appDataDir();
 			const backupDir = await join(appDir, 'backups');
 
-			// Falls der Backup-Ordner nicht existiert, beende die Funktion
+			// Falls der Backup-Ordner nicht existiert, beende die Funktion.
 			if (!(await exists(backupDir, { baseDir: BaseDirectory.AppData }))) {
 				return;
 			}
 
-			// Hole alle gespeicherten Backups aus der DB
+			// Alle gespeicherten Backups aus der DB abrufen.
 			let dbBackups = await backup.getAll();
-			// Filtere DB-Backups je nach Modus
+			// Filtere DB-Backups je nach Modus (DEV vs. Production).
 			dbBackups = dbBackups.filter((b) =>
 				import.meta.env.DEV ? b.path.includes('DEV-') : !b.path.includes('DEV-')
 			);
 			const dbBackupPaths = dbBackups.map((b) => b.path);
 
-			// Hole alle Dateien im Backup-Ordner
+			// Alle Dateien im Backup-Ordner abrufen.
 			let fsBackupFiles = (await readDir(backupDir, { baseDir: BaseDirectory.AppData })).map(
 				(entry) => entry.name
 			);
-			// Filtere Dateien je nach Modus
+			// Filtere Dateien je nach Modus.
 			fsBackupFiles = fsBackupFiles.filter((file) =>
 				import.meta.env.DEV ? file.includes('DEV-') : !file.includes('DEV-')
 			);
 
-			// 1️⃣ DB-Einträge löschen, wenn die Datei fehlt
+			// 1️⃣ DB-Einträge löschen, wenn die Datei fehlt.
 			for (const dbBackup of dbBackups) {
 				if (!(await exists(dbBackup.path, { baseDir: BaseDirectory.AppData }))) {
 					await db.delete(schema.backups).where(eq(schema.backups.id, dbBackup.id));
@@ -156,12 +156,13 @@ export const backup = {
 				}
 			}
 
-			// 2️⃣ Dateien löschen, die keinen DB-Eintrag haben
+			// 2️⃣ Für jede Datei im Backup-Ordner, die keinen DB-Eintrag hat, neuen DB-Eintrag erstellen.
 			for (const file of fsBackupFiles) {
 				const filePath = await join(backupDir, file);
 				if (!dbBackupPaths.includes(filePath)) {
-					await remove(filePath, { baseDir: BaseDirectory.AppData });
-					info(`🗑️ Gelöschte unreferenzierte Backup-Datei: ${filePath}`);
+					// Hier nehmen wir die Datei in die DB auf.
+					await db.insert(schema.backups).values({ path: filePath });
+					info(`✅ Neuer DB-Eintrag für Backup-Datei erstellt: ${filePath}`);
 				}
 			}
 
