@@ -1,19 +1,17 @@
 # [0.29.0](https://github.com/Seenivers/App/compare/v0.28.0...v0.29.0) (2025-04-07)
 
-
 ### Bug Fixes
 
-* remove redundant overview section from series details ([e51b63d](https://github.com/Seenivers/App/commit/e51b63db8b2258b7eb6be8f3e8825293d1e85065))
-
+- remove redundant overview section from series details ([e51b63d](https://github.com/Seenivers/App/commit/e51b63db8b2258b7eb6be8f3e8825293d1e85065))
 
 ### Features
 
-* add isFile utility function to validate file paths ([551db0f](https://github.com/Seenivers/App/commit/551db0f73b3e7f9b8acd276b5059ec9880a549a9))
-* enhance movie display with watched and downloaded badges in collection view ([aef0c70](https://github.com/Seenivers/App/commit/aef0c7047a13d6f7b3e50e1caac92e1ef253eaf3))
-* implement sorting functionality for movie collection with toggle option ([f111ce3](https://github.com/Seenivers/App/commit/f111ce3ebd987afe56192029ca09efe5afb84ab1))
-* improve file validation in addNewFiles function and enhance isFile utility ([cd0ace2](https://github.com/Seenivers/App/commit/cd0ace2c39ca0abfb46a7a3306b7359b717c812d))
-* refactor fetchData and parseResponse functions for improved error handling and parameter management ([f505343](https://github.com/Seenivers/App/commit/f505343c0adfbd3daa6e208ec244471e5884dd82))
-* update addSeasonToDatabase to accept season details and process each season correctly ([911ddfa](https://github.com/Seenivers/App/commit/911ddfaffd23095b9486ea36f0b7ae2059c18d0a))
+- add isFile utility function to validate file paths ([551db0f](https://github.com/Seenivers/App/commit/551db0f73b3e7f9b8acd276b5059ec9880a549a9))
+- enhance movie display with watched and downloaded badges in collection view ([aef0c70](https://github.com/Seenivers/App/commit/aef0c7047a13d6f7b3e50e1caac92e1ef253eaf3))
+- implement sorting functionality for movie collection with toggle option ([f111ce3](https://github.com/Seenivers/App/commit/f111ce3ebd987afe56192029ca09efe5afb84ab1))
+- improve file validation in addNewFiles function and enhance isFile utility ([cd0ace2](https://github.com/Seenivers/App/commit/cd0ace2c39ca0abfb46a7a3306b7359b717c812d))
+- refactor fetchData and parseResponse functions for improved error handling and parameter management ([f505343](https://github.com/Seenivers/App/commit/f505343c0adfbd3daa6e208ec244471e5884dd82))
+- update addSeasonToDatabase to accept season details and process each season correctly ([911ddfa](https://github.com/Seenivers/App/commit/911ddfaffd23095b9486ea36f0b7ae2059c18d0a))
 
 # [0.28.0](https://github.com/Seenivers/App/compare/v0.27.0...v0.28.0) (2025-04-06)
 
