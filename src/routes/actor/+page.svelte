@@ -51,24 +51,23 @@
 	{/snippet}
 </Navbar>
 
-<main class="flex flex-col items-center p-3 md:p-5">
+<main class="flex flex-col items-center gap-6 px-4 py-6 md:px-6 lg:px-8">
 	{#if data.result}
 		{@const actor = data.result}
-		<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-			<!-- Linke Spalte: Bild, Grunddaten und Social Links -->
-			<div class="card sticky top-24 h-fit w-full bg-base-200 p-5 shadow-md">
-				<div class="flex justify-center">
+		<div class="grid w-full max-w-screen-xl grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
+			<!-- Sidebar: Actor Infos -->
+			<aside class="card bg-base-200 w-full self-start p-5 shadow-md lg:sticky lg:top-24">
+				<div class="flex flex-col items-center gap-4">
 					<Img
 						params={[actor.profile_path, 'actors', false]}
 						alt={actor.name}
-						class="h-auto w-full max-w-xs rounded-lg object-cover shadow-lg"
+						class="w-full max-w-[250px] rounded-lg object-cover shadow-lg"
 					/>
-				</div>
-				<div class="mt-5 space-y-4">
+
 					<!-- Social Links -->
 					{#if actor.external_ids}
-						<div>
-							<h2 class="mb-2 text-2xl font-semibold">{$_('actor.socialLinks')}</h2>
+						<div class="w-full space-y-2">
+							<h2 class="text-lg font-semibold">{$_('actor.socialLinks')}</h2>
 							<div class="flex flex-wrap gap-2">
 								{#if actor.external_ids.imdb_id}
 									<a
@@ -133,91 +132,106 @@
 							</div>
 						</div>
 					{/if}
-					<!-- Grunddaten -->
-					<div>
-						<h2 class="text-2xl font-semibold">{$_('actor.knownFor')}</h2>
-						<p>{actor.known_for_department || 'Keine Angabe'}</p>
-					</div>
-					<div>
-						<h2 class="text-2xl font-semibold">{$_('actor.gender')}</h2>
-						<p>{$_(genderMapping[actor.gender])}</p>
-					</div>
-					<div>
-						<h2 class="text-2xl font-semibold">{$_('actor.birthdate.label')}</h2>
-						<p>
-							{#if actor.birthday}
-								{@const birthDate = new Date(actor.birthday)}
-								{@const deathDate = actor.deathday ? new Date(actor.deathday) : new Date()}
-								{@const age = deathDate.getFullYear() - birthDate.getFullYear()}
-								{birthDate.toLocaleDateString()} ({age} Jahre alt)
-							{:else}
-								{$_('actor.birthdate.unknown')}
-							{/if}
-						</p>
-					</div>
-					{#if actor.deathday}
-						<div>
-							<h2 class="text-2xl font-semibold">{$_('actor.deathdate.label')}</h2>
-							<p>{new Date(actor.deathday).toLocaleDateString()}</p>
-						</div>
-					{/if}
-					<div>
-						<h2 class="text-2xl font-semibold">{$_('actor.birthplace.label')}</h2>
-						<p>{actor.place_of_birth || $_('actor.birthplace.unknown')}</p>
-					</div>
-					<div>
-						<h2 class="text-2xl font-semibold">{$_('actor.aliases.label')}</h2>
-						<ul class="list-inside list-disc space-y-1">
-							{#if actor.also_known_as.length > 0}
-								{#each actor.also_known_as as alias}
-									<li>{alias}</li>
-								{/each}
-							{:else}
-								<li>{$_('actor.aliases.none')}</li>
-							{/if}
-						</ul>
-					</div>
-				</div>
-			</div>
 
-			<!-- Mittlere Spalte: Name und Biografie -->
-			<div class="card w-full bg-base-200 p-5 shadow-md lg:col-span-2">
-				<h1 class="text-3xl font-bold">{actor.name}</h1>
-				<div class="mt-5">
-					<h2 class="text-2xl font-semibold">{$_('actor.biography.label')}</h2>
-					<p class="whitespace-pre-wrap text-base-content">
-						{actor.biography || $_('actor.biography.none')}
-					</p>
+					<!-- Infos -->
+					<div class="w-full space-y-4 text-sm">
+						<div>
+							<span class="font-semibold">{$_('actor.knownFor')}:</span>
+							<p>{actor.known_for_department || 'Keine Angabe'}</p>
+						</div>
+						<div>
+							<span class="font-semibold">{$_('actor.gender')}:</span>
+							<p>{$_(genderMapping[actor.gender])}</p>
+						</div>
+						<div>
+							<span class="font-semibold">{$_('actor.birthdate.label')}:</span>
+							<p>
+								{#if actor.birthday}
+									{@const birthDate = new Date(actor.birthday)}
+									{@const deathDate = actor.deathday ? new Date(actor.deathday) : new Date()}
+									{@const age = deathDate.getFullYear() - birthDate.getFullYear()}
+									{birthDate.toLocaleDateString()} ({age} Jahre alt)
+								{:else}
+									{$_('actor.birthdate.unknown')}
+								{/if}
+							</p>
+						</div>
+						{#if actor.deathday}
+							<div>
+								<span class="font-semibold">{$_('actor.deathdate.label')}:</span>
+								<p>{new Date(actor.deathday).toLocaleDateString()}</p>
+							</div>
+						{/if}
+						<div>
+							<span class="font-semibold">{$_('actor.birthplace.label')}:</span>
+							<p>{actor.place_of_birth || $_('actor.birthplace.unknown')}</p>
+						</div>
+						<div>
+							<span class="font-semibold">{$_('actor.aliases.label')}:</span>
+							<ul class="list-inside list-disc space-y-1">
+								{#if actor.also_known_as.length > 0}
+									{#each actor.also_known_as as alias}
+										<li>{alias}</li>
+									{/each}
+								{:else}
+									<li>{$_('actor.aliases.none')}</li>
+								{/if}
+							</ul>
+						</div>
+					</div>
 				</div>
+			</aside>
+
+			<!-- Main Content -->
+			<section class="card bg-base-200 w-full p-5 shadow-md">
+				<h1 class="text-3xl font-bold">{actor.name}</h1>
+
+				<!-- Biografie -->
+				{#if actor.biography}
+					<div class="mt-6 space-y-2">
+						<h2 class="text-xl font-semibold">{$_('actor.biography.label')}</h2>
+						<p class="text-base-content whitespace-pre-wrap leading-relaxed">{actor.biography}</p>
+					</div>
+				{:else}
+					<p class="text-base-content/80 mt-6 italic">{$_('actor.biography.none')}</p>
+				{/if}
+
+				<!-- Cast und Crew -->
 				{#each ['cast', 'crew'] as const as type}
-					<div class="mt-5">
-						{#if actor.combined_credits[type].length > 0}
-							<h2 class="text-2xl font-semibold">
-								{$_(`actor.${type === 'cast' ? 'crew' : 'filmography'}.title`)}
+					{#if actor.combined_credits[type].length > 0}
+						<div class="mt-8 space-y-3">
+							<h2 class="text-xl font-semibold">
+								{$_(`actor.${type === 'cast' ? 'filmography' : 'crew'}.title`)}
 							</h2>
-							<ul class="mt-2 grid gap-2">
+							<ul class="space-y-2">
 								{#each sortByDate(actor.combined_credits[type]) as item}
-									<li class="flex items-center gap-2">
-										<span class="badge {type === 'cast' ? 'badge-accent' : 'badge-secondary'}">
+									<li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+										<div>
+											<a
+												href={`${item.media_type}?id=${item.id}`}
+												class="font-medium hover:underline"
+												data-sveltekit-preload-data="tap"
+											>
+												{item.title || item.name}
+											</a>
+											<span class="text-base-content/70 text-sm">
+												– {type === 'cast'
+													? item.character || $_('actor.filmography.roleUnknown')
+													: item.job}
+											</span>
+										</div>
+										<span class="badge badge-outline">
 											{item.release_date
 												? new Date(item.release_date).getFullYear()
-												: $_(`actor.${type === 'cast' ? 'crew' : 'filmography'}.releaseUnknown`)}
+												: $_(`actor.filmography.releaseUnknown`)}
 										</span>
-										<a href={`${item.media_type}?id=${item.id}`} data-sveltekit-preload-data="tap">
-											<span class="font-semibold">
-												{item.title || item.name}
-											</span>
-											- {type === 'cast'
-												? item.character || $_('actor.filmography.roleUnknown')
-												: item.job}
-										</a>
 									</li>
 								{/each}
 							</ul>
-						{/if}
-					</div>
+						</div>
+					{/if}
 				{/each}
-			</div>
+			</section>
 		</div>
 	{/if}
 </main>
