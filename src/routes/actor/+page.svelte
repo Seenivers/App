@@ -56,7 +56,7 @@
 		{@const actor = data.result}
 		<div class="grid w-full max-w-screen-xl grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
 			<!-- Sidebar: Actor Infos -->
-			<aside class="card bg-base-200 w-full self-start p-5 shadow-md lg:sticky lg:top-24">
+			<aside class="card bg-base-200 h-fit w-full p-5 shadow-md">
 				<div class="flex flex-col items-center gap-4">
 					<Img
 						params={[actor.profile_path, 'actors', false]}
