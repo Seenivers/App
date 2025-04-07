@@ -15,6 +15,8 @@ import { movie } from '$lib/utils/db/movie';
 import { collection } from '$lib/utils/db/collection';
 import { BaseDirectory, exists, readDir } from '@tauri-apps/plugin-fs';
 import { join } from '@tauri-apps/api/path';
+import type { Season } from '$lib/types/tv/season';
+import type { Episode } from '$lib/types/tv/episode';
 
 //#region LOAD
 // Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
@@ -330,12 +332,12 @@ async function addMovieToDatabase(result: Movie, index: number) {
 }
 //#endregion
 
-async function loadImages(result: Movie | Serie) {
-	if (result.poster_path) {
+async function loadImages(result: Movie | Serie | Season | Episode) {
+	if ('poster_path' in result) {
 		await image(result.poster_path, 'posters', true);
 	}
 
-	if (result.backdrop_path) {
+	if ('backdrop_path' in result) {
 		await image(result.backdrop_path, 'backdrops', true);
 	}
 
@@ -419,6 +421,8 @@ async function addSeasonToDatabase(index: number, serieId: number, seasons: Seri
 			tmdb: resultSeason
 		});
 
+		await loadImages(resultSeason);
+
 		// Episoden zur Datenbank hinzufügen
 		await addEpisodeToDatabase(serieId, seasonNumber, seasonData[seasonNumber] || {});
 	}
@@ -446,6 +450,8 @@ async function addEpisodeToDatabase(
 			path: episodePath, // Den Pfad zur Episode speichern
 			tmdb: resultEpisode
 		});
+
+		await loadImages(resultEpisode);
 	}
 }
 
