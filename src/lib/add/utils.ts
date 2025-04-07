@@ -10,3 +10,7 @@ export function hasMovieExtension(path: string) {
 	const fileExtension = path.split('.').pop()?.toLowerCase() ?? '';
 	return extensions.includes(fileExtension); // Falls es eine Datei mit Endung ist → Movie
 }
+
+export function isFile(path: string) {
+	return !!(path.split('.').pop()?.toLowerCase() ?? '');
+}
