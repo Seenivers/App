@@ -38,6 +38,11 @@
 		return path.split(separator).pop();
 	}
 
+	// Helper-Funktion zur Prüfung, ob der Delete-Button deaktiviert sein soll
+	function deleteDisabled(backup: { path: string }): boolean {
+		return import.meta.env.DEV && !backup.path.includes('DEV-');
+	}
+
 	onMount(loadBackups);
 </script>
 
@@ -69,7 +74,11 @@
 						<button class="btn btn-sm" onclick={() => backupfn.restore(backup.id)}>
 							Wiederherstellen
 						</button>
-						<button class="btn btn-sm hover:btn-error" onclick={() => deleteBackup(backup.id)}>
+						<button
+							class="btn btn-sm hover:btn-error"
+							disabled={deleteDisabled(backup)}
+							onclick={() => deleteBackup(backup.id)}
+						>
 							Löschen
 						</button>
 					</td>
