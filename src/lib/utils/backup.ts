@@ -131,16 +131,24 @@ export const backup = {
 				return;
 			}
 
-			// Alle gespeicherten Backups aus der DB abrufen
-			const dbBackups = await backup.getAll();
+			// Hole alle gespeicherten Backups aus der DB
+			let dbBackups = await backup.getAll();
+			// Filtere DB-Backups je nach Modus
+			dbBackups = dbBackups.filter((b) =>
+				import.meta.env.DEV ? b.path.includes('DEV-') : !b.path.includes('DEV-')
+			);
 			const dbBackupPaths = dbBackups.map((b) => b.path);
 
-			// Alle Dateien im Backup-Ordner abrufen
-			const fsBackupFiles = (await readDir(backupDir, { baseDir: BaseDirectory.AppData })).map(
+			// Hole alle Dateien im Backup-Ordner
+			let fsBackupFiles = (await readDir(backupDir, { baseDir: BaseDirectory.AppData })).map(
 				(entry) => entry.name
 			);
+			// Filtere Dateien je nach Modus
+			fsBackupFiles = fsBackupFiles.filter((file) =>
+				import.meta.env.DEV ? file.includes('DEV-') : !file.includes('DEV-')
+			);
 
-			// 1️⃣ Falls ein Backup in der DB existiert, aber die Datei fehlt → Lösche den DB-Eintrag
+			// 1️⃣ DB-Einträge löschen, wenn die Datei fehlt
 			for (const dbBackup of dbBackups) {
 				if (!(await exists(dbBackup.path, { baseDir: BaseDirectory.AppData }))) {
 					await db.delete(schema.backups).where(eq(schema.backups.id, dbBackup.id));
@@ -148,7 +156,7 @@ export const backup = {
 				}
 			}
 
-			// 2️⃣ Falls eine Datei existiert, aber kein DB-Eintrag → Lösche die Datei
+			// 2️⃣ Dateien löschen, die keinen DB-Eintrag haben
 			for (const file of fsBackupFiles) {
 				const filePath = await join(backupDir, file);
 				if (!dbBackupPaths.includes(filePath)) {
