@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { schema } from '$lib/db/schema';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { PageData } from './$types';
-	import { isMovieEntry } from '$lib/utils/is';
 	import Card from '$lib/utils/card.svelte';
 	import { _ } from 'svelte-i18n';
 	import { type CardscaleNumbers } from '$lib/types/cardscale';
-	import { CARD_SCALE } from '$lib/utils/cardscale';
 	import Search from '$lib/SVG/search.svelte';
 
 	interface Props {

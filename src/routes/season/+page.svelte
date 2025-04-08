@@ -7,7 +7,6 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
-	import { placeholderURL } from '$lib';
 	import { online } from 'svelte/reactivity/window';
 	import { season } from '$lib/utils/db/season';
 
