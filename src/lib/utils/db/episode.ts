@@ -11,7 +11,7 @@ export const episode = {
 		if (ids && ids.length > 0) {
 			return await db.select().from(schema.episode).where(inArray(schema.episode.id, ids));
 		}
-		await db.select().from(schema.episode);
+		return await db.select().from(schema.episode);
 	},
 	delete: async (id: number) => await db.delete(schema.episode).where(eq(schema.episode.id, id)),
 	update: async (id: number, data: Partial<typeof schema.episode.$inferInsert>) => {

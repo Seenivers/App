@@ -12,7 +12,7 @@ export const collection = {
 		if (ids && ids.length > 0) {
 			return await db.select().from(schema.collections).where(inArray(schema.collections.id, ids));
 		}
-		await db.select().from(schema.collections);
+		return await db.select().from(schema.collections);
 	},
 	delete: async (id: number) =>
 		await db.delete(schema.collections).where(eq(schema.collections.id, id)),

@@ -11,7 +11,7 @@ export const movie = {
 		if (ids && ids.length > 0) {
 			return await db.select().from(schema.movies).where(inArray(schema.movies.id, ids));
 		}
-		await db.select().from(schema.movies);
+		return await db.select().from(schema.movies);
 	},
 	delete: async (id: number) => await db.delete(schema.movies).where(eq(schema.movies.id, id)),
 	update: async (id: number, data: Partial<typeof schema.movies.$inferInsert>) => {
