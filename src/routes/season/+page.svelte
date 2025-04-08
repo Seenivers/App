@@ -9,6 +9,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { placeholderURL } from '$lib';
 	import { online } from 'svelte/reactivity/window';
+	import { season } from '$lib/utils/db/season';
 
 	let { data }: { data: PageData } = $props();
 
@@ -25,8 +26,9 @@
 
 	// Entferne Film anhand der ID
 	async function removeElementById() {
-		await db.delete(schema.season).where(eq(schema.season.id, id));
-		window.location.href = '/';
+		await season.update(id, { path: null });
+		data.pathExists = false;
+		seasonData.path = null;
 	}
 
 	// Öffne die Datei mit dem Standardplayer

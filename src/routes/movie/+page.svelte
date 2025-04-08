@@ -33,8 +33,9 @@
 
 	// Entferne Film anhand der ID
 	async function removeElementById() {
-		await movie.delete(id);
-		window.location.href = '/';
+		await movie.update(id, { path: null });
+		data.pathExists = false;
+		movieData.path = null;
 	}
 
 	// Öffne die Datei mit dem Standardplayer

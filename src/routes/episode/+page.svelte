@@ -13,6 +13,7 @@
 	import Vidstack from '$lib/player/Vidstack.svelte';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import { online } from 'svelte/reactivity/window';
+	import { episode } from '$lib/utils/db/episode';
 
 	let { data }: { data: PageData } = $props();
 
@@ -30,8 +31,9 @@
 
 	// Entferne Film anhand der ID
 	async function removeElementById() {
-		await db.delete(schema.episode).where(eq(schema.episode.id, data.episodeID));
-		window.location.href = '/';
+		await episode.update(id, { path: null });
+		data.pathExists = false;
+		episodeData.path = null;
 	}
 
 	// Öffne die Datei mit dem Standardplayer
