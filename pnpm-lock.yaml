@@ -85,7 +85,7 @@ importers:
         specifier: ^6.11.3
         version: 6.11.3
       '@types/node':
-        specifier: ^22.13.14
+        specifier: ^22.13.17
         version: 22.14.0
       autoprefixer:
         specifier: ^10.4.21
