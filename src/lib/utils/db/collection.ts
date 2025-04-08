@@ -1,14 +1,19 @@
 import { db } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
 import { error } from '@tauri-apps/plugin-log';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export const collection = {
 	add: async (data: typeof schema.collections.$inferInsert) =>
 		await db.insert(schema.collections).values(data),
 	get: async (id: number) =>
 		await db.query.collections.findFirst({ where: eq(schema.collections.id, id) }),
-	getAll: async () => await db.select().from(schema.collections),
+	getAll: async (ids?: number[]) => {
+		if (ids && ids.length > 0) {
+			return await db.select().from(schema.collections).where(inArray(schema.collections.id, ids));
+		}
+		await db.select().from(schema.collections);
+	},
 	delete: async (id: number) =>
 		await db.delete(schema.collections).where(eq(schema.collections.id, id)),
 	update: async (id: number, data: Partial<typeof schema.collections.$inferInsert>) => {
