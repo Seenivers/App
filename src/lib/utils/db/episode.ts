@@ -23,14 +23,11 @@ export const episode = {
 
 			if (fetched) {
 				await db.insert(schema.episode).values({
-					id,
-					tmdb: fetched,
-					path: null,
-					watched: false,
-					watchTime: 0
+					id: fetched.id,
+					tmdb: fetched
 				});
 				result = {
-					id,
+					id: fetched.id,
 					tmdb: fetched,
 					path: null,
 					watched: false,
