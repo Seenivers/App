@@ -2,7 +2,7 @@ import type { Season } from '$lib/types/tv/season';
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const season = sqliteTable('season', {
-	id: int('id').notNull().primaryKey().unique(),
+	id: int('id').notNull().unique(),
 	path: text('path'),
 	watched: int('watched', { mode: 'boolean' }).notNull().default(false),
 	episode: int('episode').notNull().default(1),
