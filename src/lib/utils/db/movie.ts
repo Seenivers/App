@@ -12,7 +12,7 @@ export const movie = {
 	get: async (id: number) => {
 		let result = await db.query.movies.findFirst({ where: eq(schema.movies.id, id) });
 
-		if (!result && online.current) {
+		if (!result && online.current && id !== undefined) {
 			const fetched = await getMovie(id);
 			if (fetched) {
 				await db
@@ -43,7 +43,7 @@ export const movie = {
 			const foundIds = localResults.map((m) => m.id);
 			const missingIds = ids.filter((id) => !foundIds.includes(id));
 
-			if (missingIds.length > 0 && online.current) {
+			if (missingIds.length > 0 && online.current && ids !== undefined) {
 				const { movies: fetchedMovies, errors } = await getMovies(missingIds);
 
 				// Erfolgreich gefundene speichern

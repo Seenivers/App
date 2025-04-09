@@ -11,7 +11,7 @@ export const actor = {
 
 	get: async (id: number) => {
 		let result = await db.query.actors.findFirst({ where: eq(schema.actors.id, id) });
-		if (!result && online.current) {
+		if (!result && online.current && id !== undefined) {
 			const fetched = await getActor(id);
 			if (fetched) {
 				await db
@@ -36,6 +36,7 @@ export const actor = {
 			if (missingIds.length > 0 && online.current) {
 				const fetchedActors = await Promise.all(
 					missingIds.map(async (id) => {
+						if (id === undefined) return null;
 						const onlineResult = await getActor(id);
 						if (onlineResult) {
 							await db

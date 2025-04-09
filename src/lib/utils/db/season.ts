@@ -12,7 +12,7 @@ export const season = {
 	get: async (id: number, seriesId?: number, seasonNumber?: number) => {
 		let result = await db.query.season.findFirst({ where: eq(schema.season.id, id) });
 
-		if (!result && online.current && seriesId && seasonNumber) {
+		if (!result && online.current && seriesId !== undefined && seasonNumber !== undefined) {
 			const fetched = await getSerieSeason(seriesId, seasonNumber);
 			if (fetched) {
 				await db.insert(schema.season).values({
@@ -52,7 +52,7 @@ export const season = {
 			if (missingIds.length > 0 && online.current) {
 				const fetchedSeasons: (typeof schema.season.$inferSelect | null)[] = await Promise.all(
 					missingIds.map(async (item) => {
-						if (!item.seriesId || !item.seasonNumber) return null;
+						if (item.seriesId === undefined || item.seasonNumber === undefined) return null;
 						const onlineResult = await getSerieSeason(item.seriesId, item.seasonNumber);
 						if (onlineResult) {
 							await db.insert(schema.season).values({

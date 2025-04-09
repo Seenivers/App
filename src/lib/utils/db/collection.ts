@@ -11,7 +11,7 @@ export const collection = {
 
 	get: async (id: number) => {
 		let result = await db.query.collections.findFirst({ where: eq(schema.collections.id, id) });
-		if (!result && online.current) {
+		if (!result && online.current && id !== undefined) {
 			result = { ...(await getCollection(id)), updated: new Date() };
 			if (result) {
 				await db.insert(schema.collections).values(result);
@@ -33,6 +33,7 @@ export const collection = {
 			if (missingIds.length > 0 && online.current) {
 				const fetchedCollections = await Promise.all(
 					missingIds.map(async (id) => {
+						if (id === undefined) return null;
 						const onlineResult = await getCollection(id);
 						if (onlineResult) {
 							const collectionWithUpdated = { ...onlineResult, updated: new Date() };

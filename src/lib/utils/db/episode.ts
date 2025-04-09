@@ -12,7 +12,13 @@ export const episode = {
 	get: async (id: number, seriesId?: number, seasonNumber?: number, episodeNumber?: number) => {
 		let result = await db.query.episode.findFirst({ where: eq(schema.episode.id, id) });
 
-		if (!result && online.current && seriesId && seasonNumber && episodeNumber) {
+		if (
+			!result &&
+			online.current &&
+			seriesId !== undefined &&
+			seasonNumber !== undefined &&
+			episodeNumber !== undefined
+		) {
 			const fetched = await getSerieSeasonEpisode(seriesId, seasonNumber, episodeNumber);
 
 			if (fetched) {
@@ -55,9 +61,14 @@ export const episode = {
 			const missingIds = items.filter((item) => !foundIds.includes(item.id));
 
 			if (missingIds.length > 0 && online.current) {
-				const fetchedEpisodes = await Promise.all(
+				const fetchedEpisodes: (typeof schema.episode.$inferSelect | null)[] = await Promise.all(
 					missingIds.map(async (item) => {
-						if (!item.seriesId || !item.seasonNumber || !item.episodeNumber) return null;
+						if (
+							item.seriesId === undefined ||
+							item.seasonNumber === undefined ||
+							item.episodeNumber === undefined
+						)
+							return null;
 						const onlineResult = await getSerieSeasonEpisode(
 							item.seriesId,
 							item.seasonNumber,
@@ -72,7 +83,7 @@ export const episode = {
 								watchTime: 0
 							});
 							return {
-								id: item,
+								id: onlineResult.id,
 								tmdb: onlineResult,
 								path: null,
 								watched: false,
