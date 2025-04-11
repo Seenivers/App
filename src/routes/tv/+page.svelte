@@ -372,7 +372,7 @@
 					{/each}
 				</select>
 			</label>
-			<button class="btn" disabled={!selectedSeason} onclick={toggleWatchedStatus}>
+			<button class="btn" disabled={selectedSeason === undefined} onclick={toggleWatchedStatus}>
 				{sortedSeasons().find((s) => s.tmdb.season_number === selectedSeason)?.watched
 					? 'Als Nicht Gesehen markieren'
 					: 'Als Gesehen markieren'}
