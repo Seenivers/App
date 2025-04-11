@@ -3,48 +3,95 @@ import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
 import { parseId } from '$lib/load/loadUtils';
-import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
-	const id = parseId(url); // ID validieren und parsen
+	// ID validieren und parsen
+	const id = parseId(url);
 
 	if (!browser) {
 		error(500, 'This operation is only supported in the browser');
 	}
 
+	// Serie abrufen bzw. online holen und in DB speichern
 	const { serie } = await import('$lib/utils/db/serie');
+	const resultSerie = await serie.get(id);
 
-	// Zuerst versuchen, den Film lokal zu finden
-	let result = await serie.get(id);
-
-	if (!result && online.current) {
-		// Wenn die Serie nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
-
-		const tmdb = await import('$lib/utils/tmdb');
-		const fetchedSerie = await tmdb.getSerie(id);
-
-		if (!fetchedSerie) {
-			// Wenn die Serie auch online nicht gefunden wurde
-			error(404, 'Serie not found');
-		}
-
-		// Film in die Datenbank speichern
-		await serie.add({
-			id,
-			path: null,
-			tmdb: fetchedSerie
-		});
-
-		result = await serie.get(id);
+	if (!resultSerie) {
+		error(404, `Serie with id ${id} not found`);
 	}
 
-	if (!result) {
-		error(404, 'Serie not found');
+	// Seasons verarbeiten:
+	const { season } = await import('$lib/utils/db/season');
+
+	// Alle Staffeln aus der TMDB-Datenquelle (falls vorhanden) abrufen
+	const seasonsData = resultSerie.tmdb.seasons ?? [];
+
+	// Array mit den benötigten Parametern für jede Staffel erstellen
+	const arraySeasons = seasonsData.map((s) => ({
+		id: s.id,
+		seriesId: id,
+		seasonNumber: s.season_number
+	}));
+
+	const resultSeasons = await season.getAll(arraySeasons);
+
+	if (!resultSeasons || resultSeasons.length === 0) {
+		error(404, `No seasons found for Serie with id ${id}`);
 	}
 
-	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
-	const pathExists = result.path ? await exists(result.path) : false;
+	// Prüfe, welche Staffeln fehlen (IDs aus TMDB vs. erhaltene DB-Ergebnisse)
+	const missingSeasonIds = seasonsData
+		.filter((s) => !resultSeasons.find((r) => r && r.id === s.id))
+		.map((s) => s.id);
 
-	// Nur relevante Daten zurückgeben
-	return { id, result, pathExists };
+	if (missingSeasonIds.length > 0) {
+		error(404, `Missing season(s) with id(s): ${missingSeasonIds.join(', ')}`);
+	}
+
+	const newResultSeasons = resultSeasons.filter((s) => s !== undefined);
+
+	// Episodes verarbeiten:
+	const { episode } = await import('$lib/utils/db/episode');
+
+	// Erstelle ein Array mit den benötigten Parametern für jede Episode über alle Staffeln
+	const arrayEpisode = newResultSeasons.flatMap((s) =>
+		s.tmdb.episodes.map((e) => ({
+			id: e.id,
+			seriesId: id,
+			seasonNumber: s.tmdb.season_number,
+			episodeNumber: e.episode_number
+		}))
+	);
+
+	// Alle Episoden anhand des Arrays abrufen (lokal bzw. mit Online-Fallback)
+	const episodesBySeason = await episode.getAll(arrayEpisode);
+
+	if (!episodesBySeason || episodesBySeason.length === 0) {
+		error(404, `No episodes found for Serie with id ${id}`);
+	}
+
+	// Prüfe, ob für jede Episode des Arrays ein Resultat vorhanden ist
+	const missingEpisodeMappings = arrayEpisode.filter(
+		(ae) => !episodesBySeason.find((ep) => ep && ep.id === ae.id)
+	);
+
+	// Gruppiere fehlende Episoden nach Staffel, damit du doppelte Meldungen vermeidest
+	const missingEpisodeInfo = Array.from(
+		new Set(missingEpisodeMappings.map((ae) => `Season ${ae.seasonNumber}`))
+	);
+
+	if (missingEpisodeInfo.length > 0) {
+		error(404, `Episodes not found for: ${missingEpisodeInfo.join(', ')}`);
+	}
+
+	// Prüfe, ob der Pfad für die Serie existiert
+	const pathExists = resultSerie.path ? await exists(resultSerie.path) : false;
+
+	return {
+		id,
+		serie: resultSerie,
+		seasons: newResultSeasons,
+		episodes: episodesBySeason.filter((s) => s !== undefined),
+		pathExists
+	};
 }) satisfies PageLoad;
