@@ -19,6 +19,7 @@
 	let showSeries = $state(true);
 	let sortOption = $state<'added' | 'rating' | 'duration'>('added');
 	let selectedGenres = $state<string[]>([]);
+	let watchedFilter = $state<'all' | 'watched' | 'unwatched'>('all');
 
 	// Genre-Filter
 	const genreFilter = (genres: { name: string }[]) =>
@@ -29,6 +30,13 @@
 		data.movies
 			.filter((m) => showMovies && m.tmdb.title?.toLowerCase().includes(search.toLowerCase()))
 			.filter((m) => genreFilter(m.tmdb.genres || []))
+			.filter((m) =>
+				watchedFilter === 'all'
+					? true
+					: watchedFilter === 'watched'
+						? m.watched === true
+						: m.watched === false
+			)
 			.sort(sortBy)
 	);
 
@@ -36,11 +44,18 @@
 		data.series
 			.filter((s) => showSeries && s.tmdb.name?.toLowerCase().includes(search.toLowerCase()))
 			.filter((s) => genreFilter(s.tmdb.genres || []))
+			.filter((s) =>
+				watchedFilter === 'all'
+					? true
+					: watchedFilter === 'watched'
+						? s.watched === true
+						: s.watched === false
+			)
 			.sort(sortBy)
 	);
 
 	const filteredCollections = $derived(() =>
-		data.collections
+		(watchedFilter === 'all' ? data.collections : []) // nur bei „all“ zeigen
 			.filter((c) => showCollections && c.tmdb?.name?.toLowerCase().includes(search.toLowerCase()))
 			.filter(() => genreFilter([]))
 			.sort(sortBy)
@@ -95,6 +110,13 @@
 				<option value="added">Neu hinzugefügt</option>
 				<option value="rating">Beste Bewertung</option>
 				<option value="duration">Längste Dauer</option>
+			</select>
+
+			<!-- Gesehen Filter -->
+			<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={watchedFilter}>
+				<option value="all">Alle</option>
+				<option value="watched">Angesehen</option>
+				<option value="unwatched">Nicht angesehen</option>
 			</select>
 		</div>
 
