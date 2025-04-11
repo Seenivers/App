@@ -1,3 +1,46 @@
+# [0.30.0](https://github.com/Seenivers/App/compare/v0.29.0...v0.30.0) (2025-04-11)
+
+
+### Bug Fixes
+
+* add undefined checks for IDs in actor, collection, episode, movie, season, and serie retrieval functions ([1381928](https://github.com/Seenivers/App/commit/13819284ded1760abd23b671a18e84a9c3f2ef66))
+* add watched filter to movies and series display ([c5aa1a8](https://github.com/Seenivers/App/commit/c5aa1a8ec5771be47a76fef6ea0cff9a48d110fd))
+* **deps:** update dependency @tauri-apps/plugin-dialog to ^2.2.1 ([051ff9f](https://github.com/Seenivers/App/commit/051ff9f92364255c654f5e1a198476276469bf58))
+* **deps:** update dependency @tauri-apps/plugin-fs to ^2.2.1 ([72019d1](https://github.com/Seenivers/App/commit/72019d118fb6fdc3e47359dd6c499b27f56dea4b))
+* **deps:** update dependency @tauri-apps/plugin-process to ^2.2.1 ([4ea5b5f](https://github.com/Seenivers/App/commit/4ea5b5f13ab695a1af21420362425fda9d7268cf))
+* **deps:** update dependency @tauri-apps/plugin-updater to ^2.7.0 ([008a781](https://github.com/Seenivers/App/commit/008a781ad3439e014f18feefeac9e11b804ec5b7))
+* **deps:** update rust crate tauri-plugin-dialog to 2.2.1 ([c5c294d](https://github.com/Seenivers/App/commit/c5c294da2592c95aafcbad266b3dff702b4f4a17))
+* **deps:** update rust crate tauri-plugin-fs to 2.2.1 ([7917306](https://github.com/Seenivers/App/commit/7917306fbdf84082e48970d99dc1fa6ae8883980))
+* **deps:** update rust crate tauri-plugin-process to 2.2.1 ([3472839](https://github.com/Seenivers/App/commit/3472839fa56ca158eb34b18590108c7a792a3b94))
+* **deps:** update rust crate tauri-plugin-updater to 2.7.0 ([f048089](https://github.com/Seenivers/App/commit/f048089a638cb3e15810156d68f8921046dbf9a3))
+* **deps:** update tauri monorepo ([32f95d6](https://github.com/Seenivers/App/commit/32f95d6ffd0604aacb20667648ae98cea8c34cc1))
+* enhance actor and movie data structure with additional fields ([94c4bff](https://github.com/Seenivers/App/commit/94c4bffaea37c155cc32be92841d2c57be9288ea))
+* improve error handling and data retrieval for series, seasons, and episodes in load function ([8b2184f](https://github.com/Seenivers/App/commit/8b2184f670a86ef1dc1f2b993b40534d9e0c61a0))
+* make seriesId and seasonNumber optional in getAll method parameters for episode, season, and serie ([5692d19](https://github.com/Seenivers/App/commit/5692d19d1fb229b1b01cddfe9195eaf81fcae9da))
+* remove primary key constraint from id field in actors, collections, episode, movies, season, and serie tables ([00f18b1](https://github.com/Seenivers/App/commit/00f18b1dc82a0f94ed2d6b0153b8f01d2988fbb3))
+* update button disabled state logic for season selection ([7d4c559](https://github.com/Seenivers/App/commit/7d4c55978c6a77e6f14a4d0313a1f4c541fe8c61))
+* update condition to display main content when movies, collections, or series are available ([ef35fed](https://github.com/Seenivers/App/commit/ef35fed850d29695616cc904c0a24c60d1894c88))
+* update episode insertion logic to use fetched ID instead of provided ID ([6b4c9ae](https://github.com/Seenivers/App/commit/6b4c9aecd81ce92ce444a1d5be6343750690d25e))
+* update getAll method to handle optional items parameter and improve ID filtering ([74c6149](https://github.com/Seenivers/App/commit/74c6149f8b945fcb864c1b7c28ef0f49060dc511))
+* update select logic in collection, episode, movie, season, and serie to return results instead of void ([e5bb036](https://github.com/Seenivers/App/commit/e5bb0361a8a6e15962faa6178649c90fa9d9a856))
+
+
+### Features
+
+* add delete button disable logic for development mode ([9e15972](https://github.com/Seenivers/App/commit/9e15972655456073ea1c681ea7da396ed2bab845))
+* add newDB function for database backup and reload functionality ([93ab76f](https://github.com/Seenivers/App/commit/93ab76f9c8db0704f5020682c0c090c2cb9005c4))
+* adjust sidebar styling for actor details page ([154ff2f](https://github.com/Seenivers/App/commit/154ff2f3c3e332618ce13d2ff9213af306a9ee3a))
+* enhance getAll methods to support filtering by multiple IDs for actor, collection, episode, movie, season, and serie ([1fbab32](https://github.com/Seenivers/App/commit/1fbab32f4bae80b144bfa90d2f6ff2e301f09140))
+* extend loadImages function to support Season and Episode types ([58e2ac7](https://github.com/Seenivers/App/commit/58e2ac7aeb599806422e9c493db58274998b7841))
+* filter backups based on environment mode in validateBackups function ([a4c1693](https://github.com/Seenivers/App/commit/a4c1693bd349ccc2773a442831bedddb582ff99c))
+* filter backups based on environment mode in validateBackups function ([aa3c8f9](https://github.com/Seenivers/App/commit/aa3c8f9622904ef529c88c18b04e214051ec5601))
+* implement online fetching for actors, collections, episodes, movies, seasons, and series ([469d0bf](https://github.com/Seenivers/App/commit/469d0bf447fecb7f14e6f6d2a6659dbbba832965))
+* improve backup management UI and function naming for clarity ([0f07481](https://github.com/Seenivers/App/commit/0f0748111f7832c1cd7700bf2968ffec1e6ab621))
+* improve layout and styling of actor details page for better readability ([ce9ad7f](https://github.com/Seenivers/App/commit/ce9ad7f930c618f517e57ef059969af041d46bd2))
+* refactor settings management into a separate component ([152164c](https://github.com/Seenivers/App/commit/152164c41e6f0239d33ccefee55b33a6d0db4483))
+* update removal logic for episode, movie, season, and series to set path to null ([7799744](https://github.com/Seenivers/App/commit/7799744cb4abdd3aaaa59ee4af2c52cd236f69f4))
+* update validateBackups function to create DB entries for unreferenced backup files ([dae9529](https://github.com/Seenivers/App/commit/dae95290b390c01bd1bb4c9cc9f242e0bcdb47f8))
+
 # [0.29.0](https://github.com/Seenivers/App/compare/v0.28.0...v0.29.0) (2025-04-07)
 
 ### Bug Fixes
