@@ -78,7 +78,7 @@
 </Navbar>
 
 <main class="z-0 flex flex-col space-y-2 p-4 sm:p-5">
-	{#if data.movies.length > 0 && data.collections.length > 0 && data.series.length > 0}
+	{#if data.movies.length > 0 || data.collections.length > 0 || data.series.length > 0}
 		<!-- Sucheingabe -->
 		<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
 			<label class="input input-bordered flex w-full items-center gap-2">
