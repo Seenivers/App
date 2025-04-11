@@ -172,3 +172,13 @@ export const backup = {
 		}
 	}
 };
+
+export async function newDB() {
+	if (!import.meta.env.DEV) return;
+	await backup.create(); // Erstelle ein Backup der aktuellen DB
+	sqlite.close(); // Schließe die aktuelle DB-Verbindung
+	const appDir = await appDataDir();
+	const dbPath = await join(appDir, `${import.meta.env.DEV ? 'DEV-' : ''}sqlite.db`);
+	await remove(dbPath, { baseDir: BaseDirectory.AppData });
+	window.location.reload(); // Lade die App neu
+}

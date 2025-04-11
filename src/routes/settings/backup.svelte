@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { schema } from '$lib/db/schema';
-	import { backup as backupfn } from '$lib/utils/backup';
+	import { backup as backupfn, newDB } from '$lib/utils/backup';
 	import { sep } from '@tauri-apps/api/path';
 	import { onMount } from 'svelte';
 
@@ -49,6 +49,7 @@
 <div class="flex items-center justify-between">
 	<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Backups</h1>
 	<div class="flex gap-2">
+		<button class="btn" onclick={newDB}>Neue Daten Bank</button>
 		<button class="btn" onclick={validateBackups}>Backups validieren</button>
 		<button class="btn" onclick={createBackup}>Backup erstellen</button>
 	</div>
