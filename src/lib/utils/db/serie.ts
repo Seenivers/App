@@ -33,20 +33,21 @@ export const serie = {
 		return result;
 	},
 
-	getAll: async (items: { id: number; seriesId?: number }[]) => {
+	getAll: async (items?: { id?: number; seriesId?: number }[]) => {
 		if (items && items.length > 0) {
+			// Filtere alle definierten IDs heraus
+			const ids = items.map((s) => s.id).filter((id): id is number => id !== undefined);
+
 			const localResults = await db
 				.select()
 				.from(schema.serie)
-				.where(
-					inArray(
-						schema.serie.id,
-						items.map((s) => s.id)
-					)
-				);
+				.where(inArray(schema.serie.id, ids));
 
 			const foundIds = localResults.map((r) => r.id);
-			const missingItems = items.filter((item) => !foundIds.includes(item.id));
+			// Filtere nur Elemente, bei denen id definiert ist
+			const missingItems = items.filter(
+				(item) => item.id !== undefined && !foundIds.includes(item.id)
+			);
 
 			if (missingItems.length > 0 && online.current) {
 				const fetchedResults: (typeof schema.serie.$inferSelect | null)[] = await Promise.all(
@@ -78,6 +79,7 @@ export const serie = {
 
 		return await db.select().from(schema.serie);
 	},
+
 	delete: async (id: number) => await db.delete(schema.serie).where(eq(schema.serie.id, id)),
 
 	update: async (id: number, data: Partial<typeof schema.serie.$inferInsert>) => {
