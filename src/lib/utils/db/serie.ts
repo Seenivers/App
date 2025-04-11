@@ -33,7 +33,7 @@ export const serie = {
 		return result;
 	},
 
-	getAll: async (items: { id: number; seriesId: number }[]) => {
+	getAll: async (items: { id: number; seriesId?: number }[]) => {
 		if (items && items.length > 0) {
 			const localResults = await db
 				.select()
@@ -51,7 +51,7 @@ export const serie = {
 			if (missingItems.length > 0 && online.current) {
 				const fetchedResults: (typeof schema.serie.$inferSelect | null)[] = await Promise.all(
 					missingItems.map(async (item) => {
-						if (item.seriesId !== undefined) return null;
+						if (item.seriesId === undefined) return null;
 						const onlineResult = await getSerie(item.seriesId);
 						if (onlineResult) {
 							await db.insert(schema.serie).values({

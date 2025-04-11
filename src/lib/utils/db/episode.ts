@@ -41,7 +41,7 @@ export const episode = {
 	},
 
 	getAll: async (
-		items: { id: number; seriesId: number; seasonNumber: number; episodeNumber: number }[]
+		items: { id: number; seriesId?: number; seasonNumber?: number; episodeNumber?: number }[]
 	) => {
 		if (items && items.length > 0) {
 			const localResults = await db

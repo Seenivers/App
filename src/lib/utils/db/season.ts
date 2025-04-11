@@ -35,7 +35,7 @@ export const season = {
 		return result;
 	},
 
-	getAll: async (items: { id: number; seriesId: number; seasonNumber: number }[]) => {
+	getAll: async (items: { id: number; seriesId?: number; seasonNumber?: number }[]) => {
 		if (items && items.length > 0) {
 			const localResults = await db
 				.select()
