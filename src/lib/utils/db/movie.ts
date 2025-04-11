@@ -56,7 +56,9 @@ export const movie = {
 				const fetchedResults = fetchedMovies.map(({ id, data }) => ({
 					id,
 					tmdb: data,
-					name: data.title,
+					path: null,
+					watched: false,
+					watchTime: 0,
 					updated: new Date()
 				}));
 

@@ -42,7 +42,13 @@ export const actor = {
 							await db
 								.insert(schema.actors)
 								.values({ id: onlineResult.id, tmdb: onlineResult, name: onlineResult.name });
-							return { ...onlineResult, updated: new Date() };
+
+							return {
+								id: onlineResult.id,
+								tmdb: onlineResult,
+								name: onlineResult.name,
+								updated: new Date()
+							};
 						}
 						return null;
 					})
