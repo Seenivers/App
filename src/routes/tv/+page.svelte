@@ -148,7 +148,7 @@
 					params={[data.serie.tmdb.poster_path, 'posters', true]}
 					class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 				/>
-				<div class="text-neutral-content text-center lg:text-left">
+				<div class="text-center text-neutral-content lg:text-left">
 					<h1 class="text-4xl font-bold md:text-5xl">{data.serie.tmdb.name}</h1>
 					{#if data.serie.tmdb.tagline}
 						<h2 class="mb-2 text-sm font-bold italic sm:text-base md:text-base">
@@ -202,7 +202,7 @@
 		<div>
 			<h2 class="my-3 text-2xl font-bold">Serienbesetzung</h2>
 			<div class="rounded-box bg-base-100 p-3">
-				<div class="carousel carousel-center rounded-box w-full space-x-3">
+				<div class="carousel carousel-center w-full space-x-3 rounded-box">
 					{#each data.serie.tmdb.credits.cast as cast}
 						<a
 							href="./actor?id={cast.id}"
@@ -212,7 +212,7 @@
 							<Img
 								params={[cast.profile_path, 'actors', false]}
 								alt={cast.name}
-								class="rounded-box max-w-40 sm:max-w-60"
+								class="max-w-40 rounded-box sm:max-w-60"
 							/>
 							<p class="text-center text-lg">{cast.name}</p>
 							<p class="text-base italic">{cast.character}</p>
@@ -384,7 +384,7 @@
 			{@const seasonObj = data.seasons.find((s) => s.tmdb.season_number === selectedSeason)!}
 			<ul class="mt-4 space-y-2">
 				{#each episodesGrouped.get(seasonObj.tmdb.season_number) ?? [] as episode (episode.id)}
-					<li class="bg-base-200 hover:bg-base-300 cursor-pointer rounded p-2">
+					<li class="cursor-pointer rounded bg-base-200 p-2 hover:bg-base-300">
 						<button
 							class="flex w-full items-center"
 							onclick={() => navigateToEpisode(seasonObj, episode)}
