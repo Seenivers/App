@@ -93,15 +93,30 @@
 			<div class="flex flex-wrap gap-2">
 				<label class="label cursor-pointer space-x-2">
 					<span class="label-text">Filme</span>
-					<input type="checkbox" class="toggle toggle-sm" bind:checked={showMovies} />
+					<input
+						type="checkbox"
+						class="toggle toggle-sm"
+						disabled={data.movies.length === 0}
+						bind:checked={showMovies}
+					/>
 				</label>
 				<label class="label cursor-pointer space-x-2">
 					<span class="label-text">Serien</span>
-					<input type="checkbox" class="toggle toggle-sm" bind:checked={showSeries} />
+					<input
+						type="checkbox"
+						class="toggle toggle-sm"
+						disabled={data.series.length === 0}
+						bind:checked={showSeries}
+					/>
 				</label>
 				<label class="label cursor-pointer space-x-2">
 					<span class="label-text">Sammlungen</span>
-					<input type="checkbox" class="toggle toggle-sm" bind:checked={showCollections} />
+					<input
+						type="checkbox"
+						class="toggle toggle-sm"
+						disabled={data.collections.length === 0}
+						bind:checked={showCollections}
+					/>
 				</label>
 			</div>
 
