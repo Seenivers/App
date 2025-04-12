@@ -79,6 +79,7 @@
 		await serie.update(data.serie.id, { path: null });
 		data.pathExists = false;
 		data.serie.path = null;
+		window.location.reload();
 	}
 
 	// Öffnet den Serienpfad mit dem Standardplayer
