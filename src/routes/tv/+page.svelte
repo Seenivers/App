@@ -10,6 +10,7 @@
 	import { serie } from '$lib/utils/db/serie';
 	import { season } from '$lib/utils/db/season';
 	import { placeholderURL } from '$lib';
+	import { _ } from 'svelte-i18n';
 
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
@@ -385,7 +386,7 @@
 			{@const seasonObj = data.seasons.find((s) => s.tmdb.season_number === selectedSeason)!}
 			<ul class="mt-4 space-y-2">
 				{#each episodesGrouped.get(seasonObj.tmdb.season_number) ?? [] as episode (episode.id)}
-					<li class="cursor-pointer rounded bg-base-200 p-2 hover:bg-base-300">
+					<li class="bg-base-200 hover:bg-base-300 relative cursor-pointer rounded p-2">
 						<button
 							class="flex w-full items-center"
 							onclick={() => navigateToEpisode(seasonObj, episode)}
@@ -403,6 +404,11 @@
 									<p class="text-sm text-gray-600">{episode.tmdb.overview}</p>
 								{/if}
 							</div>
+							{#if episode.watched}
+								<div class="badge badge-outline bg-base-300 absolute left-3 top-3">
+									{$_('main.movies.badgeWatched')}
+								</div>
+							{/if}
 						</button>
 					</li>
 				{/each}
