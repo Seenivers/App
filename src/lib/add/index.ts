@@ -360,14 +360,14 @@ async function loadImages(result: Movie | Serie | Season | Episode) {
 export async function addNewSerie(entrie: { id: number; index: number }) {
 	if (!entrie || !online.current) return;
 
+	// Status auf "downloading" setzen
+	updateSearchStatus(entrie.index, 'downloading');
+
 	if (!(await serie.isIDUnique(entrie.id))) {
 		serie.update(entrie.id, { path: searchList[entrie.index].options.path });
 		updateSearchStatus(entrie.index, 'downloaded');
 		return;
 	}
-
-	// Status auf "downloading" setzen
-	updateSearchStatus(entrie.index, 'downloading');
 
 	try {
 		// Serie abrufen
