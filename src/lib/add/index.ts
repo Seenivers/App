@@ -361,6 +361,7 @@ export async function addNewSerie(entrie: { id: number; index: number }) {
 	if (!entrie || !online.current) return;
 
 	if (!(await serie.isIDUnique(entrie.id))) {
+		serie.update(entrie.id, { path: searchList[entrie.index].options.path });
 		updateSearchStatus(entrie.index, 'downloaded');
 		return;
 	}
