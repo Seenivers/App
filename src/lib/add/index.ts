@@ -358,7 +358,10 @@ async function loadImages(result: Movie | Serie | Season | Episode) {
 
 //#region ADD Serie
 export async function addNewSerie(entrie: { id: number; index: number }) {
-	if (!entrie || !online.current) return;
+	if (!entrie || !online.current) {
+		updateSearchStatus(entrie.index, 'notFound');
+		return;
+	}
 
 	// Status auf "downloading" setzen
 	updateSearchStatus(entrie.index, 'downloading');
