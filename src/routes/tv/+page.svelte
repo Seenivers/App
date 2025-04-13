@@ -409,6 +409,11 @@
 									{$_('main.movies.badgeWatched')}
 								</div>
 							{/if}
+							{#if episode.path !== null}
+								<div class="badge badge-outline bg-base-300 absolute right-3 top-3">
+									Film in der Sammlung
+								</div>
+							{/if}
 						</button>
 					</li>
 				{/each}
