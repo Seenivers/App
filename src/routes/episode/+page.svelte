@@ -31,7 +31,7 @@
 
 	// Entferne Film anhand der ID
 	async function removeElementById() {
-		await episode.update(id, { path: null });
+		await episode.update(data.episodeID, { path: null });
 		data.pathExists = false;
 		episodeData.path = null;
 	}
