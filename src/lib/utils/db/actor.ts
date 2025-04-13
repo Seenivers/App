@@ -7,7 +7,9 @@ import { online } from 'svelte/reactivity/window';
 
 export const actor = {
 	add: async (data: typeof schema.actors.$inferInsert) =>
-		await db.insert(schema.actors).values(data),
+		(await actor.isIDUnique(data.id))
+			? await db.insert(schema.actors).values(data)
+			: await actor.update(data.id, data),
 
 	get: async (id: number) => {
 		let result = await db.query.actors.findFirst({ where: eq(schema.actors.id, id) });

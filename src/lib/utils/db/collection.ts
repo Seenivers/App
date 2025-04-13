@@ -7,7 +7,9 @@ import { online } from 'svelte/reactivity/window';
 
 export const collection = {
 	add: async (data: typeof schema.collections.$inferInsert) =>
-		await db.insert(schema.collections).values(data),
+		(await collection.isIDUnique(data.id))
+			? await db.insert(schema.collections).values(data)
+			: await collection.update(data.id, data),
 
 	get: async (id: number) => {
 		let result = await db.query.collections.findFirst({ where: eq(schema.collections.id, id) });

@@ -7,7 +7,9 @@ import { online } from 'svelte/reactivity/window';
 
 export const episode = {
 	add: async (data: typeof schema.episode.$inferInsert) =>
-		await db.insert(schema.episode).values(data),
+		(await episode.isIDUnique(data.id))
+			? await db.insert(schema.episode).values(data)
+			: await episode.update(data.id, data),
 
 	get: async (id: number, seriesId?: number, seasonNumber?: number, episodeNumber?: number) => {
 		let result = await db.query.episode.findFirst({ where: eq(schema.episode.id, id) });

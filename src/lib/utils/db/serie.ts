@@ -6,7 +6,10 @@ import { getSerie } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
 
 export const serie = {
-	add: async (data: typeof schema.serie.$inferInsert) => await db.insert(schema.serie).values(data),
+	add: async (data: typeof schema.serie.$inferInsert) =>
+		(await serie.isIDUnique(data.id))
+			? await db.insert(schema.serie).values(data)
+			: await serie.update(data.id, data),
 
 	get: async (id: number, seriesId?: number) => {
 		let result = await db.query.serie.findFirst({ where: eq(schema.serie.id, id) });
