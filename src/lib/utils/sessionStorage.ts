@@ -1,17 +1,29 @@
+import type { CardscaleNumbers } from '$lib/types/cardscale';
+
 // Typ für die Suchparameter
-export interface SearchCriteria {
-	title: string;
-	genre: string | null;
-	isWatched: boolean | null;
+interface SearchCriteria {
+	CARDSCALE: CardscaleNumbers;
+	search: string;
+	showCollections: boolean;
+	showMovies: boolean;
+	showSeries: boolean;
+	sortOption: 'added' | 'rating' | 'duration';
+	selectedGenres: string[];
+	watchedFilter: 'all' | 'watched' | 'unwatched';
 }
 
 export function getFilter() {
 	const filter = sessionStorage.getItem('filter');
 
 	let searchCriteria: SearchCriteria = {
-		title: '',
-		genre: null,
-		isWatched: null
+		CARDSCALE: 2,
+		search: '',
+		showCollections: false,
+		showMovies: true,
+		showSeries: true,
+		sortOption: 'added',
+		selectedGenres: [],
+		watchedFilter: 'all'
 	};
 
 	if (filter) {

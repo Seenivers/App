@@ -5,6 +5,8 @@
 	import { _ } from 'svelte-i18n';
 	import { type CardscaleNumbers } from '$lib/types/cardscale';
 	import Search from '$lib/SVG/search.svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { getFilter, setFilter } from '$lib/utils/sessionStorage';
 
 	interface Props {
 		data: PageData;
@@ -66,6 +68,32 @@
 		if (sortOption === 'duration') return (b.tmdb.runtime ?? 0) - (a.tmdb.runtime ?? 0);
 		return new Date(b.updated).getTime() - new Date(a.updated).getTime();
 	}
+
+	onMount(() => {
+		const filter = getFilter();
+
+		CARDSCALE = filter.CARDSCALE;
+		search = filter.search;
+		showCollections = filter.showCollections;
+		showMovies = filter.showMovies;
+		showSeries = filter.showSeries;
+		sortOption = filter.sortOption;
+		selectedGenres = filter.selectedGenres;
+		watchedFilter = filter.watchedFilter;
+	});
+
+	onDestroy(() => {
+		setFilter({
+			CARDSCALE,
+			search,
+			showCollections,
+			showMovies,
+			showSeries,
+			sortOption,
+			selectedGenres,
+			watchedFilter
+		});
+	});
 </script>
 
 <Navbar>
