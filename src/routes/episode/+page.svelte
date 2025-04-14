@@ -18,9 +18,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const id = data.id;
-	let watched: boolean = $state(data.result.watched ?? false);
-	let episodeData: typeof schema.episode.$inferSelect = $state(data.result);
+	let watched: boolean = $derived(data.result.watched ?? false);
 
 	let modal = $state(false);
 
@@ -34,15 +32,15 @@
 	async function removeElementById() {
 		await episode.update(data.episodeID, { path: null });
 		data.pathExists = false;
-		episodeData.path = null;
+		data.result.path = null;
 	}
 
 	// Öffne die Datei mit dem Standardplayer
 	async function openSeriePath() {
-		if (!episodeData || !episodeData.path) return;
+		if (!data.result || !data.result.path) return;
 		try {
 			// Öffne die Datei mit dem Standardplayer
-			await openPath(episodeData.path);
+			await openPath(data.result.path);
 		} catch (err) {
 			error('Failed to open Path: ' + err);
 		}
@@ -65,15 +63,15 @@
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
-					disabled={!episodeData}
+					disabled={!data.result}
 				>
 					Löschen
 				</button>
 			</div>
-			<button class="btn btn-sm md:btn-md" disabled={!episodeData} onclick={() => (modal = true)}>
+			<button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>
 				Bearbeiten
 			</button>
-			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!episodeData}>
+			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
 				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 			</button>
 		{/if}
@@ -81,8 +79,8 @@
 			<button class="btn" onclick={navigateToNextEpisode}>Nächste Episode</button>
 		{/if}
 		<a
-			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{episodeData.tmdb
-				.season_number}/episode/{id}"
+			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{data.result.tmdb
+				.season_number}/episode/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
 			rel="noopener noreferrer">Bei TMDB öffnen</a
@@ -92,37 +90,37 @@
 
 <!-- Main -->
 <main class="z-0">
-	{#if episodeData}
+	{#if data.result}
 		<div class="mx-auto w-full space-y-4 py-5 md:w-[80%] lg:w-[70%]">
-			<h1 class="text-x1 font-bold sm:text-2xl md:text-3xl">{episodeData.tmdb.name}</h1>
+			<h1 class="text-x1 font-bold sm:text-2xl md:text-3xl">{data.result.tmdb.name}</h1>
 
-			{#if episodeData.path && data.pathExists}
-				{#await image(episodeData.tmdb.still_path, null, false) then poster}
+			{#if data.result.path && data.pathExists}
+				{#await image(data.result.tmdb.still_path, null, false) then poster}
 					{#if settings.player === 'Plyr'}
 						<Plyr
-							src={convertFileSrc(episodeData.path)}
+							src={convertFileSrc(data.result.path)}
 							poster={poster.src}
 							id={data.episodeID}
 							type="tv"
 						/>
 					{:else}
 						<Vidstack
-							src={convertFileSrc(episodeData.path)}
+							src={convertFileSrc(data.result.path)}
 							poster={poster.src}
 							id={data.episodeID}
 							type="tv"
 						/>
 					{/if}
 				{/await}
-			{:else if episodeData.path}
+			{:else if data.result.path}
 				<p class="text-error text-lg font-bold underline md:text-2xl">Video Datei Nicht gefunden</p>
-				<p class="text-xs">{episodeData.path}</p>
+				<p class="text-xs">{data.result.path}</p>
 			{/if}
 
 			<!-- Trailer -->
 			{#if data.pathExists && online.current}
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{#each episodeData.tmdb.videos.results as trailer}
+					{#each data.result.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
 							<div
 								class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
@@ -153,12 +151,12 @@
 			{/if}
 
 			<!-- Serienbesetzung -->
-			{#if episodeData.tmdb.credits.cast.length > 0}
+			{#if data.result.tmdb.credits.cast.length > 0}
 				<div>
 					<h2 class="my-2 text-2xl font-bold">Serienbesetzung</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
-							{#each episodeData.tmdb.credits.cast as cast}
+							{#each data.result.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
 									class="carousel-item flex flex-col items-center"
@@ -182,15 +180,15 @@
 			<div class="space-y-3">
 				<div>
 					<h2 class="text-lg font-bold">Handlung</h2>
-					<p>{episodeData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
+					<p>{data.result.tmdb.overview || 'Keine Informationen verfügbar'}</p>
 				</div>
 
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
 						<h2 class="text-lg font-bold">Erstausstrahlung</h2>
 						<p>
-							{episodeData.tmdb.air_date
-								? new Date(episodeData.tmdb.air_date).toLocaleDateString(
+							{data.result.tmdb.air_date
+								? new Date(data.result.tmdb.air_date).toLocaleDateString(
 										window.navigator.language,
 										{
 											year: 'numeric',
@@ -205,8 +203,8 @@
 					<div>
 						<h2 class="text-lg font-bold">Episodennummer</h2>
 						<p>
-							{episodeData.tmdb.episode_number !== undefined
-								? `Episode ${episodeData.tmdb.episode_number}`
+							{data.result.tmdb.episode_number !== undefined
+								? `Episode ${data.result.tmdb.episode_number}`
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
@@ -214,8 +212,8 @@
 					<div>
 						<h2 class="text-lg font-bold">Staffel</h2>
 						<p>
-							{episodeData.tmdb.season_number !== undefined
-								? `Staffel ${episodeData.tmdb.season_number}`
+							{data.result.tmdb.season_number !== undefined
+								? `Staffel ${data.result.tmdb.season_number}`
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
@@ -223,8 +221,8 @@
 					<div>
 						<h2 class="text-lg font-bold">Laufzeit</h2>
 						<p>
-							{episodeData.tmdb.runtime
-								? `${episodeData.tmdb.runtime} Minuten`
+							{data.result.tmdb.runtime
+								? `${data.result.tmdb.runtime} Minuten`
 								: 'Keine Informationen verfügbar'}
 						</p>
 					</div>
@@ -232,17 +230,17 @@
 					<div>
 						<h2 class="text-lg font-bold">Bewertung</h2>
 						<p>
-							{episodeData.tmdb.vote_average
-								? `${Math.round(episodeData.tmdb.vote_average * 10) / 10}/10 (${episodeData.tmdb.vote_count} Stimmen)`
+							{data.result.tmdb.vote_average
+								? `${Math.round(data.result.tmdb.vote_average * 10) / 10}/10 (${data.result.tmdb.vote_count} Stimmen)`
 								: 'Keine Bewertungen'}
 						</p>
 					</div>
 
 					<div>
 						<h2 class="text-lg font-bold">Externe IDs</h2>
-						{#if episodeData.tmdb.external_ids?.imdb_id}
+						{#if data.result.tmdb.external_ids?.imdb_id}
 							<a
-								href={`https://www.imdb.com/title/${episodeData.tmdb.external_ids.imdb_id}`}
+								href={`https://www.imdb.com/title/${data.result.tmdb.external_ids.imdb_id}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="link">IMDb</a
@@ -253,9 +251,9 @@
 
 					<div>
 						<h2 class="text-lg font-bold">Hauptdarsteller</h2>
-						{#if episodeData.tmdb.credits?.cast.length}
+						{#if data.result.tmdb.credits?.cast.length}
 							<ul class="list-inside list-disc">
-								{#each episodeData.tmdb.credits.cast.slice(0, 3) as actor}
+								{#each data.result.tmdb.credits.cast.slice(0, 3) as actor}
 									<li>
 										{actor.name}
 										{#if actor.character}
@@ -270,9 +268,9 @@
 
 					<div>
 						<h2 class="text-lg font-bold">Regie</h2>
-						{#if episodeData.tmdb.credits?.crew.length}
+						{#if data.result.tmdb.credits?.crew.length}
 							<ul class="list-inside list-disc">
-								{#each episodeData.tmdb.credits.crew
+								{#each data.result.tmdb.credits.crew
 									.filter((person) => person.job === 'Director')
 									.slice(0, 2) as director}
 									<li>{director.name}</li>
