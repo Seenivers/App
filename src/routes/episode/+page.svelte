@@ -14,7 +14,7 @@
 	import Plyr from '$lib/player/Plyr.svelte';
 	import { online } from 'svelte/reactivity/window';
 	import { episode } from '$lib/utils/db/episode';
-	import { goto } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 
 	let { data }: { data: PageData } = $props();
 
@@ -48,9 +48,10 @@
 		}
 	}
 
-	function navigateToNextEpisode() {
+	async function navigateToNextEpisode() {
 		const url = `./episode?id=${data.id}&tvShowID=${data.tvShowID}&seasonNumber=${data.seasonNumber}&seasonID=${data.seasonID}&episodeID=${data.nextEpisodeID}`;
-		goto(url);
+		await invalidate('app:episode');
+		await goto(url, { replaceState: true });
 	}
 </script>
 

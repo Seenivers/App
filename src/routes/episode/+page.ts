@@ -12,7 +12,9 @@ import {
 import { online } from 'svelte/reactivity/window';
 import { nextEpisode } from '$lib/utils/nextEpisode';
 
-export const load = (async ({ url }) => {
+export const load = (async ({ url, depends }) => {
+	depends('app:episode');
+
 	const id = parseId(url); // ID validieren und parsen
 	const tvShowID = parseSerieId(url); // ID validieren und parsen
 	const seasonNumber = parseSeasonNumber(url); // ID validieren und parsen
