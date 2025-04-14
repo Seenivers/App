@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { db } from '$lib/db/database';
-	import { eq } from 'drizzle-orm';
-	import { schema } from '$lib/db/schema';
 	import { settings } from '$lib/stores.svelte';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { PageData } from './$types';
@@ -25,7 +22,7 @@
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
 		watched = !watched;
-		await db.update(schema.episode).set({ watched }).where(eq(schema.episode.id, data.episodeID));
+		await episode.update(data.episodeID, { watched });
 	}
 
 	// Entferne Film anhand der ID
