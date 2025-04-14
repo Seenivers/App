@@ -14,6 +14,7 @@
 	import Plyr from '$lib/player/Plyr.svelte';
 	import { online } from 'svelte/reactivity/window';
 	import { episode } from '$lib/utils/db/episode';
+	import { goto } from '$app/navigation';
 
 	let { data }: { data: PageData } = $props();
 
@@ -46,6 +47,11 @@
 			error('Failed to open Path: ' + err);
 		}
 	}
+
+	function navigateToNextEpisode() {
+		const url = `./episode?id=${data.id}&tvShowID=${data.tvShowID}&seasonNumber=${data.seasonNumber}&seasonID=${data.seasonID}&episodeID=${data.nextEpisodeID}`;
+		goto(url);
+	}
 </script>
 
 <Navbar back={true}>
@@ -69,6 +75,9 @@
 			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!episodeData}>
 				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 			</button>
+		{/if}
+		{#if data.nextEpisodeID !== null}
+			<button class="btn" onclick={navigateToNextEpisode}>Nächste Episode</button>
 		{/if}
 		<a
 			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{episodeData.tmdb
@@ -105,7 +114,7 @@
 					{/if}
 				{/await}
 			{:else if episodeData.path}
-				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{episodeData.path}</p>
 			{/if}
 
@@ -147,7 +156,7 @@
 				<div>
 					<h2 class="my-2 text-2xl font-bold">Serienbesetzung</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each episodeData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -157,7 +166,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>

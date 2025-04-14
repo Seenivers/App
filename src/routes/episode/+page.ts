@@ -10,6 +10,7 @@ import {
 	parseSerieId
 } from '$lib/load/loadUtils';
 import { online } from 'svelte/reactivity/window';
+import { nextEpisode } from '$lib/utils/nextEpisode';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
@@ -55,6 +56,8 @@ export const load = (async ({ url }) => {
 	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
 	const pathExists = result.path ? await exists(result.path) : false;
 
+	const nextEpisodeID = await nextEpisode(tvShowID, seasonID, episodeID);
+
 	// Nur relevante Daten zurückgeben
-	return { id, result, pathExists, tvShowID, seasonID, episodeID };
+	return { id, result, pathExists, tvShowID, seasonNumber, seasonID, episodeID, nextEpisodeID };
 }) satisfies PageLoad;
