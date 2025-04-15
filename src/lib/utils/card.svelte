@@ -32,7 +32,7 @@
 	<figure class="relative px-2 pt-2">
 		<Img {params} {alt} class="rounded-xl" />
 		{#if watched}
-			<div class="badge badge-outline badge-accent bg-base-300 absolute left-3 top-3">
+			<div class="badge badge-accent badge-outline absolute left-3 top-3 bg-base-300">
 				{$_('main.movies.badgeWatched')}
 			</div>
 		{/if}

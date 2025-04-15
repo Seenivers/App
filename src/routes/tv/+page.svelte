@@ -386,7 +386,7 @@
 			{@const seasonObj = data.seasons.find((s) => s.tmdb.season_number === selectedSeason)!}
 			<ul class="mt-4 space-y-2">
 				{#each episodesGrouped.get(seasonObj.tmdb.season_number) ?? [] as episode (episode.id)}
-					<li class="bg-base-200 hover:bg-base-300 relative cursor-pointer rounded p-2">
+					<li class="relative cursor-pointer rounded bg-base-200 p-2 hover:bg-base-300">
 						<button
 							class="flex w-full items-center"
 							onclick={() => navigateToEpisode(seasonObj, episode)}
@@ -405,12 +405,12 @@
 								{/if}
 							</div>
 							{#if episode.watched}
-								<div class="badge badge-outline badge-accent bg-base-300 absolute left-3 top-3">
+								<div class="badge badge-accent badge-outline absolute left-3 top-3 bg-base-300">
 									{$_('main.movies.badgeWatched')}
 								</div>
 							{/if}
 							{#if episode.path !== null}
-								<div class="badge badge-outline badge-accent bg-base-300 absolute right-3 top-3">
+								<div class="badge badge-accent badge-outline absolute right-3 top-3 bg-base-300">
 									In deiner Sammlung
 								</div>
 							{/if}
