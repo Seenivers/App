@@ -2,7 +2,7 @@ PRAGMA foreign_keys = OFF;
 
 --> statement-breakpoint
 CREATE TABLE
-	`__new_movies` (
+	IF NOT EXISTS `__new_movies` (
 		`id` integer PRIMARY KEY NOT NULL,
 		`path` text,
 		`watched` integer DEFAULT false NOT NULL,
@@ -46,7 +46,7 @@ CREATE UNIQUE INDEX `movies_id_unique` ON `movies` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	`__new_settings` (
+	IF NOT EXISTS `__new_settings` (
 		`id` integer PRIMARY KEY DEFAULT 1 NOT NULL,
 		`language` text DEFAULT 'en' NOT NULL,
 		`keywords` text DEFAULT '["mp4","tv","HD","HDTV","720p","1080p","4K","HDR","HDR10","HDR10+","4K+","unrated","proper","limited","internal","telesync","dvdrip","bdrip","xvid","bluray","x264","x265","hevc","Trailer"]' NOT NULL,
