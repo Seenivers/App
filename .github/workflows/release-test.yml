@@ -63,6 +63,6 @@ jobs:
         with:
           releaseName: 'Test Release'
           releaseBody: 'Test Portable Release'
-          releaseDraft: false
-          prerelease: true
+          releaseDraft: true
+          prerelease: false
           args: ${{ matrix.args }}
