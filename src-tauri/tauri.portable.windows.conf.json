@@ -1,0 +1,11 @@
+{
+	"identifier": "seenivers",
+	"bundle": {
+		"windows": {
+			"webviewInstallMode": {
+				"type": "offlineInstaller"
+			}
+		}
+	},
+	"$schema": "https://schema.tauri.app/config/2"
+}
