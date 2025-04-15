@@ -1,4 +1,4 @@
-name: Release
+name: Test Release
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   tauri-release:
-    name: Tauri Release
+    name: Tauri Test Release
 
     permissions:
       contents: write
