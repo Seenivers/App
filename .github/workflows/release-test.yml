@@ -38,7 +38,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.1.0
         with:
-          version: 9
+          version: 10
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -58,12 +58,9 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: test-v__VERSION__
           releaseName: 'Test Release'
           releaseBody: 'Test Portable Release'
           releaseDraft: true
-          prerelease: false
           args: ${{ matrix.args }}
