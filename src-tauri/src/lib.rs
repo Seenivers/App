@@ -1,7 +1,17 @@
+mod migrations;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
+
 pub fn run() {
+    // Migrations automatisch laden
+    let migrations = migrations::load_migrations();
+
     tauri::Builder::default()
-        .plugin(tauri_plugin_sql::Builder::new().build())
+        .plugin(
+            tauri_plugin_sql::Builder::default()
+                .add_migrations("sqlite:sqlite.db", migrations)
+                .build(),
+        )
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_drpc::init())
         // Für Desktop-Plattformen das tauri_plugin_updater-Plugin hinzufügen
