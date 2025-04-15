@@ -14,7 +14,6 @@
 	import { destroy } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
 	import { settingsDB } from '$lib/utils/db/settings';
-	import { migrate } from '$lib/db/migrate';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { updateActors, updateCollections, updateMovies, updateOldDB } from '$lib/db/update';
 
@@ -33,8 +32,6 @@
 	let logConsole: UnlistenFn;
 
 	onMount(async () => {
-		await migrate();
-
 		if (settings) {
 			setTheme(settings.theme);
 
@@ -71,7 +68,7 @@
 	});
 </script>
 
-<div class="flex h-fit min-h-screen flex-col bg-base-300">
+<div class="bg-base-300 flex h-fit min-h-screen flex-col">
 	{#if db && settings}
 		{@render children?.()}
 		<Toast />

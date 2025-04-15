@@ -1,5 +1,4 @@
 import { db } from '$lib/db/database';
-import { migrate } from '$lib/db/migrate';
 import { schema } from '$lib/db/schema';
 import { error, warn, info } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
@@ -30,8 +29,6 @@ async function createDefaultSettings(retries = 5) {
 
 	error('Alle Versuche fehlgeschlagen. Versuche Migration...');
 	try {
-		await migrate();
-
 		const resultAfterMigrate = (await db.select().from(schema.settings).limit(1))[0];
 		if (resultAfterMigrate !== undefined) {
 			info('Settings nach Migration gefunden: ' + resultAfterMigrate);
