@@ -1,6 +1,7 @@
 {
 	"identifier": "seenivers",
 	"bundle": {
+		"active": true,
 		"windows": {
 			"webviewInstallMode": {
 				"type": "offlineInstaller"
