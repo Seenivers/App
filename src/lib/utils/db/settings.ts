@@ -8,7 +8,9 @@ async function createDefaultSettings(retries = 5) {
 		const language = navigator.language.substring(0, 2) ?? 'en';
 		const defaultSettings: typeof schema.settings.$inferInsert = { id: 1, language };
 
-		info(`Versuch ${attempt}/${retries}: Erstelle Default-Settings ` + defaultSettings);
+		info(
+			`Versuch ${attempt}/${retries}: Erstelle Default-Settings ` + JSON.stringify(defaultSettings)
+		);
 
 		try {
 			await db.insert(schema.settings).values(defaultSettings);
@@ -19,7 +21,7 @@ async function createDefaultSettings(retries = 5) {
 
 		const result = (await db.select().from(schema.settings).limit(1))[0];
 		if (result !== undefined) {
-			info('Settings erfolgreich erstellt/gelesen: ' + result);
+			info('Settings erfolgreich erstellt/gelesen: ' + JSON.stringify(result));
 			return result;
 		}
 
@@ -31,7 +33,7 @@ async function createDefaultSettings(retries = 5) {
 	try {
 		const resultAfterMigrate = (await db.select().from(schema.settings).limit(1))[0];
 		if (resultAfterMigrate !== undefined) {
-			info('Settings nach Migration gefunden: ' + resultAfterMigrate);
+			info('Settings nach Migration gefunden: ' + JSON.stringify(resultAfterMigrate));
 			return resultAfterMigrate;
 		}
 	} catch (err) {
