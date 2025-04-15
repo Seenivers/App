@@ -6,10 +6,17 @@ pub fn run() {
     // Migrations automatisch laden
     let migrations = migrations::load_migrations();
 
+    // Abhängig vom Build-Typ den DB-Pfad setzen:
+    let db_path = if cfg!(debug_assertions) {
+        "sqlite:DEV-sqlite.db"
+    } else {
+        "sqlite:sqlite.db"
+    };
+
     tauri::Builder::default()
         .plugin(
             tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:sqlite.db", migrations)
+                .add_migrations(db_path, migrations)
                 .build(),
         )
         .plugin(tauri_plugin_process::init())
