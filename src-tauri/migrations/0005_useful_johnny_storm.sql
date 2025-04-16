@@ -2,7 +2,7 @@ PRAGMA foreign_keys = OFF;
 
 --> statement-breakpoint
 CREATE TABLE
-	`__new_actors` (
+	IF NOT EXISTS `__new_actors` (
 		`id` integer PRIMARY KEY NOT NULL,
 		`name` text NOT NULL,
 		`tmdb` text NOT NULL,
