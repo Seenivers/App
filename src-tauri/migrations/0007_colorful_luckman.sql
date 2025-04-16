@@ -1,11 +1,13 @@
 CREATE TABLE
-	IF NOT EXISTSbackups ` (
-	` id ` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	` path ` text NOT NULL,
-	` created_at ` integer NOT NULL
-);
+	IF NOT EXISTS `backups` (
+		` id ` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+		` path ` text NOT NULL,
+		` created_at ` integer NOT NULL
+	);
+
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTSepisode` (
+CREATE TABLE
+	IF NOT EXISTS `episode` (
 		`id` integer PRIMARY KEY NOT NULL,
 		`path` text,
 		`watched` integer DEFAULT false NOT NULL,
@@ -19,17 +21,21 @@ CREATE UNIQUE INDEX `episode_id_unique` ON `episode` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	IF NOT EXISTSseason ` (
-	` id ` integer PRIMARY KEY NOT NULL,
-	` path ` text,
-	` watched ` integer DEFAULT false NOT NULL,
-	` episode ` integer DEFAULT 1 NOT NULL,
-	` tmdb ` text NOT NULL,
-	` updated ` integer NOT NULL
-);
+	IF NOT EXISTS `season` (
+		` id ` integer PRIMARY KEY NOT NULL,
+		` path ` text,
+		` watched ` integer DEFAULT false NOT NULL,
+		` episode ` integer DEFAULT 1 NOT NULL,
+		` tmdb ` text NOT NULL,
+		` updated ` integer NOT NULL
+	);
+
 --> statement-breakpoint
-CREATE UNIQUE INDEX ` season_id_unique ` ON ` season ` (` id `);--> statement-breakpoint
-CREATE TABLE IF NOT EXISTSseries` (
+CREATE UNIQUE INDEX ` season_id_unique ` ON ` season ` (` id `);
+
+--> statement-breakpoint
+CREATE TABLE
+	IF NOT EXISTS `series` (
 		`id` integer PRIMARY KEY NOT NULL,
 		`path` text,
 		`watched` integer DEFAULT false NOT NULL,
@@ -46,19 +52,40 @@ PRAGMA foreign_keys = OFF;
 
 --> statement-breakpoint
 CREATE TABLE
-	IF NOT EXISTS__new_actors ` (
-	` id ` integer PRIMARY KEY NOT NULL,
-	` name ` text NOT NULL,
-	` tmdb ` text NOT NULL,
-	` updated ` integer NOT NULL
-);
+	IF NOT EXISTS `__new_actors` (
+		` id ` integer PRIMARY KEY NOT NULL,
+		` name ` text NOT NULL,
+		` tmdb ` text NOT NULL,
+		` updated ` integer NOT NULL
+	);
+
 --> statement-breakpoint
-INSERT INTO ` __new_actors `("id", "name", "tmdb", "updated") SELECT "id", "name", "tmdb", "updated" FROM ` actors `;--> statement-breakpoint
-DROP TABLE ` actors `;--> statement-breakpoint
-ALTER TABLE ` __new_actors ` RENAME TO ` actors `;--> statement-breakpoint
-PRAGMA foreign_keys=ON;--> statement-breakpoint
-CREATE UNIQUE INDEX ` actors_id_unique ` ON ` actors ` (` id `);--> statement-breakpoint
-CREATE TABLE IF NOT EXISTS__new_collection` (
+INSERT INTO
+	` __new_actors ` ("id", "name", "tmdb", "updated")
+SELECT
+	"id",
+	"name",
+	"tmdb",
+	"updated"
+FROM
+	` actors `;
+
+--> statement-breakpoint
+DROP TABLE ` actors `;
+
+--> statement-breakpoint
+ALTER TABLE ` __new_actors `
+RENAME TO ` actors `;
+
+--> statement-breakpoint
+PRAGMA foreign_keys = ON;
+
+--> statement-breakpoint
+CREATE UNIQUE INDEX ` actors_id_unique ` ON ` actors ` (` id `);
+
+--> statement-breakpoint
+CREATE TABLE
+	IF NOT EXISTS `__new_collection` (
 		`id` integer PRIMARY KEY NOT NULL,
 		`name` text NOT NULL,
 		`overview` text,
@@ -102,20 +129,48 @@ CREATE UNIQUE INDEX `collection_id_unique` ON `collection` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	IF NOT EXISTS__new_movies ` (
-	` id ` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	` path ` text,
-	` watched ` integer DEFAULT false NOT NULL,
-	` watchTime ` integer DEFAULT 0 NOT NULL,
-	` tmdb ` text NOT NULL,
-	` updated ` integer NOT NULL
-);
+	IF NOT EXISTS `__new_movies` (
+		` id ` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+		` path ` text,
+		` watched ` integer DEFAULT false NOT NULL,
+		` watchTime ` integer DEFAULT 0 NOT NULL,
+		` tmdb ` text NOT NULL,
+		` updated ` integer NOT NULL
+	);
+
 --> statement-breakpoint
-INSERT INTO ` __new_movies `("id", "path", "watched", "watchTime", "tmdb", "updated") SELECT "id", "path", "watched", "watchTime", "tmdb", "updated" FROM ` movies `;--> statement-breakpoint
-DROP TABLE ` movies `;--> statement-breakpoint
-ALTER TABLE ` __new_movies ` RENAME TO ` movies `;--> statement-breakpoint
-CREATE UNIQUE INDEX ` movies_id_unique ` ON ` movies ` (` id `);--> statement-breakpoint
-CREATE TABLE IF NOT EXISTS__new_settings` (
+INSERT INTO
+	` __new_movies ` (
+		"id",
+		"path",
+		"watched",
+		"watchTime",
+		"tmdb",
+		"updated"
+	)
+SELECT
+	"id",
+	"path",
+	"watched",
+	"watchTime",
+	"tmdb",
+	"updated"
+FROM
+	` movies `;
+
+--> statement-breakpoint
+DROP TABLE ` movies `;
+
+--> statement-breakpoint
+ALTER TABLE ` __new_movies `
+RENAME TO ` movies `;
+
+--> statement-breakpoint
+CREATE UNIQUE INDEX ` movies_id_unique ` ON ` movies ` (` id `);
+
+--> statement-breakpoint
+CREATE TABLE
+	IF NOT EXISTS `__new_settings` (
 		`id` integer PRIMARY KEY DEFAULT 1 NOT NULL,
 		`language` text DEFAULT 'en' NOT NULL,
 		`keywords` text DEFAULT '["mp4","tv","HD","HDTV","720p","1080p","4K","HDR","HDR10","HDR10+","4K+","unrated","proper","limited","internal","telesync","dvdrip","bdrip","xvid","bluray","x264","x265","hevc"]',
