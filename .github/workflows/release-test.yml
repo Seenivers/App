@@ -19,7 +19,7 @@ jobs:
       matrix:
         include:
           - platform: 'windows-latest'
-            args: '--config "src-tauri/tauri.portable.windows.conf.json"  --no-bundle'
+            args: '--config "src-tauri/tauri.windows.conf.test.json"'
 
     runs-on: ${{ matrix.platform }}
 
