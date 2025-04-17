@@ -3,7 +3,7 @@ use include_dir::{include_dir, Dir};
 use tauri_plugin_sql::{Migration, MigrationKind};
 
 /// Bindet das Migrationsverzeichnis zur Compile-Zeit ein (relativer Pfad)
-static MIGRATIONS_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR\\migrations");
+static MIGRATIONS_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR/migrations");
 
 /// Lädt automatisch alle Migrationen aus dem angegebenen Ordner.
 /// Erwartet Dateinamen im Format "0001_description.sql", wobei:
