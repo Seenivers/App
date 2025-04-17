@@ -38,8 +38,9 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS `movies_path_unique` ON `movies` (`path`);
+CREATE UNIQUE INDEX `movies_path_unique` ON `movies` (`path`);
 
+--> statement-breakpoint
 CREATE TABLE
 	IF NOT EXISTS `settings` (
 		`id` integer PRIMARY KEY DEFAULT 1 NOT NULL,
