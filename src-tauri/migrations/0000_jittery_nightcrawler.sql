@@ -1,5 +1,5 @@
 CREATE TABLE
-	`actors` (
+	IF NOT EXISTS `actors` (
 		`id` integer NOT NULL,
 		`name` text NOT NULL,
 		`tmdb` text NOT NULL,
@@ -7,11 +7,11 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX `actors_id_unique` ON `actors` (`id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `actors_id_unique` ON `actors` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	`backups` (
+	IF NOT EXISTS `backups` (
 		`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 		`path` text NOT NULL,
 		`created_at` integer NOT NULL
@@ -19,7 +19,7 @@ CREATE TABLE
 
 --> statement-breakpoint
 CREATE TABLE
-	`collection` (
+	IF NOT EXISTS `collection` (
 		`id` integer NOT NULL,
 		`name` text NOT NULL,
 		`overview` text,
@@ -30,11 +30,11 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX `collection_id_unique` ON `collection` (`id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `collection_id_unique` ON `collection` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	`episode` (
+	IF NOT EXISTS `episode` (
 		`id` integer NOT NULL,
 		`path` text,
 		`watched` integer DEFAULT false NOT NULL,
@@ -44,11 +44,11 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX `episode_id_unique` ON `episode` (`id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `episode_id_unique` ON `episode` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	`movies` (
+	IF NOT EXISTS `movies` (
 		`id` integer NOT NULL,
 		`path` text,
 		`watched` integer DEFAULT false NOT NULL,
@@ -58,11 +58,11 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX `movies_id_unique` ON `movies` (`id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `movies_id_unique` ON `movies` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	`season` (
+	IF NOT EXISTS `season` (
 		`id` integer NOT NULL,
 		`path` text,
 		`watched` integer DEFAULT false NOT NULL,
@@ -72,11 +72,11 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX `season_id_unique` ON `season` (`id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `season_id_unique` ON `season` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	`series` (
+	IF NOT EXISTS `series` (
 		`id` integer NOT NULL,
 		`path` text,
 		`watched` integer DEFAULT false NOT NULL,
@@ -86,11 +86,11 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX `series_id_unique` ON `series` (`id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `series_id_unique` ON `series` (`id`);
 
 --> statement-breakpoint
 CREATE TABLE
-	`settings` (
+	IF NOT EXISTS `settings` (
 		`id` integer PRIMARY KEY DEFAULT 1 NOT NULL,
 		`language` text DEFAULT 'en' NOT NULL,
 		`keywords` text DEFAULT '["mp4","tv","HD","HDTV","720p","1080p","4K","HDR","HDR10","HDR10+","4K+","unrated","proper","limited","internal","telesync","dvdrip","bdrip","xvid","bluray","x264","x265","hevc"]' NOT NULL,
@@ -105,4 +105,4 @@ CREATE TABLE
 	);
 
 --> statement-breakpoint
-CREATE UNIQUE INDEX `settings_id_unique` ON `settings` (`id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `settings_id_unique` ON `settings` (`id`);
