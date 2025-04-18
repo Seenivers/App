@@ -33,7 +33,7 @@
 		"daisyui": "^4.12.24",
 		"drizzle-kit": "^0.30.6",
 		"eslint": "^9.23.0",
-		"eslint-config-prettier": "^10.1.1",
+		"eslint-config-prettier": "^10.1.2",
 		"eslint-plugin-svelte": "^3.5.1",
 		"fuse.js": "^7.1.0",
 		"globals": "^16.0.0",
