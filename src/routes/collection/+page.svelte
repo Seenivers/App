@@ -5,7 +5,6 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { onMount } from 'svelte';
-	import { discord } from '$lib/discord';
 
 	interface Props {
 		data: PageData;
@@ -42,11 +41,6 @@
 		if (stored !== null) {
 			sortNewestFirst = stored === 'true';
 		}
-
-		discord({
-			details: `Schaut gerade die ${data.result.name} an`,
-			state: `${data.result.parts.length} Filme`
-		});
 	});
 </script>
 

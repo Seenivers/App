@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev:tauri": "pnpm tauri dev",
+		"dev:android": "pnpm tauri android dev",
 		"tauri:build": "pnpm run tauri build --debug",
 		"dev": "vite dev",
 		"build": "vite build",
@@ -63,7 +64,6 @@
 		"hls.js": "^1.6.0",
 		"plyr": "^3.7.8",
 		"svelte-i18n": "^4.0.1",
-		"tauri-plugin-drpc": "^1.0.3",
 		"vidstack": "^1.12.13"
 	},
 	"pnpm": {

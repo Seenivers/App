@@ -20,7 +20,6 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_process::init())
-        .plugin(tauri_plugin_drpc::init())
         // Für Desktop-Plattformen das tauri_plugin_updater-Plugin hinzufügen
         .setup(|_app| {
             #[cfg(desktop)]

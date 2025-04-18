@@ -10,8 +10,6 @@
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/utils/log';
 	import { online } from 'svelte/reactivity/window';
-	import { startRPC } from '$lib/discord';
-	import { destroy } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
 	import { settingsDB } from '$lib/utils/db/settings';
 	import { setTheme } from '$lib/utils/themeUtils';
@@ -44,8 +42,6 @@
 
 			logConsole = await attachConsole();
 			logLogger = await attachLogger(forwardConsole);
-
-			await startRPC();
 		}
 		networkStatus();
 
@@ -60,8 +56,6 @@
 		trace('App closed');
 
 		await settingsDB.update(settings);
-
-		await destroy();
 
 		logLogger();
 		logConsole();
