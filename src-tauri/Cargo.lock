@@ -4786,13 +4786,11 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-drpc"
-version = "0.1.4"
+version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "90fdab242c4f72472ab1f27b57a9e2523d333cb609d47ce9e5e34347bb3a4644"
+checksum = "7b291669b7dbc05471fba380eeecf31e3f733ae6013aaa5216a43ca376027e5a"
 dependencies = [
- "anyhow",
  "log",
- "once_cell",
  "rpcdiscord",
  "serde",
  "serde_json",
