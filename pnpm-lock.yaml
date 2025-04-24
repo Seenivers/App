@@ -39,8 +39,8 @@ importers:
         specifier: ^0.41.0
         version: 0.41.0(@types/better-sqlite3@7.6.13)(better-sqlite3@11.9.1)(gel@2.0.2)
       hls.js:
-        specifier: ^1.6.0
-        version: 1.6.1
+        specifier: ^1.6.2
+        version: 1.6.2
       plyr:
         specifier: ^3.7.8
         version: 3.7.8
@@ -1975,8 +1975,8 @@ packages:
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
 
-  hls.js@1.6.1:
-    resolution: {integrity: sha512-7GOkcqn0Y9EqU2OJZlzkwxj9Uynuln7URvr7dRjgqNJNZ5UbbjL/v1BjAvQogy57Psdd/ek1u2s6IDEFYlabrA==}
+  hls.js@1.6.2:
+    resolution: {integrity: sha512-rx+pETSCJEDThm/JCm8CuadcAC410cVjb1XVXFNDKFuylaayHk1+tFxhkjvnMDAfqsJHxZXDAJ3Uc2d5xQyWlQ==}
 
   hook-std@3.0.0:
     resolution: {integrity: sha512-jHRQzjSDzMtFy34AGj1DN+vq54WVuhSvKgrHf0OMiFQTwDD4L/qqofVEWjLOBMTn5+lCD3fPg32W9yOfnEJTTw==}
@@ -5107,7 +5107,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  hls.js@1.6.1: {}
+  hls.js@1.6.2: {}
 
   hook-std@3.0.0: {}
 
