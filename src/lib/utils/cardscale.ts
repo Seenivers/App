@@ -1,4 +1,6 @@
 import type { Cardscale } from '$lib/types/cardscale';
+import { _ } from 'svelte-i18n';
+import { get } from 'svelte/store';
 
 export const scaleClasses = {
 	1: { width: 'min-w-[8rem] max-w-[12rem]', text: 'text-base' },
@@ -7,7 +9,10 @@ export const scaleClasses = {
 };
 
 export const CARD_SCALE: Cardscale[] = [
-	{ number: 1, size: 'Small' },
-	{ number: 2, size: 'Medium' },
-	{ number: 3, size: 'Large' }
+	// @ts-expect-error This is fine
+	{ number: 1, size: get(_)('cardscale.small') },
+	// @ts-expect-error This is fine
+	{ number: 2, size: get(_)('cardscale.medium') },
+	// @ts-expect-error This is fine
+	{ number: 3, size: get(_)('cardscale.large') }
 ];

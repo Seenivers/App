@@ -98,10 +98,10 @@
 
 <Navbar>
 	{#snippet left()}
-		<a href="./add" class="btn btn-ghost">{$_('main.nav.add')}</a>
+		<a href="./add" class="btn btn-ghost">{$_('nav.add')}</a>
 	{/snippet}
 	{#snippet right()}
-		<a href="./settings" class="btn btn-ghost">{$_('main.nav.settings')}</a>
+		<a href="./settings" class="btn btn-ghost">{$_('nav.settings')}</a>
 	{/snippet}
 </Navbar>
 
@@ -111,7 +111,12 @@
 		<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
 			<label class="input input-bordered flex w-full items-center gap-2">
 				<Search class="h-4 w-4 opacity-70" />
-				<input type="text" class="grow" placeholder="Titel suchen..." bind:value={search} />
+				<input
+					type="text"
+					class="grow"
+					placeholder={$_('main.searchPlaceholder')}
+					bind:value={search}
+				/>
 			</label>
 		</div>
 
@@ -120,7 +125,7 @@
 			<!-- Typ Filter -->
 			<div class="flex flex-wrap gap-2">
 				<label class="label cursor-pointer space-x-2">
-					<span class="label-text">Filme</span>
+					<span class="label-text">{$_('movies')}</span>
 					<input
 						type="checkbox"
 						class="toggle toggle-sm"
@@ -129,7 +134,7 @@
 					/>
 				</label>
 				<label class="label cursor-pointer space-x-2">
-					<span class="label-text">Serien</span>
+					<span class="label-text">{$_('series')}</span>
 					<input
 						type="checkbox"
 						class="toggle toggle-sm"
@@ -138,7 +143,7 @@
 					/>
 				</label>
 				<label class="label cursor-pointer space-x-2">
-					<span class="label-text">Sammlungen</span>
+					<span class="label-text">{$_('collections')}</span>
 					<input
 						type="checkbox"
 						class="toggle toggle-sm"
@@ -150,16 +155,16 @@
 
 			<!-- Sortierung -->
 			<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={sortOption}>
-				<option value="added">Neu hinzugefügt</option>
-				<option value="rating">Beste Bewertung</option>
-				<option value="duration">Längste Dauer</option>
+				<option value="added">{$_('main.added')}</option>
+				<option value="rating">{$_('main.rating')}</option>
+				<option value="duration">{$_('main.duration')}</option>
 			</select>
 
 			<!-- Gesehen Filter -->
 			<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={watchedFilter}>
-				<option value="all">Alle</option>
-				<option value="watched">Angesehen</option>
-				<option value="unwatched">Nicht angesehen</option>
+				<option value="all">{$_('main.all')}</option>
+				<option value="watched">{$_('main.watched')}</option>
+				<option value="unwatched">{$_('main.unwatched')}</option>
 			</select>
 		</div>
 
@@ -175,7 +180,7 @@
 							{title}
 							href={`./collection?id=${item.id}`}
 							params={[item.poster_path, 'posters', true]}
-							alt={$_('main.movies.posterAlt', { values: { title } })}
+							alt={$_('main.posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
@@ -190,7 +195,7 @@
 							href={`./movie?id=${item.id}`}
 							params={[item.tmdb.poster_path, 'posters', true]}
 							watched={item.watched}
-							alt={$_('main.movies.posterAlt', { values: { title } })}
+							alt={$_('main.posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
@@ -205,18 +210,18 @@
 							href={`./tv?id=${item.id}`}
 							params={[item.tmdb.poster_path, 'posters', true]}
 							watched={item.watched}
-							alt={$_('main.movies.posterAlt', { values: { title } })}
+							alt={$_('main.posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
 			{:else}
-				<p class="mt-10 w-full text-center text-gray-400">{$_('main.movies.noneFound')}</p>
+				<p class="mt-10 w-full text-center text-gray-400">{$_('main.noneFound')}</p>
 			{/if}
 		</div>
 	{:else}
 		<div class="flex flex-col items-center space-y-4">
-			<p>{$_('main.movies.noneAdded')}</p>
-			<a href="./add" class="btn">{$_('main.nav.add')}</a>
+			<p>{$_('main.noneAdded')}</p>
+			<a href="./add" class="btn">{$_('nav.add')}</a>
 		</div>
 	{/if}
 </main>

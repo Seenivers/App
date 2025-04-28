@@ -4,6 +4,8 @@ import { appDataDir, join } from '@tauri-apps/api/path';
 import { BaseDirectory, copyFile, exists, mkdir, remove, readDir } from '@tauri-apps/plugin-fs';
 import { error, info } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm/sql';
+import { _ } from 'svelte-i18n';
+import { get } from 'svelte/store';
 
 export const backup = {
 	create: async () => {
@@ -63,7 +65,7 @@ export const backup = {
 			const data = await backup.get(id);
 
 			if (!data) {
-				error(`Delete Backup: No backup found for ID ${id}`);
+				error(get(_)('backup.idNotFound', { values: { id: id } }));
 				return false;
 			}
 
@@ -87,7 +89,7 @@ export const backup = {
 			const data = await backup.get(id);
 
 			if (!data) {
-				error(`Restore Backup: No backup found for ID ${id}`);
+				error(get(_)('backup.idNotFound', { values: { id: id } }));
 				return false;
 			}
 
@@ -95,7 +97,7 @@ export const backup = {
 
 			// Falls Datei nicht existiert, lösche den DB-Eintrag
 			if (!(await exists(data.path, { baseDir: BaseDirectory.AppData }))) {
-				error(`Restore Backup: File not found`);
+				error(get(_)('backup.fileNotFound', { values: { filePath: data.path } }));
 				await backup.validateBackups();
 				return false;
 			}
@@ -152,7 +154,7 @@ export const backup = {
 			for (const dbBackup of dbBackups) {
 				if (!(await exists(dbBackup.path, { baseDir: BaseDirectory.AppData }))) {
 					await db.delete(schema.backups).where(eq(schema.backups.id, dbBackup.id));
-					info(`🗑️ Gelöschter DB-Eintrag für fehlendes Backup: ${dbBackup.path}`);
+					info(get(_)('backup.deletedBackup', { values: { filePath: dbBackup.path.toString() } }));
 				}
 			}
 
@@ -161,7 +163,7 @@ export const backup = {
 				const filePath = await join(backupDir, file);
 				if (!dbBackupPaths.includes(filePath)) {
 					await db.insert(schema.backups).values({ path: filePath });
-					info(`✅ Neuer DB-Eintrag für Backup-Datei erstellt: ${filePath}`);
+					info(get(_)('backup.newBackup', { values: { filePath } }));
 				}
 			}
 

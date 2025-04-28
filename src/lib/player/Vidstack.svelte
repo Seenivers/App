@@ -6,6 +6,8 @@
 	import 'vidstack/player/styles/default/layouts/video.css';
 	import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player';
 	import type { MediaType } from '$lib/types/add';
+	import { json } from 'svelte-i18n';
+	import type { DefaultLayoutTranslations } from 'vidstack';
 
 	interface Props {
 		id: number;
@@ -30,6 +32,11 @@
 				logLevel: 'error',
 				storage: 'vidstack'
 			});
+
+			const layout = document.querySelector('media-video-layout');
+			if (layout !== null) {
+				layout.translations = $json('vidstack') as Partial<DefaultLayoutTranslations> | null;
+			}
 
 			player.addEventListener('loaded-metadata', async () => {
 				await loadWatchTime(id, type, (time) => (player.currentTime = time));
