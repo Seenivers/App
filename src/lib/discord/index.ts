@@ -89,11 +89,11 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
  * Startet das Discord Rich Presence.
  */
 export async function startRPC() {
-	if (!online.current || !settings.discordAktiv || !(await isRunning())) return;
-
-	// Standardaktivität setzen
-	await discord();
+	if (!online.current || !settings.discordAktiv || (await isRunning())) return;
 
 	debug('Starting Discord RPC');
 	await start(DiscordClientID);
+
+	// Standardaktivität setzen
+	await discord();
 }
