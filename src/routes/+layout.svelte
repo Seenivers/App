@@ -33,7 +33,12 @@
 
 	onMount(async () => {
 		if (settings) {
+			logConsole = await attachConsole();
+			logLogger = await attachLogger(forwardConsole);
+
 			setTheme(settings.theme);
+
+			await discord();
 
 			if (import.meta.env.PROD) {
 				await updateOldDB();
@@ -41,11 +46,6 @@
 				await updateCollections();
 				await updateActors();
 			}
-
-			logConsole = await attachConsole();
-			logLogger = await attachLogger(forwardConsole);
-
-			await discord();
 		}
 		networkStatus();
 
