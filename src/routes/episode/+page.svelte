@@ -44,9 +44,9 @@
 	}
 
 	async function navigateToNextEpisode() {
-		const url = `./episode?id=${data.id}&tvShowID=${data.tvShowID}&seasonNumber=${data.seasonNumber}&seasonID=${data.seasonID}&episodeID=${data.nextEpisodeID}`;
+		if (!data.nextEpisodeURL) return;
 		await invalidate('app:episode');
-		await goto(url, { replaceState: true });
+		await goto(data.nextEpisodeURL, { replaceState: true });
 	}
 </script>
 
@@ -72,9 +72,9 @@
 				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
 			</button>
 		{/if}
-		{#if data.nextEpisodeID !== null}
-			<button class="btn" onclick={navigateToNextEpisode}>Nächste Episode</button>
-		{/if}
+		<button class="btn" disabled={data.nextEpisodeURL === null} onclick={navigateToNextEpisode}>
+			Nächste Episode
+		</button>
 		<a
 			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{data.result.tmdb
 				.season_number}/episode/{data.id}"

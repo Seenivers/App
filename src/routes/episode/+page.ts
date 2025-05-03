@@ -58,8 +58,17 @@ export const load = (async ({ url, depends }) => {
 	// Wenn der path leer ist, setzen wir es auf false, ansonsten prüfen wir, ob der Pfad existiert
 	const pathExists = result.path ? await exists(result.path) : false;
 
-	const nextEpisodeID = await nextEpisode(tvShowID, seasonID, episodeID);
+	const nextEpisodeURL = await nextEpisode(id, seasonID, episodeID, tvShowID, seasonNumber);
 
 	// Nur relevante Daten zurückgeben
-	return { id, result, pathExists, tvShowID, seasonNumber, seasonID, episodeID, nextEpisodeID };
+	return {
+		id,
+		result,
+		pathExists,
+		tvShowID,
+		seasonNumber,
+		seasonID,
+		episodeID,
+		nextEpisodeURL
+	};
 }) satisfies PageLoad;
