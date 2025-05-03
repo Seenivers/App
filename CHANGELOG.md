@@ -1,3 +1,20 @@
+## [0.31.1](https://github.com/Seenivers/App/compare/v0.31.0...v0.31.1) (2025-05-03)
+
+
+### Bug Fixes
+
+* correct condition for starting Discord RPC ([322a75d](https://github.com/Seenivers/App/commit/322a75dd489ea60f9de683f86f79627f8e533131))
+* correct the path for the migration directory in the compile time ([1e2ccec](https://github.com/Seenivers/App/commit/1e2ccecc714ecae1eae9c145249fb5bb62899077))
+* **deps:** update dependency @tauri-apps/plugin-updater to ^2.7.1 ([41c9a43](https://github.com/Seenivers/App/commit/41c9a434964257905e865fe81e6314048fc9ff83))
+* **deps:** update dependency hls.js to ^1.6.2 ([37c5171](https://github.com/Seenivers/App/commit/37c517114ce5e97b3a0e3af5b125cb61b33e1c0d))
+* **deps:** update rust crate tauri-plugin-drpc to 0.1.6 ([ce1dadd](https://github.com/Seenivers/App/commit/ce1dadd4c2704a4b66e774d0c2429c13533fc785))
+* **deps:** update rust crate tauri-plugin-updater to 2.7.1 ([c28b299](https://github.com/Seenivers/App/commit/c28b2993a11dfe0ed8714b019f56b5bfbe12b434))
+* **deps:** update tauri monorepo ([f3354a1](https://github.com/Seenivers/App/commit/f3354a18c3fff3bc7f6ce3ff4752acf8ff9d348c))
+* **discord:** ensure Discord RPC stops when not active ([5a6a246](https://github.com/Seenivers/App/commit/5a6a246c43ead3917f176414015da1e4ed63cf93))
+* **logging:** set log file name based on build type ([63608f0](https://github.com/Seenivers/App/commit/63608f09c4a8b93bffdb62b7bae21e0a517a4673))
+* **settings:** restore settingsDB update on component destruction ([f4086a0](https://github.com/Seenivers/App/commit/f4086a05a0358da0b6c3f5a86ad1c8b372b2d510))
+* update fetch-depth in checkout steps to 1 for better history access ([e839a9f](https://github.com/Seenivers/App/commit/e839a9f1a4e3c9045f24b6df6dc0926828cec349))
+
 # [0.31.0](https://github.com/Seenivers/App/compare/v0.30.0...v0.31.0) (2025-04-17)
 
 ### Bug Fixes
