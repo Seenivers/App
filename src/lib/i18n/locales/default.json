@@ -254,5 +254,20 @@
   "minutes": "Minuten",
   "videoFileNotFound": "Video file not found",
   "runtime": "Laufzeit",
-  "rating": "Bewertung"
+  "rating": "Bewertung",
+  "female": "female",
+  "male": "male",
+  "nonBinary": "non-binary",
+  "unknown": "unknown",
+  "socialMedia": "Soziale Medien",
+  "knownFor": "Bekannt für",
+  "gender": "Geschlecht",
+  "birthdate": "Geboren am",
+  "aliases": "Auch bekannt als",
+  "roleUnknown": "Rolle unbekannt",
+  "birthplace": "Geburtsort",
+  "biography": "Biografie",
+  "filmography": "Filmografie (Darsteller)",
+  "crew": "Beteiligungen (Crew)",
+  "deathdate": "Gestorben am"
 }

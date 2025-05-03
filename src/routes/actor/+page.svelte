@@ -13,10 +13,10 @@
 	let { data }: Props = $props();
 
 	const genderMapping = {
-		1: $_('actor.gendertypes.female'),
-		2: $_('actor.gendertypes.male'),
-		3: $_('actor.gendertypes.nonBinary'),
-		0: $_('actor.gendertypes.unknown')
+		1: $_('female'),
+		2: $_('male'),
+		3: $_('nonBinary'),
+		0: $_('unknown')
 	};
 
 	// Sortiere die Einträge nach Datum (ohne Datum zuerst)
@@ -46,7 +46,7 @@
 			href="https://www.themoviedb.org/person/{data.result.id}"
 			class="btn btn-ghost"
 			target="_blank"
-			rel="noopener noreferrer">{$_('actor.nav.openTmdb')}</a
+			rel="noopener noreferrer">{$_('openOnTMDB')}</a
 		>
 	{/snippet}
 </Navbar>
@@ -56,7 +56,7 @@
 		{@const actor = data.result}
 		<div class="grid w-full max-w-screen-xl grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
 			<!-- Sidebar: Actor Infos -->
-			<aside class="card h-fit w-full bg-base-200 p-5 shadow-md">
+			<aside class="card bg-base-200 h-fit w-full p-5 shadow-md">
 				<div class="flex flex-col items-center gap-4">
 					<Img
 						params={[actor.profile_path, 'actors', false]}
@@ -64,10 +64,10 @@
 						class="w-full max-w-[250px] rounded-lg object-cover shadow-lg"
 					/>
 
-					<!-- Social Links -->
+					<!-- Social media -->
 					{#if actor.external_ids}
 						<div class="w-full space-y-2">
-							<h2 class="text-lg font-semibold">{$_('actor.socialLinks')}</h2>
+							<h2 class="text-lg font-semibold">{$_('socialMedia')}</h2>
 							<div class="flex flex-wrap gap-2">
 								{#if actor.external_ids.imdb_id}
 									<a
@@ -136,15 +136,15 @@
 					<!-- Infos -->
 					<div class="w-full space-y-4 text-sm">
 						<div>
-							<span class="font-semibold">{$_('actor.knownFor')}:</span>
+							<span class="font-semibold">{$_('knownFor')}:</span>
 							<p>{actor.known_for_department || 'Keine Angabe'}</p>
 						</div>
 						<div>
-							<span class="font-semibold">{$_('actor.gender')}:</span>
+							<span class="font-semibold">{$_('gender')}:</span>
 							<p>{$_(genderMapping[actor.gender])}</p>
 						</div>
 						<div>
-							<span class="font-semibold">{$_('actor.birthdate.label')}:</span>
+							<span class="font-semibold">{$_('birthdate')}:</span>
 							<p>
 								{#if actor.birthday}
 									{@const birthDate = new Date(actor.birthday)}
@@ -152,56 +152,54 @@
 									{@const age = deathDate.getFullYear() - birthDate.getFullYear()}
 									{birthDate.toLocaleDateString()} ({age} Jahre alt)
 								{:else}
-									{$_('actor.birthdate.unknown')}
+									{$_('noInformationAvailable')}
 								{/if}
 							</p>
 						</div>
 						{#if actor.deathday}
 							<div>
-								<span class="font-semibold">{$_('actor.deathdate.label')}:</span>
+								<span class="font-semibold">{$_('deathdate')}:</span>
 								<p>{new Date(actor.deathday).toLocaleDateString()}</p>
 							</div>
 						{/if}
 						<div>
-							<span class="font-semibold">{$_('actor.birthplace.label')}:</span>
-							<p>{actor.place_of_birth || $_('actor.birthplace.unknown')}</p>
+							<span class="font-semibold">{$_('birthplace')}:</span>
+							<p>{actor.place_of_birth || $_('noInformationAvailable')}</p>
 						</div>
-						<div>
-							<span class="font-semibold">{$_('actor.aliases.label')}:</span>
-							<ul class="list-inside list-disc space-y-1">
-								{#if actor.also_known_as.length > 0}
+						{#if actor.also_known_as.length > 0}
+							<div>
+								<span class="font-semibold">{$_('aliases')}:</span>
+								<ul class="list-inside list-disc space-y-1">
 									{#each actor.also_known_as as alias}
 										<li>{alias}</li>
 									{/each}
-								{:else}
-									<li>{$_('actor.aliases.none')}</li>
-								{/if}
-							</ul>
-						</div>
+								</ul>
+							</div>
+						{/if}
 					</div>
 				</div>
 			</aside>
 
 			<!-- Main Content -->
-			<section class="card w-full bg-base-200 p-5 shadow-md">
+			<section class="card bg-base-200 w-full p-5 shadow-md">
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 
 				<!-- Biografie -->
-				{#if actor.biography}
-					<div class="mt-6 space-y-2">
-						<h2 class="text-xl font-semibold">{$_('actor.biography.label')}</h2>
-						<p class="whitespace-pre-wrap leading-relaxed text-base-content">{actor.biography}</p>
-					</div>
-				{:else}
-					<p class="mt-6 italic text-base-content/80">{$_('actor.biography.none')}</p>
-				{/if}
+				<div class="mt-6 space-y-2">
+					<h2 class="text-xl font-semibold">{$_('biography')}</h2>
+					{#if actor.biography}
+						<p class="text-base-content whitespace-pre-wrap leading-relaxed">{actor.biography}</p>
+					{:else}
+						<p class="text-base-content/80 italic">{$_('noInformationAvailable')}</p>
+					{/if}
+				</div>
 
 				<!-- Cast und Crew -->
 				{#each ['cast', 'crew'] as const as type}
 					{#if actor.combined_credits[type].length > 0}
 						<div class="mt-8 space-y-3">
 							<h2 class="text-xl font-semibold">
-								{$_(`actor.${type === 'cast' ? 'filmography' : 'crew'}.title`)}
+								{$_(type === 'cast' ? 'filmography' : 'crew')}
 							</h2>
 							<ul class="space-y-2">
 								{#each sortByDate(actor.combined_credits[type]) as item}
@@ -214,16 +212,14 @@
 											>
 												{item.title || item.name}
 											</a>
-											<span class="text-sm text-base-content/70">
-												– {type === 'cast'
-													? item.character || $_('actor.filmography.roleUnknown')
-													: item.job}
+											<span class="text-base-content/70 text-sm">
+												– {type === 'cast' ? item.character || $_('roleUnknown') : item.job}
 											</span>
 										</div>
 										<span class="badge badge-outline">
 											{item.release_date
 												? new Date(item.release_date).getFullYear()
-												: $_(`actor.filmography.releaseUnknown`)}
+												: $_(`noInformationAvailable`)}
 										</span>
 									</li>
 								{/each}

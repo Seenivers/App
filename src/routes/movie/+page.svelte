@@ -92,7 +92,7 @@
 			href="https://www.themoviedb.org/movie/{id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">Bei TMDB öffnen</a
+			rel="noopener noreferrer">{$_('openOnTMDB')}</a
 		>
 	{/snippet}
 </Navbar>
