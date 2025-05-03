@@ -37,8 +37,6 @@ export async function nextEpisode(
 	if (episodeIndex + 1 < seasonElement.tmdb.episodes.length) {
 		const nextEpisodeID = seasonElement.tmdb.episodes[episodeIndex + 1].id;
 		const url = `./episode?id=${serienID}&tvShowID=${tvShowID}&seasonNumber=${seasonNumber}&seasonID=${seasonID}&episodeID=${nextEpisodeID}`;
-		console.log(serienID, tvShowID, seasonNumber, seasonID, nextEpisodeID);
-
 		return url;
 	}
 
