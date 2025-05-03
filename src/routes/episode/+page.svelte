@@ -12,6 +12,7 @@
 	import { online } from 'svelte/reactivity/window';
 	import { episode } from '$lib/utils/db/episode';
 	import { goto, invalidate } from '$app/navigation';
+	import { _ } from 'svelte-i18n';
 
 	let { data }: { data: PageData } = $props();
 
@@ -69,7 +70,7 @@
 				Bearbeiten
 			</button>
 			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
-				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
+				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
 		{/if}
 		{#if data.nextEpisodeID !== null}
@@ -110,12 +111,13 @@
 					{/if}
 				{/await}
 			{:else if data.result.path}
-				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">Video Datei Nicht gefunden</p>
 				<p class="text-xs">{data.result.path}</p>
 			{/if}
 
 			<!-- Trailer -->
 			{#if data.pathExists && online.current}
+				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each data.result.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
@@ -125,7 +127,7 @@
 								<figure>
 									<img
 										src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
-										alt={`Thumbnail for ${trailer.name}`}
+										alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
 										draggable="false"
 										class="h-48 w-full rounded-t-lg object-cover"
 									/>
@@ -138,7 +140,7 @@
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
 									>
-										Watch on YouTube
+										{$_('watchOnYouTube')}
 									</a>
 								</div>
 							</div>
@@ -150,9 +152,9 @@
 			<!-- Serienbesetzung -->
 			{#if data.result.tmdb.credits.cast.length > 0}
 				<div>
-					<h2 class="my-2 text-2xl font-bold">Serienbesetzung</h2>
+					<h2 class="my-2 text-2xl font-bold">{$_('seriesCast')}</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each data.result.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -162,7 +164,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
@@ -176,13 +178,13 @@
 			<!-- Beschreibung -->
 			<div class="space-y-3">
 				<div>
-					<h2 class="text-lg font-bold">Handlung</h2>
-					<p>{data.result.tmdb.overview || 'Keine Informationen verfügbar'}</p>
+					<h2 class="text-lg font-bold">{$_('plot')}</h2>
+					<p>{data.result.tmdb.overview || $_('noInformationAvailable')}</p>
 				</div>
 
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
-						<h2 class="text-lg font-bold">Erstausstrahlung</h2>
+						<h2 class="text-lg font-bold">{$_('firstBroadcast')}</h2>
 						<p>
 							{data.result.tmdb.air_date
 								? new Date(data.result.tmdb.air_date).toLocaleDateString(
@@ -193,7 +195,7 @@
 											day: 'numeric'
 										}
 									)
-								: 'Keine Informationen verfügbar'}
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 
@@ -202,30 +204,30 @@
 						<p>
 							{data.result.tmdb.episode_number !== undefined
 								? `Episode ${data.result.tmdb.episode_number}`
-								: 'Keine Informationen verfügbar'}
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Staffel</h2>
+						<h2 class="text-lg font-bold">{$_('season')}</h2>
 						<p>
 							{data.result.tmdb.season_number !== undefined
-								? `Staffel ${data.result.tmdb.season_number}`
-								: 'Keine Informationen verfügbar'}
+								? $_('seasonwithValue', { values: { number: data.result.tmdb.season_number } })
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Laufzeit</h2>
+						<h2 class="text-lg font-bold">{$_('runtime')}</h2>
 						<p>
 							{data.result.tmdb.runtime
 								? `${data.result.tmdb.runtime} Minuten`
-								: 'Keine Informationen verfügbar'}
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Bewertung</h2>
+						<h2 class="text-lg font-bold">{$_('rating')}</h2>
 						<p>
 							{data.result.tmdb.vote_average
 								? `${Math.round(data.result.tmdb.vote_average * 10) / 10}/10 (${data.result.tmdb.vote_count} Stimmen)`
@@ -242,7 +244,7 @@
 								rel="noopener noreferrer"
 								class="link">IMDb</a
 							>{:else}
-							<p>Keine Informationen verfügbar</p>
+							<p>{$_('noInformationAvailable')}</p>
 						{/if}
 					</div>
 
@@ -259,7 +261,7 @@
 								{/each}
 							</ul>
 						{:else}
-							<p>Keine Informationen verfügbar</p>
+							<p>{$_('noInformationAvailable')}</p>
 						{/if}
 					</div>
 
@@ -274,7 +276,7 @@
 								{/each}
 							</ul>
 						{:else}
-							<p>Keine Informationen verfügbar</p>
+							<p>{$_('noInformationAvailable')}</p>
 						{/if}
 					</div>
 				</div>

@@ -9,6 +9,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { online } from 'svelte/reactivity/window';
 	import { season } from '$lib/utils/db/season';
+	import { _ } from 'svelte-i18n';
 
 	let { data }: { data: PageData } = $props();
 
@@ -46,30 +47,32 @@
 	{#snippet right()}
 		{#if data.result.path}
 			<button class="btn btn-sm md:btn-md" onclick={openSeriePath} disabled={!data.pathExists}>
-				Öffne Serien Ordner
+				{$_('openFolder')}
 			</button>
-			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+			<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
 					disabled={!seasonData}
 				>
-					Löschen
+					{$_('delete')}
 				</button>
 			</div>
 			<button class="btn btn-sm md:btn-md" disabled={!seasonData} onclick={() => (modal = true)}>
-				Bearbeiten
+				{$_('edit')}
 			</button>
 			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!seasonData}>
-				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
+				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
 		{/if}
 		<a
 			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">Bei TMDB öffnen</a
+			rel="noopener noreferrer"
 		>
+			{$_('openOnTMDB')}
+		</a>
 	{/snippet}
 </Navbar>
 
@@ -81,7 +84,7 @@
 
 			<!-- Trailer -->
 			{#if seasonData.tmdb.videos.results.length > 0 && online.current}
-				<h2 class="my-2 text-2xl font-bold">Trailer</h2>
+				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each seasonData.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
@@ -90,7 +93,7 @@
 							>
 								<img
 									src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
-									alt={`Thumbnail for ${trailer.name}`}
+									alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
 									draggable="false"
 									class="h-48 w-full rounded-t-lg object-cover"
 								/>
@@ -102,7 +105,7 @@
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
 									>
-										Watch on YouTube
+										{$_('watchOnYouTube')}
 									</a>
 								</div>
 							</div>
@@ -114,9 +117,9 @@
 			<!-- Staffelbesetzung -->
 			{#if seasonData.tmdb.credits.cast.length > 0}
 				<div>
-					<h2 class="my-2 text-2xl font-bold">Staffelbesetzung</h2>
+					<h2 class="my-2 text-2xl font-bold">{$_('cast')}</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each seasonData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -126,7 +129,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
@@ -140,13 +143,13 @@
 			<!-- Beschreibung -->
 			<div class="space-y-3">
 				<div>
-					<h2 class="text-lg font-bold">Handlung</h2>
-					<p>{seasonData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
+					<h2 class="text-lg font-bold">{$_('plot')}</h2>
+					<p>{seasonData.tmdb.overview || $_('noInformationAvailable')}</p>
 				</div>
 
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
-						<h2 class="text-lg font-bold">Erstausstrahlung</h2>
+						<h2 class="text-lg font-bold">{$_('firstBroadcast')}</h2>
 						<p>
 							{seasonData.tmdb.air_date
 								? new Date(seasonData.tmdb.air_date).toLocaleDateString(window.navigator.language, {
@@ -154,35 +157,35 @@
 										month: 'long',
 										day: 'numeric'
 									})
-								: 'Keine Informationen verfügbar'}
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Episodenanzahl</h2>
-						<p>{seasonData.tmdb.episodes?.length || 'Keine Informationen verfügbar'}</p>
+						<h2 class="text-lg font-bold">{$_('episodeCount')}</h2>
+						<p>{seasonData.tmdb.episodes?.length || $_('noInformationAvailable')}</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Staffelnummer</h2>
+						<h2 class="text-lg font-bold">{$_('seasonNumber')}</h2>
 						<p>
 							{seasonData.tmdb.season_number !== undefined
-								? `Staffel ${seasonData.tmdb.season_number}`
-								: 'Keine Informationen verfügbar'}
+								? `${$_('season')} ${seasonData.tmdb.season_number}`
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Durchschnittliche Bewertung</h2>
+						<h2 class="text-lg font-bold">{$_('averageRating')}</h2>
 						<p>
 							{seasonData.tmdb.vote_average
 								? `${Math.round(seasonData.tmdb.vote_average * 10) / 10}/10`
-								: 'Keine Bewertungen'}
+								: $_('noRatings')}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Durchschnittliche Laufzeit</h2>
+						<h2 class="text-lg font-bold">{$_('averageRuntime')}</h2>
 						<p>
 							{seasonData.tmdb.episodes?.length && seasonData.tmdb.episodes.some((e) => e.runtime)
 								? `${Math.round(
@@ -190,13 +193,13 @@
 											.filter((e) => e.runtime)
 											.reduce((sum, e) => sum + e.runtime, 0) /
 											seasonData.tmdb.episodes.filter((e) => e.runtime).length
-									)} Minuten`
-								: 'Keine Informationen verfügbar'}
+									)} ${$_('minutes')}`
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Produktions-Crew</h2>
+						<h2 class="text-lg font-bold">{$_('productionCrew')}</h2>
 						{#if seasonData.tmdb.credits?.crew.length}
 							<ul class="list-inside list-disc">
 								{#each seasonData.tmdb.credits.crew.slice(0, 3) as person}
@@ -204,7 +207,7 @@
 								{/each}
 							</ul>
 						{:else}
-							<p>Keine Informationen verfügbar</p>
+							<p>{$_('noInformationAvailable')}</p>
 						{/if}
 					</div>
 				</div>
@@ -212,7 +215,7 @@
 
 			<!-- Episoden -->
 			<section>
-				<h2 class="my-4 text-2xl font-bold">Episoden</h2>
+				<h2 class="my-4 text-2xl font-bold">{$_('episodes')}</h2>
 				{#if seasonData.tmdb.episodes?.length}
 					<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{#each seasonData.tmdb.episodes as episode}
@@ -224,25 +227,28 @@
 								<figure>
 									<Img
 										params={[episode.still_path, 'posters', true]}
-										alt={episode.name || 'Kein Bild verfügbar'}
+										alt={$_('posterAlt', { values: { title: episode.name } })}
 										class="h-full w-auto rounded-t-lg object-cover"
 									/>
 								</figure>
 								<div class="card-body">
-									<h3 class="card-title">{episode.name || `Episode ${episode.episode_number}`}</h3>
-									<p>Episode {episode.episode_number}</p>
+									<h3 class="card-title">
+										{episode.name ||
+											$_('episodeNumber', { values: { number: episode.episode_number } })}
+									</h3>
+									<p>{$_('episodeNumber', { values: { number: episode.episode_number } })}</p>
 								</div>
 							</a>
 						{/each}
 					</div>
 				{:else}
-					<p class="text-gray-500">Keine Informationen verfügbar</p>
+					<p class="text-gray-500">{$_('noInformationAvailable')}</p>
 				{/if}
 			</section>
 		</div>
 	{:else}
 		<div class="flex justify-center p-5">
-			<p class="text-4xl md:text-5xl">Keine Daten gefunden</p>
+			<p class="text-4xl md:text-5xl">{$_('noInformationAvailable')}</p>
 		</div>
 	{/if}
 </main>

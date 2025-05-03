@@ -93,8 +93,7 @@
     "back": "Back",
     "backToHome": "Back to Home",
     "settings": "Einstellungen",
-    "add": "Hinzufügen",
-    "tmdb": "Bei TMDB öffnen"
+    "add": "Hinzufügen"
   },
   "networkStatus": {
     "online": "Du bist Online",
@@ -123,7 +122,12 @@
     "large": "Large"
   },
   "badge": {
-    "watched": "Watched"
+    "watched": "Watched",
+    "collection": "In your collection"
+  },
+  "marked": {
+    "asWatched": "Als Nicht Gesehen markieren",
+    "notWatched": "Als Gesehen markieren"
   },
   "backup": {
     "newBackup": "🗂️ Neuer DB-Eintrag für Backup-Datei: {filePath}",
@@ -140,7 +144,28 @@
     "foundAfterMigration": "Settings nach Migration gefunden",
     "migrationFailed": "Migration fehlgeschlagen, Fehler: {error}",
     "reloadPage": "Konnte Settings nicht erstellen. Seite wird neu geladen.",
-    "updateFailed": "Update Settings fehlgeschlagen, Fehler: {error}"
+    "updateFailed": "Update Settings fehlgeschlagen, Fehler: {error}",
+    "saved": "Einstellungen gespeichert!",
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "adultContent": "Inhalte für Erwachsene erlauben",
+    "toastPositionHorizontal": "Alert-Position (Horizontal)",
+    "toastPositionVertical": "Alert-Position (Vertikal)",
+    "videoPlayer": "Video Player",
+    "castImages": "Anzahl der herunterzuladenden Schauspielerbilder",
+    "none": "Keine",
+    "all": "Alle",
+    "discordRpc": "Discord RPC aktivieren",
+    "theme": "Themen",
+    "keywords": "Schlüsselwörter",
+    "ignoredKeywords": "Ignorierte Schlüsselwörter",
+    "keywordsPlaceholder": "Schlüsselwörter (kommagetrennt)",
+    "left": "Links",
+    "center": "Mitte",
+    "right": "Rechts",
+    "top": "Oben",
+    "middle": "Mitte",
+    "bottom": "Unten"
   },
   "discord": {
     "details": "Schaut gerade einen Film 🍿",
@@ -155,7 +180,6 @@
   },
   "main": {
     "searchPlaceholder": "Suchen...",
-    "posterAlt": "Poster von {title}",
     "noneFound": "Nichts entspricht diesen Kriterien",
     "noneAdded": "Du hast noch nichts hinzugefügt",
     "added": "Neu hinzugefügt",
@@ -168,5 +192,67 @@
   "movies": "Filme",
   "series": "Serien",
   "collections": "Sammlungen",
-  "errorTitle": "Fehler"
+  "errorTitle": "Fehler",
+  "tv": {
+    "noEpisodes": "Keine Episoden gefunden",
+    "episode": "Episode {number}: {name}"
+  },
+  "delete": "Löschen",
+  "edit": "Bearbeiten",
+  "season": "Staffel",
+  "posterAlt": "Poster von {title}",
+  "noInformationAvailable": "Keine Informationen verfügbar",
+  "trailer": "Trailer",
+  "seriesCast": "Serienbesetzung",
+  "watchOnYouTube": "Watch on YouTube",
+  "openFolder": "Öffne Ordner",
+  "firstBroadcast": "Erstausstrahlung",
+  "lastEpisode": "Last episode",
+  "averageRating": "Average rating",
+  "genres": "Genres",
+  "productionCompanies": "Production companies",
+  "productionCountries": "Production countries",
+  "popularity": "Popularity",
+  "originalLanguage": "Original language",
+  "budget": "Budget",
+  "revenue": "Revenue",
+  "status": "Status",
+  "backdropAlt": "Kulisse von {title}",
+  "homepage": "Website",
+  "SeasonsAndEpisodes": "Seasons & Episodes",
+  "seasons": "Seasons",
+  "episodes": "Episodes",
+  "runtimePerEpisode": "Runtime (per episode)",
+  "doubleClickDelete": "Double click to delete",
+  "notAired": "Not yet aired",
+  "noReviews": "No Reviews",
+  "reviews": "{reviews} Bewertungen",
+  "extras": "Extras",
+  "thumbnailAlt": "Thumbnail for {title}",
+  "backups": {
+    "title": "Backups",
+    "newDatabase": "Neue Datenbank",
+    "validateBackups": "Backups validieren",
+    "createBackup": "Backup erstellen"
+  },
+  "id": "ID",
+  "fileName": "Dateiname",
+  "creationDate": "Erstellungsdatum",
+  "actions": "Aktionen",
+  "restore": "Wiederherstellen",
+  "plot": "Handlung",
+  "episodeNumber": "Episode {number}",
+  "episodeCount": "Episodenanzahl",
+  "averageRuntime": "Durchschnittliche Laufzeit",
+  "productionCrew": "Produktions-Crew",
+  "doubleClickToDelete": "Doppelklicken zum Löschen",
+  "openOnTMDB": "Bei TMDB öffnen",
+  "noRatings": "Keine Bewertungen",
+  "seasonNumber": "Staffelnummer",
+  "seasonwithValue": "Staffel {number}",
+  "cast": "Besetzung",
+  "minutes": "Minuten",
+  "videoFileNotFound": "Video file not found",
+  "runtime": "Laufzeit",
+  "rating": "Bewertung"
 }

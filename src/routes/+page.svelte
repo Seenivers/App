@@ -180,7 +180,7 @@
 							{title}
 							href={`./collection?id=${item.id}`}
 							params={[item.poster_path, 'posters', true]}
-							alt={$_('main.posterAlt', { values: { title } })}
+							alt={$_('posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
@@ -195,7 +195,7 @@
 							href={`./movie?id=${item.id}`}
 							params={[item.tmdb.poster_path, 'posters', true]}
 							watched={item.watched}
-							alt={$_('main.posterAlt', { values: { title } })}
+							alt={$_('posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
@@ -210,7 +210,7 @@
 							href={`./tv?id=${item.id}`}
 							params={[item.tmdb.poster_path, 'posters', true]}
 							watched={item.watched}
-							alt={$_('main.posterAlt', { values: { title } })}
+							alt={$_('posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}

@@ -294,7 +294,7 @@
 						>
 							<Img
 								params={[result.poster_path, null, false]}
-								alt="Poster"
+								alt={$_('posterAlt', { values: { title } })}
 								class="h-72 w-fit rounded-lg object-contain"
 							/>
 

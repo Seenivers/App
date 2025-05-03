@@ -5,6 +5,7 @@
 	import { themes } from '$lib';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { onDestroy } from 'svelte';
+	import { _ } from 'svelte-i18n';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
@@ -31,17 +32,17 @@
 	onDestroy(() => {
 		// Automatisch Vorschläge aus navigator.languages generieren
 		Object.assign(settings, settingsTemp); // Eigenschaften von settingsTemp in settings kopieren
-		newToast('info', 'Einstellungen gespeichert!');
+		newToast('info', $_('settings.saved'));
 		isDirty = false; // Änderungen wurden gespeichert
 	});
 </script>
 
-<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Einstellungen</h1>
+<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">{$_('settings.title')}</h1>
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 	<!-- Spracheinstellung -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">Sprache</span>
+			<span class="label-text font-semibold">{$_('settings.language')}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
@@ -61,7 +62,7 @@
 	<!-- Inhalte für Erwachsene -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">Inhalte für Erwachsene erlauben</span>
+			<span class="label-text font-semibold">{$_('settings.adultContent')}</span>
 		</div>
 		<input
 			type="checkbox"
@@ -74,39 +75,39 @@
 	<!-- Toast-Position (Horizontal) -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">Alert-Position (Horizontal)</span>
+			<span class="label-text font-semibold">{$_('settings.toastPositionHorizontal')}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
 			bind:value={settingsTemp.toastPosition.horizontal}
 			onchange={markDirty}
 		>
-			<option value="start">Links</option>
-			<option value="center">Mitte</option>
-			<option value="end">Rechts</option>
+			<option value="start">{$_('settings.left')}</option>
+			<option value="center">{$_('settings.center')}</option>
+			<option value="end">{$_('settings.right')}</option>
 		</select>
 	</label>
 
 	<!-- Toast-Position (Vertikal) -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">Alert-Position (Vertikal)</span>
+			<span class="label-text font-semibold">{$_('settings.toastPositionVertical')}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
 			bind:value={settingsTemp.toastPosition.vertical}
 			onchange={markDirty}
 		>
-			<option value="top">Oben</option>
-			<option value="middle">Mitte</option>
-			<option value="bottom">Unten</option>
+			<option value="top">{$_('settings.top')}</option>
+			<option value="middle">{$_('settings.middle')}</option>
+			<option value="bottom">{$_('settings.bottom')}</option>
 		</select>
 	</label>
 
 	<!-- Video Player -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">Video Player</span>
+			<span class="label-text font-semibold">{$_('settings.videoPlayer')}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
@@ -121,9 +122,7 @@
 	<!-- Anzahl der heruntergeladenen Schauspielerbilder -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">
-				Anzahl der herunterzuladenden Schauspielerbilder
-			</span>
+			<span class="label-text font-semibold">{$_('settings.castImages')}</span>
 		</div>
 		<input
 			type="range"
@@ -137,9 +136,9 @@
 		<div class="flex w-full justify-between px-2 text-xs">
 			<span>
 				{settingsTemp.castImages === -1
-					? 'Keine'
+					? $_('settings.none')
 					: settingsTemp.castImages === 0
-						? 'Alle'
+						? $_('settings.all')
 						: settingsTemp.castImages}
 			</span>
 		</div>
@@ -148,7 +147,7 @@
 	<!-- Discord RPC -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">Discord RPC aktivieren</span>
+			<span class="label-text font-semibold">{$_('settings.discordRpc')}</span>
 		</div>
 		<input
 			type="checkbox"
@@ -161,7 +160,7 @@
 	<!-- Themen -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">Themen</span>
+			<span class="label-text font-semibold">{$_('settings.theme')}</span>
 		</div>
 		<select
 			class="select select-bordered"
@@ -180,11 +179,11 @@
 	<!-- Schlüsselwörter -->
 	<label class="form-control w-full lg:col-span-2">
 		<div class="label">
-			<span class="label-text font-semibold">Schlüsselwörter</span>
+			<span class="label-text font-semibold">{$_('settings.keywords')}</span>
 		</div>
 		<textarea
 			class="textarea textarea-bordered h-32 w-full"
-			placeholder="Schlüsselwörter (kommagetrennt)"
+			placeholder={$_('settings.keywordsPlaceholder')}
 			bind:value={settingsTemp.keywords}
 			onchange={(event) => handleInput(event, 'keywords')}
 		></textarea>
@@ -193,11 +192,11 @@
 	<!-- Ignorierte Schlüsselwörter -->
 	<label class="form-control w-full lg:col-span-2">
 		<div class="label">
-			<span class="label-text font-semibold">Ignorierte Schlüsselwörter</span>
+			<span class="label-text font-semibold">{$_('settings.ignoredKeywords')}</span>
 		</div>
 		<textarea
 			class="textarea textarea-bordered h-32 w-full"
-			placeholder="Schlüsselwörter (kommagetrennt)"
+			placeholder={$_('settings.keywordsPlaceholder')}
 			bind:value={settingsTemp.ignoredKeywords}
 			onchange={(event) => handleInput(event, 'ignoredKeywords')}
 		></textarea>

@@ -16,6 +16,7 @@
 	import { collection } from '$lib/utils/db/collection';
 	import { movie } from '$lib/utils/db/movie';
 	import { online } from 'svelte/reactivity/window';
+	import { _ } from 'svelte-i18n';
 
 	let { data }: { data: PageData } = $props();
 
@@ -50,7 +51,7 @@
 	}
 
 	function formate(money: number) {
-		if (!money) return 'Keine Informationen verfügbar';
+		if (!money) return $_('noInformationAvailable');
 		return new Intl.NumberFormat(window.navigator.language, {
 			style: 'currency',
 			currency: 'USD',
@@ -84,7 +85,7 @@
 				>Bearbeiten</button
 			>
 			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
-				{watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
+				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
 		{/if}
 		<a
@@ -116,12 +117,13 @@
 					{/if}
 				{/await}
 			{:else if movieData.path}
-				<p class="text-lg font-bold text-error underline md:text-2xl">Video Datei Nicht gefunden</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">{$_('videoFileNotFound')}</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
 			{#if !data.pathExists && online.current}
 				<!-- Trailer -->
+				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each movieData.tmdb.videos.results as trailer}
 						{#if trailer.site === 'YouTube'}
@@ -131,7 +133,7 @@
 								<figure>
 									<img
 										src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
-										alt={`Thumbnail for ${trailer.name}`}
+										alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
 										draggable="false"
 										class="h-48 w-full rounded-t-lg object-cover"
 									/>
@@ -144,7 +146,7 @@
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
 									>
-										Watch on YouTube
+										{$_('watchOnYouTube')}
 									</a>
 								</div>
 							</div>
@@ -160,7 +162,7 @@
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
 							<div class="hero rounded-box" style="background-image: url({image.src});">
 								<div class="hero-overlay rounded-box bg-opacity-90"></div>
-								<div class="hero-content text-center text-neutral-content">
+								<div class="hero-content text-neutral-content text-center">
 									<div class="max-w-md">
 										<h2 class="mb-5 text-3xl font-bold">{value?.name}</h2>
 										<p class="mb-5 text-lg">
@@ -182,7 +184,7 @@
 				<div class="my-4">
 					<h2 class="my-2 text-2xl font-bold">Hauptdarsteller</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each movieData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -192,7 +194,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
@@ -206,8 +208,8 @@
 			<div class="space-y-6">
 				<!-- Handlung -->
 				<section>
-					<h2 class="text-lg font-bold">Handlung</h2>
-					<p>{movieData.tmdb.overview || 'Keine Informationen verfügbar'}</p>
+					<h2 class="text-lg font-bold">{$_('plot')}</h2>
+					<p>{movieData.tmdb.overview || $_('noInformationAvailable')}</p>
 				</section>
 
 				<div class="grid gap-6 md:grid-cols-2">
@@ -219,13 +221,13 @@
 								? new Date(movieData.tmdb.release_date).toLocaleDateString(
 										window.navigator.language
 									)
-								: 'Keine Informationen verfügbar'}
+								: $_('noInformationAvailable')}
 						</p>
 					</section>
 
 					<!-- Laufzeit -->
 					<section>
-						<h2 class="text-lg font-bold">Laufzeit</h2>
+						<h2 class="text-lg font-bold">{$_('runtime')}</h2>
 						<p>
 							{#if movieData.tmdb.runtime}
 								<time
@@ -234,25 +236,25 @@
 									{Math.floor(movieData.tmdb.runtime / 60)} Std {movieData.tmdb.runtime % 60} Min
 								</time>
 							{:else}
-								<span>Keine Informationen verfügbar</span>
+								<span>{$_('noInformationAvailable')}</span>
 							{/if}
 						</p>
 					</section>
 
 					<!-- Bewertung -->
 					<section>
-						<h2 class="text-lg font-bold">Bewertung</h2>
+						<h2 class="text-lg font-bold">{$_('rating')}</h2>
 						<p>
 							{movieData.tmdb.vote_average
 								? `${Math.round(movieData.tmdb.vote_average * 10) / 10}/10`
-								: 'Keine Informationen verfügbar'}
+								: $_('noInformationAvailable')}
 							{movieData.tmdb.vote_count ? ` (${movieData.tmdb.vote_count} Bewertungen)` : ''}
 						</p>
 					</section>
 
 					<!-- Genres -->
 					<section>
-						<h2 class="text-lg font-bold">Genres</h2>
+						<h2 class="text-lg font-bold">{$_('genres')}</h2>
 						{#if movieData.tmdb.genres?.length}
 							<div class="flex flex-wrap gap-2">
 								{#each movieData.tmdb.genres as genre}
@@ -260,73 +262,73 @@
 								{/each}
 							</div>
 						{:else}
-							<p>Keine Informationen verfügbar</p>
+							<p>{$_('noInformationAvailable')}</p>
 						{/if}
 					</section>
 
 					<!-- Produktionsfirmen -->
 					<section>
-						<h2 class="text-lg font-bold">Produktionsfirmen</h2>
+						<h2 class="text-lg font-bold">{$_('productionCompanies')}</h2>
 						<p>
 							{movieData.tmdb.production_companies?.map((c) => c.name).join(', ') ||
-								'Keine Informationen verfügbar'}
+								$_('noInformationAvailable')}
 						</p>
 					</section>
 
 					<!-- Produktionsländer -->
 					<section>
-						<h2 class="text-lg font-bold">Produktionsländer</h2>
+						<h2 class="text-lg font-bold">{$_('productionCountries')}</h2>
 						<p>
 							{movieData.tmdb.production_countries?.map((c) => c.name).join(', ') ||
-								'Keine Informationen verfügbar'}
+								$_('noInformationAvailable')}
 						</p>
 					</section>
 
 					<!-- Beliebtheit -->
 					<section>
-						<h2 class="text-lg font-bold">Beliebtheit</h2>
-						<p>{movieData.tmdb.popularity || 'Keine Informationen verfügbar'}</p>
+						<h2 class="text-lg font-bold">{$_('popularity')}</h2>
+						<p>{movieData.tmdb.popularity || $_('noInformationAvailable')}</p>
 					</section>
 
 					<!-- Budget -->
 					<section>
-						<h2 class="text-lg font-bold">Budget</h2>
-						<p>{formate(movieData.tmdb.budget) || 'Keine Informationen verfügbar'}</p>
+						<h2 class="text-lg font-bold">{$_('budget')}</h2>
+						<p>{formate(movieData.tmdb.budget) || $_('noInformationAvailable')}</p>
 					</section>
 
 					<!-- Einnahmen -->
 					<section>
-						<h2 class="text-lg font-bold">Einnahmen</h2>
-						<p>{formate(movieData.tmdb.revenue) || 'Keine Informationen verfügbar'}</p>
+						<h2 class="text-lg font-bold">{$_('revenue')}</h2>
+						<p>{formate(movieData.tmdb.revenue) || $_('noInformationAvailable')}</p>
 					</section>
 
 					<!-- Originalsprache -->
 					<section>
-						<h2 class="text-lg font-bold">Originalsprache</h2>
+						<h2 class="text-lg font-bold">{$_('originalLanguage')}</h2>
 						<p>
 							{new Intl.DisplayNames([window.navigator.language], { type: 'language' }).of(
 								movieData.tmdb.original_language
-							) || 'Keine Informationen verfügbar'}
+							) || $_('noInformationAvailable')}
 						</p>
 					</section>
 
 					<!-- Originaltitel -->
 					<section>
 						<h2 class="text-lg font-bold">Originaltitel</h2>
-						<p>{movieData.tmdb.original_title || 'Keine Informationen verfügbar'}</p>
+						<p>{movieData.tmdb.original_title || $_('noInformationAvailable')}</p>
 					</section>
 
 					<!-- Status -->
 					<section>
-						<h2 class="text-lg font-bold">Status</h2>
-						<p>{movieData.tmdb.status || 'Keine Informationen verfügbar'}</p>
+						<h2 class="text-lg font-bold">{$_('status')}</h2>
+						<p>{movieData.tmdb.status || $_('noInformationAvailable')}</p>
 					</section>
 				</div>
 			</div>
 		</div>
 	{:else}
 		<div class="flex justify-center p-5">
-			<p class="text-4xl md:text-5xl">Keine Daten gefunden</p>
+			<p class="text-4xl md:text-5xl">{$_('noInformationAvailable')}</p>
 		</div>
 	{/if}
 </main>

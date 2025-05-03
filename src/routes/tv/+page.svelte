@@ -98,21 +98,20 @@
 	{#snippet right()}
 		{#if data.serie.path}
 			<button class="btn btn-sm md:btn-md" onclick={openSeriePath} disabled={!data.pathExists}>
-				Öffne Serien Ordner
+				{$_('openFolder')}
 			</button>
-			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+			<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
 					disabled={!data.serie}
 				>
-					Löschen
+					{$_('delete')}
 				</button>
 			</div>
 			<button class="btn btn-sm md:btn-md" disabled={!data.serie} onclick={() => (modal = true)}>
-				Bearbeiten
+				{$_('edit')}
 			</button>
-			<!-- Status-Button für die Serie (nicht die Staffel) -->
 			<button
 				class="btn btn-sm md:btn-md"
 				onclick={() => {
@@ -121,7 +120,7 @@
 				}}
 				disabled={!data.serie}
 			>
-				{data.serie.watched ? 'Als Nicht Gesehen markieren' : 'Als Gesehen markieren'}
+				{data.serie.watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
 		{/if}
 		<a
@@ -130,7 +129,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			Bei TMDB öffnen
+			{$_('openOnTMDB')}
 		</a>
 	{/snippet}
 </Navbar>
@@ -146,7 +145,7 @@
 			<div class="hero-overlay rounded-box bg-opacity-90"></div>
 			<div class="hero-content flex-col gap-4 lg:flex-row">
 				<Img
-					alt="Poster"
+					alt={$_('posterAlt', { values: { title: data.serie.tmdb.name } })}
 					params={[data.serie.tmdb.poster_path, 'posters', true]}
 					class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 				/>
@@ -162,7 +161,7 @@
 							? 'md:text-xl'
 							: 'md:text-2xl'}"
 					>
-						{data.serie.tmdb.overview || 'Keine Beschreibung verfügbar'}
+						{data.serie.tmdb.overview || $_('noInformationAvailable')}
 					</p>
 				</div>
 			</div>
@@ -171,14 +170,14 @@
 
 	<!-- Trailer -->
 	{#if !data.pathExists && online.current && data.serie.tmdb.videos.results.some((trailer) => trailer.site === 'YouTube')}
-		<h2 class="my-3 text-2xl font-bold">Trailer</h2>
+		<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.serie.tmdb.videos.results as trailer}
 				{#if trailer.site === 'YouTube'}
 					<div class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl">
 						<img
 							src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
-							alt={`Thumbnail for ${trailer.name}`}
+							alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
 							draggable="false"
 							class="h-48 w-full rounded-t-lg object-cover"
 						/>
@@ -190,7 +189,7 @@
 								class="btn btn-primary mt-2"
 								rel="noopener noreferrer"
 							>
-								Watch on YouTube
+								{$_('watchOnYouTube')}
 							</a>
 						</div>
 					</div>
@@ -202,7 +201,7 @@
 	<!-- Serienbesetzung -->
 	{#if data.serie.tmdb.credits.cast.length > 0}
 		<div>
-			<h2 class="my-3 text-2xl font-bold">Serienbesetzung</h2>
+			<h2 class="my-3 text-2xl font-bold">{$_('seriesCast')}</h2>
 			<div class="rounded-box bg-base-100 p-3">
 				<div class="carousel carousel-center w-full space-x-3 rounded-box">
 					{#each data.serie.tmdb.credits.cast as cast}
@@ -229,7 +228,7 @@
 	<div class="my-3 space-y-3">
 		<div class="col-span-1 grid gap-3 md:grid-cols-2">
 			<div>
-				<h2 class="text-lg font-bold">Erstausstrahlung</h2>
+				<h2 class="text-lg font-bold">{$_('firstBroadcast')}</h2>
 				<p>
 					{data.serie.tmdb.first_air_date
 						? new Date(data.serie.tmdb.first_air_date).toLocaleDateString(
@@ -240,12 +239,12 @@
 									day: 'numeric'
 								}
 							)
-						: 'Keine Informationen verfügbar'}
+						: $_('noInformationAvailable')}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Letzte Episode</h2>
+				<h2 class="text-lg font-bold">{$_('lastEpisode')}</h2>
 				<p>
 					{data.serie.tmdb.last_air_date
 						? new Date(data.serie.tmdb.last_air_date).toLocaleDateString(
@@ -256,34 +255,36 @@
 									day: 'numeric'
 								}
 							)
-						: 'Noch nicht ausgestrahlt'}
+						: $_('notAired')}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Staffeln & Episoden</h2>
+				<h2 class="text-lg font-bold">{$_('seasons')} & {$_('episodes')}</h2>
 				<p>
 					{data.serie.tmdb.number_of_seasons
-						? `${data.serie.tmdb.number_of_seasons} Staffeln`
-						: 'Keine Informationen verfügbar'} /
+						? `${data.serie.tmdb.number_of_seasons} ${$_('seasons')}`
+						: $_('noInformationAvailable')} /
 					{data.serie.tmdb.number_of_episodes
-						? `${data.serie.tmdb.number_of_episodes} Episoden`
-						: 'Keine Informationen verfügbar'}
+						? `${data.serie.tmdb.number_of_episodes} ${$_('episodes')}`
+						: $_('noInformationAvailable')}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Durchschnittliche Bewertung</h2>
+				<h2 class="text-lg font-bold">{$_('averageRating')}</h2>
 				<p>
 					{data.serie.tmdb.vote_average
 						? `${Math.round(data.serie.tmdb.vote_average * 10) / 10}/10`
-						: 'Keine Bewertungen'}
-					{data.serie.tmdb.vote_count ? ` (${data.serie.tmdb.vote_count} Bewertungen)` : ''}
+						: $_('noReviews')}
+					{data.serie.tmdb.vote_count
+						? ` (${$_('reviews', { values: { reviews: data.serie.tmdb.vote_count } })})`
+						: ''}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Genres</h2>
+				<h2 class="text-lg font-bold">{$_('genres')}</h2>
 				{#if data.serie.tmdb.genres}
 					<div class="flex flex-wrap gap-1">
 						{#each data.serie.tmdb.genres as genre}
@@ -291,66 +292,66 @@
 						{/each}
 					</div>
 				{:else}
-					<p>Keine Informationen verfügbar</p>
+					<p>{$_('noInformationAvailable')}</p>
 				{/if}
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Produktionsfirmen</h2>
+				<h2 class="text-lg font-bold">{$_('productionCompanies')}</h2>
 				<p>
 					{data.serie.tmdb.production_companies?.length
 						? data.serie.tmdb.production_companies.map((c) => c.name).join(', ')
-						: 'Keine Informationen verfügbar'}
+						: $_('noInformationAvailable')}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Produktionsländer</h2>
+				<h2 class="text-lg font-bold">{$_('productionCountries')}</h2>
 				<p>
 					{data.serie.tmdb.production_countries?.length
 						? data.serie.tmdb.production_countries.map((c) => c.name).join(', ')
-						: 'Keine Informationen verfügbar'}
+						: $_('noInformationAvailable')}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Laufzeit (pro Episode)</h2>
+				<h2 class="text-lg font-bold">{$_('runtimePerEpisode')}</h2>
 				<p>
 					{data.serie.tmdb.episode_run_time?.length
 						? `${Math.round(data.serie.tmdb.episode_run_time.reduce((a, b) => a + b, 0) / data.serie.tmdb.episode_run_time.length)} Minuten`
-						: 'Keine Informationen verfügbar'}
+						: $_('noInformationAvailable')}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Beliebtheit</h2>
-				<p>{data.serie.tmdb.popularity || 'Keine Informationen verfügbar'}</p>
+				<h2 class="text-lg font-bold">{$_('popularity')}</h2>
+				<p>{data.serie.tmdb.popularity || $_('noInformationAvailable')}</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Originalsprache</h2>
+				<h2 class="text-lg font-bold">{$_('originalLanguage')}</h2>
 				<p>
 					{data.serie.tmdb.original_language
 						? new Intl.DisplayNames([window.navigator.language], { type: 'language' }).of(
 								data.serie.tmdb.original_language
 							)
-						: 'Keine Informationen verfügbar'}
+						: $_('noInformationAvailable')}
 				</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Status</h2>
-				<p>{data.serie.tmdb.status || 'Keine Informationen verfügbar'}</p>
+				<h2 class="text-lg font-bold">{$_('status')}</h2>
+				<p>{data.serie.tmdb.status || $_('noInformationAvailable')}</p>
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">Offizielle Webseite</h2>
+				<h2 class="text-lg font-bold">{$_('homepage')}</h2>
 				{#if data.serie.tmdb.homepage}
 					<a href={data.serie.tmdb.homepage} target="_blank" rel="noopener noreferrer" class="link">
 						{data.serie.tmdb.homepage}
 					</a>
 				{:else}
-					<p>Keine Informationen verfügbar</p>
+					<p>{$_('noInformationAvailable')}</p>
 				{/if}
 			</div>
 		</div>
@@ -361,23 +362,23 @@
 		<div class="flex flex-col items-end gap-4 md:flex-row">
 			<label class="form-control w-full max-w-xs">
 				<div class="label">
-					<h2 class="my-3 text-2xl font-bold">Staffel</h2>
+					<h2 class="my-3 text-2xl font-bold">{$_('season')}</h2>
 				</div>
 				<!-- Dropdown mit den sortierten Staffeln -->
 				<select class="select select-bordered" bind:value={selectedSeason}>
 					{#each sortedSeasons() as season (season.id)}
 						<option value={season.tmdb.season_number}>
 							{season.tmdb.name}
-							{season.tmdb.season_number === 0 ? '(Extras)' : ''}
-							{season.watched ? ' (Gesehen)' : ''}
+							{season.tmdb.season_number === 0 ? ` (${$_('extras')})` : ''}
+							{season.watched ? ` (${$_('badge.watched')})` : ''}
 						</option>
 					{/each}
 				</select>
 			</label>
 			<button class="btn" disabled={selectedSeason === undefined} onclick={toggleWatchedStatus}>
 				{sortedSeasons().find((s) => s.tmdb.season_number === selectedSeason)?.watched
-					? 'Als Nicht Gesehen markieren'
-					: 'Als Gesehen markieren'}
+					? $_('marked.asWatched')
+					: $_('marked.notWatched')}
 			</button>
 		</div>
 
@@ -392,26 +393,28 @@
 							onclick={() => navigateToEpisode(seasonObj, episode)}
 						>
 							<Img
-								alt={episode.tmdb.name}
+								alt={$_('backdropAlt', { values: { title: episode.tmdb.name } })}
 								params={[episode.tmdb.still_path, 'backdrops', true]}
 								class="mr-4 h-auto w-1/3 rounded"
 							/>
 							<div>
 								<h3 class="text-xl font-medium">
-									Episode {episode.tmdb.episode_number}: {episode.tmdb.name}
+									{$_('tv.episode', {
+										values: { name: episode.tmdb.name, number: episode.tmdb.episode_number }
+									})}
 								</h3>
 								{#if episode.tmdb.overview}
 									<p class="text-sm text-gray-600">{episode.tmdb.overview}</p>
 								{/if}
 							</div>
 							{#if episode.watched}
-								<div class="badge badge-accent badge-outline absolute left-3 top-3 bg-base-300">
-									{$_('main.movies.badgeWatched')}
+								<div class="badge badge-accent badge-outline bg-base-300 absolute left-3 top-3">
+									{$_('badge.watched')}
 								</div>
 							{/if}
 							{#if episode.path !== null}
-								<div class="badge badge-accent badge-outline absolute right-3 top-3 bg-base-300">
-									In deiner Sammlung
+								<div class="badge badge-accent badge-outline bg-base-300 absolute right-3 top-3">
+									{$_('badge.collection')}
 								</div>
 							{/if}
 						</button>
@@ -419,7 +422,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="mt-2 text-gray-500">Keine Episoden gefunden</p>
+			<p class="mt-2 text-gray-500">{$_('tv.noEpisodes')}</p>
 		{/if}
 	</section>
 </main>
