@@ -107,60 +107,62 @@
 
 <main class="z-0 flex flex-col space-y-2 p-4 sm:p-5">
 	{#if data.movies.length > 0 || data.collections.length > 0 || data.series.length > 0}
-		<!-- Sucheingabe -->
-		<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
-			<label class="input input-bordered flex w-full items-center gap-2">
-				<Search class="h-4 w-4 opacity-70" />
-				<input type="text" class="grow" placeholder="Titel suchen..." bind:value={search} />
-			</label>
-		</div>
-
-		<!-- Filter & Sortierung -->
-		<div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-			<!-- Typ Filter -->
-			<div class="flex flex-wrap gap-2">
-				<label class="label cursor-pointer space-x-2">
-					<span class="label-text">Filme</span>
-					<input
-						type="checkbox"
-						class="toggle toggle-sm"
-						disabled={data.movies.length === 0}
-						bind:checked={showMovies}
-					/>
-				</label>
-				<label class="label cursor-pointer space-x-2">
-					<span class="label-text">Serien</span>
-					<input
-						type="checkbox"
-						class="toggle toggle-sm"
-						disabled={data.series.length === 0}
-						bind:checked={showSeries}
-					/>
-				</label>
-				<label class="label cursor-pointer space-x-2">
-					<span class="label-text">Sammlungen</span>
-					<input
-						type="checkbox"
-						class="toggle toggle-sm"
-						disabled={data.collections.length === 0}
-						bind:checked={showCollections}
-					/>
+		<div class="print:hidden">
+			<!-- Sucheingabe -->
+			<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
+				<label class="input input-bordered flex w-full items-center gap-2">
+					<Search class="h-4 w-4 opacity-70" />
+					<input type="text" class="grow" placeholder="Titel suchen..." bind:value={search} />
 				</label>
 			</div>
 
-			<!-- Sortierung -->
-			<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={sortOption}>
-				<option value="added">Neu hinzugefügt</option>
-				<option value="rating">Beste Bewertung</option>
-				<option value="duration">Längste Dauer</option>
-			</select>
+			<!-- Filter & Sortierung -->
+			<div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+				<!-- Typ Filter -->
+				<div class="flex flex-wrap gap-2">
+					<label class="label cursor-pointer space-x-2">
+						<span class="label-text">Filme</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-sm"
+							disabled={data.movies.length === 0}
+							bind:checked={showMovies}
+						/>
+					</label>
+					<label class="label cursor-pointer space-x-2">
+						<span class="label-text">Serien</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-sm"
+							disabled={data.series.length === 0}
+							bind:checked={showSeries}
+						/>
+					</label>
+					<label class="label cursor-pointer space-x-2">
+						<span class="label-text">Sammlungen</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-sm"
+							disabled={data.collections.length === 0}
+							bind:checked={showCollections}
+						/>
+					</label>
+				</div>
 
-			<!-- Gesehen Filter -->
-			<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={watchedFilter}>
-				<option value="all">Alle</option>
-				<option value="watched">Angesehen</option>
-				<option value="unwatched">Nicht angesehen</option>
-			</select>
+				<!-- Sortierung -->
+				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={sortOption}>
+					<option value="added">Neu hinzugefügt</option>
+					<option value="rating">Beste Bewertung</option>
+					<option value="duration">Längste Dauer</option>
+				</select>
+
+				<!-- Gesehen Filter -->
+				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={watchedFilter}>
+					<option value="all">Alle</option>
+					<option value="watched">Angesehen</option>
+					<option value="unwatched">Nicht angesehen</option>
+				</select>
+			</div>
 		</div>
 
 		<!-- Ergebnisse -->

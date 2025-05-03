@@ -14,7 +14,7 @@
 
 <!-- Toast Container -->
 <div
-	class={`toast z-50 toast-${positionHorizontally} toast-${positionVertically} w-fit !min-w-unset max-w-full`}
+	class={`toast z-50 toast-${positionHorizontally} toast-${positionVertically} !min-w-unset w-fit max-w-full print:hidden`}
 >
 	<details class="collapse collapse-plus bg-base-100/70 backdrop-blur-sm" open>
 		<summary class="collapse-title text-xl font-medium">Info-Panel</summary>
