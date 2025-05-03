@@ -2,7 +2,7 @@ import { DiscordClientID } from '$lib';
 import { settings } from '$lib/stores.svelte';
 import { debug } from '@tauri-apps/plugin-log';
 import { online } from 'svelte/reactivity/window';
-import { isRunning, setActivity, start } from 'tauri-plugin-drpc';
+import { isRunning, setActivity, start, stop } from 'tauri-plugin-drpc';
 import { Activity, ActivityType, Assets, Button, Timestamps } from 'tauri-plugin-drpc/activity';
 
 /**
@@ -37,7 +37,12 @@ const dev: DiscordActivityOptions = {
  * @param activityData - Daten für die Discord-Aktivität.
  */
 export async function discord(activityData: DiscordActivityOptions = {}): Promise<void> {
-	if (!online.current || !settings.discordAktiv) return;
+	if (!online.current) return;
+
+	if (!settings.discordAktiv) {
+		await stop();
+	}
+
 	debug('Starting Discord RPC');
 
 	if (!(await isRunning())) {
