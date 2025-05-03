@@ -49,7 +49,9 @@
 <div class="flex items-center justify-between">
 	<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">Backups</h1>
 	<div class="flex gap-2">
-		<button class="btn" onclick={newDB}>Neue Daten Bank</button>
+		{#if import.meta.env.DEV}
+			<button class="btn" onclick={newDB}>Neue Daten Bank</button>
+		{/if}
 		<button class="btn" onclick={validateBackups}>Backups validieren</button>
 		<button class="btn" onclick={createBackup}>Backup erstellen</button>
 	</div>
