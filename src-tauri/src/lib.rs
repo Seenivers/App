@@ -13,6 +13,13 @@ pub fn run() {
         "sqlite:sqlite.db"
     };
 
+    // Log-Dateiname abhängig vom Build-Typ setzen
+    let log_file_name = if cfg!(debug_assertions) {
+        "DEV-logs".to_string()
+    } else {
+        "logs".to_string()
+    };
+
     tauri::Builder::default()
         .plugin(
             tauri_plugin_sql::Builder::default()
@@ -41,7 +48,7 @@ pub fn run() {
                 ))
                 .target(tauri_plugin_log::Target::new(
                     tauri_plugin_log::TargetKind::LogDir {
-                        file_name: Some("logs".to_string()),
+                        file_name: Some(log_file_name),
                     },
                 ))
                 .filter(|metadata| {
