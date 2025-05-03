@@ -18,10 +18,6 @@
 	// Erstelle eine reaktive Kopie der Staffeln, die lokal bearbeitet wird
 	let seasons = $state([...data.seasons]);
 
-	// Der ausgewählte Staffelwert entspricht dem TMDB season_number (nicht dem Array-Index)
-	let selectedSeason: number = $state(1);
-	let modal = $state(false);
-
 	// Ableiten der sortierten Staffeln; Extras (season_number 0) kommen immer ans Ende, ansonsten aufsteigend
 	let sortedSeasons = $derived(() =>
 		seasons.slice().sort((a, b) => {
@@ -30,6 +26,17 @@
 			return a.tmdb.season_number - b.tmdb.season_number;
 		})
 	);
+
+	// Der ausgewählte Staffelwert entspricht dem TMDB season_number (nicht dem Array-Index)
+	let selectedSeason: number = $state(getLastUnwatchedSeasonNumber());
+	let modal = $state(false);
+
+	function getLastUnwatchedSeasonNumber() {
+		const unwatched = sortedSeasons().filter((s) => !s.watched);
+		// Wenn alle gesehen, nimm die erste Staffel
+		const last = unwatched.length > 0 ? unwatched[0] : sortedSeasons()[0];
+		return last.tmdb.season_number;
+	}
 
 	// Gruppiere alle Episoden anhand der Staffeln (über tmdb.season_number)
 	const episodesGrouped = new Map<number, (typeof data.episodes)[0][]>();
