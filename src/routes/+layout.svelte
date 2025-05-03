@@ -13,7 +13,6 @@
 	import { discord } from '$lib/discord';
 	import { destroy } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
-	import { settingsDB } from '$lib/utils/db/settings';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { updateActors, updateCollections, updateMovies, updateOldDB } from '$lib/db/update';
 
@@ -58,8 +57,6 @@
 
 	onDestroy(async () => {
 		trace('App closed');
-
-		await settingsDB.update(settings);
 
 		await destroy();
 
