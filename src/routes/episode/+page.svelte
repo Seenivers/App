@@ -232,51 +232,6 @@
 								: 'Keine Bewertungen'}
 						</p>
 					</div>
-
-					<div>
-						<h2 class="text-lg font-bold">Externe IDs</h2>
-						{#if data.result.tmdb.external_ids?.imdb_id}
-							<a
-								href={`https://www.imdb.com/title/${data.result.tmdb.external_ids.imdb_id}`}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="link">IMDb</a
-							>{:else}
-							<p>Keine Informationen verfügbar</p>
-						{/if}
-					</div>
-
-					<div>
-						<h2 class="text-lg font-bold">Hauptdarsteller</h2>
-						{#if data.result.tmdb.credits?.cast.length}
-							<ul class="list-inside list-disc">
-								{#each data.result.tmdb.credits.cast.slice(0, 3) as actor}
-									<li>
-										{actor.name}
-										{#if actor.character}
-											als {actor.character}{/if}
-									</li>
-								{/each}
-							</ul>
-						{:else}
-							<p>Keine Informationen verfügbar</p>
-						{/if}
-					</div>
-
-					<div>
-						<h2 class="text-lg font-bold">Regie</h2>
-						{#if data.result.tmdb.credits?.crew.length}
-							<ul class="list-inside list-disc">
-								{#each data.result.tmdb.credits.crew
-									.filter((person) => person.job === 'Director')
-									.slice(0, 2) as director}
-									<li>{director.name}</li>
-								{/each}
-							</ul>
-						{:else}
-							<p>Keine Informationen verfügbar</p>
-						{/if}
-					</div>
 				</div>
 			</div>
 		</div>
