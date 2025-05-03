@@ -1,17 +1,16 @@
 ## [0.31.2](https://github.com/Seenivers/App/compare/v0.31.1...v0.31.2) (2025-05-03)
 
-
 ### Bug Fixes
 
-* **episode, tv:** pass additional parameters to episode and series retrieval functions ([a20f23a](https://github.com/Seenivers/App/commit/a20f23a62f7c5fda0d98480e221416824560af1b))
-* **episode:** remove unused external IDs and credits sections from episode details ([671ce30](https://github.com/Seenivers/App/commit/671ce3076785c77f6e64b9a7f78e8cda9ca59998))
-* **episode:** update nextEpisode function to return URL and adjust navigation logic ([937ec73](https://github.com/Seenivers/App/commit/937ec73c8578b3bd994f616d76b4319ad3125183))
-* **layout:** adjust main section padding and add margin for search input ([a320984](https://github.com/Seenivers/App/commit/a320984c8096876b122fc6e5b14c52616ee6d066))
-* **print view:** hide elements in print view for Navbar, Toast, and main page ([20d00d9](https://github.com/Seenivers/App/commit/20d00d95bfeff2d5cb5f65031ef8c2369d869b9d))
-* **season:** remove unused season page and related load function ([5b2a1d1](https://github.com/Seenivers/App/commit/5b2a1d197c6854740a45c238a1fa3d1cd3b7ba2d))
-* **styles:** remove redundant active class styles from app.css ([a898cc8](https://github.com/Seenivers/App/commit/a898cc80bb4c84b136e169e921b4be6a6d011ded))
-* **tv:** improve episode list styling and handle missing episode names ([bb7670c](https://github.com/Seenivers/App/commit/bb7670c21555c9dbd5cd6bb1efa282f37f083ab2))
-* **tv:** update selectedSeason logic to retrieve the last unwatched season ([7f82523](https://github.com/Seenivers/App/commit/7f82523eeba0cf391d218643a59400374a161357))
+- **episode, tv:** pass additional parameters to episode and series retrieval functions ([a20f23a](https://github.com/Seenivers/App/commit/a20f23a62f7c5fda0d98480e221416824560af1b))
+- **episode:** remove unused external IDs and credits sections from episode details ([671ce30](https://github.com/Seenivers/App/commit/671ce3076785c77f6e64b9a7f78e8cda9ca59998))
+- **episode:** update nextEpisode function to return URL and adjust navigation logic ([937ec73](https://github.com/Seenivers/App/commit/937ec73c8578b3bd994f616d76b4319ad3125183))
+- **layout:** adjust main section padding and add margin for search input ([a320984](https://github.com/Seenivers/App/commit/a320984c8096876b122fc6e5b14c52616ee6d066))
+- **print view:** hide elements in print view for Navbar, Toast, and main page ([20d00d9](https://github.com/Seenivers/App/commit/20d00d95bfeff2d5cb5f65031ef8c2369d869b9d))
+- **season:** remove unused season page and related load function ([5b2a1d1](https://github.com/Seenivers/App/commit/5b2a1d197c6854740a45c238a1fa3d1cd3b7ba2d))
+- **styles:** remove redundant active class styles from app.css ([a898cc8](https://github.com/Seenivers/App/commit/a898cc80bb4c84b136e169e921b4be6a6d011ded))
+- **tv:** improve episode list styling and handle missing episode names ([bb7670c](https://github.com/Seenivers/App/commit/bb7670c21555c9dbd5cd6bb1efa282f37f083ab2))
+- **tv:** update selectedSeason logic to retrieve the last unwatched season ([7f82523](https://github.com/Seenivers/App/commit/7f82523eeba0cf391d218643a59400374a161357))
 
 ## [0.31.1](https://github.com/Seenivers/App/compare/v0.31.0...v0.31.1) (2025-05-03)
 

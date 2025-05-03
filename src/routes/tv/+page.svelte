@@ -393,7 +393,7 @@
 			{@const seasonObj = data.seasons.find((s) => s.tmdb.season_number === selectedSeason)!}
 			<ul class="mt-4 space-y-2">
 				{#each episodesGrouped.get(seasonObj.tmdb.season_number) ?? [] as episode (episode.id)}
-					<li class="bg-base-200 hover:bg-base-300 relative cursor-pointer rounded p-1">
+					<li class="relative cursor-pointer rounded bg-base-200 p-1 hover:bg-base-300">
 						<button
 							class="flex w-full items-center"
 							onclick={() => navigateToEpisode(seasonObj, episode)}

@@ -19,7 +19,7 @@
 </script>
 
 <nav
-	class="navbar bg-base-100 sticky top-0 z-10 flex justify-between p-2 shadow-lg md:p-4 print:hidden"
+	class="navbar sticky top-0 z-10 flex justify-between bg-base-100 p-2 shadow-lg md:p-4 print:hidden"
 >
 	{#if left || back}
 		<div class="gap-1">
