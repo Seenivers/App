@@ -33,8 +33,8 @@
 		// Automatisch Vorschläge aus navigator.languages generieren
 		Object.assign(settings, settingsTemp); // Eigenschaften von settingsTemp in settings kopieren
 		await settingsDB.update(settings);
-		newToast('info', 'Einstellungen gespeichert!');
 		isDirty = false; // Änderungen wurden gespeichert
+		newToast('info', 'Einstellungen gespeichert!');
 	});
 </script>
 
