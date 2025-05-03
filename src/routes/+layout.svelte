@@ -15,6 +15,7 @@
 	import { handleElements } from '$lib/utils/utils';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { updateActors, updateCollections, updateMovies, updateOldDB } from '$lib/db/update';
+	import ProgressBar from '$lib/ProgressBar.svelte';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -65,7 +66,8 @@
 	});
 </script>
 
-<div class="flex h-fit min-h-screen flex-col bg-base-300">
+<div class="bg-base-300 flex h-fit min-h-screen flex-col">
+	<ProgressBar />
 	{#if db && settings}
 		{@render children?.()}
 		<Toast />
