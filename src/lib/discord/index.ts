@@ -37,7 +37,12 @@ const dev: DiscordActivityOptions = {
  * @param activityData - Daten für die Discord-Aktivität.
  */
 export async function discord(activityData: DiscordActivityOptions = {}): Promise<void> {
-	if (!online.current || !settings.discordAktiv || !(await isRunning())) return;
+	if (!online.current || !settings.discordAktiv) return;
+	debug('Starting Discord RPC');
+
+	if (!(await isRunning())) {
+		await start(DiscordClientID);
+	}
 
 	const {
 		details = 'Schaut gerade einen Film 🍿',
@@ -83,17 +88,4 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 
 	// Setze die Aktivität bei Discord
 	await setActivity(activity);
-}
-
-/**
- * Startet das Discord Rich Presence.
- */
-export async function startRPC() {
-	if (!online.current || !settings.discordAktiv || (await isRunning())) return;
-
-	debug('Starting Discord RPC');
-	await start(DiscordClientID);
-
-	// Standardaktivität setzen
-	await discord();
 }
