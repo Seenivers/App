@@ -28,7 +28,7 @@ export const load = (async ({ url, depends }) => {
 	const { episode } = await import('$lib/utils/db/episode');
 
 	// Zuerst versuchen, den Film lokal zu finden
-	let result = await episode.get(episodeID);
+	let result = await episode.get(episodeID, tvShowID, seasonNumber, id);
 
 	if (!result && online.current) {
 		// Wenn die Episode nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen

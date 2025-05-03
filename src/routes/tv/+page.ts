@@ -14,7 +14,7 @@ export const load = (async ({ url }) => {
 
 	// Serie abrufen bzw. online holen und in DB speichern
 	const { serie } = await import('$lib/utils/db/serie');
-	const resultSerie = await serie.get(id);
+	const resultSerie = await serie.get(id, id);
 
 	if (!resultSerie) {
 		error(404, `Serie with id ${id} not found`);
