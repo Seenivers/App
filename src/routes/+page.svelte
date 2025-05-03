@@ -105,9 +105,9 @@
 	{/snippet}
 </Navbar>
 
-<main class="z-0 flex flex-col space-y-2 p-4 sm:p-5">
+<main class="z-0 flex flex-col p-1 sm:p-3">
 	{#if data.movies.length > 0 || data.collections.length > 0 || data.series.length > 0}
-		<div class="print:hidden">
+		<div class="my-2 space-y-2 print:hidden">
 			<!-- Sucheingabe -->
 			<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
 				<label class="input input-bordered flex w-full items-center gap-2">
