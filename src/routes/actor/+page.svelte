@@ -187,14 +187,14 @@
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 
 				<!-- Biografie -->
-				{#if actor.biography}
-					<div class="mt-6 space-y-2">
-						<h2 class="text-xl font-semibold">{$_('actor.biography.label')}</h2>
-						<p class="whitespace-pre-wrap leading-relaxed text-base-content">{actor.biography}</p>
-					</div>
-				{:else}
-					<p class="mt-6 italic text-base-content/80">{$_('actor.biography.none')}</p>
-				{/if}
+				<div class="mt-6 space-y-2">
+					<h2 class="text-xl font-semibold">{$_('actor.biography.label')}</h2>
+					{#if actor.biography}
+						<p class="text-base-content whitespace-pre-wrap leading-relaxed">{actor.biography}</p>
+					{:else}
+						<p class="text-base-content/80 mt-6 italic">{$_('actor.biography.none')}</p>
+					{/if}
+				</div>
 
 				<!-- Cast und Crew -->
 				{#each ['cast', 'crew'] as const as type}
