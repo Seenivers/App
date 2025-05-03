@@ -5,6 +5,8 @@
 	import { _ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
+	import Movie from '$lib/SVG/movie.svelte';
+	import Tv from '$lib/SVG/tv.svelte';
 
 	interface Props {
 		data: PageData;
@@ -56,7 +58,7 @@
 		{@const actor = data.result}
 		<div class="grid w-full max-w-screen-xl grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
 			<!-- Sidebar: Actor Infos -->
-			<aside class="card h-fit w-full bg-base-200 p-5 shadow-md">
+			<aside class="card bg-base-200 h-fit w-full p-5 shadow-md">
 				<div class="flex flex-col items-center gap-4">
 					<Img
 						params={[actor.profile_path, 'actors', false]}
@@ -183,7 +185,7 @@
 			</aside>
 
 			<!-- Main Content -->
-			<section class="card w-full bg-base-200 p-5 shadow-md">
+			<section class="card bg-base-200 w-full p-5 shadow-md">
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 
 				<!-- Biografie -->
@@ -206,16 +208,22 @@
 							<ul class="space-y-2">
 								{#each sortByDate(actor.combined_credits[type]) as item}
 									<li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-										<div>
+										<div class="flex items-center gap-2">
 											<a
 												href={`${item.media_type}?id=${item.id}`}
-												class="font-medium hover:underline"
+												class="inline-flex items-center gap-2 font-medium hover:underline"
 												data-sveltekit-preload-data="tap"
 											>
-												{item.title || item.name}
+												{#if item.media_type === 'movie'}
+													<Movie class="text-base-content/80 h-5 w-5 flex-shrink-0" />
+												{:else}
+													<Tv class="text-base-content/80 h-5 w-5 flex-shrink-0" />
+												{/if}
+												<span>{item.title || item.name}</span>
 											</a>
-											<span class="text-sm text-base-content/70">
-												– {type === 'cast'
+											<span class="text-base-content/70 text-sm">–</span>
+											<span class="text-base-content/70 text-sm">
+												{type === 'cast'
 													? item.character || $_('actor.filmography.roleUnknown')
 													: item.job}
 											</span>
