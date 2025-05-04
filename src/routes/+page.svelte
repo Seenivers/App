@@ -98,10 +98,10 @@
 
 <Navbar>
 	{#snippet left()}
-		<a href="./add" class="btn btn-ghost">{$_('main.nav.add')}</a>
+		<a href="./add" class="btn btn-ghost">{$_('nav.add')}</a>
 	{/snippet}
 	{#snippet right()}
-		<a href="./settings" class="btn btn-ghost">{$_('main.nav.settings')}</a>
+		<a href="./settings" class="btn btn-ghost">{$_('nav.settings')}</a>
 	{/snippet}
 </Navbar>
 
@@ -112,7 +112,12 @@
 			<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
 				<label class="input input-bordered flex w-full items-center gap-2">
 					<Search class="h-4 w-4 opacity-70" />
-					<input type="text" class="grow" placeholder="Titel suchen..." bind:value={search} />
+					<input
+						type="text"
+						class="grow"
+						placeholder={$_('main.searchPlaceholder')}
+						bind:value={search}
+					/>
 				</label>
 			</div>
 
@@ -177,7 +182,7 @@
 							{title}
 							href={`./collection?id=${item.id}`}
 							params={[item.poster_path, 'posters', true]}
-							alt={$_('main.movies.posterAlt', { values: { title } })}
+							alt={$_('posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
@@ -192,7 +197,7 @@
 							href={`./movie?id=${item.id}`}
 							params={[item.tmdb.poster_path, 'posters', true]}
 							watched={item.watched}
-							alt={$_('main.movies.posterAlt', { values: { title } })}
+							alt={$_('posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
@@ -207,18 +212,18 @@
 							href={`./tv?id=${item.id}`}
 							params={[item.tmdb.poster_path, 'posters', true]}
 							watched={item.watched}
-							alt={$_('main.movies.posterAlt', { values: { title } })}
+							alt={$_('posterAlt', { values: { title } })}
 						/>
 					{/each}
 				{/if}
 			{:else}
-				<p class="mt-10 w-full text-center text-gray-400">{$_('main.movies.noneFound')}</p>
+				<p class="mt-10 w-full text-center text-gray-400">{$_('main.noneFound')}</p>
 			{/if}
 		</div>
 	{:else}
 		<div class="flex flex-col items-center space-y-4">
-			<p>{$_('main.movies.noneAdded')}</p>
-			<a href="./add" class="btn">{$_('main.nav.add')}</a>
+			<p>{$_('main.noneAdded')}</p>
+			<a href="./add" class="btn">{$_('nav.add')}</a>
 		</div>
 	{/if}
 </main>

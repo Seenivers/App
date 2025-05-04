@@ -1,5 +1,7 @@
 import { browser } from '$app/environment';
 import { error } from '@sveltejs/kit';
+import { _ } from 'svelte-i18n';
+import { get } from 'svelte/store';
 
 /**
  * Gibt die URL der nächsten Episode zurück.
@@ -28,10 +30,10 @@ export async function nextEpisode(
 	const { serie } = await import('./db/serie');
 
 	const seasonElement = await season.get(seasonID);
-	if (!seasonElement) throw new Error('Season not found');
+	if (!seasonElement) throw new Error(get(_)('error.seasonNotFound'));
 
 	const episodeIndex = seasonElement.tmdb.episodes.findIndex((e) => e.id === episodeID);
-	if (episodeIndex === -1) throw new Error('Episode not found in season');
+	if (episodeIndex === -1) throw new Error(get(_)('error.episodeNotFound'));
 
 	// Nächste Episode in der aktuellen Staffel
 	if (episodeIndex + 1 < seasonElement.tmdb.episodes.length) {
@@ -42,10 +44,10 @@ export async function nextEpisode(
 
 	// Nächste Staffel
 	const serieElement = await serie.get(tvShowID);
-	if (!serieElement) throw new Error('Serie not found');
+	if (!serieElement) throw new Error(get(_)('error.serieNotFound'));
 
 	const seasonIndex = serieElement.tmdb.seasons.findIndex((s) => s.id === seasonID);
-	if (seasonIndex === -1) throw new Error('Season not found in serie');
+	if (seasonIndex === -1) throw new Error(get(_)('error.seasonNotFoundinSerie'));
 
 	// Gibt es eine weitere Staffel?
 	if (seasonIndex + 1 < serieElement.tmdb.seasons.length) {

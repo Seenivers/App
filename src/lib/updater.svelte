@@ -8,6 +8,7 @@
 	import { openUrl } from '@tauri-apps/plugin-opener';
 	import { online } from 'svelte/reactivity/window';
 	import { backup } from './utils/backup';
+	import { _ } from 'svelte-i18n';
 
 	let update: Update | null = $state(null);
 	let downloadProgress = $state(0);
@@ -45,7 +46,7 @@
 
 	async function download() {
 		if (!online.current) {
-			error('You are not connected to the internet.');
+			error($_('networkStatus.error'));
 			return;
 		}
 		if (update && !downloadStarted) {
@@ -56,7 +57,7 @@
 
 	async function downloadAndInstall() {
 		if (!online.current) {
-			error('You are not connected to the internet.');
+			error($_('networkStatus.error'));
 			return;
 		}
 		if (update && !downloadStarted) {
@@ -117,13 +118,15 @@
 		</button>
 
 		{#if update && update.body}
-			<h2 class="text-xl font-semibold md:text-2xl">Neues Update verfügbar</h2>
-			<h3 class="text-lg font-semibold md:text-xl">Version {update.version}</h3>
-			<h4 class="text-lg">Änderungen</h4>
+			<h2 class="text-xl font-semibold md:text-2xl">{$_('updater.available')}</h2>
+			<h3 class="text-lg font-semibold md:text-xl">
+				{$_('updater.version', { values: { version: update.version } })}
+			</h3>
+			<h4 class="text-lg">{$_('updater.changelog')}</h4>
 
 			<div class="body my-3 max-h-[70vh] flex-1 overflow-y-auto rounded-md bg-base-200 px-3">
 				{#await marked.parse(update.body)}
-					<p>Lade Änderungsprotokoll...</p>
+					<p>{$_('updater.loadChangelog')}</p>
 				{:then body}
 					{@html body} <!-- eslint-disable-line -->
 				{/await}
@@ -134,19 +137,20 @@
 				<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
 				></progress>
 			{:else if downloadFinished}
-				<p class="mt-4 text-lg font-semibold text-success">Update erfolgreich heruntergeladen!</p>
+				<p class="text-success mt-4 text-lg font-semibold">{$_('updater.downloadFinished')}</p>
 			{/if}
 
 			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 				{#if update && !downloadStarted}
 					<button class="btn btn-primary" disabled={!online.current} onclick={download}>
-						Update herunterladen
+						{$_('updater.download')}
 					</button>
 					<button class="btn btn-primary" disabled={!online.current} onclick={downloadAndInstall}>
-						Update herunterladen und installieren
+						{$_('updater.downloadandInstall')}
 					</button>
 				{:else if update && downloadFinished}
-					<button class="btn btn-secondary" onclick={update.install}>Update installieren</button>
+					<button class="btn btn-secondary" onclick={update.install}>{$_('updater.install')}</button
+					>
 				{/if}
 			</div>
 		{/if}
