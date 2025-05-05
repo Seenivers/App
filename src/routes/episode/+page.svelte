@@ -55,7 +55,7 @@
 	{#snippet right()}
 		{#if data.result.path}
 			<button class="btn btn-sm md:btn-md" onclick={openSeriePath} disabled={!data.pathExists}>
-				Starte Externen Player
+				{$_('startExternalPlayer')}
 			</button>
 			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 				<button
@@ -63,7 +63,7 @@
 					ondblclick={removeElementById}
 					disabled={!data.result}
 				>
-					Löschen
+					{$_('delete')}
 				</button>
 			</div>
 			<button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>
@@ -200,10 +200,12 @@
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">Episodennummer</h2>
+						<h2 class="text-lg font-bold">{$_('episodeNumber')}</h2>
 						<p>
 							{data.result.tmdb.episode_number !== undefined
-								? `Episode ${data.result.tmdb.episode_number}`
+								? $_('episodeNumberwithValue', {
+										values: { number: data.result.tmdb.episode_number }
+									})
 								: $_('noInformationAvailable')}
 						</p>
 					</div>
@@ -220,9 +222,20 @@
 					<div>
 						<h2 class="text-lg font-bold">{$_('runtime')}</h2>
 						<p>
-							{data.result.tmdb.runtime
-								? `${data.result.tmdb.runtime} Minuten`
-								: $_('noInformationAvailable')}
+							{#if data.result.tmdb.runtime}
+								<time
+									datetime={`PT${Math.floor(data.result.tmdb.runtime / 60)}H${data.result.tmdb.runtime % 60}M`}
+								>
+									{$_('runtimeFormatted', {
+										values: {
+											hours: Math.floor(data.result.tmdb.runtime / 60),
+											minutes: data.result.tmdb.runtime % 60
+										}
+									})}
+								</time>
+							{:else}
+								<span>{$_('noInformationAvailable')}</span>
+							{/if}
 						</p>
 					</div>
 
@@ -230,8 +243,13 @@
 						<h2 class="text-lg font-bold">{$_('rating')}</h2>
 						<p>
 							{data.result.tmdb.vote_average
-								? `${Math.round(data.result.tmdb.vote_average * 10) / 10}/10 (${data.result.tmdb.vote_count} Stimmen)`
-								: 'Keine Bewertungen'}
+								? $_('ratingSummary', {
+										values: {
+											average: Math.round(data.result.tmdb.vote_average * 10) / 10,
+											count: data.result.tmdb.vote_count ?? 0
+										}
+									})
+								: $_('noInformationAvailable')}
 						</p>
 					</div>
 				</div>
@@ -239,7 +257,7 @@
 		</div>
 	{:else}
 		<div class="flex justify-center p-5">
-			<p class="text-4xl md:text-5xl">Keine Daten gefunden</p>
+			<p class="text-4xl md:text-5xl">{$_('noDataFound')}</p>
 		</div>
 	{/if}
 </main>

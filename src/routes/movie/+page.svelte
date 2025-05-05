@@ -71,19 +71,19 @@
 <Navbar back={true}>
 	{#snippet right()}
 		{#if data.result.path}
-			<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!data.pathExists}
-				>Starte Externen Player</button
-			>
+			<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!data.pathExists}>
+				{$_('startExternalPlayer')}
+			</button>
 			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
-					disabled={!movieData}>Löschen</button
+					disabled={!movieData}>{$_('delete')}</button
 				>
 			</div>
-			<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}
-				>Bearbeiten</button
-			>
+			<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}>
+				{$_('edit')}
+			</button>
 			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
 				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
@@ -168,9 +168,9 @@
 										<p class="mb-5 text-lg">
 											{value?.overview}
 										</p>
-										<a href="./collection?id={value?.id}" class="btn btn-primary"
-											>Sammlung anzeigen</a
-										>
+										<a href="./collection?id={value?.id}" class="btn btn-primary">
+											{$_('collection')}
+										</a>
 									</div>
 								</div>
 							</div>
@@ -215,7 +215,7 @@
 				<div class="grid gap-6 md:grid-cols-2">
 					<!-- Veröffentlichungsdatum -->
 					<section>
-						<h2 class="text-lg font-bold">Veröffentlichungsdatum</h2>
+						<h2 class="text-lg font-bold">{$_('releaseDate')}</h2>
 						<p>
 							{movieData.tmdb.release_date
 								? new Date(movieData.tmdb.release_date).toLocaleDateString(
@@ -233,7 +233,12 @@
 								<time
 									datetime={`PT${Math.floor(movieData.tmdb.runtime / 60)}H${movieData.tmdb.runtime % 60}M`}
 								>
-									{Math.floor(movieData.tmdb.runtime / 60)} Std {movieData.tmdb.runtime % 60} Min
+									{$_('runtimeFormatted', {
+										values: {
+											hours: Math.floor(movieData.tmdb.runtime / 60),
+											minutes: movieData.tmdb.runtime % 60
+										}
+									})}
 								</time>
 							{:else}
 								<span>{$_('noInformationAvailable')}</span>
@@ -246,9 +251,13 @@
 						<h2 class="text-lg font-bold">{$_('rating')}</h2>
 						<p>
 							{movieData.tmdb.vote_average
-								? `${Math.round(movieData.tmdb.vote_average * 10) / 10}/10`
+								? $_('ratingSummary', {
+										values: {
+											average: Math.round(movieData.tmdb.vote_average * 10) / 10,
+											count: movieData.tmdb.vote_count ?? 0
+										}
+									})
 								: $_('noInformationAvailable')}
-							{movieData.tmdb.vote_count ? ` (${movieData.tmdb.vote_count} Bewertungen)` : ''}
 						</p>
 					</section>
 
@@ -314,7 +323,7 @@
 
 					<!-- Originaltitel -->
 					<section>
-						<h2 class="text-lg font-bold">Originaltitel</h2>
+						<h2 class="text-lg font-bold">{$_('originalTitle')}</h2>
 						<p>{movieData.tmdb.original_title || $_('noInformationAvailable')}</p>
 					</section>
 
@@ -342,7 +351,7 @@
 			onclick={() => (modal = false)}>✕</button
 		>
 
-		<h3 class="text-lg font-bold">Neue TMDB ID</h3>
+		<h3 class="text-lg font-bold">{$_('newTmdbId')}</h3>
 
 		<form
 			bind:this={form}
@@ -359,10 +368,10 @@
 						modal = false;
 						window.location.href = newID.toString();
 					} else {
-						alert('Da ist wohl etwas schief gelaufen');
+						alert($_('somethingWentWrong'));
 					}
 				} catch {
-					alert('Diese TMDB ID ist falsch');
+					alert($_('invalidTmdbId'));
 				}
 			}}
 			class="flex gap-2"
@@ -375,7 +384,7 @@
 				min="1"
 				required
 			/>
-			<button class="btn" type="submit">Speichern</button>
+			<button class="btn" type="submit">{$_('save')}</button>
 		</form>
 	</div>
 </dialog>

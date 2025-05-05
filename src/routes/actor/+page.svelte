@@ -222,7 +222,7 @@
 											<span class="text-base-content/70 text-sm">–</span>
 											<span class="text-base-content/70 text-sm">
 												{type === 'cast'
-													? item.character || $_('actor.filmography.roleUnknown')
+													? item.character || $_('noInformationAvailable')
 													: item.job}
 											</span>
 										</div>

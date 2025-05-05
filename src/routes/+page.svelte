@@ -126,7 +126,7 @@
 				<!-- Typ Filter -->
 				<div class="flex flex-wrap gap-2">
 					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">Filme</span>
+						<span class="label-text">{$_('movies')}</span>
 						<input
 							type="checkbox"
 							class="toggle toggle-sm"
@@ -135,7 +135,7 @@
 						/>
 					</label>
 					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">Serien</span>
+						<span class="label-text">{$_('series')}</span>
 						<input
 							type="checkbox"
 							class="toggle toggle-sm"
@@ -144,7 +144,7 @@
 						/>
 					</label>
 					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">Sammlungen</span>
+						<span class="label-text">{$_('collections')}</span>
 						<input
 							type="checkbox"
 							class="toggle toggle-sm"
@@ -156,16 +156,16 @@
 
 				<!-- Sortierung -->
 				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={sortOption}>
-					<option value="added">Neu hinzugefügt</option>
-					<option value="rating">Beste Bewertung</option>
-					<option value="duration">Längste Dauer</option>
+					<option value="added">{$_('newlyAdded')}</option>
+					<option value="rating">{$_('bestRating')}</option>
+					<option value="duration">{$_('longestDuration')}</option>
 				</select>
 
 				<!-- Gesehen Filter -->
 				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={watchedFilter}>
-					<option value="all">Alle</option>
-					<option value="watched">Angesehen</option>
-					<option value="unwatched">Nicht angesehen</option>
+					<option value="all">{$_('all')}</option>
+					<option value="watched">{$_('watched')}</option>
+					<option value="unwatched">{$_('unwatched')}</option>
 				</select>
 			</div>
 		</div>
@@ -178,7 +178,7 @@
 					{#each filteredCollections() as item (item.id)}
 						{@const title = item.tmdb?.name}
 						<Card
-							{CARDSCALE}
+							bind:CARDSCALE
 							{title}
 							href={`./collection?id=${item.id}`}
 							params={[item.poster_path, 'posters', true]}

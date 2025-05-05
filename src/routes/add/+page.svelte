@@ -33,7 +33,7 @@
 					// Überprüfe, ob der Zustand existiert und validiere ihn
 					acc[state] = (acc[state] || 0) + 1;
 				} else {
-					warn(`Ungültiger Zustand für Film gefunden: ${state}`);
+					warn($_('invalidState', { values: { state } }));
 				}
 				return acc;
 			},
@@ -67,7 +67,7 @@
 		// Überprüfe, ob der Index gültig ist, um Fehler zu vermeiden
 		const movieResults = searchList[modalID]?.search.results ?? [];
 		if (movieIndex < 0 || movieIndex >= movieResults.length) {
-			error('Ungültiger Film-Index');
+			error($_('invalidIndex', { values: { index: movieIndex } }));
 			return; // Verhindere die Auswahl eines ungültigen Films
 		}
 
@@ -111,7 +111,7 @@
 				load();
 			}}
 		>
-			Serien Ordner auswählen
+			{$_('selectSeriesFolder')}
 		</button>
 		<button
 			class="btn grow"
@@ -120,7 +120,7 @@
 				load();
 			}}
 		>
-			{$_('add.main.buttons.selectFile')}
+			{$_('selectMovies')}
 		</button>
 		<button
 			class="btn grow"
@@ -129,7 +129,7 @@
 				load();
 			}}
 		>
-			{$_('add.main.buttons.selectFolder')}
+			{$_('selectFolder')}
 		</button>
 		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 			<button
@@ -140,7 +140,7 @@
 				}}
 				disabled={searchList.length === 0}
 			>
-				{$_('add.main.buttons.clearAll')}
+				{$_('deleteAll')}
 			</button>
 		</div>
 		<select
@@ -148,31 +148,31 @@
 			bind:value={filter}
 			disabled={!online || searchList.length === 0}
 		>
-			<option value={null} selected disabled={searchList.length === 0}
-				>{$_('add.main.filter.default')}</option
-			>
+			<option value={null} selected disabled={searchList.length === 0}>
+				{$_('noFilter')}
+			</option>
 			<option
 				value="waitForSearching"
 				disabled={counts.waitForSearching === 0 && counts.waitForDownloading === 0}
 			>
-				{$_('add.main.filter.wait', {
+				{$_('queueCount', {
 					values: { count: counts.waitForSearching + counts.waitForDownloading }
 				})}
 			</option>
 			<option value="searching" disabled={counts.searching === 0}>
-				{$_('add.main.filter.searching', { values: { count: counts.searching } })}
+				{$_('searching', { values: { count: counts.searching } })}
 			</option>
 			<option value="notFound" disabled={counts.notFound === 0}>
-				{$_('add.main.filter.notFound', { values: { count: counts.notFound } })}
+				{$_('notFound', { values: { count: counts.notFound } })}
 			</option>
 			<option value="foundMultiple" disabled={counts.foundMultiple === 0}>
-				{$_('add.main.filter.foundMultiple', { values: { count: counts.foundMultiple } })}
+				{$_('foundMultiple', { values: { count: counts.foundMultiple } })}
 			</option>
 			<option value="downloading" disabled={counts.downloading === 0}>
-				{$_('add.main.filter.downloading', { values: { count: counts.downloading } })}
+				{$_('downloading', { values: { count: counts.downloading } })}
 			</option>
 			<option value="downloaded" disabled={counts.downloaded === 0}>
-				{$_('add.main.filter.foundOne', { values: { count: counts.downloaded } })}
+				{$_('downloaded', { values: { count: counts.downloaded } })}
 			</option>
 		</select>
 	{/snippet}
@@ -190,10 +190,10 @@
 					<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
 						<span>
 							<p class="text-lg">
-								{$_('add.main.movie.title', { values: { title: item.options.fileName } })}
+								{$_('titleWithValue', { values: { title: item.options.fileName } })}
 							</p>
 							<p class="text-sm">
-								{$_('add.main.movie.path', { values: { path: item.options.path } })}
+								{$_('path', { values: { path: item.options.path } })}
 							</p>
 						</span>
 						<button
@@ -230,7 +230,7 @@
 				class="my-3 grid gap-3"
 			>
 				<label class="input input-bordered flex items-center gap-2">
-					Filmtitel:
+					{$_('title')}:
 					<input
 						type="text"
 						class="grow"
@@ -241,7 +241,7 @@
 					/>
 				</label>
 				<label class="input input-bordered flex items-center gap-2">
-					{$_('add.modal.inputs.year')}
+					{$_('releaseYear')}
 					<input
 						type="number"
 						class="grow"
@@ -250,14 +250,14 @@
 						disabled={searchList[modalID].status === 'searching'}
 						bind:value={searchList[modalID].options.primaryReleaseYear}
 					/>
-					<span class="badge badge-info">Optional</span>
+					<span class="badge badge-info">{$_('optional')}</span>
 				</label>
 				<button
 					type="submit"
 					class="btn grow"
 					disabled={searchList[modalID].status === 'searching'}
 				>
-					{$_('add.modal.search')}
+					{$_('search')}
 				</button>
 			</form>
 
@@ -267,16 +267,16 @@
 				<div
 					class="mx-auto flex max-w-md flex-col items-center rounded-lg bg-base-200 p-5 shadow-md"
 				>
-					<h2 class="mb-2 text-2xl font-semibold">{$_('add.modal.state.searching.title')}</h2>
+					<h2 class="mb-2 text-2xl font-semibold">{$_('searchInProgress')}</h2>
 					<p class="mb-4 text-sm text-gray-600">
-						{$_('add.modal.state.searching.description')}
+						{$_('searchingDatabase')}
 					</p>
 					<div class="mb-4 flex items-center justify-center">
 						<div
 							class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
 						></div>
 					</div>
-					<button class="btn btn-secondary w-full" disabled>{$_('add.modal.search')}</button>
+					<button class="btn btn-secondary w-full" disabled>{$_('search')}</button>
 				</div>
 			{:else if modalID !== null && searchList[modalID]?.search?.results.length > 0}
 				<div class="grid gap-4">
@@ -301,7 +301,7 @@
 							<div class="px-3 text-left">
 								<p><strong>{title}</strong></p>
 								<p class="text-sm text-gray-500">
-									{$_('add.modal.inputs.year')}: {year}
+									{$_('releaseYear')}: {year}
 								</p>
 								<p class="text-gray-400">{result.overview}</p>
 							</div>
@@ -314,17 +314,19 @@
 								if (modalID === null) return;
 								searchList[modalID].search.page++;
 								searchMediaStatus(modalID);
-							}}>Lade weiter ergebnisse</button
+							}}
 						>
+							{$_('loadMoreResults')}
+						</button>
 					{/if}
 				</div>
 			{:else if searchList[modalID].status === 'waitForSearching'}
 				<p class="text-center">
-					{$_('add.modal.state.notSearched')}
+					{$_('noSearchPerformed')}
 				</p>
 			{:else}
-				<p class="text-center text-error">
-					{$_('add.modal.state.noResults')}
+				<p class="text-error text-center">
+					{$_('noResultsFound')}
 				</p>
 			{/if}
 		{/if}
@@ -336,6 +338,6 @@
 			modalID = null;
 		}}
 	>
-		{$_('add.modal.close')}
+		{$_('close')}
 	</button>
 </dialog>

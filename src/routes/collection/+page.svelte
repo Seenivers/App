@@ -62,7 +62,7 @@
 		</button>
 		<!-- Toggle für Grid/List-Ansicht -->
 		<button class="btn" onclick={() => (isGridView = !isGridView)}>
-			{isGridView ? 'Wechsel zu Listenansicht' : 'Wechsel zu Grid-Ansicht'}
+			{isGridView ? $_('switchToListView') : $_('switchToGridView')}
 		</button>
 		<a
 			href="https://www.themoviedb.org/collection/{data.id}"
@@ -136,11 +136,13 @@
 								>
 									{#if downloadedMovie}
 										<div class="badge badge-accent badge-outline bg-base-300">
-											Film in der Sammlung
+											{$_('badge.collection')}
 										</div>
 									{/if}
 									{#if watched}
-										<div class="badge badge-accent badge-outline bg-base-300">Film gesehen</div>
+										<div class="badge badge-accent badge-outline bg-base-300">
+											{$_('badge.watched')}
+										</div>
 									{/if}
 								</div>
 							{/if}
@@ -155,7 +157,7 @@
 										? new Date(movie.release_date).toLocaleDateString(
 												settings ? settings.language : window.navigator.language
 											)
-										: 'Kein Datum vorhanden'}
+										: $_('noInformationAvailable')}
 								</p>
 								<p>{movie.overview}</p>
 							</div>
@@ -167,8 +169,8 @@
 	{:else}
 		<div class="flex h-full w-full items-center justify-center">
 			<div class="grid gap-8 text-center">
-				<p class="text-4xl md:text-5xl">Keine Daten gefunden</p>
-				<a href="/" class="btn btn-lg mt-4 text-2xl">Zurück</a>
+				<p class="text-4xl md:text-5xl">{$_('noDataFound')}</p>
+				<a href="/" class="btn btn-lg mt-4 text-2xl">{$_('nav.back')}</a>
 			</div>
 		</div>
 	{/if}
