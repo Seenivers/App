@@ -74,7 +74,7 @@
 			<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!data.pathExists}>
 				{$_('startExternalPlayer')}
 			</button>
-			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+			<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}

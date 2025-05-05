@@ -55,9 +55,9 @@
 	{#snippet right()}
 		<button class="btn" onclick={toggleSort}>
 			{#if sortNewestFirst}
-				Sortiere: Älteste zuerst
+				{$_('sortOldestFirst')}
 			{:else}
-				Sortiere: Neueste zuerst
+				{$_('sortNewestFirst')}
 			{/if}
 		</button>
 		<!-- Toggle für Grid/List-Ansicht -->

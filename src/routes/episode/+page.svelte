@@ -57,7 +57,7 @@
 			<button class="btn btn-sm md:btn-md" onclick={openSeriePath} disabled={!data.pathExists}>
 				{$_('startExternalPlayer')}
 			</button>
-			<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
+			<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
@@ -74,7 +74,7 @@
 			</button>
 		{/if}
 		<button class="btn" disabled={data.nextEpisodeURL === null} onclick={navigateToNextEpisode}>
-			Nächste Episode
+			{$_('nextEpisode')}
 		</button>
 		<a
 			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{data.result.tmdb
@@ -111,7 +111,7 @@
 					{/if}
 				{/await}
 			{:else if data.result.path}
-				<p class="text-error text-lg font-bold underline md:text-2xl">Video Datei Nicht gefunden</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">{$_('videoFileNotFound')}</p>
 				<p class="text-xs">{data.result.path}</p>
 			{/if}
 
