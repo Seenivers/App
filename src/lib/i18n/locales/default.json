@@ -314,5 +314,6 @@
   "newTmdbId": "New TMDB ID",
   "save": "Save",
   "invalidTmdbId": "This TMDB ID does not exist",
-  "somethingWentWrong": "Something went wrong"
+  "somethingWentWrong": "Something went wrong",
+  "leadActor": "Lead Actor"
 }
