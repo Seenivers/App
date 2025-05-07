@@ -1,11 +1,12 @@
-import { browser } from '$app/environment';
 import { init, register } from 'svelte-i18n';
 
-const defaultLocale = 'default';
+const fallbackLocale = 'default';
+const initialLocale = 'en';
 
-register('de', () => import('./locales/default.json'));
+register(fallbackLocale, () => import('./locales/default.json'));
+register('de', () => import('./locales/de.json'));
 
 init({
-	fallbackLocale: defaultLocale,
-	initialLocale: defaultLocale
+	fallbackLocale,
+	initialLocale
 });
