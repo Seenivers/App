@@ -1,6 +1,6 @@
 import { init, register } from 'svelte-i18n';
 
-const fallbackLocale = 'default';
+export const fallbackLocale = 'default';
 const initialLocale = 'en';
 
 register(fallbackLocale, () => import('./locales/default.json'));
