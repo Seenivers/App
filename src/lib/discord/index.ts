@@ -4,8 +4,6 @@ import { debug } from '@tauri-apps/plugin-log';
 import { online } from 'svelte/reactivity/window';
 import { isRunning, setActivity, start, stop } from 'tauri-plugin-drpc';
 import { Activity, ActivityType, Assets, Button, Timestamps } from 'tauri-plugin-drpc/activity';
-import { _ } from 'svelte-i18n';
-import { get } from 'svelte/store';
 
 /**
  * Typ für die übergebene Aktivitätskonfiguration
@@ -24,11 +22,11 @@ interface DiscordActivityOptions {
 }
 
 const dev: DiscordActivityOptions = {
-	details: get(_)('discord.dev.details'),
-	state: get(_)('discord.dev.state'),
-	largeText: get(_)('discord.dev.largeText'),
-	smallImage: get(_)('discord.dev.smallImage'),
-	smallText: get(_)('discord.dev.smallText'),
+	details: 'Developing Seenivers 🚀',
+	state: 'Deep in the code jungle 🌿',
+	largeText: 'Seenivers - Next Level Entertainment',
+	smallImage: 'terminal_dev',
+	smallText: 'Debugging... 🐛',
 	type: ActivityType.Playing, // Alternativ: Coding, wenn vorhanden
 	startTimestamp: Date.now(),
 	button: [{ label: 'Seenivers', url: 'https://github.com/seenivers/app' }]
@@ -52,10 +50,10 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 	}
 
 	const {
-		details = get(_)('discord.details'),
+		details = 'Is watching a movie 🍿',
 		state,
 		largeImage = 'icon',
-		largeText = get(_)('discord.largeText'),
+		largeText = 'Seenivers - Your Movie & Series Paradise',
 		smallImage,
 		smallText,
 		type = ActivityType.Watching,
