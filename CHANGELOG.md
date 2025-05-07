@@ -1,3 +1,28 @@
+# [0.32.0](https://github.com/Seenivers/App/compare/v0.31.2...v0.32.0) (2025-05-07)
+
+
+### Bug Fixes
+
+* **actor:** improve biography section layout and conditional rendering ([f6f6e12](https://github.com/Seenivers/App/commit/f6f6e127d3be117b6fd30d70bb33ee6d2835bcc5))
+* **backup:** conditionally render 'Neue Daten Bank' button in DEV environment ([9ce3601](https://github.com/Seenivers/App/commit/9ce36012b4fd690d22148e6cbd066106c2ac82ed))
+* **nextEpisode:** remove debug logging for next episode URL generation ([735f005](https://github.com/Seenivers/App/commit/735f00528f78289e4dec05e84796feb7669e941f))
+* **settings:** ensure settings are saved and toast notification is displayed ([50940b8](https://github.com/Seenivers/App/commit/50940b80d290aa724b023c11df2a9b8c7b7cc23f))
+
+
+### Features
+
+* **actor:** add movie and TV icons to filmography list ([3d0062e](https://github.com/Seenivers/App/commit/3d0062ebb53cdef788868f57d7a58920b5276893))
+* **i18n:** add 'leadActor' translation and update movie page to use it ([24811cc](https://github.com/Seenivers/App/commit/24811cc1502979f0e76f3c4102beeb54fa219902))
+* **i18n:** add German localization for player and application strings ([82f8320](https://github.com/Seenivers/App/commit/82f8320ebb6bb0114fdceaa7535c55c93ade5d87))
+* **i18n:** add new localization keys for sorting and next episode functionality ([0d02ad5](https://github.com/Seenivers/App/commit/0d02ad54f4250c8c572d848ae235950e388360ce))
+* **i18n:** extend the localization ([9fa9716](https://github.com/Seenivers/App/commit/9fa9716ecf4d27a81adbec6eb8e19e61cb8d38b7))
+* **i18n:** implement localization for various components and update default locale structure ([1134b4b](https://github.com/Seenivers/App/commit/1134b4b62a33a3fc2b4e0e9c504da3e0da6220df))
+* **i18n:** update German translations to English for improved clarity and consistency ([7881419](https://github.com/Seenivers/App/commit/788141993a6c69b030e6d1df362c99fb41c185fe))
+* **i18n:** update translations and add new keys for improved localization ([ada84ee](https://github.com/Seenivers/App/commit/ada84ee580e0f290563033de834139b643142851))
+* **layout:** add ProgressBar component for navigation feedback ([00e68bd](https://github.com/Seenivers/App/commit/00e68bdd6b2bfe6e8793b29f0e67073e1d50ad07))
+* **progress-bar:** implement visibility control for navigation progress indicator ([553694b](https://github.com/Seenivers/App/commit/553694b0c18716dba3808a5cffff48b50c90c575))
+* **svg:** add movie and tv SVG components ([21bcb37](https://github.com/Seenivers/App/commit/21bcb37c41ea1902b27da711ece12a330a4cf91c))
+
 ## [0.31.2](https://github.com/Seenivers/App/compare/v0.31.1...v0.31.2) (2025-05-03)
 
 ### Bug Fixes
