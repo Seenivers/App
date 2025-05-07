@@ -137,7 +137,7 @@
 				<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
 				></progress>
 			{:else if downloadFinished}
-				<p class="text-success mt-4 text-lg font-semibold">{$_('updater.downloadFinished')}</p>
+				<p class="mt-4 text-lg font-semibold text-success">{$_('updater.downloadFinished')}</p>
 			{/if}
 
 			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">

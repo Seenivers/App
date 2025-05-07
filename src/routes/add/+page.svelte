@@ -325,7 +325,7 @@
 					{$_('noSearchPerformed')}
 				</p>
 			{:else}
-				<p class="text-error text-center">
+				<p class="text-center text-error">
 					{$_('noResultsFound')}
 				</p>
 			{/if}

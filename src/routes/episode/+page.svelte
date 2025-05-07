@@ -111,7 +111,7 @@
 					{/if}
 				{/await}
 			{:else if data.result.path}
-				<p class="text-error text-lg font-bold underline md:text-2xl">{$_('videoFileNotFound')}</p>
+				<p class="text-lg font-bold text-error underline md:text-2xl">{$_('videoFileNotFound')}</p>
 				<p class="text-xs">{data.result.path}</p>
 			{/if}
 
@@ -154,7 +154,7 @@
 				<div>
 					<h2 class="my-2 text-2xl font-bold">{$_('seriesCast')}</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center rounded-box w-full space-x-3">
+						<div class="carousel carousel-center w-full space-x-3 rounded-box">
 							{#each data.result.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -164,7 +164,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="rounded-box max-w-40 sm:max-w-60"
+										class="max-w-40 rounded-box sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>

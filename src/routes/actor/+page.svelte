@@ -58,7 +58,7 @@
 		{@const actor = data.result}
 		<div class="grid w-full max-w-screen-xl grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
 			<!-- Sidebar: Actor Infos -->
-			<aside class="card bg-base-200 h-fit w-full p-5 shadow-md">
+			<aside class="card h-fit w-full bg-base-200 p-5 shadow-md">
 				<div class="flex flex-col items-center gap-4">
 					<Img
 						params={[actor.profile_path, 'actors', false]}
@@ -183,16 +183,16 @@
 			</aside>
 
 			<!-- Main Content -->
-			<section class="card bg-base-200 w-full p-5 shadow-md">
+			<section class="card w-full bg-base-200 p-5 shadow-md">
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 
 				<!-- Biografie -->
 				<div class="mt-6 space-y-2">
 					<h2 class="text-xl font-semibold">{$_('biography')}</h2>
 					{#if actor.biography}
-						<p class="text-base-content whitespace-pre-wrap leading-relaxed">{actor.biography}</p>
+						<p class="whitespace-pre-wrap leading-relaxed text-base-content">{actor.biography}</p>
 					{:else}
-						<p class="text-base-content/80 mt-6 italic">{$_('noInformationAvailable')}</p>
+						<p class="mt-6 italic text-base-content/80">{$_('noInformationAvailable')}</p>
 					{/if}
 				</div>
 
@@ -213,14 +213,14 @@
 												data-sveltekit-preload-data="tap"
 											>
 												{#if item.media_type === 'movie'}
-													<Movie class="text-base-content/80 h-5 w-5 flex-shrink-0" />
+													<Movie class="h-5 w-5 flex-shrink-0 text-base-content/80" />
 												{:else}
-													<Tv class="text-base-content/80 h-5 w-5 flex-shrink-0" />
+													<Tv class="h-5 w-5 flex-shrink-0 text-base-content/80" />
 												{/if}
 												<span>{item.title || item.name}</span>
 											</a>
-											<span class="text-base-content/70 text-sm">–</span>
-											<span class="text-base-content/70 text-sm">
+											<span class="text-sm text-base-content/70">–</span>
+											<span class="text-sm text-base-content/70">
 												{type === 'cast'
 													? item.character || $_('noInformationAvailable')
 													: item.job}

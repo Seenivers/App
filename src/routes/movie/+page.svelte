@@ -117,7 +117,7 @@
 					{/if}
 				{/await}
 			{:else if movieData.path}
-				<p class="text-error text-lg font-bold underline md:text-2xl">{$_('videoFileNotFound')}</p>
+				<p class="text-lg font-bold text-error underline md:text-2xl">{$_('videoFileNotFound')}</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
@@ -162,7 +162,7 @@
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
 							<div class="hero rounded-box" style="background-image: url({image.src});">
 								<div class="hero-overlay rounded-box bg-opacity-90"></div>
-								<div class="hero-content text-neutral-content text-center">
+								<div class="hero-content text-center text-neutral-content">
 									<div class="max-w-md">
 										<h2 class="mb-5 text-3xl font-bold">{value?.name}</h2>
 										<p class="mb-5 text-lg">
@@ -184,7 +184,7 @@
 				<div class="my-4">
 					<h2 class="my-2 text-2xl font-bold">{$_('leadActor')}</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center rounded-box w-full space-x-3">
+						<div class="carousel carousel-center w-full space-x-3 rounded-box">
 							{#each movieData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -194,7 +194,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="rounded-box max-w-40 sm:max-w-60"
+										class="max-w-40 rounded-box sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
