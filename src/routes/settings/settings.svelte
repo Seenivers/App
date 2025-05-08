@@ -18,7 +18,7 @@
 
 		settingsTemp[type] = [...new Set(target.value.split(',').map((kw) => kw.trim()))];
 
-		isDirty = true; // Eine Änderung wurde vorgenommen
+		markDirty(); // Eine Änderung wurde vorgenommen
 	}
 
 	// Änderungen tracken für andere Formularelemente
@@ -27,11 +27,12 @@
 	}
 
 	onDestroy(async () => {
-		// Automatisch Vorschläge aus navigator.languages generieren
-		Object.assign(settings, settingsTemp); // Eigenschaften von settingsTemp in settings kopieren
-		await settingsDB.update(settings);
-		isDirty = false; // Änderungen wurden gespeichert
-		newToast('info', $_('settings.saved'));
+		if (isDirty) {
+			Object.assign(settings, settingsTemp); // Eigenschaften von settingsTemp in settings kopieren
+			await settingsDB.update(settings);
+			isDirty = false; // Änderungen wurden gespeichert
+			newToast('info', $_('settings.saved'));
+		}
 	});
 </script>
 
