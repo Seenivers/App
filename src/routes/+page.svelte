@@ -6,7 +6,7 @@
 	import { type CardscaleNumbers } from '$lib/types/cardscale';
 	import Search from '$lib/SVG/search.svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import { getFilter, setFilter } from '$lib/utils/sessionStorage';
+	import { getFilter, setFilter, type SortOption } from '$lib/utils/sessionStorage';
 
 	interface Props {
 		data: PageData;
@@ -19,16 +19,7 @@
 	let showCollections = $state(false);
 	let showMovies = $state(true);
 	let showSeries = $state(true);
-	let sortOption = $state<
-		| 'added'
-		| 'rating'
-		| 'duration'
-		| 'release_date_desc'
-		| 'release_date_asc'
-		| 'popularity'
-		| 'alpha'
-		| 'last_watched'
-	>('added');
+	let sortOption = $state<SortOption>('added');
 	let selectedGenres = $state<string[]>([]);
 	let watchedFilter = $state<'all' | 'watched' | 'unwatched'>('all');
 

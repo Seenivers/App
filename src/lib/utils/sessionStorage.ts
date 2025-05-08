@@ -7,18 +7,20 @@ interface SearchCriteria {
 	showCollections: boolean;
 	showMovies: boolean;
 	showSeries: boolean;
-	sortOption:
-		| 'added'
-		| 'rating'
-		| 'duration'
-		| 'release_date_desc'
-		| 'release_date_asc'
-		| 'popularity'
-		| 'alpha'
-		| 'last_watched';
+	sortOption: SortOption;
 	selectedGenres: string[];
 	watchedFilter: 'all' | 'watched' | 'unwatched';
 }
+
+export type SortOption =
+	| 'added'
+	| 'rating'
+	| 'duration'
+	| 'release_date_desc'
+	| 'release_date_asc'
+	| 'popularity'
+	| 'alpha'
+	| 'last_watched';
 
 export function getFilter() {
 	const filter = sessionStorage.getItem('filter');
