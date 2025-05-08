@@ -19,7 +19,16 @@
 	let showCollections = $state(false);
 	let showMovies = $state(true);
 	let showSeries = $state(true);
-	let sortOption = $state<'added' | 'rating' | 'duration'>('added');
+	let sortOption = $state<
+		| 'added'
+		| 'rating'
+		| 'duration'
+		| 'release_date_desc'
+		| 'release_date_asc'
+		| 'popularity'
+		| 'alpha'
+		| 'last_watched'
+	>('added');
 	let selectedGenres = $state<string[]>([]);
 	let watchedFilter = $state<'all' | 'watched' | 'unwatched'>('all');
 
@@ -66,6 +75,19 @@
 	function sortBy(a: any, b: any) {
 		if (sortOption === 'rating') return (b.tmdb.vote_average ?? 0) - (a.tmdb.vote_average ?? 0);
 		if (sortOption === 'duration') return (b.tmdb.runtime ?? 0) - (a.tmdb.runtime ?? 0);
+		if (sortOption === 'release_date_desc')
+			return (
+				new Date(b.tmdb.release_date ?? 0).getTime() - new Date(a.tmdb.release_date ?? 0).getTime()
+			);
+		if (sortOption === 'release_date_asc')
+			return (
+				new Date(a.tmdb.release_date ?? 0).getTime() - new Date(b.tmdb.release_date ?? 0).getTime()
+			);
+		if (sortOption === 'popularity') return (b.tmdb.popularity ?? 0) - (a.tmdb.popularity ?? 0);
+		if (sortOption === 'alpha')
+			return (a.tmdb.title || a.tmdb.name || '').localeCompare(b.tmdb.title || b.tmdb.name || '');
+		if (sortOption === 'last_watched')
+			return new Date(b.watchTime ?? 0).getTime() - new Date(a.watchTime ?? 0).getTime();
 		return new Date(b.updated).getTime() - new Date(a.updated).getTime();
 	}
 
@@ -159,6 +181,11 @@
 					<option value="added">{$_('newlyAdded')}</option>
 					<option value="rating">{$_('bestRating')}</option>
 					<option value="duration">{$_('longestDuration')}</option>
+					<option value="release_date_desc">{$_('releaseDateNew')}</option>
+					<option value="release_date_asc">{$_('releaseDateOld')}</option>
+					<option value="popularity">{$_('popularity')}</option>
+					<option value="alpha">{$_('alphabetical')}</option>
+					<option value="last_watched">{$_('lastWatched')}</option>
 				</select>
 
 				<!-- Gesehen Filter -->

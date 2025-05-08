@@ -7,7 +7,15 @@ interface SearchCriteria {
 	showCollections: boolean;
 	showMovies: boolean;
 	showSeries: boolean;
-	sortOption: 'added' | 'rating' | 'duration';
+	sortOption:
+		| 'added'
+		| 'rating'
+		| 'duration'
+		| 'release_date_desc'
+		| 'release_date_asc'
+		| 'popularity'
+		| 'alpha'
+		| 'last_watched';
 	selectedGenres: string[];
 	watchedFilter: 'all' | 'watched' | 'unwatched';
 }
