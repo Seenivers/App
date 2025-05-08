@@ -6,7 +6,7 @@
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { onDestroy } from 'svelte';
 	import { settingsDB } from '$lib/utils/db/settings';
-	import { _, locales } from 'svelte-i18n';
+	import { _, locale, locales } from 'svelte-i18n';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
@@ -46,7 +46,10 @@
 		<select
 			class="select select-bordered w-full"
 			bind:value={settingsTemp.language}
-			onchange={markDirty}
+			onchange={() => {
+				locale.set(settingsTemp.language);
+				markDirty();
+			}}
 		>
 			{#each $locales as lang}
 				<option value={lang}>
