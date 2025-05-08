@@ -1,9 +1,11 @@
 <script lang="ts">
+	import Fuse from 'fuse.js';
+	import type { IFuseOptions } from 'fuse.js';
 	import Navbar from '$lib/Navbar.svelte';
 	import type { PageData } from './$types';
 	import Card from '$lib/utils/card.svelte';
 	import { _ } from 'svelte-i18n';
-	import { type CardscaleNumbers } from '$lib/types/cardscale';
+	import type { CardscaleNumbers } from '$lib/types/cardscale';
 	import Search from '$lib/SVG/search.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { getFilter, setFilter, type SortOption } from '$lib/utils/sessionStorage';
@@ -14,77 +16,99 @@
 
 	let { data }: Props = $props();
 
+	// Ermittelt den tatsächlichen Typ der Einträge aus den geladenen Daten:
+	type MovieItem = (typeof data.movies)[number];
+	type SeriesItem = (typeof data.series)[number];
+	type CollectionItem = (typeof data.collections)[number];
+
+	// UI-Zustände
 	let CARDSCALE: CardscaleNumbers = $state(2);
 	let search = $state('');
 	let showCollections = $state(false);
 	let showMovies = $state(true);
 	let showSeries = $state(true);
-	let sortOption = $state<SortOption>('added');
-	let selectedGenres = $state<string[]>([]);
-	let watchedFilter = $state<'all' | 'watched' | 'unwatched'>('all');
+	let sortOption: SortOption = $state('added');
+	let selectedGenres: string[] = $state([]);
+	let watchedFilter: 'all' | 'watched' | 'unwatched' = $state('all');
 
-	// Genre-Filter
+	// Fuse.js-Instanzen, getippt auf die tatsächlichen Elementtypen
+	let fuseMovies: Fuse<MovieItem>;
+	let fuseSeries: Fuse<SeriesItem>;
+	let fuseCollections: Fuse<CollectionItem>;
+
+	// Hilfs-Funktion: Genre-Filter
 	const genreFilter = (genres: { name: string }[]) =>
 		selectedGenres.length === 0 || genres.some((g) => selectedGenres.includes(g.name));
 
-	// Filter für Filme, Serien und Sammlungen
-	const filteredMovies = $derived(() =>
-		data.movies
-			.filter((m) => showMovies && m.tmdb.title?.toLowerCase().includes(search.toLowerCase()))
+	// Reaktive Filter & Sortierungen mit Fuse.js
+	const filteredMovies = $derived(() => {
+		const base: MovieItem[] =
+			search.trim() === '' ? data.movies : fuseMovies.search(search).map((r) => r.item);
+		return base
+			.filter((m) => showMovies)
 			.filter((m) => genreFilter(m.tmdb.genres || []))
 			.filter((m) =>
-				watchedFilter === 'all'
-					? true
-					: watchedFilter === 'watched'
-						? m.watched === true
-						: m.watched === false
+				watchedFilter === 'all' ? true : watchedFilter === 'watched' ? m.watched : !m.watched
 			)
-			.sort(sortBy)
-	);
+			.sort(sortBy);
+	});
 
-	const filteredSeries = $derived(() =>
-		data.series
-			.filter((s) => showSeries && s.tmdb.name?.toLowerCase().includes(search.toLowerCase()))
+	const filteredSeries = $derived(() => {
+		const base: SeriesItem[] =
+			search.trim() === '' ? data.series : fuseSeries.search(search).map((r) => r.item);
+		return base
+			.filter((s) => showSeries)
 			.filter((s) => genreFilter(s.tmdb.genres || []))
 			.filter((s) =>
-				watchedFilter === 'all'
-					? true
-					: watchedFilter === 'watched'
-						? s.watched === true
-						: s.watched === false
+				watchedFilter === 'all' ? true : watchedFilter === 'watched' ? s.watched : !s.watched
 			)
-			.sort(sortBy)
-	);
+			.sort(sortBy);
+	});
 
-	const filteredCollections = $derived(() =>
-		(watchedFilter === 'all' ? data.collections : []) // nur bei „all“ zeigen
-			.filter((c) => showCollections && c.tmdb?.name?.toLowerCase().includes(search.toLowerCase()))
-			.filter(() => genreFilter([]))
-			.sort(sortBy)
-	);
+	const filteredCollections = $derived(() => {
+		const base: CollectionItem[] =
+			search.trim() === '' ? data.collections : fuseCollections.search(search).map((r) => r.item);
+		return base
+			.filter((c) => showCollections)
+			.filter(() => genreFilter([])) // Collections haben keine Genres
+			.sort(sortBy);
+	});
 
+	// Allgemeine Sortierfunktion
 	function sortBy(a: any, b: any) {
-		if (sortOption === 'rating') return (b.tmdb.vote_average ?? 0) - (a.tmdb.vote_average ?? 0);
-		if (sortOption === 'duration') return (b.tmdb.runtime ?? 0) - (a.tmdb.runtime ?? 0);
-		if (sortOption === 'release_date_desc')
-			return (
-				new Date(b.tmdb.release_date ?? 0).getTime() - new Date(a.tmdb.release_date ?? 0).getTime()
-			);
-		if (sortOption === 'release_date_asc')
-			return (
-				new Date(a.tmdb.release_date ?? 0).getTime() - new Date(b.tmdb.release_date ?? 0).getTime()
-			);
-		if (sortOption === 'popularity') return (b.tmdb.popularity ?? 0) - (a.tmdb.popularity ?? 0);
-		if (sortOption === 'alpha')
-			return (a.tmdb.title || a.tmdb.name || '').localeCompare(b.tmdb.title || b.tmdb.name || '');
-		if (sortOption === 'last_watched')
-			return new Date(b.watchTime ?? 0).getTime() - new Date(a.watchTime ?? 0).getTime();
-		return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+		switch (sortOption) {
+			case 'rating':
+				return (b.tmdb.vote_average ?? 0) - (a.tmdb.vote_average ?? 0);
+			case 'duration':
+				return (b.tmdb.runtime ?? 0) - (a.tmdb.runtime ?? 0);
+			case 'release_date_desc':
+				return (
+					new Date((b as any).tmdb.release_date ?? '').getTime() -
+					new Date((a as any).tmdb.release_date ?? '').getTime()
+				);
+			case 'release_date_asc':
+				return (
+					new Date((a as any).tmdb.release_date ?? '').getTime() -
+					new Date((b as any).tmdb.release_date ?? '').getTime()
+				);
+			case 'popularity':
+				return (b.tmdb.popularity ?? 0) - (a.tmdb.popularity ?? 0);
+			case 'alpha':
+				return (a.tmdb.title || a.tmdb.name || '').localeCompare(b.tmdb.title || b.tmdb.name || '');
+			case 'last_watched':
+				// Nur auf Filme angewandt – für Series/Collections bleibt der Listen-Index erhalten
+				return (
+					new Date((b as MovieItem).watchTime ?? 0).getTime() -
+					new Date((a as MovieItem).watchTime ?? 0).getTime()
+				);
+			default: // 'added'
+				return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+		}
 	}
 
 	onMount(() => {
+		// Session-Storage wiederherstellen
 		const filter = getFilter();
-
 		CARDSCALE = filter.CARDSCALE;
 		search = filter.search;
 		showCollections = filter.showCollections;
@@ -93,9 +117,38 @@
 		sortOption = filter.sortOption;
 		selectedGenres = filter.selectedGenres;
 		watchedFilter = filter.watchedFilter;
+
+		// Fuse-Key-Konfigurationen je Datentyp
+		const fuseKeyConfig = {
+			movies: [
+				{ name: 'tmdb.title', weight: 0.7 },
+				{ name: 'tmdb.genres.name', weight: 0.3 }
+			] as const,
+			series: [
+				{ name: 'tmdb.name', weight: 0.7 },
+				{ name: 'tmdb.genres.name', weight: 0.3 }
+			] as const,
+			collections: [{ name: 'tmdb.name', weight: 1.0 }] as const
+		};
+
+		// Funktion zum Erzeugen einer Fuse-Instanz
+		function makeFuse<T>(list: T[], keys: readonly { name: string; weight: number }[]) {
+			const options: IFuseOptions<T> = {
+				keys: keys.map((k) => k),
+				threshold: 0.3,
+				ignoreLocation: true
+			};
+			return new Fuse<T>(list, options);
+		}
+
+		// Fuse-Instanzen in einem Rutsch erzeugen
+		fuseMovies = makeFuse<MovieItem>(data.movies, fuseKeyConfig.movies);
+		fuseSeries = makeFuse<SeriesItem>(data.series, fuseKeyConfig.series);
+		fuseCollections = makeFuse<CollectionItem>(data.collections, fuseKeyConfig.collections);
 	});
 
 	onDestroy(() => {
+		// Session-Storage speichern
 		setFilter({
 			CARDSCALE,
 			search,
