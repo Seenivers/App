@@ -16,6 +16,7 @@
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { updateActors, updateCollections, updateMovies, updateOldDB } from '$lib/db/update';
 	import ProgressBar from '$lib/ProgressBar.svelte';
+	import { autoBackup } from '$lib/utils/autoBackup';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -41,6 +42,7 @@
 			await discord();
 
 			if (import.meta.env.PROD) {
+				await autoBackup();
 				await updateOldDB();
 				await updateMovies();
 				await updateCollections();
@@ -66,7 +68,7 @@
 	});
 </script>
 
-<div class="flex h-fit min-h-screen flex-col bg-base-300">
+<div class="bg-base-300 flex h-fit min-h-screen flex-col">
 	<ProgressBar />
 	{#if db && settings}
 		{@render children?.()}
