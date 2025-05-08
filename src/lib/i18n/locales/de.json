@@ -322,5 +322,11 @@
   "alphabetical": "Alphabetisch",
   "releaseDateNew": "Neueste zuerst",
   "releaseDateOld": "Älteste zuerst",
-  "lastWatched": "Zuletzt gesehen"
+  "lastWatched": "Zuletzt gesehen",
+  "settings.autoBackup": "Automatisches Backup",
+  "manual": "Manuell",
+  "onStartup": "Beim Start",
+  "daily": "Täglich",
+  "weekly": "Wöchentlich",
+  "monthly": "Monatlich"
 }

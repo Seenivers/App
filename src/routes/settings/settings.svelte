@@ -118,6 +118,24 @@
 		</select>
 	</label>
 
+	<!-- Auto Backup -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.autoBackup')}</span>
+		</div>
+		<select
+			class="select select-bordered w-full"
+			bind:value={settingsTemp.backupInterval}
+			onchange={markDirty}
+		>
+			<option value="manual">{$_('manual')}</option>
+			<option value="onStartup">{$_('onStartup')}</option>
+			<option value="daily">{$_('daily')}</option>
+			<option value="weekly">{$_('weekly')}</option>
+			<option value="monthly">{$_('monthly')}</option>
+		</select>
+	</label>
+
 	<!-- Anzahl der heruntergeladenen Schauspielerbilder -->
 	<label class="form-control w-full">
 		<div class="label">
