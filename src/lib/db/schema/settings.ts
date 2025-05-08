@@ -36,7 +36,7 @@ export const settings = sqliteTable('settings', {
 		.notNull()
 		.$type<string[]>()
 		.default(['Trailer', 'Preview', 'Sample']),
-	theme: text('theme').notNull().$type<Theme>().default('default'),
+	theme: text('theme').notNull().$type<Theme>().default('Default'),
 	adult: int('adult', { mode: 'boolean' }).notNull().default(false),
 	toastPosition: text('toastPosition', { mode: 'json' })
 		.notNull()

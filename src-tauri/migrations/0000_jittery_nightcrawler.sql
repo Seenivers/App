@@ -95,7 +95,7 @@ CREATE TABLE
 		`language` text DEFAULT 'en' NOT NULL,
 		`keywords` text DEFAULT '["mp4","tv","HD","HDTV","720p","1080p","4K","HDR","HDR10","HDR10+","4K+","unrated","proper","limited","internal","telesync","dvdrip","bdrip","xvid","bluray","x264","x265","hevc"]' NOT NULL,
 		`ignoredKeywords` text DEFAULT '["Trailer","Preview","Sample"]' NOT NULL,
-		`theme` text DEFAULT 'default' NOT NULL,
+		`theme` text DEFAULT 'Default' NOT NULL,
 		`adult` integer DEFAULT false NOT NULL,
 		`toastPosition` text DEFAULT '{"horizontal":"end","vertical":"bottom"}' NOT NULL,
 		`player` text DEFAULT 'Plyr' NOT NULL,
