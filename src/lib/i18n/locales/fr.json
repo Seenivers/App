@@ -318,5 +318,9 @@
 	"leadActor": "Lead Actor",
 	"sortOldestFirst": "Sort by Oldest First",
 	"sortNewestFirst": "Sort by Newest First",
-	"nextEpisode": "Next Episode"
+	"nextEpisode": "Next Episode",
+	"alphabetical": "Alphabetical",
+	"releaseDateNew": "Newest first",
+	"releaseDateOld": "Oldest first",
+	"lastWatched": "Last watched"
 }
