@@ -6,14 +6,10 @@
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { onDestroy } from 'svelte';
 	import { settingsDB } from '$lib/utils/db/settings';
-	import { _ } from 'svelte-i18n';
+	import { _, locales } from 'svelte-i18n';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
-
-	const languageSuggestions = Array.from(
-		new Set(navigator.languages.map((lang) => lang.split('-')[0]))
-	);
 
 	// Schlüsselwörter verarbeiten und Änderung tracken
 	function handleInput(event: Event, type: 'keywords' | 'ignoredKeywords') {
@@ -51,7 +47,7 @@
 			bind:value={settingsTemp.language}
 			onchange={markDirty}
 		>
-			{#each languageSuggestions as lang}
+			{#each $locales as lang}
 				<option value={lang}>
 					{new Intl.DisplayNames([settings.language, window.navigator.language], {
 						type: 'language'
