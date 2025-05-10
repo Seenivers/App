@@ -11,7 +11,7 @@
     "currentTime": "Aktuelle Zeit",
     "duration": "Dauer",
     "volume": "Lautstärke",
-    "mute": "Stummschalten",
+    "mute": "Stummschaltung",
     "unmute": "Ton einschalten",
     "enableCaptions": "Untertitel aktivieren",
     "disableCaptions": "Untertitel deaktivieren",
@@ -45,7 +45,7 @@
     "Keyboard Animations": "Tastatur-Animationen",
     "Seek Backward": "Zurückspringen",
     "Seek Forward": "Vorspringen",
-    "Skip To Live": "Zum Live-Stream springen",
+    "Skip To Live": "Springen zu",
     "Text Background": "Text-Hintergrund",
     "Accessibility": "Barrierefreiheit",
     "AirPlay": "AirPlay",
@@ -57,7 +57,7 @@
     "Chapters": "Kapitel",
     "Color": "Farbe",
     "Connected": "Verbunden",
-    "Connecting": "Verbinden…",
+    "Connecting": "Verbinde",
     "Continue": "Weiter",
     "Default": "Standard",
     "Disabled": "Deaktiviert",
@@ -107,7 +107,7 @@
     "downloadandInstall": "Update herunterladen und installieren",
     "download": "Update herunterladen",
     "changelog": "Changelog",
-    "loadChangelog": "Changelog wird geladen…",
+    "loadChangelog": "Lade Changelog...",
     "downloadFinished": "Update erfolgreich heruntergeladen!"
   },
   "error": {
@@ -152,7 +152,7 @@
     "toastPositionHorizontal": "Benachrichtigungs-Position (horizontal)",
     "toastPositionVertical": "Benachrichtigungs-Position (vertikal)",
     "videoPlayer": "Videoplayer",
-    "castImages": "Anzahl der herunterzuladenden Darstellerbilder",
+    "castImages": "Anzahl der Schauspielerbilder zum Herunterladen",
     "none": "Keine",
     "all": "Alle",
     "discordRpc": "Discord RPC aktivieren",
@@ -173,13 +173,13 @@
     "dev": {
       "details": "Entwickelt Seenivers 🚀",
       "state": "Im Code-Dschungel 🌿",
-      "largeText": "Seenivers – Next Level Entertainment",
+      "largeText": "Seenivers – Unterhaltung auf dem nächsten Level",
       "smallImage": "terminal_dev",
       "smallText": "Debugge… 🐛"
     }
   },
   "main": {
-    "searchPlaceholder": "Suchen…",
+    "searchPlaceholder": "Suchen...",
     "noneFound": "Nichts entspricht diesen Kriterien",
     "noneAdded": "Du hast noch nichts hinzugefügt",
     "added": "Zuletzt hinzugefügt",
