@@ -178,12 +178,14 @@ export async function fetchImageDimensions(
 		img.onerror = async (err) => {
 			// Wenn das Bild geladen wurde, aber keine gültigen Dimensionen hat (z.B. 0x0), dann Lösche Bild
 			if (img.width === 0 || img.height === 0) {
-				try {
-					// Entkodiere den Pfad, bevor du versuchst, das Bild zu entfernen
-					const decodedPath = decodeURIComponent(src.replace('http://asset.localhost/', ''));
-					await remove(decodedPath);
-				} catch (removeError) {
-					error(`Fehler beim Verarbeiten des Pfads zum Entfernen des Bildes: ${removeError}`);
+				// Entkodiere den Pfad, bevor du versuchst, das Bild zu entfernen
+				const decodedPath = decodeURIComponent(src.replace('http://asset.localhost/', ''));
+				if (await checkImageExistence(decodedPath)) {
+					try {
+						await remove(decodedPath);
+					} catch (removeError) {
+						error(`Fehler beim Verarbeiten des Pfads zum Entfernen des Bildes: ${removeError}`);
+					}
 				}
 				return resolve({ width: 300, height: 450 });
 			} else {
