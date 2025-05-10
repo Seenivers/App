@@ -1,7 +1,15 @@
 import { db, sqlite } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
 import { appDataDir, join } from '@tauri-apps/api/path';
-import { BaseDirectory, copyFile, exists, mkdir, remove, readDir } from '@tauri-apps/plugin-fs';
+import {
+	BaseDirectory,
+	copyFile,
+	exists,
+	mkdir,
+	remove,
+	readDir,
+	stat
+} from '@tauri-apps/plugin-fs';
 import { error, info } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm/sql';
 import { _ } from 'svelte-i18n';
@@ -161,7 +169,10 @@ export const backup = {
 			for (const file of fsBackupFiles) {
 				const filePath = await join(backupDir, file);
 				if (!dbBackupPaths.includes(filePath)) {
-					await db.insert(schema.backups).values({ path: filePath });
+					const meta = await stat(filePath);
+					await db
+						.insert(schema.backups)
+						.values({ path: filePath, createdAt: meta.birthtime ?? meta.atime ?? new Date() });
 					info(get(_)('backup.newBackup', { values: { filePath } }));
 				}
 			}
