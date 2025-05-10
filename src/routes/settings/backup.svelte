@@ -51,7 +51,7 @@
 	<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">{$_('backups.title')}</h1>
 	<div class="flex gap-2">
 		{#if import.meta.env.DEV}
-			<button class="btn" onclick={newDB}>{$_('backups.newDatabase')}</button>
+			<button class="btn hover:btn-error" ondblclick={newDB}>{$_('backups.newDatabase')}</button>
 		{/if}
 		<button class="btn" onclick={validateBackups}>{$_('backups.validateBackups')}</button>
 		<button class="btn" onclick={createBackup}>{$_('backups.createBackup')}</button>
