@@ -121,7 +121,7 @@
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
-			{#if !data.pathExists && online.current}
+			{#if !data.pathExists && movieData.tmdb.videos.results.length > 0 && online.current}
 				<!-- Trailer -->
 				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -156,7 +156,7 @@
 			{/if}
 
 			<!-- Collection -->
-			{#if movieData.tmdb.belongs_to_collection?.id && data.result.path}
+			{#if movieData.tmdb.belongs_to_collection?.id}
 				<div class="my-4">
 					{#await collection.get(movieData.tmdb.belongs_to_collection.id) then value}
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
