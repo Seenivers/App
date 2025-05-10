@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { _ } from 'svelte-i18n';
 	interface NavbarProps {
 		back?: boolean;
 		onclick?: () => void;
+		ondblclick?: () => void;
 		left?: () => null;
 		middle?: () => null;
 		right?: () => null;
@@ -12,6 +14,7 @@
 		back = false,
 		onclick = () =>
 			window.history.length > 1 ? window.history.back() : (window.location.href = '/'),
+		ondblclick = () => goto('/'),
 		left,
 		middle,
 		right
@@ -24,7 +27,7 @@
 	{#if left || back}
 		<div class="gap-1">
 			{#if back}
-				<button class="btn btn-sm md:btn-md" {onclick}>
+				<button class="btn btn-sm md:btn-md" {onclick} {ondblclick}>
 					{window.history.length > 1 ? $_('nav.back') : $_('nav.backToHome')}
 				</button>
 			{/if}
