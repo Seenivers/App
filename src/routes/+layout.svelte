@@ -43,10 +43,12 @@
 
 			if (import.meta.env.PROD) {
 				await autoBackup();
-				await updateOldDB();
-				await updateMovies();
-				await updateCollections();
-				await updateActors();
+				if (online.current) {
+					await updateOldDB();
+					await updateMovies();
+					await updateCollections();
+					await updateActors();
+				}
 			}
 		}
 		networkStatus();
