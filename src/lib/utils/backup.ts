@@ -107,7 +107,6 @@ export const backup = {
 
 			// Backup-Datei verschieben
 			await copyFile(data.path, dbPath);
-			await remove(data.path, { baseDir: BaseDirectory.AppData });
 
 			window.location.reload(); // Lade die App neu
 
