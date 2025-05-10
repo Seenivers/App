@@ -64,9 +64,12 @@
 		});
 	});
 
-	onDestroy(() => {
+	onDestroy(async () => {
 		if (player) {
-			saveWatchTime(id, type, player.currentTime, player.duration).finally(() => player.destroy());
+			player.pip = false;
+			await saveWatchTime(id, type, player.currentTime, player.duration).finally(() =>
+				player.destroy()
+			);
 		}
 	});
 </script>

@@ -52,8 +52,13 @@
 		}
 	});
 
-	onDestroy(() => {
-		saveWatchTime(id, type, player.currentTime, player.duration).finally(() => player.destroy());
+	onDestroy(async () => {
+		if (player) {
+			await player.exitPictureInPicture();
+			await saveWatchTime(id, type, player.currentTime, player.duration).finally(() =>
+				player.destroy()
+			);
+		}
 	});
 </script>
 
