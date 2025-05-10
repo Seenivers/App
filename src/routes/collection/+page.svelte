@@ -44,10 +44,7 @@
 			sortNewestFirst = stored === 'true';
 		}
 
-		discord({
-			details: `Schaut gerade die ${data.result.name} an`,
-			state: `${data.result.parts.length} Filme`
-		});
+		discord();
 	});
 </script>
 

@@ -35,10 +35,7 @@
 	}
 
 	onMount(() => {
-		discord({
-			details: `Schaut gerade ${data.result.name} an`,
-			state: `${data.result.combined_credits.cast.length + data.result.combined_credits.crew.length} Filme & Serien`
-		});
+		discord();
 	});
 </script>
 
