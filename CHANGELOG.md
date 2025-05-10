@@ -1,3 +1,37 @@
+# [0.33.0](https://github.com/Seenivers/App/compare/v0.32.0...v0.33.0) (2025-05-10)
+
+
+### Bug Fixes
+
+* **backup:** add createdAt timestamp when inserting new backup entries ([ca44e6a](https://github.com/Seenivers/App/commit/ca44e6a20caceb8b810d181e2fb097b177cb59a5))
+* **backup:** change new database button to use double-click for activation ([eb5eaec](https://github.com/Seenivers/App/commit/eb5eaec813a20bbe2843363b504eb737775f52bb))
+* **backup:** move backup file instead of removing it immediately ([b3dfe5e](https://github.com/Seenivers/App/commit/b3dfe5ec2be06738463e719ca89b3dcfa24d5bb7))
+* **format:** enable pull request trigger and improve comments in workflow ([2723a86](https://github.com/Seenivers/App/commit/2723a869dba4ff2a23d5437cf4c94bd50f4d300e))
+* **i18n:** simplify locale initialization by removing default fallback and using 'en' for both fallback and initial locales ([c86de35](https://github.com/Seenivers/App/commit/c86de35f5d26695ed023c2369f08f0a821a2a920))
+* **image:** improve error handling for invalid image dimensions ([10f8ff3](https://github.com/Seenivers/App/commit/10f8ff3df0673783d84fff2e00a46c6b60a047bf))
+* **layout:** conditionally update database only when online in production ([4ff57bc](https://github.com/Seenivers/App/commit/4ff57bc730a293c6bca3bd22a51d23fcbb7569c6))
+* **layout:** ensure trace logging occurs after cleanup on app close ([c0a382f](https://github.com/Seenivers/App/commit/c0a382fe72871418b2c2733a03fa37e8569759c9))
+* **layout:** update language setting logic to use user preferences ([be70d08](https://github.com/Seenivers/App/commit/be70d088b3c45e73bcd956df62e863e3250925df))
+* **movie:** update trailer display condition to check for video availability ([9814e74](https://github.com/Seenivers/App/commit/9814e74a5ffc3650460e6cf107a0ea33bd1c4a60))
+* **navbar:** add ondblclick handler to button for navigation ([6919a17](https://github.com/Seenivers/App/commit/6919a1728c69c7e3897a7f1ceca2064a2f4d2a15))
+* **player:** ensure proper cleanup and save watch time on destroy ([e5a75d6](https://github.com/Seenivers/App/commit/e5a75d6a438350e52859a78623e0e4c3932de37f))
+* **settings:** change default theme value to lowercase 'default' ([04489b2](https://github.com/Seenivers/App/commit/04489b26f34f110ce2aa84415e7e5e758b92334c))
+* **settings:** ensure changes are saved only if modified ([99a9821](https://github.com/Seenivers/App/commit/99a9821fd288c44d3952bdcc9650760c9b2d9da5))
+* **settings:** standardize theme default value to title case ([f382eeb](https://github.com/Seenivers/App/commit/f382eeb59501348a8f91c0bded20108f63ebcba8))
+* **settings:** update language change handler to set locale and mark as dirty ([acede53](https://github.com/Seenivers/App/commit/acede53a74c2c0e017987653dfa9cb983120ee82))
+* **themes:** standardize theme names to title case ([f260abf](https://github.com/Seenivers/App/commit/f260abf3bfa8698e440b6e90a4b6eb4573b97980))
+* **workflow:** remove pull_request trigger from formatting workflow ([62fd534](https://github.com/Seenivers/App/commit/62fd5341684f90c30930af0f841d78a315a7cfc6))
+
+
+### Features
+
+* **autoBackup:** implement automatic backup functionality based on user settings ([941c7b8](https://github.com/Seenivers/App/commit/941c7b8512ae540b409b576ea9d48ae0aa64bbf8))
+* **i18n:** add additional language registrations for localization ([c161348](https://github.com/Seenivers/App/commit/c16134873a9c315c0912ab86610afc224336089b))
+* **i18n:** add new sorting options and filters for media display ([156879a](https://github.com/Seenivers/App/commit/156879a5e8fca8b75b5695f7a9a30a065c6d91a7))
+* **i18n:** update language selection to use available locales ([3a80815](https://github.com/Seenivers/App/commit/3a8081563c19e0419a45ac61e6038c84f1d160a2))
+* **search:** integrate Fuse.js for enhanced filtering and sorting of media items ([b8b9b32](https://github.com/Seenivers/App/commit/b8b9b32a3c4abd2362bec4940ae775097a1a745f))
+* **settings:** add auto backup options to settings ([ca8aa87](https://github.com/Seenivers/App/commit/ca8aa87e17896a537ceca342f786ef41477680b8))
+
 # [0.32.0](https://github.com/Seenivers/App/compare/v0.31.2...v0.32.0) (2025-05-07)
 
 ### Bug Fixes
