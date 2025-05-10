@@ -61,12 +61,12 @@
 	});
 
 	onDestroy(async () => {
-		trace('App closed');
-
 		await destroy();
 
 		logLogger();
 		logConsole();
+
+		trace('App closed');
 	});
 </script>
 
