@@ -31,7 +31,7 @@
 		"@types/node": "^22.15.3",
 		"autoprefixer": "^10.4.21",
 		"daisyui": "^4.12.24",
-		"drizzle-kit": "^0.31.0",
+		"drizzle-kit": "^0.31.1",
 		"eslint": "^9.25.1",
 		"eslint-config-prettier": "^10.1.2",
 		"eslint-plugin-svelte": "^3.5.1",
