@@ -50,7 +50,7 @@
 		"Accessibility": "Barrierefreiheit",
 		"AirPlay": "AirPlay",
 		"Announcements": "Benachrichtigungen",
-		"Audio": "Audio",
+		"Audio": "Ton",
 		"Auto": "Auto",
 		"Boost": "Verstärken",
 		"Captions": "Untertitel",
@@ -62,7 +62,7 @@
 		"Default": "Standard",
 		"Disabled": "Deaktiviert",
 		"Disconnected": "Verbindung getrennt",
-		"Download": "Download",
+		"Download": "Herunterladen",
 		"Family": "Familie",
 		"Font": "Schriftart",
 		"Fullscreen": "Vollbild",
@@ -72,7 +72,7 @@
 		"Normal": "Normal",
 		"Off": "Aus",
 		"Opacity": "Transparenz",
-		"Pause": "Pause",
+		"Pause": "Pausieren",
 		"PiP": "Bild-in-Bild",
 		"Play": "Abspielen",
 		"Playback": "Wiedergabe",
@@ -106,7 +106,7 @@
 		"install": "Update installieren",
 		"downloadandInstall": "Update herunterladen und installieren",
 		"download": "Update herunterladen",
-		"changelog": "Changelog",
+		"changelog": "Änderungsprotokoll",
 		"loadChangelog": "Lade Changelog...",
 		"downloadFinished": "Update erfolgreich heruntergeladen!"
 	},
@@ -167,17 +167,6 @@
 		"middle": "Mitte",
 		"bottom": "Unten"
 	},
-	"discord": {
-		"details": "Schaut einen Film 🍿",
-		"largeText": "Seenivers – Dein Film- & Serien-Paradies",
-		"dev": {
-			"details": "Entwickelt Seenivers 🚀",
-			"state": "Im Code-Dschungel 🌿",
-			"largeText": "Seenivers – Unterhaltung auf dem nächsten Level",
-			"smallImage": "terminal_dev",
-			"smallText": "Debugge… 🐛"
-		}
-	},
 	"main": {
 		"searchPlaceholder": "Suchen...",
 		"noneFound": "Nichts entspricht diesen Kriterien",
@@ -215,7 +204,7 @@
 	"productionCountries": "Produktionsländer",
 	"popularity": "Beliebtheit",
 	"originalLanguage": "Originalsprache",
-	"budget": "Budget",
+	"budget": "Kostenrahmen",
 	"revenue": "Einnahmen",
 	"status": "Status",
 	"backdropAlt": "Hintergrundbild von {title}",
@@ -231,7 +220,7 @@
 	"extras": "Extras",
 	"thumbnailAlt": "Vorschaubild für {title}",
 	"backups": {
-		"title": "Backups",
+		"title": "Sicherungen",
 		"newDatabase": "Neue Datenbank",
 		"validateBackups": "Backups überprüfen",
 		"createBackup": "Backup erstellen"

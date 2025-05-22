@@ -167,17 +167,6 @@
 		"middle": "Middle",
 		"bottom": "Bottom"
 	},
-	"discord": {
-		"details": "Is watching a movie 🍿",
-		"largeText": "Seenivers - Your Movie & Series Paradise",
-		"dev": {
-			"details": "Developing Seenivers 🚀",
-			"state": "Deep in the code jungle 🌿",
-			"largeText": "Seenivers - Next Level Entertainment",
-			"smallImage": "terminal_dev",
-			"smallText": "Debugging... 🐛"
-		}
-	},
 	"main": {
 		"searchPlaceholder": "Search...",
 		"noneFound": "Nothing matches these criteria",
