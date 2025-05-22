@@ -220,7 +220,7 @@
 	"extras": "Extras",
 	"thumbnailAlt": "Vorschaubild für {title}",
 	"backups": {
-		"title": "Backups",
+		"title": "Sicherungen",
 		"newDatabase": "Neue Datenbank",
 		"validateBackups": "Backups überprüfen",
 		"createBackup": "Backup erstellen"
