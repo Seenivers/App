@@ -51,10 +51,7 @@
 
 	// Überprüfe beim Mounten, ob die Daten valide sind und starte den Ladevorgang
 	onMount(async () => {
-		discord({
-			details: `Fügt gerade neue Filme hinzu`,
-			state: searchList.length > 0 ? `${searchList.length} Filme` : undefined
-		});
+		discord();
 
 		if (Array.isArray(data.paths) && data.paths.length > 0) {
 			// Wenn data.paths ein Array ist und nicht leer, füge die Dateien hinzu

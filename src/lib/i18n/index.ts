@@ -1,15 +1,11 @@
 import { init, register } from 'svelte-i18n';
 
-export const fallbackLocale = 'default';
-const initialLocale = 'en';
-
 register('af', () => import('./locales/af.json'));
 register('ar', () => import('./locales/ar.json'));
 register('ca', () => import('./locales/ca.json'));
 register('cs', () => import('./locales/cs.json'));
 register('da', () => import('./locales/da.json'));
 register('de', () => import('./locales/de.json'));
-register(fallbackLocale, () => import('./locales/default.json'));
 register('el', () => import('./locales/el.json'));
 register('en', () => import('./locales/en.json'));
 register('es', () => import('./locales/es.json'));
@@ -34,6 +30,6 @@ register('vi', () => import('./locales/vi.json'));
 register('zh', () => import('./locales/zh.json'));
 
 init({
-	fallbackLocale,
-	initialLocale
+	fallbackLocale: 'en',
+	initialLocale: 'en'
 });

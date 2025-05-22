@@ -41,6 +41,7 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 
 	if (!settings.discordAktiv) {
 		await stop();
+		return;
 	}
 
 	debug('Starting Discord RPC');
@@ -50,7 +51,7 @@ export async function discord(activityData: DiscordActivityOptions = {}): Promis
 	}
 
 	const {
-		details = 'Is watching a movie 🍿',
+		details = 'Watch his movies and series 🍿',
 		state,
 		largeImage = 'icon',
 		largeText = 'Seenivers - Your Movie & Series Paradise',

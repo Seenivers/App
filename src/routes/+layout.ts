@@ -10,15 +10,16 @@ import { locale, locales, waitLocale } from 'svelte-i18n';
 import type { LayoutLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { get } from 'svelte/store';
-import { fallbackLocale } from '$lib/i18n';
 
 export const load: LayoutLoad = async () => {
 	if (!browser) {
 		error(500, 'This operation is only supported in the browser');
 	}
 
+	const { settings } = await import('$lib/stores.svelte');
+
 	const userLang = window.navigator.language.split('-')[0];
-	locale.set(get(locales).includes(userLang) ? userLang : fallbackLocale);
+	locale.set(get(locales).includes(settings.language) ? settings.language : userLang);
 
 	await waitLocale();
 };

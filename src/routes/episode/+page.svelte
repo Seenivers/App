@@ -116,7 +116,7 @@
 			{/if}
 
 			<!-- Trailer -->
-			{#if data.pathExists && online.current}
+			{#if !data.pathExists && data.result.tmdb.videos.results.length > 0 && online.current}
 				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each data.result.tmdb.videos.results as trailer}
