@@ -104,50 +104,50 @@
 		"available": "Nova atualização disponível",
 		"version": "Versão {version}",
 		"install": "Instalar atualização",
-		"downloadandInstall": "Download and install update",
-		"download": "Download update",
-		"changelog": "Changelog",
-		"loadChangelog": "Loading changelog...",
-		"downloadFinished": "Update downloaded successfully!"
+		"downloadandInstall": "Baixar e instalar a atualização",
+		"download": "Baixar atualização",
+		"changelog": "Mudanças",
+		"loadChangelog": "Carregando changelog...",
+		"downloadFinished": "Atualização baixada com sucesso!"
 	},
 	"error": {
-		"seasonNotFound": "Season not found",
-		"episodeNotFound": "Episode not found in season",
-		"serieNotFound": "Series not found",
-		"seasonNotFoundinSerie": "Season not found in series"
+		"seasonNotFound": "Temporada não encontrada",
+		"episodeNotFound": "Episódio não encontrado na temporada",
+		"serieNotFound": "Série não encontrada",
+		"seasonNotFoundinSerie": "Temporada não encontrada em séries"
 	},
 	"cardscale": {
-		"small": "Small",
-		"medium": "Medium",
-		"large": "Large"
+		"small": "Pequeno",
+		"medium": "Média",
+		"large": "grande"
 	},
 	"badge": {
-		"watched": "Watched",
-		"collection": "In your collection"
+		"watched": "Assistido",
+		"collection": "Na sua coleção"
 	},
 	"marked": {
-		"asWatched": "Mark as unwatched",
-		"notWatched": "Mark as watched"
+		"asWatched": "Marcar como não assistido",
+		"notWatched": "Marcar como assistido"
 	},
 	"backup": {
-		"newBackup": "🗂️ New DB entry for backup file: {filePath}",
-		"deletedBackup": "🗑️ Deleted DB entry for missing backup: {filePath}",
-		"fileNotFound": "Backup file not found: {filePath}",
-		"idNotFound": "No backup found for ID: {id}"
+		"newBackup": "🗂️ Nova entrada no DB para o arquivo de backup: {filePath}",
+		"deletedBackup": "🗑️ Entrada de banco de dados excluída para backup ausente: {filePath}",
+		"fileNotFound": "Arquivo de backup não encontrado: {filePath}",
+		"idNotFound": "Nenhum backup encontrado para o ID: {id}"
 	},
 	"settings": {
-		"createAttempt": "Attempt {attempt}/{retries}: Creating default settings",
-		"insertFailed": "Insert failed, error: {error}",
-		"createdOrRead": "Settings successfully created/read",
-		"noSettingsWait": "No settings found yet, waiting 1 second…",
-		"allAttemptsFailed": "All attempts failed. Trying migration...",
-		"foundAfterMigration": "Settings found after migration",
-		"migrationFailed": "Migration failed, error: {error}",
-		"reloadPage": "Could not create settings. Reloading page.",
-		"updateFailed": "Update settings failed, error: {error}",
-		"saved": "Settings saved!",
-		"title": "Settings",
-		"language": "Language",
+		"createAttempt": "Tentativa {attempt}/{retries}: Criando configurações padrão",
+		"insertFailed": "Falha ao inserir, erro: {error}",
+		"createdOrRead": "Configurações criadas/lidas com sucesso",
+		"noSettingsWait": "Nenhuma configuração foi encontrada ainda, aguardando 1 segundo…",
+		"allAttemptsFailed": "Todas as tentativas falharam. Tentando migração...",
+		"foundAfterMigration": "Configurações encontradas após migração",
+		"migrationFailed": "Migração falhou, erro: {error}",
+		"reloadPage": "Não foi possível criar as configurações. Recarregando página.",
+		"updateFailed": "As configurações da atualização falharam, erro: {error}",
+		"saved": "Configurações salvas!",
+		"title": "Confirgurações",
+		"language": "IDIOMA",
 		"adultContent": "Permitir conteúdo para adultos",
 		"toastPositionHorizontal": "Posição de alerta (horizontal)",
 		"toastPositionVertical": "Posição do alerta (vertical)",
