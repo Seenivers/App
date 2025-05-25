@@ -127,7 +127,7 @@ importers:
         specifier: ^24.2.4
         version: 24.2.5(typescript@5.8.3)
       svelte:
-        specifier: ^5.28.6
+        specifier: ^5.30.2
         version: 5.31.1
       svelte-check:
         specifier: ^4.1.7
