@@ -1,13 +1,15 @@
+@reference "tailwindcss";
+
 .body > h1 {
-	@apply my-5 text-3xl font-bold text-primary;
+	@apply my-5 text-3xl font-bold;
 }
 
 .body > h2 {
-	@apply my-4 text-2xl font-semibold text-secondary;
+	@apply my-4 text-2xl font-semibold;
 }
 
 .body > h3 {
-	@apply mb-2 mt-4 text-xl font-semibold text-secondary;
+	@apply mt-4 mb-2 text-xl font-semibold;
 }
 
 .body > ul {
@@ -23,7 +25,7 @@
 }
 
 .body > ul > li code {
-	@apply rounded bg-base-300 px-1;
+	@apply rounded px-1;
 }
 
 .body > ul > li strong {
