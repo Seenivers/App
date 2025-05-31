@@ -141,7 +141,7 @@
 			</button>
 		</div>
 		<select
-			class="select select-bordered max-w-96"
+			class="select select-bordered w-fit max-w-96"
 			bind:value={filter}
 			disabled={!online || searchList.length === 0}
 		>
@@ -184,7 +184,7 @@
 		<div class="grid w-full gap-3">
 			{#each searchList as item, index}
 				{#if item.status === filter || filter === null}
-					<div class="flex justify-between gap-3 rounded-md bg-base-200 p-3">
+					<div class="bg-base-200 flex justify-between gap-3 rounded-md p-3">
 						<span>
 							<p class="text-lg">
 								{$_('titleWithValue', { values: { title: item.options.fileName } })}
@@ -258,11 +258,11 @@
 				</button>
 			</form>
 
-			<hr class="my-3 border-2 border-base-content" />
+			<hr class="border-base-content my-3 border-2" />
 
 			{#if searchList[modalID].status === 'searching'}
 				<div
-					class="mx-auto flex max-w-md flex-col items-center rounded-lg bg-base-200 p-5 shadow-md"
+					class="bg-base-200 mx-auto flex max-w-md flex-col items-center rounded-lg p-5 shadow-md"
 				>
 					<h2 class="mb-2 text-2xl font-semibold">{$_('searchInProgress')}</h2>
 					<p class="mb-4 text-sm text-gray-600">
@@ -281,7 +281,7 @@
 						{@const title = 'title' in result ? result.title : result.name}
 						{@const year = 'release_date' in result ? result.release_date : result.first_air_date}
 						<button
-							class="flex cursor-pointer space-y-2 rounded-lg border border-base-300 bg-base-200 p-3"
+							class="border-base-300 bg-base-200 flex cursor-pointer space-y-2 rounded-lg border p-3"
 							onclick={async () => {
 								if (modalID !== null) {
 									await selectMovie(modalID, i);
@@ -322,7 +322,7 @@
 					{$_('noSearchPerformed')}
 				</p>
 			{:else}
-				<p class="text-center text-error">
+				<p class="text-error text-center">
 					{$_('noResultsFound')}
 				</p>
 			{/if}

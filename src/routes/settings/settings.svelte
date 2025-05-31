@@ -183,7 +183,7 @@
 			<span class="label-text font-semibold">{$_('settings.theme')}</span>
 		</div>
 		<select
-			class="select select-bordered"
+			class="select select-bordered w-full"
 			bind:value={settingsTemp.theme}
 			onchange={() => {
 				setTheme(settingsTemp.theme);
