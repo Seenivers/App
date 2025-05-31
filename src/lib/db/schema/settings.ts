@@ -56,5 +56,6 @@ export const settings = sqliteTable('settings', {
 		maxAgeDays: 0,
 		maxBackups: 14,
 		maxSizeMB: 0
-	})
+	}),
+	watchPaths: text('watchPaths', { mode: 'json' }).notNull().$type<string[]>().default([])
 });
