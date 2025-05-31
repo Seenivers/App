@@ -1,8 +1,8 @@
 import type { Cardscale } from '$lib/types/cardscale';
 
 export const scaleClasses = {
-	1: { width: 'min-w-[8rem] max-w-[12rem]', text: 'text-base' },
-	2: { width: 'min-w-[12rem] max-w-[18rem]', text: 'text-lg' },
+	1: { width: 'min-w-32 max-w-48', text: 'text-base' },
+	2: { width: 'min-w-48 max-w-[18rem]', text: 'text-lg' },
 	3: { width: 'min-w-[16rem] max-w-[24rem]', text: 'text-2xl' }
 };
 

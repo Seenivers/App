@@ -78,10 +78,7 @@
 
 		<div class="mx-auto w-full max-w-full">
 			{#await image(collection.backdrop_path, 'backdrops', true) then backdropImage}
-				<div
-					class="hero rounded-box bg-base-200"
-					style="background-image: url({backdropImage.src});"
-				>
+				<div class="hero rounded-box bg-base-200 bg-[url('{backdropImage.src}')]">
 					<div class="hero-overlay rounded-box bg-opacity-90"></div>
 					<div class="hero-content flex-col gap-4 lg:flex-row">
 						<Img
@@ -89,7 +86,7 @@
 							params={[collection.poster_path, 'backdrops', true]}
 							class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 						/>
-						<div class="text-center text-neutral-content lg:text-left">
+						<div class="text-neutral-content text-center lg:text-left">
 							<h1 class="text-4xl font-bold md:text-5xl">{collection.name}</h1>
 							<p class="py-6 text-lg md:text-2xl">{collection.overview}</p>
 						</div>
@@ -116,14 +113,14 @@
 						<a
 							href="/movie?id={movie.id}"
 							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
-							class="relative flex flex-col items-center gap-4 rounded-lg bg-base-200 p-4 shadow-md transition-all duration-300 {isGridView
+							class="bg-base-200 relative flex flex-col items-center gap-4 rounded-lg p-4 shadow-md transition-all duration-300 {isGridView
 								? 'transform hover:scale-105'
 								: 'md:flex-row'}"
 						>
 							<Img
 								alt={$_('posterAlt', { values: { title: movie.title } })}
 								params={[movie.poster_path, 'posters', true]}
-								class="aspect-[2/3] w-full max-w-[15rem] rounded-lg object-cover shadow-2xl"
+								class="aspect-2/3 w-full max-w-60 rounded-lg object-cover shadow-2xl"
 							/>
 
 							<!-- Badge-Container: beide Badges werden hier gruppiert -->

@@ -53,7 +53,7 @@
 <main class="flex flex-col items-center gap-6 px-4 py-6 md:px-6 lg:px-8">
 	{#if data.result}
 		{@const actor = data.result}
-		<div class="grid w-full max-w-screen-xl grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
+		<div class="grid w-full max-w-(--breakpoint-xl) grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
 			<!-- Sidebar: Actor Infos -->
 			<aside class="card h-fit w-full bg-base-200 p-5 shadow-md">
 				<div class="flex flex-col items-center gap-4">
@@ -83,7 +83,7 @@
 										href={`https://www.instagram.com/${actor.external_ids.instagram_id}`}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="btn btn-outline btn-sm transition hover:bg-gradient-to-r hover:from-pink-500 hover:to-yellow-500 hover:text-white"
+										class="btn btn-outline btn-sm transition hover:bg-linear-to-r hover:from-pink-500 hover:to-yellow-500 hover:text-white"
 									>
 										Instagram
 									</a>
@@ -210,9 +210,9 @@
 												data-sveltekit-preload-data="tap"
 											>
 												{#if item.media_type === 'movie'}
-													<Movie class="h-5 w-5 flex-shrink-0 text-base-content/80" />
+													<Movie class="h-5 w-5 shrink-0 text-base-content/80" />
 												{:else}
-													<Tv class="h-5 w-5 flex-shrink-0 text-base-content/80" />
+													<Tv class="h-5 w-5 shrink-0 text-base-content/80" />
 												{/if}
 												<span>{item.title || item.name}</span>
 											</a>

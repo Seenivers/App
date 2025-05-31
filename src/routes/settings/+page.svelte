@@ -21,7 +21,7 @@
 	}}
 ></Navbar>
 
-<main class="container mx-auto w-full flex-grow px-4 py-6 lg:w-4/5 xl:w-2/3">
+<main class="container mx-auto w-full grow px-4 py-6 lg:w-4/5 xl:w-2/3">
 	<div role="tablist" class="tabs tabs-lifted">
 		<!-- Einstellungen Tab -->
 		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Einstellungen" checked />

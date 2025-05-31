@@ -374,7 +374,7 @@
 			class="flex gap-2"
 		>
 			<input
-				class="input input-bordered flex-grow"
+				class="input input-bordered grow"
 				type="number"
 				placeholder={movieData?.id?.toString() ?? 'TMDB ID'}
 				name="newID"

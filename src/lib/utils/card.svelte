@@ -25,7 +25,7 @@
 <a
 	{href}
 	draggable="false"
-	class="card h-fit flex-grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20 {scaleClasses[
+	class="card h-fit grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20 {scaleClasses[
 		CARDSCALE
 	].width}"
 >

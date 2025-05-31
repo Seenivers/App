@@ -30,10 +30,10 @@
 <div
 	class={`toast z-50 ${toastVariants[positionHorizontally]} ${toastVariants[positionVertically]} !min-w-unset w-fit max-w-full print:hidden`}
 >
-	<details class="collapse collapse-plus bg-base-100/70 backdrop-blur-sm" open>
+	<details class="collapse-plus bg-base-100/70 collapse backdrop-blur-sm" open>
 		<summary class="collapse-title text-xl font-medium">Info-Panel</summary>
 		<div
-			class="collapse-content mb-3 box-border grid max-h-[33vh] !min-h-unset w-full !min-w-unset flex-col flex-wrap gap-3 overflow-y-auto p-3"
+			class="collapse-content !min-h-unset !min-w-unset mb-3 box-border grid max-h-[33vh] w-full flex-col flex-wrap gap-3 overflow-y-auto p-3"
 		>
 			{#if $messages.length > 0}
 				{#each $messages as { type, text }}

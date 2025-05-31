@@ -3,7 +3,7 @@
 	import { _ } from 'svelte-i18n';
 </script>
 
-<main class="flex flex-grow flex-col justify-center">
+<main class="flex grow flex-col justify-center">
 	<div class="hero">
 		<div class="hero-content text-center">
 			<div class="max-w-md">
