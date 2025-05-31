@@ -30,7 +30,7 @@
 		"@types/eslint-config-prettier": "^6.11.3",
 		"@types/node": "^22.15.29",
 		"autoprefixer": "^10.4.21",
-		"daisyui": "^4.12.24",
+		"daisyui": "^5.0.37",
 		"drizzle-kit": "^0.31.1",
 		"eslint": "^9.28.0",
 		"eslint-config-prettier": "^10.1.5",
