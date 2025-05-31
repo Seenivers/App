@@ -48,7 +48,7 @@
 		episodesGrouped.get(seasonNumber)?.push(ep);
 	});
 	// Sortiere die Episoden innerhalb jeder Staffel nach episode_number
-	for (const [seasonNumber, episodes] of episodesGrouped.entries()) {
+	for (const [, episodes] of episodesGrouped.entries()) {
 		episodes.sort((a, b) => a.tmdb.episode_number - b.tmdb.episode_number);
 	}
 

@@ -45,7 +45,7 @@
 		const base: MovieItem[] =
 			search.trim() === '' ? data.movies : fuseMovies.search(search).map((r) => r.item);
 		return base
-			.filter((m) => showMovies)
+			.filter(() => showMovies)
 			.filter((m) => genreFilter(m.tmdb.genres || []))
 			.filter((m) =>
 				watchedFilter === 'all' ? true : watchedFilter === 'watched' ? m.watched : !m.watched
@@ -57,7 +57,7 @@
 		const base: SeriesItem[] =
 			search.trim() === '' ? data.series : fuseSeries.search(search).map((r) => r.item);
 		return base
-			.filter((s) => showSeries)
+			.filter(() => showSeries)
 			.filter((s) => genreFilter(s.tmdb.genres || []))
 			.filter((s) =>
 				watchedFilter === 'all' ? true : watchedFilter === 'watched' ? s.watched : !s.watched
@@ -69,7 +69,7 @@
 		const base: CollectionItem[] =
 			search.trim() === '' ? data.collections : fuseCollections.search(search).map((r) => r.item);
 		return base
-			.filter((c) => showCollections)
+			.filter(() => showCollections)
 			.filter(() => genreFilter([])) // Collections haben keine Genres
 			.sort(sortBy);
 	});
