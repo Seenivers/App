@@ -1911,7 +1911,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.60.1",
+ "windows-core 0.61.0",
 ]
 
 [[package]]
@@ -4803,9 +4803,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-fs"
-version = "2.2.1"
+version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "88371e340ad2f07409a3b68294abe73f20bc9c1bc1b631a31dc37a3d0161f682"
+checksum = "33ead0daec5d305adcefe05af9d970fc437bcc7996052d564e7393eb291252da"
 dependencies = [
  "anyhow",
  "dunce",
@@ -4821,7 +4821,6 @@ dependencies = [
  "thiserror 2.0.12",
  "toml",
  "url",
- "uuid 1.16.0",
 ]
 
 [[package]]
