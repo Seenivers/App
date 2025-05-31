@@ -38,7 +38,13 @@ include_dir = "0.7.4"
 tauri-plugin-updater = "2.7.1"
 
 [profile.dev]
-incremental = true # Compile your binary in smaller steps.
+opt-level = 1          # Aktiviert ein wenig Optimierung für schnelleren Code, ohne lange Build-Zeiten.
+incremental = true     # Behalte inkrementelle Builds.
+debug = true           # Debug-Infos bleiben aktiv.
+overflow-checks = true # Sicherheitschecks bleiben an.
+lto = false            # Link-Time-Optimization für Dev unnötig.
+codegen-units = 256    # Erlaubt paralleleres Kompilieren.
+panic = "unwind"       # Im Dev lieber vollständige Panic-Infos.
 
 [profile.release]
 codegen-units = 1 # Allows LLVM to perform better optimization.
