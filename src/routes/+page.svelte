@@ -9,6 +9,7 @@
 	import Search from '$lib/SVG/search.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { getFilter, setFilter, type SortOption } from '$lib/utils/sessionStorage';
+	import Reset from '$lib/SVG/reset.svelte';
 
 	interface Props {
 		data: PageData;
@@ -106,6 +107,18 @@
 		}
 	}
 
+	/** Setzt alle Filter und Suchfelder auf ihre Standardwerte zurück */
+	function resetFilters() {
+		CARDSCALE = 2;
+		search = '';
+		showCollections = false;
+		showMovies = true;
+		showSeries = true;
+		sortOption = 'added';
+		selectedGenres = [];
+		watchedFilter = 'all';
+	}
+
 	onMount(() => {
 		// Session-Storage wiederherstellen
 		const filter = getFilter();
@@ -176,15 +189,20 @@
 		<div class="my-2 space-y-2 print:hidden">
 			<!-- Sucheingabe -->
 			<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
-				<label class="input input-bordered flex w-full items-center gap-2">
-					<Search class="h-4 w-4 opacity-70" />
-					<input
-						type="text"
-						class="grow"
-						placeholder={$_('main.searchPlaceholder')}
-						bind:value={search}
-					/>
-				</label>
+				<div class="flex grow gap-2">
+					<label class="input input-bordered flex w-full items-center gap-2">
+						<Search class="h-4 w-4 opacity-70" />
+						<input
+							type="text"
+							class="grow"
+							placeholder={$_('main.searchPlaceholder')}
+							bind:value={search}
+						/>
+					</label>
+					<button type="reset" class="btn btn-ghost" onclick={resetFilters} title="Clear">
+						<Reset class="h-8 w-8 opacity-70" />
+					</button>
+				</div>
 			</div>
 
 			<!-- Filter & Sortierung -->
