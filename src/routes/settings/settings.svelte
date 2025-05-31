@@ -139,6 +139,52 @@
 		</select>
 	</label>
 
+	<!-- Maximales Alter der Backups (Tage) -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.backupMaxAgeDays')}</span>
+		</div>
+		<input
+			type="number"
+			class="input input-bordered w-full"
+			bind:value={settingsTemp.backupConfig.maxAgeDays}
+			onchange={markDirty}
+			min="0"
+			step="1"
+		/>
+	</label>
+
+	<!-- Maximale Anzahl an Backups -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.backupMaxBackups')}</span>
+		</div>
+		<input
+			type="number"
+			class="input input-bordered w-full"
+			bind:value={settingsTemp.backupConfig.maxBackups}
+			onchange={markDirty}
+			min="0"
+			step="1"
+		/>
+	</label>
+
+	<!-- Maximale Backup-Größe (MB) -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.backupMaxSizeMB')}</span>
+		</div>
+		<input
+			type="number"
+			class="input input-bordered w-full"
+			bind:value={settingsTemp.backupConfig.maxSizeMB}
+			onchange={markDirty}
+			min="0"
+			max="10000"
+			step="50"
+		/>
+	</label>
+
 	<!-- Anzahl der heruntergeladenen Schauspielerbilder -->
 	<label class="form-control w-full">
 		<div class="label">

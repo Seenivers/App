@@ -165,7 +165,10 @@
     "right": "Rechts",
     "top": "Oben",
     "middle": "Mitte",
-    "bottom": "Unten"
+    "bottom": "Unten",
+    "backupMaxAgeDays": "Maximales Alter der Backups (Tage)",
+    "backupMaxBackups": "Maximale Anzahl an Backups",
+    "backupMaxSizeMB": "Maximale Backup-Größe (MB)"
   },
   "main": {
     "searchPlaceholder": "Suchen...",
