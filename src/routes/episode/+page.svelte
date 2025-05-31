@@ -18,7 +18,7 @@
 
 	let watched: boolean = $derived(data.result.watched ?? false);
 
-	let modal = $state(false);
+	// let modal = $state(false);
 
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
@@ -66,9 +66,7 @@
 					{$_('delete')}
 				</button>
 			</div>
-			<button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>
-				Bearbeiten
-			</button>
+			<!-- <button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>{$_('edit')}</button> -->
 			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
 				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>

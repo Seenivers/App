@@ -29,7 +29,7 @@
 
 	// Der ausgewählte Staffelwert entspricht dem TMDB season_number (nicht dem Array-Index)
 	let selectedSeason: number = $state(getLastUnwatchedSeasonNumber());
-	let modal = $state(false);
+	// let modal = $state(false);
 
 	function getLastUnwatchedSeasonNumber() {
 		const unwatched = sortedSeasons().filter((s) => !s.watched);
@@ -116,9 +116,7 @@
 					{$_('delete')}
 				</button>
 			</div>
-			<button class="btn btn-sm md:btn-md" disabled={!data.serie} onclick={() => (modal = true)}>
-				{$_('edit')}
-			</button>
+			<!-- <button class="btn btn-sm md:btn-md" disabled={!data.serie} onclick={() => (modal = true)}>{$_('edit')}</button> -->
 			<button
 				class="btn btn-sm md:btn-md"
 				onclick={() => {
