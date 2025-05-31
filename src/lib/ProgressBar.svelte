@@ -19,7 +19,7 @@
 		}
 
 		if (navigating.complete !== null) {
-			// Navigation läuft → Progress erst nach 500 ms anzeigen
+			// Navigation läuft → Progress erst nach 500 ms anzeigen
 			timeout = setTimeout(() => {
 				show = true;
 			}, 500);

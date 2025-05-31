@@ -12,7 +12,7 @@
 	import { placeholderURL } from '$lib';
 	import { _ } from 'svelte-i18n';
 
-	// Seite-Daten, z. B. aus load()
+	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
 
 	// Erstelle eine reaktive Kopie der Staffeln, die lokal bearbeitet wird
