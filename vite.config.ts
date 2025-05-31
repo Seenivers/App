@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { vite as vidstack } from 'vidstack/plugins';
@@ -6,7 +7,7 @@ const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [vidstack(), sveltekit()],
+	plugins: [tailwindcss(), vidstack(), sveltekit()],
 	build: {
 		target: 'esnext'
 	},
