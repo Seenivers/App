@@ -199,7 +199,12 @@
 							bind:value={search}
 						/>
 					</label>
-					<button type="reset" class="btn btn-ghost" onclick={resetFilters} title="Clear">
+					<button
+						type="reset"
+						class="btn btn-ghost"
+						onclick={resetFilters}
+						title={$_('resetFilters')}
+					>
 						<Reset class="h-8 w-8 opacity-70" />
 					</button>
 				</div>
