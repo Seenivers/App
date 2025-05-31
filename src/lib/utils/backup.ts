@@ -35,7 +35,9 @@ export const backup = {
 			await copyFile(dbPath, backupPath);
 
 			// Backup in der DB speichern
-			await db.insert(schema.backups).values({ path: backupPath });
+			await db
+				.insert(schema.backups)
+				.values({ path: backupPath, size: (await stat(backupPath)).size });
 
 			// Backups validieren (bereinige fehlende oder ungenutzte Einträge)
 			await backup.validateBackups();
@@ -170,9 +172,11 @@ export const backup = {
 				const filePath = await join(backupDir, file);
 				if (!dbBackupPaths.includes(filePath)) {
 					const meta = await stat(filePath);
-					await db
-						.insert(schema.backups)
-						.values({ path: filePath, createdAt: meta.birthtime ?? meta.atime ?? new Date() });
+					await db.insert(schema.backups).values({
+						path: filePath,
+						createdAt: meta.birthtime ?? meta.mtime ?? meta.atime ?? new Date(),
+						size: meta.size
+					});
 					info(get(_)('backup.newBackup', { values: { filePath } }));
 				}
 			}

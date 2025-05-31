@@ -1,5 +1,11 @@
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import type { BackupInterval, Player, Theme, ToastPosition } from '$lib/types/settings';
+import type {
+	BackupConfig,
+	BackupInterval,
+	Player,
+	Theme,
+	ToastPosition
+} from '$lib/types/settings';
 
 export const settings = sqliteTable('settings', {
 	id: int('id').primaryKey().default(1).unique().notNull(),
@@ -45,5 +51,10 @@ export const settings = sqliteTable('settings', {
 	player: text('player').notNull().$type<Player>().default('Plyr'),
 	castImages: int('castImages').notNull().default(5), // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
 	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true),
-	backupInterval: text('backupInterval').notNull().$type<BackupInterval>().default('manual')
+	backupInterval: text('backupInterval').notNull().$type<BackupInterval>().default('manual'),
+	backupConfig: text('backupConfig', { mode: 'json' }).notNull().$type<BackupConfig>().default({
+		maxAgeDays: 0,
+		maxBackups: 14,
+		maxSizeMB: 0
+	})
 });

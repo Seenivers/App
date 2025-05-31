@@ -7,6 +7,11 @@ export interface ToastPosition {
 export type Player = 'Plyr' | 'Vidstack';
 export type Theme = (typeof themes)[number];
 export type BackupInterval = 'manual' | 'onStartup' | 'daily' | 'weekly' | 'monthly';
+export type BackupConfig = {
+	maxAgeDays: number;
+	maxBackups: number;
+	maxSizeMB: number;
+};
 
 export type AlertPositionHorizontally =
 	| 'start' // align horizontally to the left

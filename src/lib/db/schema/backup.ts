@@ -5,5 +5,7 @@ export const backups = sqliteTable('backups', {
 	path: text('path').notNull(),
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
-		.$defaultFn(() => new Date())
+		.$defaultFn(() => new Date()),
+	/* The size of the file, in bytes.*/
+	size: integer('size').notNull()
 });
