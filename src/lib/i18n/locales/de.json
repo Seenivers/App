@@ -330,5 +330,7 @@
   "tabs": {
     "settings": "Einstellungen",
     "backup": "Sicherungen"
-  }
+  },
+  "bookmarkAdd": "Zur Merkliste hinzufügen",
+  "bookmarkRemove": "Von der Merkliste entfernen"
 }

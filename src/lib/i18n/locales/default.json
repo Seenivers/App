@@ -330,5 +330,7 @@
   "tabs": {
     "settings": "Settings",
     "backup": "Backup"
-  }
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }

@@ -17,6 +17,8 @@
 	import { movie } from '$lib/utils/db/movie';
 	import { online } from 'svelte/reactivity/window';
 	import { _ } from 'svelte-i18n';
+	import Bookmark from '$lib/SVG/Bookmark.svelte';
+	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -25,11 +27,12 @@
 	let modal = $state(false);
 	let form: HTMLFormElement;
 	let movieData: typeof schema.movies.$inferSelect = $state(data.result);
+	let isBookmarked = $state(data.result.wantsToWatch || false);
 
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
 		watched = !watched;
-		await movie.update(id, { watched });
+		await movie.update(id, { watched, wantsToWatch: false });
 	}
 
 	// Entferne Film anhand der ID
@@ -84,6 +87,22 @@
 			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
 				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
+		{:else}
+			<button
+				class="btn btn-sm md:btn-md"
+				title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
+				onclick={() => {
+					isBookmarked = !isBookmarked;
+					collection.update(data.id, { wantsToWatch: isBookmarked });
+				}}
+				disabled={data.pathExists}
+			>
+				{#if isBookmarked}
+					<BookmarkSlash class="h-6 w-6" />
+				{:else}
+					<Bookmark class="h-6 w-6" />
+				{/if}
+			</button>
 		{/if}
 		<a
 			href="https://www.themoviedb.org/movie/{id}"
@@ -114,7 +133,7 @@
 					{/if}
 				{/await}
 			{:else if movieData.path}
-				<p class="text-lg font-bold text-error underline md:text-2xl">{$_('videoFileNotFound')}</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">{$_('videoFileNotFound')}</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
@@ -159,7 +178,7 @@
 						{#await image(value?.backdrop_path, 'backdrops', true) then image}
 							<div class="hero rounded-box" style="background-image: url({image.src});">
 								<div class="hero-overlay rounded-box bg-opacity-90"></div>
-								<div class="hero-content text-center text-neutral-content">
+								<div class="hero-content text-neutral-content text-center">
 									<div class="max-w-md">
 										<h2 class="mb-5 text-3xl font-bold">{value?.name}</h2>
 										<p class="mb-5 text-lg">
@@ -181,7 +200,7 @@
 				<div class="my-4">
 					<h2 class="my-2 text-2xl font-bold">{$_('leadActor')}</h2>
 					<div class="rounded-box bg-base-100 p-3">
-						<div class="carousel carousel-center w-full space-x-3 rounded-box">
+						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each movieData.tmdb.credits.cast as cast}
 								<a
 									href="./actor?id={cast.id}"
@@ -191,7 +210,7 @@
 									<Img
 										params={[cast.profile_path, 'actors', false]}
 										alt={cast.name}
-										class="max-w-40 rounded-box sm:max-w-60"
+										class="rounded-box max-w-40 sm:max-w-60"
 									/>
 									<p class="text-center text-lg">{cast.name}</p>
 									<p class="text-base italic">{cast.character}</p>
