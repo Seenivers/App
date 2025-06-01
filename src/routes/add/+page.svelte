@@ -226,7 +226,7 @@
 				}}
 				class="my-3 grid gap-3"
 			>
-				<label class="input input-bordered flex items-center gap-2">
+				<label class="input input-bordered flex w-full items-center gap-2">
 					{$_('title')}:
 					<input
 						type="text"
@@ -237,7 +237,7 @@
 						bind:value={searchList[modalID].options.fileName}
 					/>
 				</label>
-				<label class="input input-bordered flex items-center gap-2">
+				<label class="input input-bordered flex w-full items-center gap-2">
 					{$_('releaseYear')}
 					<input
 						type="number"
