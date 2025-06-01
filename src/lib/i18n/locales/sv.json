@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Ny DB-post för säkerhetskopieringsfil: {filePath}",
     "deletedBackup": "🗑️ Raderad DB-post för saknad säkerhetskopiering: {filePath}",
     "fileNotFound": "Säkerhetskopian kunde inte hittas: {filePath}",
-    "idNotFound": "Ingen säkerhetskopia hittades för ID: {id}"
+    "idNotFound": "Ingen säkerhetskopia hittades för ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Försök {attempt}/{retries}: Skapa standardinställningar",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Sök...",
@@ -280,7 +282,7 @@
   "downloading": "Nedladdning ({count})",
   "downloaded": "Nedladdad ({count})",
   "titleWithValue": "Titel: {title}",
-  "title": "Titel:",
+  "title": "Titel",
   "path": "Sökväg: {path}",
   "releaseYear": "Släpp år",
   "optional": "Valfri",
@@ -324,5 +326,11 @@
   "weekly": "Veckovis",
   "monthly": "Månadsvis",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
