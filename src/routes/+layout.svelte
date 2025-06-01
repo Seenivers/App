@@ -78,7 +78,7 @@
 	});
 </script>
 
-<div class="flex h-fit min-h-screen flex-col bg-base-300">
+<div class="bg-base-300 flex h-fit min-h-screen flex-col">
 	<ProgressBar />
 	{#if db && settings}
 		{@render children?.()}

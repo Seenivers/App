@@ -38,7 +38,7 @@
 			{#if $messages.length > 0}
 				{#each $messages as { type, text }}
 					<div
-						class="alert min-h-fit w-fit shrink-0 snap-center whitespace-normal break-words rounded-lg p-4 shadow-lg transition-all
+						class="alert min-h-fit w-fit shrink-0 snap-center rounded-lg p-4 break-words whitespace-normal shadow-lg transition-all
 						{toastAlertVariants[type]}"
 						in:fly={{ duration: 400, y: -50, easing: cubicOut }}
 						out:fly={{ duration: 400, y: 100, easing: cubicIn }}

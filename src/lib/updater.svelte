@@ -108,7 +108,7 @@
 <dialog class="modal backdrop-blur-sm" open={modalOpen}>
 	<div class="modal-box flex w-full max-w-lg flex-col space-y-2 md:max-w-2xl">
 		<button
-			class="btn btn-circle btn-sm absolute right-2 top-2"
+			class="btn btn-circle btn-sm absolute top-2 right-2"
 			onclick={() => {
 				modalOpen = false;
 				update?.close();
@@ -124,7 +124,7 @@
 			</h3>
 			<h4 class="text-lg">{$_('updater.changelog')}</h4>
 
-			<div class="body my-3 max-h-[70vh] flex-1 overflow-y-auto rounded-md bg-base-200 px-3">
+			<div class="body bg-base-200 my-3 max-h-[70vh] flex-1 overflow-y-auto rounded-md px-3">
 				{#await marked.parse(update.body)}
 					<p>{$_('updater.loadChangelog')}</p>
 				{:then body}
@@ -137,10 +137,10 @@
 				<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
 				></progress>
 			{:else if downloadFinished}
-				<p class="mt-4 text-lg font-semibold text-success">{$_('updater.downloadFinished')}</p>
+				<p class="text-success mt-4 text-lg font-semibold">{$_('updater.downloadFinished')}</p>
 			{/if}
 
-			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
 				{#if update && !downloadStarted}
 					<button class="btn btn-primary" disabled={!online.current} onclick={download}>
 						{$_('updater.download')}

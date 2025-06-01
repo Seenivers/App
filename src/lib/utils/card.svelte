@@ -25,14 +25,14 @@
 <a
 	{href}
 	draggable="false"
-	class="card h-fit grow select-none bg-base-100 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-base-content/20 {scaleClasses[
+	class="card bg-base-100 hover:bg-base-content/20 h-fit grow shadow-xl transition-all duration-300 select-none hover:scale-105 {scaleClasses[
 		CARDSCALE
 	].width}"
 >
 	<figure class="relative px-2 pt-2">
 		<Img {params} {alt} class="rounded-xl" />
 		{#if watched}
-			<div class="badge badge-accent badge-outline absolute left-3 top-3 bg-base-300">
+			<div class="badge badge-accent badge-outline bg-base-300 absolute top-3 left-3">
 				{$_('badge.watched')}
 			</div>
 		{/if}

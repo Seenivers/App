@@ -363,7 +363,7 @@
 	<div class="modal-box">
 		<!-- Close Button -->
 		<button
-			class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+			class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
 			onclick={() => (modal = false)}>✕</button
 		>
 

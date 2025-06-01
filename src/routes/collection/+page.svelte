@@ -153,7 +153,7 @@
 							<!-- Badge-Container: beide Badges werden hier gruppiert -->
 							{#if watched || downloadedMovie}
 								<div
-									class="absolute right-3 top-3 flex w-full flex-col items-end justify-end gap-1"
+									class="absolute top-3 right-3 flex w-full flex-col items-end justify-end gap-1"
 								>
 									{#if downloadedMovie}
 										<div class="badge badge-accent badge-outline bg-base-300">
