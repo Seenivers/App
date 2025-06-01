@@ -7,6 +7,7 @@
 	import { setTheme } from '$lib/utils/themeUtils';
 	import Backup from './backup.svelte';
 	import Settings from './settings.svelte';
+	import { _ } from 'svelte-i18n';
 
 	onMount(() => {
 		discord();
@@ -24,13 +25,20 @@
 <main class="container mx-auto w-full grow px-4 py-6 lg:w-4/5 xl:w-2/3">
 	<div role="tablist" class="tabs tabs-lift">
 		<!-- Einstellungen Tab -->
-		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Einstellungen" checked />
+		<input
+			type="radio"
+			name="my_tabs"
+			role="tab"
+			class="tab"
+			aria-label={$_('tabs.settings')}
+			checked
+		/>
 		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 p-6">
 			<Settings />
 		</div>
 
 		<!-- Backup Tab -->
-		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Backup" />
+		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label={$_('tabs.backup')} />
 		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 p-6">
 			<Backup />
 		</div>

@@ -325,5 +325,9 @@
   "weekly": "Wöchentlich",
   "monthly": "Monatlich",
   "resetFilters": "Alle Filter zurücksetzen",
-  "size": "Größe"
+  "size": "Größe",
+  "tabs": {
+    "settings": "Einstellungen",
+    "backup": "Sicherungen"
+  }
 }
