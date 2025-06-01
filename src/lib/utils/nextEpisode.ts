@@ -7,6 +7,7 @@ import { get } from 'svelte/store';
  * Gibt die URL der nächsten Episode zurück.
  * Falls die aktuelle Staffel zu Ende ist, wird die erste Episode der nächsten Staffel versucht.
  * Gibt `null` zurück, wenn keine weitere Episode existiert.
+ * Wenn alle Episoden gesehen sind, wird die Serie als gesehen markiert.
  *
  * @param serienID Die Serien-ID in der lokalen DB
  * @param seasonID Die aktuelle Season-ID in der lokalen DB
@@ -60,6 +61,34 @@ export async function nextEpisode(
 		}
 	}
 
-	// Keine nächste Episode oder Staffel
+	// Keine nächste Episode oder Staffel — prüfen ob alles gesehen ist
+	const { episode } = await import('./db/episode');
+	const seenEpisodes = await episode.getAll(
+		seasonElement.tmdb.episodes.map((e) => {
+			return {
+				id: e.id,
+				seriesId: tvShowID,
+				seasonNumber: seasonNumber,
+				episodeNumber: e.episode_number
+			};
+		})
+	);
+
+	const allEpisodeIds = (
+		await Promise.all(
+			serieElement.tmdb.seasons.map(async (s) => {
+				const sData = await season.get(s.id);
+				return sData ? sData.tmdb.episodes.map((e) => e.id) : [];
+			})
+		)
+	).flat();
+
+	// Alle Episoden IDs wurden gesehen?
+	const allSeen = allEpisodeIds.every((id) => seenEpisodes.some((e) => e.id === id));
+
+	if (allSeen) {
+		await serie.update(tvShowID, { watched: true });
+	}
+
 	return null;
 }
