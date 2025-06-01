@@ -275,7 +275,7 @@
 	"downloading": "Ladataan ({count})",
 	"downloaded": "Ladattu ({count})",
 	"titleWithValue": "Otsikko: {title}",
-	"title": "Otsikko:",
+	"title": "Otsikko",
 	"path": "Polku: {path}",
 	"releaseYear": "Vapautus vuosi",
 	"optional": "Valinnainen",

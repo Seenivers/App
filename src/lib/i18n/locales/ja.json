@@ -275,7 +275,7 @@
 	"downloading": "ダウンロード中 ({count})",
 	"downloaded": "ダウンロードしました ({count})",
 	"titleWithValue": "タイトル: {title}",
-	"title": "タイトル:",
+	"title": "タイトル",
 	"path": "パス: {path}",
 	"releaseYear": "リリース年",
 	"optional": "省略可能",

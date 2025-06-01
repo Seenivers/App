@@ -275,7 +275,7 @@
 	"downloading": "Downloader ({count})",
 	"downloaded": "Downloadet ({count})",
 	"titleWithValue": "Titel: {title}",
-	"title": "Titel:",
+	"title": "Titel",
 	"path": "Sti: {path}",
 	"releaseYear": "Udgivelsesår",
 	"optional": "Valgfri",

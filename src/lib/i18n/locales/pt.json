@@ -275,7 +275,7 @@
 	"downloading": "Baixando ({count})",
 	"downloaded": "Baixado ({count})",
 	"titleWithValue": "Título: {title}",
-	"title": "Titulo:",
+	"title": "Titulo",
 	"path": "Caminho: {path}",
 	"releaseYear": "Ano de lançamento",
 	"optional": "Opcional",

@@ -275,7 +275,7 @@
 	"downloading": "Descărcare ({count})",
 	"downloaded": "Descărcat ({count})",
 	"titleWithValue": "Titlu: {title}",
-	"title": "Titlul:",
+	"title": "Titlul",
 	"path": "Cale: {path}",
 	"releaseYear": "An lansare",
 	"optional": "Opţional",

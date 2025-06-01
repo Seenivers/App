@@ -275,7 +275,7 @@
 	"downloading": "التنزيل ({count})",
 	"downloaded": "تم التنزيل ({count})",
 	"titleWithValue": "العنوان: {title}",
-	"title": "العنوان:",
+	"title": "العنوان",
 	"path": "المسار: {path}",
 	"releaseYear": "سنة الاصدار",
 	"optional": "اختياري",

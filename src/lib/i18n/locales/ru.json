@@ -275,7 +275,7 @@
 	"downloading": "Загрузка ({count})",
 	"downloaded": "Загружено ({count})",
 	"titleWithValue": "Название: {title}",
-	"title": "Название:",
+	"title": "Название",
 	"path": "Путь: {path}",
 	"releaseYear": "Год выпуска",
 	"optional": "Опционально",
