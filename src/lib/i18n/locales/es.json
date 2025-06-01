@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Nueva entrada DB para el archivo de copia de seguridad: {filePath}",
     "deletedBackup": "🗑️ Entrada de BD eliminada para la copia de seguridad faltante: {filePath}",
     "fileNotFound": "Copia de seguridad no encontrada: {filePath}",
-    "idNotFound": "Copia de seguridad no encontrada para ID: {id}"
+    "idNotFound": "Copia de seguridad no encontrada para ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Intento {attempt}/{retries}: Creando la configuración predeterminada",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Buscar...",
@@ -280,7 +282,7 @@
   "downloading": "Descargando ({count})",
   "downloaded": "Descargado ({count})",
   "titleWithValue": "Título: {title}",
-  "title": "Título:",
+  "title": "Título",
   "path": "Ruta: {path}",
   "releaseYear": "Año de lanzamiento",
   "optional": "Opcional",
@@ -324,5 +326,11 @@
   "weekly": "Semanal",
   "monthly": "Mensual",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
