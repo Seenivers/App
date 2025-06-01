@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { schema } from '$lib/db/schema';
 	import { backup as backupfn, newDB } from '$lib/utils/backup';
+	import { formatBytes } from '$lib/utils/utils';
 	import { sep } from '@tauri-apps/api/path';
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
@@ -65,26 +66,30 @@
 				<th>{$_('id')}</th>
 				<th>{$_('fileName')}</th>
 				<th>{$_('creationDate')}</th>
+				<th>{$_('size')}</th>
 				<th>{$_('actions')}</th>
 			</tr>
 		</thead>
 		<tbody>
 			{#each backups as backup (backup.id)}
-				<tr class="hover">
+				<tr class="hover:bg-base-200">
 					<th>{backup.id}</th>
 					<td>{extractFileName(backup.path)}</td>
 					<td>{new Date(backup.createdAt).toLocaleString()}</td>
-					<td class="flex gap-2">
-						<button class="btn btn-sm" onclick={() => backupfn.restore(backup.id)}>
-							{$_('restore')}
-						</button>
-						<button
-							class="btn btn-sm hover:btn-error"
-							disabled={deleteDisabled(backup)}
-							onclick={() => deleteBackup(backup.id)}
-						>
-							{$_('delete')}
-						</button>
+					<td>{formatBytes(backup.size)}</td>
+					<td>
+						<div class="flex gap-2">
+							<button class="btn btn-sm" onclick={() => backupfn.restore(backup.id)}>
+								{$_('restore')}
+							</button>
+							<button
+								class="btn btn-sm hover:btn-error"
+								disabled={deleteDisabled(backup)}
+								ondblclick={() => deleteBackup(backup.id)}
+							>
+								{$_('delete')}
+							</button>
+						</div>
 					</td>
 				</tr>
 			{/each}
