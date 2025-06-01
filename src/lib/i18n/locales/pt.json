@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ Nova entrada no DB para o arquivo de backup: {filePath}",
 		"deletedBackup": "🗑️ Entrada de banco de dados excluída para backup ausente: {filePath}",
 		"fileNotFound": "Arquivo de backup não encontrado: {filePath}",
-		"idNotFound": "Nenhum backup encontrado para o ID: {id}"
+		"idNotFound": "Nenhum backup encontrado para o ID: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "Tentativa {attempt}/{retries}: Criando configurações padrão",
@@ -165,7 +166,13 @@
 		"right": "Direita",
 		"top": "Superior",
 		"middle": "Meio",
-		"bottom": "Inferior"
+		"bottom": "Inferior",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "Buscar...",
@@ -317,5 +324,13 @@
 	"onStartup": "Na inicialização",
 	"daily": "Diariamente",
 	"weekly": "Semanalmente",
-	"monthly": "Mensual"
+	"monthly": "Mensual",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

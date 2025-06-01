@@ -133,7 +133,8 @@
 		"newBackup": ":card_index_dividere: Ny DB-oppføring for sikkerhetskopifil: {filePath}",
 		"deletedBackup": ":Avfallskurk: Slettet DB oppføring for manglende sikkerhetskopi: {filePath}",
 		"fileNotFound": "Sikkerhetskopifil ikke funnet: {filePath}",
-		"idNotFound": "Ingen sikkerhetskopi funnet for ID: {id}"
+		"idNotFound": "Ingen sikkerhetskopi funnet for ID: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "Forsøk på {attempt}/{retries}: Oppretter standardinnstillinger",
@@ -165,7 +166,13 @@
 		"right": "Høyre",
 		"top": "Topp",
 		"middle": "Midten",
-		"bottom": "Bunn"
+		"bottom": "Bunn",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "Søk...",
@@ -317,5 +324,13 @@
 	"onStartup": "Ved Oppstart",
 	"daily": "Daglig",
 	"weekly": "Ukentlig",
-	"monthly": "Månedlig"
+	"monthly": "Månedlig",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ Новая запись БД для файла резервной копии: {filePath}",
 		"deletedBackup": "🗑️ Удалена запись БД для отсутствующих резервных копий: {filePath}",
 		"fileNotFound": "Файл резервной копии не найден: {filePath}",
-		"idNotFound": "Не найдено резервных копий для ID: {id}"
+		"idNotFound": "Не найдено резервных копий для ID: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "Попытка {attempt}/{retries}: Создание настроек по умолчанию",
@@ -165,7 +166,13 @@
 		"right": "Справа",
 		"top": "Сверху",
 		"middle": "Средний",
-		"bottom": "Внизу"
+		"bottom": "Внизу",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "Поиск...",
@@ -317,5 +324,13 @@
 	"onStartup": "При запуске",
 	"daily": "Ежедневно",
 	"weekly": "Еженедельно",
-	"monthly": "Ежемесячно"
+	"monthly": "Ежемесячно",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

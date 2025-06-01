@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ جديد DB لملف النسخ الاحتياطي: {filePath}",
 		"deletedBackup": "🗑️ حذف إدخال DB للنسخة الاحتياطية المفقودة: {filePath}",
 		"fileNotFound": "لم يتم العثور على ملف النسخ الاحتياطي: {filePath}",
-		"idNotFound": "لم يتم العثور على نسخة احتياطية للمعرف: {id}"
+		"idNotFound": "لم يتم العثور على نسخة احتياطية للمعرف: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "محاولة {attempt}/{retries}: إنشاء الإعدادات الافتراضية",
@@ -165,7 +166,13 @@
 		"right": "يمين",
 		"top": "أعلى",
 		"middle": "وسط",
-		"bottom": "أسفل"
+		"bottom": "أسفل",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "بحث...",
@@ -317,5 +324,13 @@
 	"onStartup": "عند بدء التشغيل",
 	"daily": "يومياً",
 	"weekly": "أسبوعيا",
-	"monthly": "شهريا"
+	"monthly": "شهريا",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

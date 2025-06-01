@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ バックアップファイルの新しいDBエントリ。 {filePath}",
 		"deletedBackup": ":wasteburt: 不足しているバックアップのためのDBエントリを削除しました: {filePath}",
 		"fileNotFound": "バックアップファイルが見つかりません: {filePath}",
-		"idNotFound": "IDのバックアップが見つかりませんでした: {id}"
+		"idNotFound": "IDのバックアップが見つかりませんでした: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "{attempt}/{retries}: デフォルト設定の作成",
@@ -165,7 +166,13 @@
 		"right": "右",
 		"top": "上",
 		"middle": "中央",
-		"bottom": "下揃え"
+		"bottom": "下揃え",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "検索...",
@@ -317,5 +324,13 @@
 	"onStartup": "起動時",
 	"daily": "毎日",
 	"weekly": "Weekly",
-	"monthly": "月ごと"
+	"monthly": "月ごと",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

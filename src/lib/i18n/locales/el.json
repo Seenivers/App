@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ Νέα καταχώρηση DB για το αρχείο αντιγράφου ασφαλείας: {filePath}",
 		"deletedBackup": "🗑️ Διαγράφηκε καταχώρηση DB για λείπουν αντίγραφα ασφαλείας: {filePath}",
 		"fileNotFound": "Backup file not found: {filePath}",
-		"idNotFound": "Δεν βρέθηκαν αντίγραφα ασφαλείας για το ID: {id}"
+		"idNotFound": "Δεν βρέθηκαν αντίγραφα ασφαλείας για το ID: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "Προσπάθεια {attempt}/{retries}: Δημιουργία προεπιλεγμένων ρυθμίσεων",
@@ -165,7 +166,13 @@
 		"right": "Δεξιά",
 		"top": "Πάνω",
 		"middle": "Μεσαία",
-		"bottom": "Κάτω"
+		"bottom": "Κάτω",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "Αναζήτηση...",
@@ -317,5 +324,13 @@
 	"onStartup": "Κατά Την Εκκίνηση",
 	"daily": "Καθημερινά",
 	"weekly": "Εβδομαδιαία",
-	"monthly": "Μηνιαία"
+	"monthly": "Μηνιαία",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

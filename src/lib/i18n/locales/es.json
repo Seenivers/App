@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ Nueva entrada DB para el archivo de copia de seguridad: {filePath}",
 		"deletedBackup": "🗑️ Entrada de BD eliminada para la copia de seguridad faltante: {filePath}",
 		"fileNotFound": "Copia de seguridad no encontrada: {filePath}",
-		"idNotFound": "Copia de seguridad no encontrada para ID: {id}"
+		"idNotFound": "Copia de seguridad no encontrada para ID: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "Intento {attempt}/{retries}: Creando la configuración predeterminada",
@@ -165,7 +166,13 @@
 		"right": "Derecha",
 		"top": "Subir",
 		"middle": "Medio",
-		"bottom": "Abajo"
+		"bottom": "Abajo",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "Buscar...",
@@ -216,7 +223,7 @@
 	"doubleClickDelete": "Doble clic para eliminar",
 	"notAired": "Aún no emitido",
 	"noReviews": "Sin reseñas",
-	"reviews": "{reviews} reviews",
+	"reviews": "{reviews} reseñas",
 	"extras": "Extras",
 	"thumbnailAlt": "Miniatura para {title}",
 	"backups": {
@@ -317,5 +324,13 @@
 	"onStartup": "Al iniciar",
 	"daily": "Diario",
 	"weekly": "Semanal",
-	"monthly": "Mensual"
+	"monthly": "Mensual",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

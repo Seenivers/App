@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ Ny DB-post för säkerhetskopieringsfil: {filePath}",
 		"deletedBackup": "🗑️ Raderad DB-post för saknad säkerhetskopiering: {filePath}",
 		"fileNotFound": "Säkerhetskopian kunde inte hittas: {filePath}",
-		"idNotFound": "Ingen säkerhetskopia hittades för ID: {id}"
+		"idNotFound": "Ingen säkerhetskopia hittades för ID: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "Försök {attempt}/{retries}: Skapa standardinställningar",
@@ -165,7 +166,13 @@
 		"right": "Höger",
 		"top": "Överst",
 		"middle": "Mitten",
-		"bottom": "Botten"
+		"bottom": "Botten",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "Sök...",
@@ -317,5 +324,13 @@
 	"onStartup": "Vid uppstart",
 	"daily": "Dagligen",
 	"weekly": "Veckovis",
-	"monthly": "Månadsvis"
+	"monthly": "Månadsvis",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }

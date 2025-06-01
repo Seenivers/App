@@ -133,7 +133,8 @@
 		"newBackup": "🗂️ Uusi tietokanta varmuuskopiotiedostolle: {filePath}",
 		"deletedBackup": "🗑️ Poistettu DB merkintä puuttuu varmuuskopio: {filePath}",
 		"fileNotFound": "Varmuuskopiotiedostoa ei löydy: {filePath}",
-		"idNotFound": "Varmuuskopiota ei löytynyt ID: {id}"
+		"idNotFound": "Varmuuskopiota ei löytynyt ID: {id}",
+		"updatedSize": "Backup size for {filePath} updated to {size} bytes."
 	},
 	"settings": {
 		"createAttempt": "Attempt {attempt}/{retries}: Creating default settings",
@@ -165,7 +166,13 @@
 		"right": "Oikea",
 		"top": "Ylhäällä",
 		"middle": "Keskellä",
-		"bottom": "Alhaalla"
+		"bottom": "Alhaalla",
+		"backupMaxAgeDays": "Maximum backup age (days)",
+		"backupMaxBackups": "Maximum number of backups",
+		"backupMaxSizeMB": "Maximum backup size (MB)",
+		"watchPaths": "Watch paths",
+		"addWatchPath": "Add path",
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
 	},
 	"main": {
 		"searchPlaceholder": "Etsi...",
@@ -317,5 +324,13 @@
 	"onStartup": "Käynnistyksessä",
 	"daily": "Päivittäin",
 	"weekly": "Viikoittain",
-	"monthly": "Kuukausittain"
+	"monthly": "Kuukausittain",
+	"resetFilters": "Reset all filters",
+	"size": "Size",
+	"tabs": {
+		"settings": "Settings",
+		"backup": "Backup"
+	},
+	"bookmarkAdd": "Add to Bookmarks",
+	"bookmarkRemove": "Remove from Bookmarks"
 }
