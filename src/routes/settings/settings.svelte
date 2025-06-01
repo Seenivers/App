@@ -304,7 +304,7 @@
 						}
 					}}
 				>
-					<FolderOpen class="stroke-base-content h-5 w-5" />
+					<FolderOpen class="stroke-base-var(--btn-fg) h-5 w-5" />
 				</button>
 
 				<button
@@ -325,7 +325,7 @@
 			class="btn btn-primary"
 			onclick={() => settingsTemp.watchPaths.push('')}
 		>
-			<FolderAdd class="stroke-base-content h-6 w-6" />
+			<FolderAdd class="stroke-base-var(--btn-fg) h-6 w-6" />
 			{$_('settings.addWatchPath')}
 		</button>
 	</div>
