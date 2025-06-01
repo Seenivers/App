@@ -63,7 +63,7 @@ export const backup = {
 
 	getAll: async () => {
 		try {
-			return await db.select().from(schema.backups).orderBy(schema.backups.createdAt);
+			return await db.select().from(schema.backups).orderBy(schema.backups.id);
 		} catch (err) {
 			error(`Get All Backups: ${err}`);
 			return [];
