@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Nova entrada DB per al fitxer de còpia de seguretat: {filePath}",
     "deletedBackup": "🗑️ Entrada DB eliminada per còpia de seguretat desapareguda: {filePath}",
     "fileNotFound": "Fitxer de còpia de seguretat no trobat: {filePath}",
-    "idNotFound": "No s'ha trobat còpia per l'ID: {id}"
+    "idNotFound": "No s'ha trobat còpia per l'ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Intent {attempt}/{retries}: Creant configuració per defecte",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Cerca...",
@@ -280,7 +282,7 @@
   "downloading": "Descarregant ({count})",
   "downloaded": "Descarregat ({count})",
   "titleWithValue": "Títol: {title}",
-  "title": "Títol:",
+  "title": "Title",
   "path": "Ruta: {path}",
   "releaseYear": "Any de llançament",
   "optional": "Opcional",
@@ -324,5 +326,11 @@
   "weekly": "Setmanal",
   "monthly": "Mensual",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
