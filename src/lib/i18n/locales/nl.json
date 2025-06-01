@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Nieuwe DB invoer voor backup bestand: {filePath}",
     "deletedBackup": "🗑️ Verwijderde DB invoer voor ontbrekende back-up: {filePath}",
     "fileNotFound": "Back-up bestand niet gevonden: {filePath}",
-    "idNotFound": "Geen back-up gevonden voor ID: {id}"
+    "idNotFound": "Geen back-up gevonden voor ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Poging {attempt}/{retries}: Standaard instellingen aanmaken",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Zoeken...",
@@ -280,7 +282,7 @@
   "downloading": "Downloaden ({count})",
   "downloaded": "Gedownload ({count})",
   "titleWithValue": "Titel: {title}",
-  "title": "Titel:",
+  "title": "Titel",
   "path": "Pad: {path}",
   "releaseYear": "Jaar van vrijgave",
   "optional": "Optioneel",
@@ -324,5 +326,11 @@
   "weekly": "wekelijks",
   "monthly": "maandelijks",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
