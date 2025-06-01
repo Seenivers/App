@@ -16,7 +16,7 @@
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { updateActors, updateCollections, updateMovies, updateOldDB } from '$lib/db/update';
 	import ProgressBar from '$lib/ProgressBar.svelte';
-	import { autoBackup } from '$lib/utils/autoBackup';
+	import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -43,6 +43,7 @@
 
 			if (import.meta.env.PROD) {
 				await autoBackup();
+				await cleanupBackups();
 				if (online.current) {
 					await updateOldDB();
 					await updateMovies();

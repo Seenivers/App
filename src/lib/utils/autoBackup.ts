@@ -49,3 +49,55 @@ export async function autoBackup() {
 		await backup.create();
 	}
 }
+
+export async function cleanupBackups() {
+	// 1. Alter: Backups löschen, die älter als erlaubt sind
+	if (settings.backupConfig.maxAgeDays > 0) {
+		const cutoffDate = new Date(
+			Date.now() - settings.backupConfig.maxAgeDays * 24 * 60 * 60 * 1000
+		);
+
+		const tooOld = await db.query.backups.findMany({
+			where(fields, operators) {
+				return operators.lt(fields.createdAt, cutoffDate);
+			}
+		});
+
+		for (const backupO of tooOld) {
+			await backup.delete(backupO.id);
+		}
+	}
+
+	// 2. Anzahl: Nur die x neuesten behalten
+	if (settings.backupConfig.maxBackups > 0) {
+		const all = await db.query.backups.findMany({
+			orderBy: (fields) => desc(fields.createdAt)
+		});
+
+		const toDelete = all.slice(settings.backupConfig.maxBackups);
+		for (const backupO of toDelete) {
+			await backup.delete(backupO.id);
+		}
+	}
+
+	// 3. Größe: Gesamtgröße überschreitet maxSizeMB
+	if (settings.backupConfig.maxSizeMB > 0) {
+		const backups = await db.query.backups.findMany({
+			orderBy: (fields) => desc(fields.createdAt)
+		});
+
+		let totalSize = 0;
+		const toDelete: typeof backups = [];
+
+		for (const backup of backups) {
+			totalSize += backup.size;
+			if (totalSize > settings.backupConfig.maxSizeMB * 1024 * 1024) {
+				toDelete.push(backup);
+			}
+		}
+
+		for (const backupO of toDelete) {
+			await backup.delete(backupO.id);
+		}
+	}
+}
