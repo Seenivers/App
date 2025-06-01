@@ -2,7 +2,7 @@ import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { settings } from '$lib/stores.svelte';
-import { BaseDirectory, exists, readTextFile, remove } from '@tauri-apps/plugin-fs';
+import { BaseDirectory, exists, readDir, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types/types';
 import {
 	getMovie as getMovieTmdb,
@@ -14,6 +14,8 @@ import { WEEKS } from '$lib';
 import { movie as movieDB } from '$lib/utils/db/movie';
 import { collection } from '$lib/utils/db/collection';
 import { actor } from '$lib/utils/db/actor';
+import { addNewFiles, load } from '$lib/add';
+import { join } from '@tauri-apps/api/path';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
@@ -169,5 +171,26 @@ export async function updateActors() {
 		}
 	} catch (err) {
 		error('Fehler beim Aktualisieren der Schauspieler: ' + err);
+	}
+}
+
+export async function collectAndProcessWatchedFiles() {
+	if (settings.watchPaths.length > 0) {
+		const pfads = (
+			await Promise.all(
+				settings.watchPaths.map(async (path) => {
+					const entries = await readDir(path);
+					return Promise.all(entries.map((entry) => join(path, entry.name)));
+				})
+			)
+		).flat();
+
+		console.log(pfads);
+
+		if (pfads && pfads.length > 0) {
+			// Neue Dateien hinzufügen
+			await addNewFiles(pfads);
+			await load();
+		}
 	}
 }

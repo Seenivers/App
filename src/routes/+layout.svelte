@@ -14,7 +14,13 @@
 	import { destroy } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
 	import { setTheme } from '$lib/utils/themeUtils';
-	import { updateActors, updateCollections, updateMovies, updateOldDB } from '$lib/db/update';
+	import {
+		collectAndProcessWatchedFiles,
+		updateActors,
+		updateCollections,
+		updateMovies,
+		updateOldDB
+	} from '$lib/db/update';
 	import ProgressBar from '$lib/ProgressBar.svelte';
 	import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
 
@@ -49,6 +55,7 @@
 					await updateMovies();
 					await updateCollections();
 					await updateActors();
+					await collectAndProcessWatchedFiles();
 				}
 			}
 		}
