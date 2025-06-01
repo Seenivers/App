@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Ny DB post til backupfil: {filePath}",
     "deletedBackup": "🗑️ Slettet DB post for manglende backup: {filePath}",
     "fileNotFound": "Sikkerhedskopifilen blev ikke fundet: {filePath}",
-    "idNotFound": "Ingen sikkerhedskopi fundet for ID: {id}"
+    "idNotFound": "Ingen sikkerhedskopi fundet for ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Forsøg {attempt}/{retries}: Oprettelse af standardindstillinger",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Søg...",
@@ -280,7 +282,7 @@
   "downloading": "Downloader ({count})",
   "downloaded": "Downloadet ({count})",
   "titleWithValue": "Titel: {title}",
-  "title": "Titel:",
+  "title": "Titel",
   "path": "Sti: {path}",
   "releaseYear": "Udgivelsesår",
   "optional": "Valgfri",
@@ -324,5 +326,11 @@
   "weekly": "Ugentlig",
   "monthly": "Månedligt",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
