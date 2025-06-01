@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Новий запис DB для файлу резервної копії: {filePath}",
     "deletedBackup": "🗑️ Видалений запис БД для відсутньої резервної копії: {filePath}",
     "fileNotFound": "Backup file not found: {filePath}",
-    "idNotFound": "Резервна копія для ID: {id}"
+    "idNotFound": "Резервна копія для ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Спроба {attempt}/{retries}: Створення параметрів за замовчуванням",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Пошук...",
@@ -280,7 +282,7 @@
   "downloading": "Завантаження ({count})",
   "downloaded": "Завантажено ({count})",
   "titleWithValue": "Title: {title}",
-  "title": "Назва:",
+  "title": "Назва",
   "path": "Path: {path}",
   "releaseYear": "Рік випуску",
   "optional": "За бажанням",
@@ -324,5 +326,11 @@
   "weekly": "Щотижня",
   "monthly": "Щомісячно",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
