@@ -168,7 +168,9 @@
     "bottom": "Unten",
     "backupMaxAgeDays": "Maximales Alter der Backups (Tage)",
     "backupMaxBackups": "Maximale Anzahl an Backups",
-    "backupMaxSizeMB": "Maximale Backup-Größe (MB)"
+    "backupMaxSizeMB": "Maximale Backup-Größe (MB)",
+    "watchPaths": "Überwachte Verzeichnisse",
+    "addWatchPath": "Pfad hinzufügen"
   },
   "main": {
     "searchPlaceholder": "Suchen...",
@@ -321,5 +323,6 @@
   "daily": "Täglich",
   "weekly": "Wöchentlich",
   "monthly": "Monatlich",
-  "resetFilters": "Alle Filter zurücksetzen"
+  "resetFilters": "Alle Filter zurücksetzen",
+  "size": "Größe"
 }

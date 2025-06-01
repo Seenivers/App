@@ -168,7 +168,9 @@
     "bottom": "Bottom",
     "backupMaxAgeDays": "Maximum backup age (days)",
     "backupMaxBackups": "Maximum number of backups",
-    "backupMaxSizeMB": "Maximum backup size (MB)"
+    "backupMaxSizeMB": "Maximum backup size (MB)",
+    "watchPaths": "Watch paths",
+    "addWatchPath": "Add path"
   },
   "main": {
     "searchPlaceholder": "Search...",
@@ -321,5 +323,6 @@
   "daily": "Daily",
   "weekly": "Weekly",
   "monthly": "Monthly",
-  "resetFilters": "Reset all filters"
+  "resetFilters": "Reset all filters",
+  "size": "Size"
 }
