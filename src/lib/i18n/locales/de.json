@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Neuer DB-Eintrag für Backup-Datei: {filePath}",
     "deletedBackup": "🗑️ DB-Eintrag für fehlendes Backup gelöscht: {filePath}",
     "fileNotFound": "Backup-Datei nicht gefunden: {filePath}",
-    "idNotFound": "Kein Backup zur ID gefunden: {id}"
+    "idNotFound": "Kein Backup zur ID gefunden: {id}",
+    "updatedSize": "Backup-Größe für {filePath} aktualisiert: {size} Bytes."
   },
   "settings": {
     "createAttempt": "Versuch {attempt}/{retries}: Standard-Einstellungen erstellen",

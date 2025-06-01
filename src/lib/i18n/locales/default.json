@@ -133,7 +133,8 @@
     "newBackup": "🗂️ New DB entry for backup file: {filePath}",
     "deletedBackup": "🗑️ Deleted DB entry for missing backup: {filePath}",
     "fileNotFound": "Backup file not found: {filePath}",
-    "idNotFound": "No backup found for ID: {id}"
+    "idNotFound": "No backup found for ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Attempt {attempt}/{retries}: Creating default settings",
