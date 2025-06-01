@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Nuwe databasisinskrywing vir rugsteunlêer: {filePath}",
     "deletedBackup": "🗑️ Verwyder databasisinskrywing vir ontbrekende rugsteun: {filePath}",
     "fileNotFound": "Rugsteunlêer nie gevind nie: {filePath}",
-    "idNotFound": "Geen rugsteun gevind vir ID: {id}"
+    "idNotFound": "Geen rugsteun gevind vir ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Probeer {attempt}/{retries}: Standaardinstellings skep",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Soek...",
@@ -280,7 +282,7 @@
   "downloading": "Besig om af te laai ({count})",
   "downloaded": "Af gelaai ({count})",
   "titleWithValue": "Titel: {title}",
-  "title": "Titel:",
+  "title": "Title",
   "path": "Pad: {path}",
   "releaseYear": "Vrylating jaar",
   "optional": "Opsioneel",
@@ -324,5 +326,11 @@
   "weekly": "Weekliks",
   "monthly": "Maandeliks",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
