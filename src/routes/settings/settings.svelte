@@ -138,7 +138,7 @@
 			}}
 		>
 			{#each themes as theme}
-				<option>{theme}</option>
+				<option value={theme.toLowerCase()}>{theme}</option>
 			{/each}
 		</select>
 	</label>
