@@ -131,6 +131,7 @@ export const backup = {
 	 * 🔍 Überprüft gespeicherte Backups:
 	 * - Löscht DB-Einträge, wenn die Datei fehlt.
 	 * - Nimmt Dateien, die existieren aber keinen DB-Eintrag haben, in die DB auf.
+	 * - Aktualisiert fehlende Größen-Angaben in der DB.
 	 */
 	validateBackups: async () => {
 		try {
@@ -178,6 +179,25 @@ export const backup = {
 						size: meta.size
 					});
 					info(get(_)('backup.newBackup', { values: { filePath } }));
+				}
+			}
+
+			// 3️⃣ Größe für Einträge mit size === 0 nachtragen
+			for (const dbBackup of dbBackups) {
+				if (dbBackup.size === 0) {
+					const existsInFs = await exists(dbBackup.path, { baseDir: BaseDirectory.AppData });
+					if (existsInFs) {
+						const meta = await stat(dbBackup.path);
+						await db
+							.update(schema.backups)
+							.set({ size: meta.size })
+							.where(eq(schema.backups.id, dbBackup.id));
+						info(
+							get(_)('backup.updatedSize', {
+								values: { filePath: dbBackup.path.toString(), size: meta.size }
+							})
+						);
+					}
 				}
 			}
 
