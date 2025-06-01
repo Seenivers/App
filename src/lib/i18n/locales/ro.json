@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Intrare DB nouă pentru fișierul de rezervă: {filePath}",
     "deletedBackup": "🗑️ Intrare DB ștearsă pentru copia de rezervă lipsă: {filePath}",
     "fileNotFound": "Fișierul de rezervă nu a fost găsit: {filePath}",
-    "idNotFound": "Nu s-a găsit nicio copie de rezervă pentru ID: {id}"
+    "idNotFound": "Nu s-a găsit nicio copie de rezervă pentru ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Încercare {attempt}/{retries}: Crearea setărilor implicite",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Caută...",
@@ -280,7 +282,7 @@
   "downloading": "Descărcare ({count})",
   "downloaded": "Descărcat ({count})",
   "titleWithValue": "Titlu: {title}",
-  "title": "Titlul:",
+  "title": "Titlul",
   "path": "Cale: {path}",
   "releaseYear": "An lansare",
   "optional": "Opţional",
@@ -324,5 +326,11 @@
   "weekly": "Săptămânal",
   "monthly": "Lunar",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
