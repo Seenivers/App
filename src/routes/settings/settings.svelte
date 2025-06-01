@@ -7,6 +7,11 @@
 	import { onDestroy } from 'svelte';
 	import { settingsDB } from '$lib/utils/db/settings';
 	import { _, locale, locales } from 'svelte-i18n';
+	import { open } from '@tauri-apps/plugin-dialog';
+	import { videoDir } from '@tauri-apps/api/path';
+	import FolderOpen from '$lib/SVG/FolderOpen.svelte';
+	import FolderAdd from '$lib/SVG/FolderAdd.svelte';
+	import Close from '$lib/SVG/Close.svelte';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
@@ -267,4 +272,65 @@
 			onchange={(event) => handleInput(event, 'ignoredKeywords')}
 		></textarea>
 	</label>
+
+	<hr class="col-span-2 m-0 w-full" />
+
+	<div class="form-control col-span-2 w-full">
+		<label for="watchPaths" class="label">
+			<span class="label-text font-semibold">{$_('settings.watchPaths')}</span>
+			<span class="label-text-alt">Absoluter Verzeichnispfad (z.B. C:/Videos)</span>
+		</label>
+
+		{#each settingsTemp.watchPaths, index}
+			<div class="mb-2 flex items-center gap-2">
+				<input
+					type="text"
+					class="input input-bordered flex-1 {settingsTemp.watchPaths[index].length === 0
+						? 'input-error'
+						: ''}"
+					bind:value={settingsTemp.watchPaths[index]}
+					placeholder="/path/to/folder"
+				/>
+
+				<button
+					type="button"
+					class="btn btn-square btn-sm btn-primary"
+					title="Ordner auswählen"
+					onclick={async () => {
+						const folder = await open({
+							multiple: false,
+							directory: true,
+							defaultPath: settingsTemp.watchPaths[index] ?? (await videoDir())
+						});
+						if (folder) {
+							settingsTemp.watchPaths[index] = folder;
+							markDirty();
+						}
+					}}
+				>
+					<FolderOpen class="stroke-base-content h-5 w-5" />
+				</button>
+
+				<button
+					type="button"
+					class="btn btn-square btn-sm btn-error"
+					title="Pfad entfernen"
+					onclick={() => settingsTemp.watchPaths.splice(index, 1)}
+				>
+					<Close class="stroke-base-content h-6 w-6" />
+				</button>
+			</div>
+		{/each}
+
+		<button
+			type="button"
+			id="watchPaths"
+			name="watchPaths"
+			class="btn btn-primary"
+			onclick={() => settingsTemp.watchPaths.push('')}
+		>
+			<FolderAdd class="stroke-base-content h-6 w-6" />
+			{$_('settings.addWatchPath')}
+		</button>
+	</div>
 </div>
