@@ -138,8 +138,9 @@ export const backup = {
 			const appDir = await appDataDir();
 			const backupDir = await join(appDir, 'backups');
 
-			// Falls der Backup-Ordner nicht existiert, beende die Funktion.
+			// Falls der Backup-Ordner nicht existiert, erstelle ihn.
 			if (!(await exists(backupDir, { baseDir: BaseDirectory.AppData }))) {
+				await mkdir(backupDir, { baseDir: BaseDirectory.AppData });
 				return;
 			}
 
