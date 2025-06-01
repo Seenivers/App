@@ -249,7 +249,7 @@
 			<span class="label-text font-semibold">{$_('settings.keywords')}</span>
 		</div>
 		<textarea
-			class="textarea textarea-bordered h-32 w-full"
+			class="textarea textarea-bordered h-20 w-full"
 			placeholder={$_('settings.keywordsPlaceholder')}
 			bind:value={settingsTemp.keywords}
 			onchange={(event) => handleInput(event, 'keywords')}
@@ -262,7 +262,7 @@
 			<span class="label-text font-semibold">{$_('settings.ignoredKeywords')}</span>
 		</div>
 		<textarea
-			class="textarea textarea-bordered h-32 w-full"
+			class="textarea textarea-bordered h-20 w-full"
 			placeholder={$_('settings.keywordsPlaceholder')}
 			bind:value={settingsTemp.ignoredKeywords}
 			onchange={(event) => handleInput(event, 'ignoredKeywords')}
