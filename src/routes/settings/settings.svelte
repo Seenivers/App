@@ -274,8 +274,8 @@
 	<div class="form-control col-span-2 w-full">
 		<label for="watchPaths" class="label">
 			<span class="label-text font-semibold">{$_('settings.watchPaths')}</span>
-			<span class="">Absoluter Verzeichnispfad (z.B. C:/Videos)</span>
 		</label>
+		<p class="text-sm">{$_('settings.watchPathsHint')}</p>
 
 		{#each settingsTemp.watchPaths, index}
 			<div class="mb-2 flex items-center gap-2">

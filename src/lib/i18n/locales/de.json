@@ -171,7 +171,8 @@
     "backupMaxBackups": "Maximale Anzahl an Backups",
     "backupMaxSizeMB": "Maximale Backup-Größe (MB)",
     "watchPaths": "Überwachte Verzeichnisse",
-    "addWatchPath": "Pfad hinzufügen"
+    "addWatchPath": "Pfad hinzufügen",
+    "watchPathsHint": "Absoluter Verzeichnispfad (z.B. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Suchen...",
