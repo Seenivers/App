@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Nová položka DB pro záložní soubor: {filePath}",
     "deletedBackup": "🗑️ Odstraněná DB položka pro chybějící zálohu: {filePath}",
     "fileNotFound": "Záložní soubor nebyl nalezen: {filePath}",
-    "idNotFound": "Nenalezena žádná záloha pro ID: {id}"
+    "idNotFound": "Nenalezena žádná záloha pro ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Pokus o {attempt}/{retries}: Vytváření výchozích nastavení",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Hledat...",
@@ -280,7 +282,7 @@
   "downloading": "Stahování ({count})",
   "downloaded": "Staženo ({count})",
   "titleWithValue": "Název: {title}",
-  "title": "Titul:",
+  "title": "Titul",
   "path": "Cesta: {path}",
   "releaseYear": "Rok vydání",
   "optional": "Nepovinné",
@@ -324,5 +326,11 @@
   "weekly": "Týdenní",
   "monthly": "Měsíčně",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
