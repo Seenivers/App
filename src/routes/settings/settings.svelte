@@ -67,10 +67,8 @@
 	</label>
 
 	<!-- Inhalte für Erwachsene -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.adultContent')}</span>
-		</div>
+	<label class="form-control flex w-full items-center justify-between">
+		<span class=" label font-semibold">{$_('settings.adultContent')}</span>
 		<input
 			type="checkbox"
 			class="toggle toggle-primary"
@@ -123,6 +121,25 @@
 		>
 			<option value="Plyr">Plyr</option>
 			<option value="Vidstack">Vidstack</option>
+		</select>
+	</label>
+
+	<!-- Themen -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.theme')}</span>
+		</div>
+		<select
+			class="select select-bordered w-full"
+			bind:value={settingsTemp.theme}
+			onchange={() => {
+				setTheme(settingsTemp.theme);
+				markDirty();
+			}}
+		>
+			{#each themes as theme}
+				<option>{theme}</option>
+			{/each}
 		</select>
 	</label>
 
@@ -201,7 +218,7 @@
 			max="20"
 			bind:value={settingsTemp.castImages}
 			onchange={markDirty}
-			class="range"
+			class="range w-full"
 			step="1"
 		/>
 		<div class="flex w-full justify-between px-2 text-xs">
@@ -216,35 +233,14 @@
 	</label>
 
 	<!-- Discord RPC -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.discordRpc')}</span>
-		</div>
+	<label class="form-control flex w-full items-center justify-between">
+		<span class="label font-semibold">{$_('settings.discordRpc')}</span>
 		<input
 			type="checkbox"
 			class="toggle toggle-primary"
 			bind:checked={settingsTemp.discordAktiv}
 			onchange={markDirty}
 		/>
-	</label>
-
-	<!-- Themen -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.theme')}</span>
-		</div>
-		<select
-			class="select select-bordered w-full"
-			bind:value={settingsTemp.theme}
-			onchange={() => {
-				setTheme(settingsTemp.theme);
-				markDirty();
-			}}
-		>
-			{#each themes as theme}
-				<option>{theme}</option>
-			{/each}
-		</select>
 	</label>
 
 	<!-- Schlüsselwörter -->
@@ -278,7 +274,7 @@
 	<div class="form-control col-span-2 w-full">
 		<label for="watchPaths" class="label">
 			<span class="label-text font-semibold">{$_('settings.watchPaths')}</span>
-			<span class="label-text-alt">Absoluter Verzeichnispfad (z.B. C:/Videos)</span>
+			<span class="">Absoluter Verzeichnispfad (z.B. C:/Videos)</span>
 		</label>
 
 		{#each settingsTemp.watchPaths, index}
