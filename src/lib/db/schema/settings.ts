@@ -52,11 +52,10 @@ export const settings = sqliteTable('settings', {
 	castImages: int('castImages').notNull().default(5), // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
 	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true),
 	backupInterval: text('backupInterval').notNull().$type<BackupInterval>().default('manual'),
-	backupConfig: text('backupConfig', { mode: 'json' }).notNull().$type<BackupConfig>().default({
-		maxAgeDays: 0,
-		maxBackups: 14,
-		maxSizeMB: 0
-	}),
+	backupConfig: text('backupConfig', { mode: 'json' })
+		.notNull()
+		.$type<BackupConfig>()
+		.default({ maxAgeDays: 0, maxBackups: 14, maxSizeMB: 0 }),
 	watchPaths: text('watchPaths', { mode: 'json' }).notNull().$type<string[]>().default([]),
 	tmdbSessionId: text('tmdbSessionId')
 });
