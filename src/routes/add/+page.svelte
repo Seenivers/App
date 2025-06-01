@@ -238,7 +238,7 @@
 					/>
 				</label>
 				<label class="input input-bordered flex w-full items-center gap-2">
-					{$_('releaseYear')}
+					{$_('releaseYear')}:
 					<input
 						type="number"
 						class="grow"
