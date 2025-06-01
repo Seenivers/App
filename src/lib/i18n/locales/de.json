@@ -133,7 +133,8 @@
     "newBackup": "🗂️ Neuer DB-Eintrag für Backup-Datei: {filePath}",
     "deletedBackup": "🗑️ DB-Eintrag für fehlendes Backup gelöscht: {filePath}",
     "fileNotFound": "Backup-Datei nicht gefunden: {filePath}",
-    "idNotFound": "Kein Backup zur ID gefunden: {id}"
+    "idNotFound": "Kein Backup zur ID gefunden: {id}",
+    "updatedSize": "Backup-Größe für {filePath} aktualisiert: {size} Bytes."
   },
   "settings": {
     "createAttempt": "Versuch {attempt}/{retries}: Standard-Einstellungen erstellen",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximale Anzahl an Backups",
     "backupMaxSizeMB": "Maximale Backup-Größe (MB)",
     "watchPaths": "Überwachte Verzeichnisse",
-    "addWatchPath": "Pfad hinzufügen"
+    "addWatchPath": "Pfad hinzufügen",
+    "watchPathsHint": "Absoluter Verzeichnispfad (z.B. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Suchen...",
@@ -280,7 +282,7 @@
   "downloading": "Wird heruntergeladen ({count})",
   "downloaded": "Heruntergeladen ({count})",
   "titleWithValue": "Titel: {title}",
-  "title": "Titel:",
+  "title": "Titel",
   "path": "Pfad: {path}",
   "releaseYear": "Erscheinungsjahr",
   "optional": "Optional",
@@ -324,5 +326,11 @@
   "weekly": "Wöchentlich",
   "monthly": "Monatlich",
   "resetFilters": "Alle Filter zurücksetzen",
-  "size": "Größe"
+  "size": "Größe",
+  "tabs": {
+    "settings": "Einstellungen",
+    "backup": "Sicherungen"
+  },
+  "bookmarkAdd": "Zur Merkliste hinzufügen",
+  "bookmarkRemove": "Von der Merkliste entfernen"
 }
