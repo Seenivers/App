@@ -103,8 +103,6 @@ export const backup = {
 				return false;
 			}
 
-			sqlite.close(); // Schließe die aktuelle DB-Verbindung
-
 			// Falls Datei nicht existiert, lösche den DB-Eintrag
 			if (!(await exists(data.path, { baseDir: BaseDirectory.AppData }))) {
 				error(get(_)('backup.fileNotFound', { values: { filePath: data.path } }));
@@ -114,6 +112,8 @@ export const backup = {
 
 			const appDir = await appDataDir();
 			const dbPath = await join(appDir, `${import.meta.env.DEV ? 'DEV-' : ''}sqlite.db`);
+
+			sqlite.close(); // Schließe die aktuelle DB-Verbindung
 
 			// Backup-Datei verschieben
 			await copyFile(data.path, dbPath);
