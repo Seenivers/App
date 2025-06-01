@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
 	import { _ } from 'svelte-i18n';
+	import { collection } from '$lib/utils/db/collection';
 
 	interface Props {
 		data: PageData;
@@ -38,6 +39,11 @@
 		localStorage.setItem('sortNewestFirst', sortNewestFirst.toString());
 	}
 
+	async function toggleWatchedStatus() {
+		data.result.watched = !data.result.watched;
+		await collection.update(data.id, { watched: data.result.watched });
+	}
+
 	onMount(() => {
 		const stored = localStorage.getItem('sortNewestFirst');
 		if (stored !== null) {
@@ -60,6 +66,9 @@
 		<!-- Toggle für Grid/List-Ansicht -->
 		<button class="btn" onclick={() => (isGridView = !isGridView)}>
 			{isGridView ? $_('switchToListView') : $_('switchToGridView')}
+		</button>
+		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
+			{data.result.watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 		</button>
 		<a
 			href="https://www.themoviedb.org/collection/{data.id}"
