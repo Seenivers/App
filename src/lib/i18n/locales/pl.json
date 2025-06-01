@@ -133,7 +133,8 @@
     "newBackup": ":card_index_separders: Nowy wpis bazy danych do pliku kopii zapasowej: {filePath}",
     "deletedBackup": ":wastekoszyk: Usunięto wpis bazy danych dla brakującej kopii zapasowej: {filePath}",
     "fileNotFound": "Nie znaleziono pliku kopii zapasowej: {filePath}",
-    "idNotFound": "Nie znaleziono kopii zapasowej dla ID: {id}"
+    "idNotFound": "Nie znaleziono kopii zapasowej dla ID: {id}",
+    "updatedSize": "Backup size for {filePath} updated to {size} bytes."
   },
   "settings": {
     "createAttempt": "Próba {attempt}/{retries}: Tworzenie ustawień domyślnych",
@@ -170,7 +171,8 @@
     "backupMaxBackups": "Maximum number of backups",
     "backupMaxSizeMB": "Maximum backup size (MB)",
     "watchPaths": "Watch paths",
-    "addWatchPath": "Add path"
+    "addWatchPath": "Add path",
+    "watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
   },
   "main": {
     "searchPlaceholder": "Szukaj...",
@@ -280,7 +282,7 @@
   "downloading": "Pobieranie ({count})",
   "downloaded": "Pobrano ({count})",
   "titleWithValue": "Tytuł: {title}",
-  "title": "Tytuł:",
+  "title": "Tytuł",
   "path": "Ścieżka: {path}",
   "releaseYear": "Rok wydania",
   "optional": "Opcjonalnie",
@@ -324,5 +326,11 @@
   "weekly": "Tygodniowo",
   "monthly": "Miesięczny",
   "resetFilters": "Reset all filters",
-  "size": "Size"
+  "size": "Size",
+  "tabs": {
+    "settings": "Settings",
+    "backup": "Backup"
+  },
+  "bookmarkAdd": "Add to Bookmarks",
+  "bookmarkRemove": "Remove from Bookmarks"
 }
