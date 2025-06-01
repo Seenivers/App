@@ -218,7 +218,7 @@
 			max="20"
 			bind:value={settingsTemp.castImages}
 			onchange={markDirty}
-			class="range w-full"
+			class="range range-primary w-full"
 			step="1"
 		/>
 		<div class="flex w-full justify-between px-2 text-xs">
@@ -269,7 +269,7 @@
 		></textarea>
 	</label>
 
-	<hr class="col-span-2 m-0 w-full" />
+	<hr class="border-base-content col-span-2 m-0 w-full" />
 
 	<div class="form-control col-span-2 w-full">
 		<label for="watchPaths" class="label">
@@ -309,9 +309,9 @@
 
 				<button
 					type="button"
-					class="btn btn-square btn-sm btn-error"
+					class="btn btn-square btn-sm btn-soft btn-error"
 					title="Pfad entfernen"
-					onclick={() => settingsTemp.watchPaths.splice(index, 1)}
+					ondblclick={() => settingsTemp.watchPaths.splice(index, 1)}
 				>
 					<Close class="stroke-base-content h-6 w-6" />
 				</button>
