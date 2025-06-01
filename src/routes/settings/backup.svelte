@@ -9,6 +9,10 @@
 	let backups: (typeof schema.backups.$inferSelect)[] = [];
 	let separator: string = sep();
 
+	// Sortier-Status
+	let sortBy: 'id' | 'createdAt' | 'size' = 'id';
+	let sortAsc = true;
+
 	// Ruft die Backup-Liste beim Laden ab
 	async function loadBackups() {
 		backups = await backupfn.getAll();
@@ -45,6 +49,26 @@
 		return import.meta.env.DEV && !backup.path.includes('DEV-');
 	}
 
+	// Sortier-Funktion
+	function sortBackups(by: 'id' | 'createdAt' | 'size') {
+		if (sortBy === by) {
+			sortAsc = !sortAsc;
+		} else {
+			sortBy = by;
+			sortAsc = true;
+		}
+	}
+
+	// Sortierte Kopie der Backups für die Anzeige
+	$: sortedBackups = [...backups].sort((a, b) => {
+		let result = 0;
+		if (sortBy === 'id') result = a.id - b.id;
+		if (sortBy === 'createdAt')
+			result = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+		if (sortBy === 'size') result = (a.size ?? 0) - (b.size ?? 0);
+		return sortAsc ? result : -result;
+	});
+
 	onMount(loadBackups);
 </script>
 
@@ -63,15 +87,30 @@
 	<table class="table w-full">
 		<thead>
 			<tr>
-				<th>{$_('id')}</th>
+				<th class="cursor-pointer" onclick={() => sortBackups('id')}>
+					{$_('id')}
+					{#if sortBy === 'id'}
+						<span>{sortAsc ? '▲' : '▼'}</span>
+					{/if}
+				</th>
 				<th>{$_('fileName')}</th>
-				<th>{$_('creationDate')}</th>
-				<th>{$_('size')}</th>
+				<th class="cursor-pointer" onclick={() => sortBackups('createdAt')}>
+					{$_('creationDate')}
+					{#if sortBy === 'createdAt'}
+						<span>{sortAsc ? '▲' : '▼'}</span>
+					{/if}
+				</th>
+				<th class="cursor-pointer" onclick={() => sortBackups('size')}>
+					{$_('size')}
+					{#if sortBy === 'size'}
+						<span>{sortAsc ? '▲' : '▼'}</span>
+					{/if}
+				</th>
 				<th>{$_('actions')}</th>
 			</tr>
 		</thead>
 		<tbody>
-			{#each backups as backup (backup.id)}
+			{#each sortedBackups as backup (backup.id)}
 				<tr class="hover:bg-base-200">
 					<th>{backup.id}</th>
 					<td>{extractFileName(backup.path)}</td>
