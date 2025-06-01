@@ -1,3 +1,57 @@
+# [0.34.0](https://github.com/Seenivers/App/compare/v0.33.0...v0.34.0) (2025-06-01)
+
+
+### Bug Fixes
+
+* change order of backups retrieval to use ID instead of createdAt ([5a29e24](https://github.com/Seenivers/App/commit/5a29e244e35b7c6fc53067542179c5a897ac69d5))
+* close SQLite connection before moving backup file ([d25def0](https://github.com/Seenivers/App/commit/d25def0ddeb9ea40987d08495a7d32806139b000))
+* comment out unused modal state in +page.svelte files ([24df256](https://github.com/Seenivers/App/commit/24df256ce481939271f3bcf6848aa641cab719e4))
+* correct white spaces in comments in ProgressBar.svelte and +page.svelte ([02391fc](https://github.com/Seenivers/App/commit/02391fc41ba8e30d2164ff67733dc8fa6f3b78e7))
+* **deps:** update dependency @tauri-apps/plugin-log to ^2.4.0 ([0e066bb](https://github.com/Seenivers/App/commit/0e066bb1d7cba60f0f4fed2c254556462978df95))
+* **discord:** simplify discord activity calls by removing details and state parameters ([ed715bf](https://github.com/Seenivers/App/commit/ed715bfaad750d5b525a4121c9d5253d25f5ba6d))
+* **episode:** update trailer display condition to show when no path exists and videos are available ([4bb0f54](https://github.com/Seenivers/App/commit/4bb0f540b7f8cc68d351ee1c5b7bbe1ee017f776))
+* refactor backupConfig field definition for improved readability ([b1750fd](https://github.com/Seenivers/App/commit/b1750fd2b50bbd2788b53022e5f3f5edab468ea3))
+* remove value attribute from theme selection options ([e91b8ef](https://github.com/Seenivers/App/commit/e91b8ef72907997dfe56a00cc254a4def1eab58a))
+* set default value for size in backups schema to 0 ([bf35662](https://github.com/Seenivers/App/commit/bf35662391151377b074fab459b23c5d565a60da))
+* set default value for tmdbSessionId field in settings schema ([96a44b6](https://github.com/Seenivers/App/commit/96a44b64222b72df4932c86dd483c3a40fbd3c87))
+* simplify filter functions in +page.svelte and tv/+page.svelte ([b61ce5e](https://github.com/Seenivers/App/commit/b61ce5e3a0a4f6acd4bd84aa085f31205a9bbfa6))
+* update development profile settings for better optimization and debugging ([8e1eba2](https://github.com/Seenivers/App/commit/8e1eba252121fcb1f367e591745e7378bbe3c6f4))
+
+
+### Features
+
+* add backup configuration options for max age, max backups, and max size ([d3facce](https://github.com/Seenivers/App/commit/d3faccefb1ee18fdb6f50cc0449ec9e4fd69a87f))
+* add backup size tracking and enhance backup schema ([5d5b346](https://github.com/Seenivers/App/commit/5d5b346d226c2981022d5b066e047556dd93ec70))
+* add Bookmark and BookmarkSlash SVG components ([3f2b3d4](https://github.com/Seenivers/App/commit/3f2b3d4bdcdc05372a3ba458ea063d1b69926fe7))
+* add bookmark functionality with localized labels for adding and removing from bookmarks ([5750563](https://github.com/Seenivers/App/commit/5750563ca0fd9c7c05ba85c27277c4ba0e79c1ec))
+* add DaisyUI plugin to Tailwind CSS integration ([10591cb](https://github.com/Seenivers/App/commit/10591cb9f825cb6108b5cfb304583c3cc7bd8c7f))
+* add localization for tabs in settings and backup sections ([964856e](https://github.com/Seenivers/App/commit/964856efbd90769b2956e968a1d305450131a643))
+* add new settings migration with tmdbSessionId and updated schema ([da253ab](https://github.com/Seenivers/App/commit/da253ab454259dd0e8974bd66c248fc46b21cc44))
+* add reset SVG component for improved iconography ([f405842](https://github.com/Seenivers/App/commit/f4058421ea5f7c07fd0ad99c1851d93afa31648d))
+* add size column to backups table and improve action button layout ([227804d](https://github.com/Seenivers/App/commit/227804da61549a5a36fa8248f7da64200b4126be))
+* add SVG components for Close, FolderAdd, and FolderOpen icons ([26db041](https://github.com/Seenivers/App/commit/26db0418f56f0b414a8d4150a2880fb5f81ad4ff))
+* add tmdbSessionId field to settings schema for storing TMDB session information ([52ecb93](https://github.com/Seenivers/App/commit/52ecb931f8a41198fd57a859be5373a9dbace19e))
+* add updatedSize message for backup size updates in localization files ([0c0e6ba](https://github.com/Seenivers/App/commit/0c0e6ba73c56fb526140eed496f1940084d8d4ab))
+* add wantsToWatch field to collections, movies, and series schemas for tracking watch preferences ([ca7dec3](https://github.com/Seenivers/App/commit/ca7dec380ec742d005dd1641bbda6cbaf4f0e445))
+* add watched field to collections schema for tracking watched status ([83f5691](https://github.com/Seenivers/App/commit/83f569158fbc30d83ed244ff15e359469082bb9f))
+* add watchPaths and size labels to settings in localization files ([89c4da3](https://github.com/Seenivers/App/commit/89c4da3e707b6692ad7f240a908a092486ae6138))
+* add watchPaths configuration to backup settings ([e32b5c9](https://github.com/Seenivers/App/commit/e32b5c907fa62e8f5509d8e45c52988768e83a58))
+* add watchPaths configuration to settings with folder selection ([99ae5e1](https://github.com/Seenivers/App/commit/99ae5e157905a4b943a5ee3a3cb60cacbaa33bc9))
+* add watchPathsHint localization to settings and backup sections ([eb8191e](https://github.com/Seenivers/App/commit/eb8191e7bdec21b186b1ad3182fd10567eda756a))
+* enhance DaisyUI integration and update toast component styles ([e2a9f40](https://github.com/Seenivers/App/commit/e2a9f409bd2ba1594a572d63d8eebbea862c8bf8))
+* ensure backup directory is created if it does not exist ([bd1b820](https://github.com/Seenivers/App/commit/bd1b8201d7eca5b4e426268221d17a987ca4752e))
+* implement cleanupBackups function to manage backup retention and size ([4a4293b](https://github.com/Seenivers/App/commit/4a4293bb6615be20643f820fb4520977e390c3fb))
+* implement collectAndProcessWatchedFiles function to handle new files ([14a8423](https://github.com/Seenivers/App/commit/14a8423875e5a7205e63c667b9f96193adf19058))
+* implement formatBytes function for human-readable byte sizes ([571ada8](https://github.com/Seenivers/App/commit/571ada8b96e96cae029840cba3cd7b998740b58c))
+* implement reset filters functionality with reset button ([32591b0](https://github.com/Seenivers/App/commit/32591b073b27d243c70d37f3501df99356529561))
+* implement sorting functionality for backup list ([bc8aba2](https://github.com/Seenivers/App/commit/bc8aba26f2b1fa121c5f8657db161f6b08ba5790))
+* implement toggleWatchedStatus function to update watched status of collection ([66f3699](https://github.com/Seenivers/App/commit/66f3699d3dec179f28083d1d33809177403466a7))
+* mark series as watched if all episodes have been seen ([c1a5b85](https://github.com/Seenivers/App/commit/c1a5b85b48548836a32af2b9f044a6f8477e29bf))
+* set theme option values to lowercase for consistency ([2287f06](https://github.com/Seenivers/App/commit/2287f0650275c9adf315f7013a8f9b250e603e50))
+* update icon colors to use theme variable for consistency ([e3db14a](https://github.com/Seenivers/App/commit/e3db14ab0e17349aeb8a5c5f937d7167e5b6f114))
+* Update localization strings and enhance reset button functionality ([7ef7b13](https://github.com/Seenivers/App/commit/7ef7b13f6d26a808156430c1ae0e30de4cecc718))
+* update validateBackups to fill missing size entries in the database ([76492e1](https://github.com/Seenivers/App/commit/76492e1ac9cbb8ec2b3bd208f461f482665cc357))
+
 # [0.33.0](https://github.com/Seenivers/App/compare/v0.32.0...v0.33.0) (2025-05-10)
 
 ### Bug Fixes
