@@ -282,7 +282,7 @@
 	"downloading": "Downloading ({count})",
 	"downloaded": "Downloaded ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "Τίτλος",
+	"title": "Τίτλος:",
 	"path": "Path: {path}",
 	"releaseYear": "Έτος έκδοσης",
 	"optional": "Προαιρετικό",
