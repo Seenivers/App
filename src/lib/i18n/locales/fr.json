@@ -282,7 +282,7 @@
 	"downloading": "Téléchargement en cours ({count})",
 	"downloaded": "Téléchargé ({count})",
 	"titleWithValue": "Titre: {title}",
-	"title": "Titre",
+	"title": "Titre:",
 	"path": "Chemin : {path}",
 	"releaseYear": "Année de sortie",
 	"optional": "Optionnel",
