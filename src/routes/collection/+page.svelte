@@ -16,7 +16,7 @@
 	}
 
 	let { data }: Props = $props();
-
+	let watched: boolean = $derived(data.result.watched ?? false);
 	let isGridView = $state(false); // Startwert für das Layout
 	let moviesStore = $state(data.result.parts);
 	let sortNewestFirst = $state(true);
@@ -43,8 +43,8 @@
 	}
 
 	async function toggleWatchedStatus() {
-		data.result.watched = !data.result.watched;
-		await collection.update(data.id, { watched: data.result.watched, wantsToWatch: false });
+		watched = !watched;
+		await collection.update(data.id, { watched: watched, wantsToWatch: false });
 	}
 
 	onMount(() => {
@@ -71,7 +71,7 @@
 			{isGridView ? $_('switchToListView') : $_('switchToGridView')}
 		</button>
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
-			{data.result.watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 		</button>
 		<button
 			class="btn btn-sm md:btn-md"
@@ -80,7 +80,7 @@
 				isBookmarked = !isBookmarked;
 				collection.update(data.id, { wantsToWatch: isBookmarked });
 			}}
-			disabled={data.result.watched}
+			disabled={watched}
 		>
 			{#if isBookmarked}
 				<BookmarkSlash class="h-6 w-6" />
