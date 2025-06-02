@@ -282,7 +282,7 @@
 	"downloading": "Stahování ({count})",
 	"downloaded": "Staženo ({count})",
 	"titleWithValue": "Název: {title}",
-	"title": "Titul",
+	"title": "Titul:",
 	"path": "Cesta: {path}",
 	"releaseYear": "Rok vydání",
 	"optional": "Nepovinné",
