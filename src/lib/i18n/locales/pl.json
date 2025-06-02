@@ -282,7 +282,7 @@
 	"downloading": "Pobieranie ({count})",
 	"downloaded": "Pobrano ({count})",
 	"titleWithValue": "Tytuł: {title}",
-	"title": "Tytuł",
+	"title": "Tytuł:",
 	"path": "Ścieżka: {path}",
 	"releaseYear": "Rok wydania",
 	"optional": "Opcjonalnie",
