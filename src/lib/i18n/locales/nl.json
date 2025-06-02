@@ -282,7 +282,7 @@
 	"downloading": "Downloaden ({count})",
 	"downloaded": "Gedownload ({count})",
 	"titleWithValue": "Titel: {title}",
-	"title": "Titel",
+	"title": "Titel:",
 	"path": "Pad: {path}",
 	"releaseYear": "Jaar van vrijgave",
 	"optional": "Optioneel",
