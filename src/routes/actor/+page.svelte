@@ -223,7 +223,7 @@
 													: item.job}
 											</span>
 										</div>
-										<span class="badge badge-outline">
+										<span class="badge badge-outline min-w-fit">
 											{item.release_date
 												? new Date(item.release_date).getFullYear()
 												: $_(`noInformationAvailable`)}
