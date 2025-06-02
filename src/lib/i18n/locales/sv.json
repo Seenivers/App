@@ -282,7 +282,7 @@
 	"downloading": "Nedladdning ({count})",
 	"downloaded": "Nedladdad ({count})",
 	"titleWithValue": "Titel: {title}",
-	"title": "Titel",
+	"title": "Titel:",
 	"path": "Sökväg: {path}",
 	"releaseYear": "Släpp år",
 	"optional": "Valfri",
