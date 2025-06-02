@@ -282,7 +282,7 @@
 	"downloading": "Downloading ({count})",
 	"downloaded": "Downloaded ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "Title",
+	"title": "Title:",
 	"path": "Path: {path}",
 	"releaseYear": "Release year",
 	"optional": "Optional",
