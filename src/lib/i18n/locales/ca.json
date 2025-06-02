@@ -282,7 +282,7 @@
 	"downloading": "Descarregant ({count})",
 	"downloaded": "Descarregat ({count})",
 	"titleWithValue": "Títol: {title}",
-	"title": "Title",
+	"title": "Títol:",
 	"path": "Ruta: {path}",
 	"releaseYear": "Any de llançament",
 	"optional": "Opcional",
