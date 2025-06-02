@@ -84,9 +84,6 @@
 			<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}>
 				{$_('edit')}
 			</button>
-			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
-				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
-			</button>
 		{:else}
 			<button
 				class="btn btn-sm md:btn-md"
@@ -104,6 +101,9 @@
 				{/if}
 			</button>
 		{/if}
+		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
+			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+		</button>
 		<a
 			href="https://www.themoviedb.org/movie/{id}"
 			class="btn btn-sm md:btn-md"

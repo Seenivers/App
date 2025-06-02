@@ -67,10 +67,10 @@
 				</button>
 			</div>
 			<!-- <button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>{$_('edit')}</button> -->
-			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
-				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
-			</button>
 		{/if}
+		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
+			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+		</button>
 		<button class="btn" disabled={data.nextEpisodeURL === null} onclick={navigateToNextEpisode}>
 			{$_('nextEpisode')}
 		</button>
