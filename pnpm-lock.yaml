@@ -94,7 +94,7 @@ importers:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.3)
       daisyui:
-        specifier: ^5.0.37
+        specifier: ^5.0.38
         version: 5.0.43
       drizzle-kit:
         specifier: ^0.31.1
