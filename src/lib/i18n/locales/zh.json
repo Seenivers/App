@@ -282,7 +282,7 @@
 	"downloading": "Downloading ({count})",
 	"downloaded": "Downloaded ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "标题：",
+	"title": "Title",
 	"path": "Path: {path}",
 	"releaseYear": "发布年份",
 	"optional": "可选的",
@@ -332,5 +332,6 @@
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
-	"bookmarkRemove": "Remove from Bookmarks"
+	"bookmarkRemove": "Remove from Bookmarks",
+	"guestStars": "Guest actor"
 }
