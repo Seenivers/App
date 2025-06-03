@@ -332,5 +332,6 @@
 		"backup": "Sicherungen"
 	},
 	"bookmarkAdd": "Zur Merkliste hinzufügen",
-	"bookmarkRemove": "Von der Merkliste entfernen"
+	"bookmarkRemove": "Von der Merkliste entfernen",
+	"guestStars": "Gastdarsteller"
 }
