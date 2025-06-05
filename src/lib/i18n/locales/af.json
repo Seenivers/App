@@ -282,7 +282,7 @@
 	"downloading": "Besig om af te laai ({count})",
 	"downloaded": "Af gelaai ({count})",
 	"titleWithValue": "Titel: {title}",
-	"title": "Titel:",
+	"title": "Titel",
 	"path": "Pad: {path}",
 	"releaseYear": "Vrylating jaar",
 	"optional": "Opsioneel",
