@@ -8,6 +8,7 @@ import type { Actor } from '$lib/types/actor';
 import type { Serie } from '../types/tv/serie';
 import type { Season } from '../types/tv/season';
 import type { Episode } from '../types/tv/episode';
+import type { Token } from '$lib/types/authentication';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -159,3 +160,6 @@ export const getSerieSeasonEpisode = (
 		episodeNumber,
 		language
 	});
+
+// Token
+export const getToken = () => fetchData<Token>('/api/tmdb/token', {});
