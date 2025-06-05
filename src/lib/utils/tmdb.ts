@@ -24,7 +24,7 @@ async function parseResponse<T>(response: Response, endpoint: string): Promise<T
 	}
 
 	try {
-		return await response.json();
+		return (await response.json()) as T;
 	} catch (err) {
 		const msg = `Fehler beim Parsen von JSON (${endpoint}): ${err instanceof Error ? err.message : 'Unbekannt'}`;
 		error(msg);
