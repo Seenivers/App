@@ -50,7 +50,6 @@ export async function auth() {
 	});
 
 	webview.once('tauri://destroyed', () => {
-		console.log('WebviewWindow geschlossen');
 		unlisten(); // Event-Listener entfernen
 	});
 }

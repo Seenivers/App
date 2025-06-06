@@ -251,11 +251,14 @@
 			id="tmdbAuth"
 			name="tmdbAuth"
 			class="btn {settings.tmdbSessionId ? 'btn-success' : 'btn-primary'}"
+			disabled={!!settings.tmdbSessionId}
 			onclick={async () => {
 				await auth();
 				markDirty();
-			}}>Authentifizieren</button
+			}}
 		>
+			Authentifizieren
+		</button>
 	</label>
 
 	<!-- Schlüsselwörter -->
