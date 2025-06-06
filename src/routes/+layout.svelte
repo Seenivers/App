@@ -23,6 +23,7 @@
 	} from '$lib/db/update';
 	import ProgressBar from '$lib/ProgressBar.svelte';
 	import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
+	import { getCurrentWebview } from '@tauri-apps/api/webview';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -39,15 +40,18 @@
 	let logConsole: UnlistenFn;
 
 	onMount(async () => {
+		const mainWindow = getCurrentWebview().label === 'main';
 		if (settings) {
-			logConsole = await attachConsole();
-			logLogger = await attachLogger(forwardConsole);
+			if (mainWindow) {
+				logConsole = await attachConsole();
+				logLogger = await attachLogger(forwardConsole);
+
+				await discord();
+			}
 
 			setTheme(settings.theme);
 
-			await discord();
-
-			if (import.meta.env.PROD) {
+			if (import.meta.env.PROD && mainWindow) {
 				await autoBackup();
 				await cleanupBackups();
 				if (online.current) {
