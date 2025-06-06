@@ -11,7 +11,11 @@ export const season = {
 			? await db.insert(schema.season).values(data)
 			: await season.update(data.id, data),
 
-	get: async (id: number, seriesId?: number, seasonNumber?: number) => {
+	get: async (
+		id: number,
+		seriesId?: number,
+		seasonNumber?: number
+	): Promise<typeof schema.season.$inferSelect | undefined> => {
 		let result = await db.query.season.findFirst({ where: eq(schema.season.id, id) });
 
 		if (!result && online.current && seriesId !== undefined && seasonNumber !== undefined) {
@@ -37,7 +41,9 @@ export const season = {
 		return result;
 	},
 
-	getAll: async (items: { id: number; seriesId?: number; seasonNumber?: number }[]) => {
+	getAll: async (
+		items: { id: number; seriesId?: number; seasonNumber?: number }[]
+	): Promise<(typeof schema.season.$inferSelect)[]> => {
 		if (items && items.length > 0) {
 			const localResults = await db
 				.select()
@@ -97,7 +103,7 @@ export const season = {
 		}
 	},
 
-	isIDUnique: async (id: number) => {
+	isIDUnique: async (id: number): Promise<boolean> => {
 		const existingSeason = await season.get(id);
 		return !existingSeason;
 	}

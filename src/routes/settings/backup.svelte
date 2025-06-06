@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { schema } from '$lib/db/schema';
-	import { backup as backupfn, newDB } from '$lib/utils/backup';
+	import { backup as backupfn, newDB } from '$lib/utils/db/backup';
 	import { formatBytes } from '$lib/utils/utils';
 	import { sep } from '@tauri-apps/api/path';
 	import { onMount } from 'svelte';

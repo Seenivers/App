@@ -16,7 +16,7 @@ import { _ } from 'svelte-i18n';
 import { get } from 'svelte/store';
 
 export const backup = {
-	create: async () => {
+	create: async (): Promise<boolean> => {
 		try {
 			const appDir = await appDataDir();
 			const backupDir = await join(appDir, 'backups');
@@ -49,7 +49,7 @@ export const backup = {
 		}
 	},
 
-	get: async (id: number) => {
+	get: async (id: number): Promise<typeof schema.backups.$inferSelect | null> => {
 		try {
 			return (
 				(await db.select().from(schema.backups).where(eq(schema.backups.id, id)).limit(1))[0] ??
@@ -61,7 +61,7 @@ export const backup = {
 		}
 	},
 
-	getAll: async () => {
+	getAll: async (): Promise<(typeof schema.backups.$inferSelect)[]> => {
 		try {
 			return await db.select().from(schema.backups).orderBy(schema.backups.id);
 		} catch (err) {
@@ -94,7 +94,7 @@ export const backup = {
 		}
 	},
 
-	restore: async (id: number) => {
+	restore: async (id: number): Promise<boolean> => {
 		try {
 			const data = await backup.get(id);
 
@@ -133,7 +133,7 @@ export const backup = {
 	 * - Nimmt Dateien, die existieren aber keinen DB-Eintrag haben, in die DB auf.
 	 * - Aktualisiert fehlende Größen-Angaben in der DB.
 	 */
-	validateBackups: async () => {
+	validateBackups: async (): Promise<boolean> => {
 		try {
 			const appDir = await appDataDir();
 			const backupDir = await join(appDir, 'backups');
@@ -141,7 +141,6 @@ export const backup = {
 			// Falls der Backup-Ordner nicht existiert, erstelle ihn.
 			if (!(await exists(backupDir, { baseDir: BaseDirectory.AppData }))) {
 				await mkdir(backupDir, { baseDir: BaseDirectory.AppData });
-				return;
 			}
 
 			// Alle gespeicherten Backups aus der DB abrufen.

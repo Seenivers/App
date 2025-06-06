@@ -11,7 +11,7 @@ export const actor = {
 			? await db.insert(schema.actors).values(data)
 			: await actor.update(data.id, data),
 
-	get: async (id: number) => {
+	get: async (id: number): Promise<typeof schema.actors.$inferSelect | undefined> => {
 		let result = await db.query.actors.findFirst({ where: eq(schema.actors.id, id) });
 		if (!result && online.current && id !== undefined) {
 			const fetched = await getActor(id);
@@ -25,7 +25,7 @@ export const actor = {
 		return result;
 	},
 
-	getAll: async (ids?: number[]) => {
+	getAll: async (ids?: number[]): Promise<(typeof schema.actors.$inferSelect)[]> => {
 		if (ids && ids.length > 0) {
 			const localResults = await db
 				.select()
@@ -75,7 +75,7 @@ export const actor = {
 		}
 	},
 
-	isIDUnique: async (id: number) => {
+	isIDUnique: async (id: number): Promise<boolean> => {
 		const existingActor = await actor.get(id);
 		return !existingActor;
 	}

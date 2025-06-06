@@ -8,6 +8,7 @@ import type { Actor } from '$lib/types/actor';
 import type { Serie } from '../types/tv/serie';
 import type { Season } from '../types/tv/season';
 import type { Episode } from '../types/tv/episode';
+import type { AccessToken, RequestToken } from '$lib/types/authentication';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -24,7 +25,7 @@ async function parseResponse<T>(response: Response, endpoint: string): Promise<T
 	}
 
 	try {
-		return await response.json();
+		return (await response.json()) as T;
 	} catch (err) {
 		const msg = `Fehler beim Parsen von JSON (${endpoint}): ${err instanceof Error ? err.message : 'Unbekannt'}`;
 		error(msg);
@@ -159,3 +160,49 @@ export const getSerieSeasonEpisode = (
 		episodeNumber,
 		language
 	});
+
+// Token
+export const postToken = async () => {
+	const endpoint = '/api/tmdb/token';
+	const url = new URL(endpoint, seeniversURL);
+	const redirect_to = `${location.origin}/tmdb-auth`;
+
+	try {
+		const response = await fetch(url.toString(), {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ redirect_to })
+		});
+
+		return await parseResponse<RequestToken>(response, endpoint);
+	} catch (err) {
+		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
+		console.error(message);
+		throw new Error(message);
+	}
+};
+
+export const postAccessToken = async (request_token: string) => {
+	const endpoint = '/api/tmdb/access_token';
+	const url = new URL(endpoint, seeniversURL);
+
+	try {
+		const response = await fetch(url.toString(), {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ request_token })
+		});
+
+		return await parseResponse<AccessToken>(response, endpoint);
+	} catch (err) {
+		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
+		console.error(message);
+		throw new Error(message);
+	}
+};

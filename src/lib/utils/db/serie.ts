@@ -11,7 +11,10 @@ export const serie = {
 			? await db.insert(schema.serie).values(data)
 			: await serie.update(data.id, data),
 
-	get: async (id: number, seriesId?: number) => {
+	get: async (
+		id: number,
+		seriesId?: number
+	): Promise<typeof schema.serie.$inferSelect | undefined> => {
 		let result = await db.query.serie.findFirst({ where: eq(schema.serie.id, id) });
 
 		if (!result && online.current && seriesId !== undefined) {
@@ -29,6 +32,7 @@ export const serie = {
 					path: null,
 					watched: false,
 					updated: new Date(),
+					wantsToWatch: false,
 					season: 0
 				};
 			}
@@ -36,7 +40,9 @@ export const serie = {
 		return result;
 	},
 
-	getAll: async (items?: { id?: number; seriesId?: number }[]) => {
+	getAll: async (
+		items?: { id?: number; seriesId?: number }[]
+	): Promise<(typeof schema.serie.$inferSelect)[]> => {
 		if (items && items.length > 0) {
 			// Filtere alle definierten IDs heraus
 			const ids = items.map((s) => s.id).filter((id): id is number => id !== undefined);
@@ -68,6 +74,7 @@ export const serie = {
 								path: null,
 								watched: false,
 								updated: new Date(),
+								wantsToWatch: false,
 								season: 0
 							};
 						}
@@ -94,12 +101,12 @@ export const serie = {
 		}
 	},
 
-	isIDUnique: async (id: number) => {
+	isIDUnique: async (id: number): Promise<boolean> => {
 		const existingSerie = await serie.get(id);
 		return !existingSerie;
 	},
 
-	isPathUnique: async (path: string) => {
+	isPathUnique: async (path: string): Promise<boolean> => {
 		const existingSerie = await db.query.serie.findFirst({ where: eq(schema.serie.path, path) });
 		return !existingSerie;
 	}

@@ -67,10 +67,10 @@
 				</button>
 			</div>
 			<!-- <button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>{$_('edit')}</button> -->
-			<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
-				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
-			</button>
 		{/if}
+		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
+			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+		</button>
 		<button class="btn" disabled={data.nextEpisodeURL === null} onclick={navigateToNextEpisode}>
 			{$_('nextEpisode')}
 		</button>
@@ -147,25 +147,25 @@
 				</div>
 			{/if}
 
-			<!-- Serienbesetzung -->
-			{#if data.result.tmdb.credits.cast.length > 0}
+			<!-- Gastdarsteller -->
+			{#if data.result.tmdb.credits.guest_stars.length > 0}
 				<div>
-					<h2 class="my-2 text-2xl font-bold">{$_('seriesCast')}</h2>
+					<h2 class="my-2 text-2xl font-bold">{$_('guestStars')}</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
-							{#each data.result.tmdb.credits.cast as cast}
+							{#each data.result.tmdb.credits.guest_stars as guestStars}
 								<a
-									href="./actor?id={cast.id}"
+									href="./actor?id={guestStars.id}"
 									class="carousel-item flex flex-col items-center"
 									data-sveltekit-preload-data="tap"
 								>
 									<Img
-										params={[cast.profile_path, 'actors', false]}
-										alt={cast.name}
+										params={[guestStars.profile_path, 'actors', false]}
+										alt={guestStars.name}
 										class="rounded-box max-w-40 sm:max-w-60"
 									/>
-									<p class="text-center text-lg">{cast.name}</p>
-									<p class="text-base italic">{cast.character}</p>
+									<p class="text-center text-lg">{guestStars.name}</p>
+									<p class="text-base italic">{guestStars.character}</p>
 								</a>
 							{/each}
 						</div>

@@ -11,7 +11,12 @@ export const episode = {
 			? await db.insert(schema.episode).values(data)
 			: await episode.update(data.id, data),
 
-	get: async (id: number, seriesId?: number, seasonNumber?: number, episodeNumber?: number) => {
+	get: async (
+		id: number,
+		seriesId?: number,
+		seasonNumber?: number,
+		episodeNumber?: number
+	): Promise<typeof schema.episode.$inferSelect | undefined> => {
 		let result = await db.query.episode.findFirst({ where: eq(schema.episode.id, id) });
 
 		if (
@@ -44,7 +49,7 @@ export const episode = {
 
 	getAll: async (
 		items: { id: number; seriesId?: number; seasonNumber?: number; episodeNumber?: number }[]
-	) => {
+	): Promise<(typeof schema.episode.$inferSelect)[]> => {
 		if (items && items.length > 0) {
 			const localResults = await db
 				.select()
@@ -116,7 +121,7 @@ export const episode = {
 		}
 	},
 
-	isIDUnique: async (id: number) => {
+	isIDUnique: async (id: number): Promise<boolean> => {
 		const existing = await episode.get(id);
 		return !existing;
 	}

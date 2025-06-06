@@ -185,8 +185,6 @@ export async function collectAndProcessWatchedFiles() {
 			)
 		).flat();
 
-		console.log(pfads);
-
 		if (pfads && pfads.length > 0) {
 			// Neue Dateien hinzufügen
 			await addNewFiles(pfads);

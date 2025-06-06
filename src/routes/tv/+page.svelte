@@ -17,6 +17,7 @@
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
 	let isBookmarked = $state(data.serie.wantsToWatch || false);
+	let watched: boolean = $derived(data.serie.watched ?? false);
 
 	// Erstelle eine reaktive Kopie der Staffeln, die lokal bearbeitet wird
 	let seasons = $state([...data.seasons]);
@@ -123,12 +124,12 @@
 			<button
 				class="btn btn-sm md:btn-md"
 				onclick={() => {
-					data.serie.watched = !data.serie.watched;
-					serie.update(data.serie.id, { watched: data.serie.watched });
+					watched = !watched;
+					serie.update(data.serie.id, { watched: watched });
 				}}
 				disabled={!data.serie}
 			>
-				{data.serie.watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
 		{:else}
 			<button
