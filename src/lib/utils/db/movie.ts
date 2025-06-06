@@ -11,7 +11,7 @@ export const movie = {
 			? await db.insert(schema.movies).values(data)
 			: await movie.update(data.id, data),
 
-	get: async (id: number) => {
+	get: async (id: number): Promise<typeof schema.movies.$inferSelect | undefined> => {
 		let result = await db.query.movies.findFirst({ where: eq(schema.movies.id, id) });
 
 		if (!result && online.current && id !== undefined) {
@@ -27,6 +27,7 @@ export const movie = {
 					path: null,
 					watched: false,
 					watchTime: 0,
+					wantsToWatch: false,
 					updated: new Date()
 				};
 			}
@@ -35,7 +36,7 @@ export const movie = {
 		return result;
 	},
 
-	getAll: async (ids?: number[]) => {
+	getAll: async (ids?: number[]): Promise<(typeof schema.movies.$inferSelect)[]> => {
 		if (ids && ids.length > 0) {
 			const localResults = await db
 				.select()
@@ -61,6 +62,7 @@ export const movie = {
 					path: null,
 					watched: false,
 					watchTime: 0,
+					wantsToWatch: false,
 					updated: new Date()
 				}));
 
@@ -89,12 +91,12 @@ export const movie = {
 		}
 	},
 
-	isIDUnique: async (id: number) => {
+	isIDUnique: async (id: number): Promise<boolean> => {
 		const existingMovie = await movie.get(id);
 		return !existingMovie;
 	},
 
-	isPathUnique: async (path: string) => {
+	isPathUnique: async (path: string): Promise<boolean> => {
 		const existingMovie = await db.query.movies.findFirst({
 			where: eq(schema.movies.path, path)
 		});

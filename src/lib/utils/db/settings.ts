@@ -47,7 +47,7 @@ async function createDefaultSettings(retries = 5) {
 
 export const settingsDB = {
 	/** Retrieves the saved settings (creates default values if not existing) */
-	get: async () =>
+	get: async (): Promise<typeof schema.settings.$inferSelect> =>
 		(await db.query.settings.findFirst({ where: eq(schema.settings.id, 1) })) ??
 		(await createDefaultSettings()),
 	/** Updates existing settings */

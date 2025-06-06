@@ -11,10 +11,15 @@ export const collection = {
 			? await db.insert(schema.collections).values(data)
 			: await collection.update(data.id, data),
 
-	get: async (id: number) => {
+	get: async (id: number): Promise<typeof schema.collections.$inferSelect | undefined> => {
 		let result = await db.query.collections.findFirst({ where: eq(schema.collections.id, id) });
 		if (!result && online.current && id !== undefined) {
-			result = { ...(await getCollection(id)), updated: new Date() };
+			result = {
+				...(await getCollection(id)),
+				updated: new Date(),
+				wantsToWatch: false,
+				watched: false
+			};
 			if (result) {
 				await db.insert(schema.collections).values(result);
 			}
@@ -22,7 +27,7 @@ export const collection = {
 		return result;
 	},
 
-	getAll: async (ids?: number[]) => {
+	getAll: async (ids?: number[]): Promise<(typeof schema.collections.$inferSelect)[]> => {
 		if (ids && ids.length > 0) {
 			const localResults = await db
 				.select()
@@ -38,7 +43,12 @@ export const collection = {
 						if (id === undefined) return null;
 						const onlineResult = await getCollection(id);
 						if (onlineResult) {
-							const collectionWithUpdated = { ...onlineResult, updated: new Date() };
+							const collectionWithUpdated = {
+								...onlineResult,
+								updated: new Date(),
+								wantsToWatch: false,
+								watched: false
+							};
 							await db.insert(schema.collections).values(collectionWithUpdated);
 							return collectionWithUpdated;
 						}
@@ -66,7 +76,7 @@ export const collection = {
 		}
 	},
 
-	isIDUnique: async (id: number) => {
+	isIDUnique: async (id: number): Promise<boolean> => {
 		const existingCollection = await collection.get(id);
 		return !existingCollection;
 	}
