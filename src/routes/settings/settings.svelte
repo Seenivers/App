@@ -246,7 +246,7 @@
 
 	<!-- TMDB Auth Sesson -->
 	<label for="tmdbAuth" class="flex w-full items-center justify-between">
-		<span class="label font-semibold">TMDB Auth</span>
+		<span class="label font-semibold">{$_('settings.tmdbAuthLabel')}</span>
 		<button
 			id="tmdbAuth"
 			name="tmdbAuth"
@@ -257,7 +257,7 @@
 				markDirty();
 			}}
 		>
-			Authentifizieren
+			{$_('settings.tmdbAuthButton')}
 		</button>
 	</label>
 
