@@ -172,7 +172,11 @@
 		"backupMaxSizeMB": "Maximale Backup-Größe (MB)",
 		"watchPaths": "Überwachte Verzeichnisse",
 		"addWatchPath": "Pfad hinzufügen",
-		"watchPathsHint": "Absoluter Verzeichnispfad (z.B. C:/Videos)"
+		"watchPathsHint": "Absoluter Verzeichnispfad (z.B. C:/Videos)",
+		"tmdbAuthButton": "Authentifizieren",
+		"tmdbAuthLabel": "TMDB Authentifizierung",
+		"confirmReauth": "Möchtest du die Authentifizierung wirklich neu starten?",
+		"reauthenticate": "Neu authentifizieren"
 	},
 	"main": {
 		"searchPlaceholder": "Suchen...",
