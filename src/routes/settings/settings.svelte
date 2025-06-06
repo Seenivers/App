@@ -12,6 +12,7 @@
 	import FolderOpen from '$lib/SVG/FolderOpen.svelte';
 	import FolderAdd from '$lib/SVG/FolderAdd.svelte';
 	import Close from '$lib/SVG/Close.svelte';
+	import { auth } from '$lib/utils/authentication';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
@@ -241,6 +242,20 @@
 			bind:checked={settingsTemp.discordAktiv}
 			onchange={markDirty}
 		/>
+	</label>
+
+	<!-- TMDB Auth Sesson -->
+	<label for="tmdbAuth" class="flex w-full items-center justify-between">
+		<span class="label font-semibold">TMDB Auth</span>
+		<button
+			id="tmdbAuth"
+			name="tmdbAuth"
+			class="btn {settings.tmdbSessionId ? 'btn-success' : 'btn-primary'}"
+			onclick={async () => {
+				await auth();
+				markDirty();
+			}}>Authentifizieren</button
+		>
 	</label>
 
 	<!-- Schlüsselwörter -->
