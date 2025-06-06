@@ -1,11 +1,12 @@
 import { online } from 'svelte/reactivity/window';
-import { getToken } from './tmdb';
+import { postAccessToken, postToken } from './tmdb';
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { settingsDB } from './db/settings';
 import { settings } from '$lib/stores.svelte';
-import type { Session } from '$lib/types/authentication';
-import { error, warn } from '@tauri-apps/plugin-log';
+import { error } from '@tauri-apps/plugin-log';
 import { newToast } from '$lib/toast/toast';
+
+const TMDB_AUTH_EVENT = 'tmdb-auth';
 
 /**
  * Führt den TMDB-Authentifizierungs-Flow über ein Webview durch.
@@ -13,17 +14,15 @@ import { newToast } from '$lib/toast/toast';
 export async function auth() {
 	if (!online.current) return;
 
-	const tokenResponse = await getToken();
-
+	const tokenResponse = await postToken();
 	if (!tokenResponse.success) {
 		error('Token konnte nicht erstellt werden.');
+		newToast('error', 'Token konnte nicht erstellt werden.');
 		return;
 	}
 
-	const redirect = `${location.origin}/tmdb-auth`;
-
 	const webview = new WebviewWindow('tmdb-auth', {
-		url: `https://www.themoviedb.org/authenticate/${tokenResponse.request_token}?redirect_to=${redirect}`,
+		url: `https://www.themoviedb.org/auth/access?request_token=${tokenResponse.request_token}`,
 		width: 1000,
 		height: 800,
 		title: 'TMDB Authentication'
@@ -33,23 +32,24 @@ export async function auth() {
 		error('WebviewWindow error: ' + JSON.stringify(e));
 	});
 
-	// Beispiel-Emit an Backend (falls nötig, sonst weglassen)
-	await webview.emit('tmdb-auth', 'data');
+	webview.emit(TMDB_AUTH_EVENT, 'data');
 
-	// Event-Listener für auth-event
-	const unlisten = await webview.listen<Session>('tmdb-auth', (event) => {
-		const payload = event.payload;
+	const unlisten = await webview.listen(TMDB_AUTH_EVENT, async (e) => {
+		if (e.event !== TMDB_AUTH_EVENT) return;
 
-		if (payload.success && payload.session_id) {
-			settingsDB.update({ tmdbSessionId: payload.session_id });
-			settings.tmdbSessionId = payload.session_id;
-			newToast('success', 'TMDB-Authentifizierung erfolgreich abgeschlossen.');
-		} else {
-			warn('Ungültiges Session-Payload erhalten: ' + JSON.stringify(payload));
+		const accessToken = await postAccessToken(tokenResponse.request_token);
+
+		if (!accessToken.success || !accessToken.access_token) {
+			newToast('error', 'TMDB Access Token konnte nicht erstellt werden.');
+			return;
 		}
+
+		settingsDB.update({ tmdbSessionId: accessToken.access_token });
+		settings.tmdbSessionId = accessToken.access_token;
+		newToast('success', 'TMDB-Authentifizierung erfolgreich abgeschlossen.');
 	});
 
 	webview.once('tauri://destroyed', () => {
-		unlisten(); // Event-Listener entfernen
+		unlisten();
 	});
 }
