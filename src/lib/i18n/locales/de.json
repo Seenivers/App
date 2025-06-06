@@ -174,7 +174,9 @@
 		"addWatchPath": "Pfad hinzufügen",
 		"watchPathsHint": "Absoluter Verzeichnispfad (z.B. C:/Videos)",
 		"tmdbAuthLabel": "TMDB Authentifizierung",
-		"tmdbAuthButton": "Authentifizieren"
+		"tmdbAuthButton": "Authentifizieren",
+		"confirmReauth": "Möchtest du die Authentifizierung wirklich neu starten?",
+		"reauthenticate": "Neu authentifizieren"
 	},
 	"main": {
 		"searchPlaceholder": "Suchen...",

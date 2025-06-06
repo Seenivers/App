@@ -251,13 +251,15 @@
 			id="tmdbAuth"
 			name="tmdbAuth"
 			class="btn {settings.tmdbSessionId ? 'btn-success' : 'btn-primary'}"
-			disabled={!!settings.tmdbSessionId}
 			onclick={async () => {
+				if (settings.tmdbSessionId) {
+					if (!(await confirm($_('settings.confirmReauth')))) return;
+				}
 				await auth();
 				markDirty();
 			}}
 		>
-			{$_('settings.tmdbAuthButton')}
+			{settings.tmdbSessionId ? $_('settings.reauthenticate') : $_('settings.tmdbAuthButton')}
 		</button>
 	</label>
 
