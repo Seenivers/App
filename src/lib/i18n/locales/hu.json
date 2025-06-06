@@ -172,7 +172,11 @@
 		"backupMaxSizeMB": "Mentés maximális mérete (MB)",
 		"watchPaths": "Figyelt mappák",
 		"addWatchPath": "Útvonal hozzáadása",
-		"watchPathsHint": "Abszolút mappaútvonal (pl.: C:/Videos)"
+		"watchPathsHint": "Abszolút mappaútvonal (pl.: C:/Videos)",
+		"tmdbAuthButton": "Authenticate",
+		"tmdbAuthLabel": "TMDB Authentication",
+		"confirmReauth": "Do you really want to restart the authentication?",
+		"reauthenticate": "Re-authenticate"
 	},
 	"main": {
 		"searchPlaceholder": "Keresés...",
