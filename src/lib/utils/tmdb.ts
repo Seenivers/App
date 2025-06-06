@@ -8,7 +8,7 @@ import type { Actor } from '$lib/types/actor';
 import type { Serie } from '../types/tv/serie';
 import type { Season } from '../types/tv/season';
 import type { Episode } from '../types/tv/episode';
-import type { Token } from '$lib/types/authentication';
+import type { Session, Token } from '$lib/types/authentication';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -163,3 +163,31 @@ export const getSerieSeasonEpisode = (
 
 // Token
 export const getToken = () => fetchData<Token>('/api/tmdb/token', {});
+
+/**
+ * Sendet einen request_token an die eigene API und erhält eine TMDB-Session.
+ * @param request_token Der von TMDB erhaltene Request-Token
+ * @returns Session-Objekt mit session_id
+ * @throws Error bei Netzwerkfehler oder ungültiger API-Antwort
+ */
+export const postSession = async (request_token: string): Promise<Session> => {
+	const endpoint = '/api/tmdb/session';
+	const url = new URL(endpoint, seeniversURL);
+
+	try {
+		const response = await fetch(url.toString(), {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ request_token })
+		});
+
+		return await parseResponse<Session>(response, endpoint);
+	} catch (err) {
+		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
+		console.error(message);
+		throw new Error(message);
+	}
+};
