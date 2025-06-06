@@ -5,6 +5,7 @@ import { settingsDB } from './db/settings';
 import { settings } from '$lib/stores.svelte';
 import type { Session } from '$lib/types/authentication';
 import { error, warn } from '@tauri-apps/plugin-log';
+import { newToast } from '$lib/toast/toast';
 
 /**
  * Führt den TMDB-Authentifizierungs-Flow über ein Webview durch.
@@ -42,6 +43,7 @@ export async function auth() {
 		if (payload.success && payload.session_id) {
 			settingsDB.update({ tmdbSessionId: payload.session_id });
 			settings.tmdbSessionId = payload.session_id;
+			newToast('success', 'TMDB-Authentifizierung erfolgreich abgeschlossen.');
 		} else {
 			warn('Ungültiges Session-Payload erhalten: ' + JSON.stringify(payload));
 		}
