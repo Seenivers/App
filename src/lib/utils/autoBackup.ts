@@ -2,7 +2,7 @@ import { db } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
 import { settings } from '$lib/stores.svelte';
 import { desc } from 'drizzle-orm/sql';
-import { backup } from './backup';
+import { backup } from './db/backup';
 
 export async function autoBackup() {
 	if (settings.backupInterval === 'manual') return;
