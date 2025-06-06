@@ -15,11 +15,7 @@
 				<p class="mb-5 text-3xl">{page.error?.message}</p>
 				<button
 					class="btn btn-outline btn-sm md:btn-md"
-					onclick={() => {
-						const myWebView = getCurrentWebviewWindow();
-						console.log(myWebView.label);
-						myWebView.close();
-					}}
+					onclick={() => getCurrentWebviewWindow().close()}
 				>
 					Close
 				</button>
