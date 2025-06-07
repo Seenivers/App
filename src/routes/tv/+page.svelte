@@ -126,7 +126,7 @@
 				class="btn btn-sm md:btn-md"
 				onclick={() => {
 					watched = !watched;
-					serie.update(data.serie.id, { watched: watched });
+					serie.update(data.serie.id, { watched: watched, wantsToWatch: false });
 				}}
 				disabled={!data.serie}
 			>
