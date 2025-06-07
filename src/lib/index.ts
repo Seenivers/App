@@ -26,5 +26,6 @@ export const themes = [
 	'Aqua',
 	'Wireframe',
 	'Dracula',
-	'Night'
+	'Night',
+	'Dim'
 ] as const;
