@@ -305,6 +305,7 @@
 						? 'input-error'
 						: ''}"
 					bind:value={settingsTemp.watchPaths[index]}
+					onchange={markDirty}
 					placeholder="/path/to/folder"
 				/>
 
@@ -343,7 +344,10 @@
 			id="watchPaths"
 			name="watchPaths"
 			class="btn btn-primary"
-			onclick={() => settingsTemp.watchPaths.push('')}
+			onclick={() => {
+				settingsTemp.watchPaths.push('');
+				markDirty();
+			}}
 		>
 			<FolderAdd class="stroke-base-var(--btn-fg) h-6 w-6" />
 			{$_('settings.addWatchPath')}
