@@ -33,7 +33,8 @@ export const serie = {
 					watched: false,
 					updated: new Date(),
 					wantsToWatch: false,
-					season: 0
+					season: 0,
+					rating: 0
 				};
 			}
 		}
@@ -75,7 +76,8 @@ export const serie = {
 								watched: false,
 								updated: new Date(),
 								wantsToWatch: false,
-								season: 0
+								season: 0,
+								rating: 0
 							};
 						}
 						return null;

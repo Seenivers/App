@@ -28,7 +28,8 @@ export const movie = {
 					watched: false,
 					watchTime: 0,
 					wantsToWatch: false,
-					updated: new Date()
+					updated: new Date(),
+					rating: 0
 				};
 			}
 		}
@@ -63,7 +64,8 @@ export const movie = {
 					watched: false,
 					watchTime: 0,
 					wantsToWatch: false,
-					updated: new Date()
+					updated: new Date(),
+					rating: 0
 				}));
 
 				for (const err of errors) {
