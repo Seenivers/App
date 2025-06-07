@@ -21,5 +21,6 @@ export const themes = [
 	'Retro',
 	'Cyberpunk',
 	'Valentine',
-	'Halloween'
+	'Halloween',
+	'Forest'
 ] as const;
