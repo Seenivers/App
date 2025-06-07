@@ -57,5 +57,8 @@ export const settings = sqliteTable('settings', {
 		.$type<BackupConfig>()
 		.default({ maxAgeDays: 0, maxBackups: 14, maxSizeMB: 0 }),
 	watchPaths: text('watchPaths', { mode: 'json' }).notNull().$type<string[]>().default([]),
-	tmdbSessionId: text('tmdbSessionId').default('')
+	tmdbSessionId: text('tmdbSessionId'),
+	tmdbAccessToken: text('tmdbAccessToken'),
+	tmdbGuestSessionId: text('tmdbGuestSessionId'),
+	tmdbGuestSessionCreatedAt: int('tmdbGuestSessionCreatedAt', { mode: 'timestamp' })
 });
