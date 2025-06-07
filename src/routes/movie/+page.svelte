@@ -23,7 +23,6 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const id = data.id;
 	let watched: boolean = $state(data.result.watched ?? false);
 	let modal = $state(false);
 	let form: HTMLFormElement;
@@ -33,12 +32,12 @@
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
 		watched = !watched;
-		await movie.update(id, { watched, wantsToWatch: false });
+		await movie.update(data.id, { watched, wantsToWatch: false });
 	}
 
 	// Entferne Film anhand der ID
 	async function removeElementById() {
-		await movie.update(id, { path: null });
+		await movie.update(data.id, { path: null });
 		data.pathExists = false;
 		movieData.path = null;
 	}
@@ -106,7 +105,7 @@
 			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 		</button>
 		<a
-			href="https://www.themoviedb.org/movie/{id}"
+			href="https://www.themoviedb.org/movie/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
 			rel="noopener noreferrer">{$_('openOnTMDB')}</a
@@ -128,9 +127,19 @@
 			{#if movieData.path && data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					{#if settings.player === 'Plyr'}
-						<Plyr src={convertFileSrc(movieData.path)} poster={poster.src} {id} type="movie" />
+						<Plyr
+							src={convertFileSrc(movieData.path)}
+							poster={poster.src}
+							id={data.id}
+							type="movie"
+						/>
 					{:else}
-						<Vidstack src={convertFileSrc(movieData.path)} poster={poster.src} {id} type="movie" />
+						<Vidstack
+							src={convertFileSrc(movieData.path)}
+							poster={poster.src}
+							id={data.id}
+							type="movie"
+						/>
 					{/if}
 				{/await}
 			{:else if movieData.path}
@@ -385,10 +394,10 @@
 				if (!form || !form.newID || !movieData) return;
 				const newID = parseInt(form.newID.value, 10);
 				try {
-					if (id !== -1 && newID && newID !== movieData.id) {
+					if (data.id !== -1 && newID && newID !== movieData.id) {
 						const newMovieByTmdb = await getMovie(newID);
 
-						await movie.update(id, { id: newID, tmdb: newMovieByTmdb });
+						await movie.update(data.id, { id: newID, tmdb: newMovieByTmdb });
 
 						modal = false;
 						window.location.href = newID.toString();
