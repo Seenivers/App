@@ -337,5 +337,6 @@
 	},
 	"bookmarkAdd": "Könyvjelzőhöz adás",
 	"bookmarkRemove": "Könyvjelző eltávolítása",
-	"guestStars": "Vendégszereplő"
+	"guestStars": "Vendégszereplő",
+	"yourRating": "Your rating"
 }
