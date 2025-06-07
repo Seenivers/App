@@ -286,7 +286,7 @@
 	"downloading": "Downloading ({count})",
 	"downloaded": "Downloaded ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "Title",
+	"title": "标题：",
 	"path": "Path: {path}",
 	"releaseYear": "发布年份",
 	"optional": "可选的",
