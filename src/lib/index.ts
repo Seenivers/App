@@ -20,5 +20,6 @@ export const themes = [
 	'Synthwave',
 	'Retro',
 	'Cyberpunk',
-	'Valentine'
+	'Valentine',
+	'Halloween'
 ] as const;
