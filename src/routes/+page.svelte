@@ -3,7 +3,7 @@
 	import type { IFuseOptions } from 'fuse.js';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { PageData } from './$types';
-	import Card from '$lib/utils/card.svelte';
+	import Card from '$lib/components/card.svelte';
 	import { _ } from 'svelte-i18n';
 	import type { CardscaleNumbers } from '$lib/types/cardscale';
 	import Search from '$lib/SVG/search.svelte';
