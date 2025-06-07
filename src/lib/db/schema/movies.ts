@@ -10,5 +10,6 @@ export const movies = sqliteTable('movies', {
 	tmdb: text('tmdb', { mode: 'json' }).$type<Movie>().notNull(),
 	updated: int('updated', { mode: 'timestamp' })
 		.notNull()
-		.$defaultFn(() => new Date())
+		.$defaultFn(() => new Date()),
+	rating: int('rating').notNull().default(0)
 });
