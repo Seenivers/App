@@ -28,5 +28,6 @@ export const themes = [
 	'Dracula',
 	'Night',
 	'Dim',
-	'Nord'
+	'Nord',
+	'Sunset'
 ] as const;
