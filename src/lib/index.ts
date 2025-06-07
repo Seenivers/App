@@ -27,5 +27,6 @@ export const themes = [
 	'Wireframe',
 	'Dracula',
 	'Night',
-	'Dim'
+	'Dim',
+	'Nord'
 ] as const;
