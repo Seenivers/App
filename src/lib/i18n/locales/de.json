@@ -338,5 +338,7 @@
 	"bookmarkAdd": "Zur Merkliste hinzufügen",
 	"bookmarkRemove": "Von der Merkliste entfernen",
 	"guestStars": "Gastdarsteller",
-	"yourRating": "Deine Bewertung"
+	"yourRating": "Deine Bewertung",
+	"folderNotFoundTitle": "Der angegebene Ordner existiert nicht.",
+	"folderNotFound": "Ordner existiert nicht"
 }

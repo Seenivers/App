@@ -7,12 +7,13 @@
 	import { onDestroy } from 'svelte';
 	import { settingsDB } from '$lib/utils/db/settings';
 	import { _, locale, locales } from 'svelte-i18n';
-	import { open } from '@tauri-apps/plugin-dialog';
+	import { message, open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
 	import FolderOpen from '$lib/SVG/FolderOpen.svelte';
 	import FolderAdd from '$lib/SVG/FolderAdd.svelte';
 	import Close from '$lib/SVG/Close.svelte';
 	import { auth } from '$lib/utils/authentication';
+	import { exists } from '@tauri-apps/plugin-fs';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
@@ -305,7 +306,19 @@
 						? 'input-error'
 						: ''}"
 					bind:value={settingsTemp.watchPaths[index]}
-					onchange={markDirty}
+					onchange={async () => {
+						if (
+							settingsTemp.watchPaths[index].length !== 0 &&
+							!(await exists(settingsTemp.watchPaths[index]))
+						) {
+							await message($_('folderNotFound'), {
+								kind: 'error',
+								title: $_('folderNotFoundTitle')
+							});
+						} else {
+							markDirty();
+						}
+					}}
 					placeholder="/path/to/folder"
 				/>
 
