@@ -17,5 +17,6 @@ export const themes = [
 	'Bumblebee',
 	'Emerald',
 	'Corporate',
-	'Synthwave'
+	'Synthwave',
+	'Retro'
 ] as const;
