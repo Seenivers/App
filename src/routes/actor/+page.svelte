@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
 	import { onMount } from 'svelte';

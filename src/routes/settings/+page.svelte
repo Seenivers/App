@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { settings } from '$lib/stores.svelte';
 	import { app } from '@tauri-apps/api';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
 	import { setTheme } from '$lib/utils/themeUtils';

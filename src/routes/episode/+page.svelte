@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { settings } from '$lib/stores.svelte';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import type { PageData } from './$types';
 	import { error } from '@tauri-apps/plugin-log';
 	import { openPath } from '@tauri-apps/plugin-opener';

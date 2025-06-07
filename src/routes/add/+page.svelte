@@ -8,7 +8,7 @@
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { SearchStatus } from '$lib/types/add';
 	import { error, warn } from '@tauri-apps/plugin-log';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
 	import { online } from 'svelte/reactivity/window';

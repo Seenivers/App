@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import Updater from '$lib/updater.svelte';
+	import Updater from '$lib/components/updater.svelte';
 	import Toast from '$lib/toast/toast.svelte';
 	import '../app.css';
 	import { networkStatus } from '$lib/utils/networkStatus';
@@ -21,7 +21,7 @@
 		updateMovies,
 		updateOldDB
 	} from '$lib/db/update';
-	import ProgressBar from '$lib/ProgressBar.svelte';
+	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
 

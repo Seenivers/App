@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import { settings } from '$lib/stores.svelte';
 	import { image } from '$lib/image/image';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/discord';
