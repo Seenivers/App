@@ -337,5 +337,6 @@
 	},
 	"bookmarkAdd": "Add to Bookmarks",
 	"bookmarkRemove": "Remove from Bookmarks",
-	"guestStars": "Guest actor"
+	"guestStars": "Guest actor",
+	"yourRating": "Your rating"
 }
