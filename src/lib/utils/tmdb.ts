@@ -8,7 +8,7 @@ import type { Actor } from '$lib/types/actor';
 import type { Serie } from '../types/tv/serie';
 import type { Season } from '../types/tv/season';
 import type { Episode } from '../types/tv/episode';
-import type { AccessToken, RequestToken } from '$lib/types/authentication';
+import type { AccessToken, RequestToken, SessionId } from '$lib/types/authentication';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -200,6 +200,29 @@ export const postAccessToken = async (request_token: string) => {
 		});
 
 		return await parseResponse<AccessToken>(response, endpoint);
+	} catch (err) {
+		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
+		console.error(message);
+		throw new Error(message);
+	}
+};
+
+export const postSessionId = async () => {
+	if (!settings.tmdbAccessToken) return;
+	const endpoint = '/api/tmdb/session';
+	const url = new URL(endpoint, seeniversURL);
+
+	try {
+		const response = await fetch(url.toString(), {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ access_token: settings.tmdbAccessToken })
+		});
+
+		return await parseResponse<SessionId>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
 		console.error(message);
