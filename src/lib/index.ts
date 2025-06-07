@@ -23,5 +23,6 @@ export const themes = [
 	'Valentine',
 	'Halloween',
 	'Forest',
-	'Aqua'
+	'Aqua',
+	'Wireframe'
 ] as const;
