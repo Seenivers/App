@@ -84,23 +84,22 @@
 			<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}>
 				{$_('edit')}
 			</button>
-		{:else}
-			<button
-				class="btn btn-sm md:btn-md"
-				title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
-				onclick={() => {
-					isBookmarked = !isBookmarked;
-					collection.update(data.id, { wantsToWatch: isBookmarked });
-				}}
-				disabled={data.pathExists}
-			>
-				{#if isBookmarked}
-					<BookmarkSlash class="h-6 w-6" />
-				{:else}
-					<Bookmark class="h-6 w-6" />
-				{/if}
-			</button>
 		{/if}
+		<button
+			class="btn btn-sm md:btn-md"
+			title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
+			onclick={() => {
+				isBookmarked = !isBookmarked;
+				collection.update(data.id, { wantsToWatch: isBookmarked });
+			}}
+			disabled={data.pathExists}
+		>
+			{#if isBookmarked}
+				<BookmarkSlash class="h-6 w-6" />
+			{:else}
+				<Bookmark class="h-6 w-6" />
+			{/if}
+		</button>
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
 			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 		</button>

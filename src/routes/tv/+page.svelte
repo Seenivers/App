@@ -132,23 +132,23 @@
 			>
 				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
-		{:else}
-			<button
-				class="btn btn-sm md:btn-md"
-				title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
-				onclick={() => {
-					isBookmarked = !isBookmarked;
-					serie.update(data.id, { wantsToWatch: isBookmarked });
-				}}
-				disabled={data.pathExists}
-			>
-				{#if isBookmarked}
-					<BookmarkSlash class="h-6 w-6" />
-				{:else}
-					<Bookmark class="h-6 w-6" />
-				{/if}
-			</button>
 		{/if}
+		<button
+			class="btn btn-sm md:btn-md"
+			title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
+			onclick={() => {
+				isBookmarked = !isBookmarked;
+				serie.update(data.id, { wantsToWatch: isBookmarked });
+			}}
+			disabled={data.pathExists}
+		>
+			{#if isBookmarked}
+				<BookmarkSlash class="h-6 w-6" />
+			{:else}
+				<Bookmark class="h-6 w-6" />
+			{/if}
+		</button>
+
 		<a
 			href="https://www.themoviedb.org/tv/{data.serie.id}"
 			class="btn btn-sm md:btn-md"
