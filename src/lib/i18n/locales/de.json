@@ -337,5 +337,6 @@
 	},
 	"bookmarkAdd": "Zur Merkliste hinzufügen",
 	"bookmarkRemove": "Von der Merkliste entfernen",
-	"guestStars": "Gastdarsteller"
+	"guestStars": "Gastdarsteller",
+	"yourRating": "Deine Bewertung"
 }

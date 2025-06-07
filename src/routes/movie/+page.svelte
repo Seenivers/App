@@ -19,6 +19,7 @@
 	import { _ } from 'svelte-i18n';
 	import Bookmark from '$lib/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
+	import Rating from '$lib/components/rating.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -266,15 +267,23 @@
 					<section>
 						<h2 class="text-lg font-bold">{$_('rating')}</h2>
 						<p>
-							{movieData.tmdb.vote_average
-								? $_('ratingSummary', {
-										values: {
-											average: Math.round(movieData.tmdb.vote_average * 10) / 10,
-											count: movieData.tmdb.vote_count ?? 0
-										}
-									})
-								: $_('noInformationAvailable')}
+							{#if movieData.tmdb.vote_average}
+								{$_('ratingSummary', {
+									values: {
+										average: Math.round(movieData.tmdb.vote_average * 10) / 10,
+										count: movieData.tmdb.vote_count ?? 0
+									}
+								})}
+							{:else}
+								{$_('noInformationAvailable')}
+							{/if}
+							| {$_('yourRating')}: {movieData.rating}
 						</p>
+
+						<Rating
+							bind:value={movieData.rating}
+							update={async () => await movie.update(data.id, { rating: movieData.rating })}
+						/>
 					</section>
 
 					<!-- Genres -->

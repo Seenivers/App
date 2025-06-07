@@ -13,6 +13,7 @@
 	import { _ } from 'svelte-i18n';
 	import Bookmark from '$lib/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
+	import Rating from '$lib/components/rating.svelte';
 
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
@@ -297,15 +298,25 @@
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">{$_('averageRating')}</h2>
+				<h2 class="text-lg font-bold">{$_('rating')}</h2>
 				<p>
-					{data.serie.tmdb.vote_average
-						? `${Math.round(data.serie.tmdb.vote_average * 10) / 10}/10`
-						: $_('noReviews')}
-					{data.serie.tmdb.vote_count
-						? ` (${$_('reviews', { values: { reviews: data.serie.tmdb.vote_count } })})`
-						: ''}
+					{#if data.serie.tmdb.vote_average}
+						{$_('ratingSummary', {
+							values: {
+								average: Math.round(data.serie.tmdb.vote_average * 10) / 10,
+								count: data.serie.tmdb.vote_count ?? 0
+							}
+						})}
+					{:else}
+						{$_('noInformationAvailable')}
+					{/if}
+					| {$_('yourRating')}: {data.serie.rating}
 				</p>
+
+				<Rating
+					bind:value={data.serie.rating}
+					update={async () => await serie.update(data.id, { rating: data.serie.rating })}
+				/>
 			</div>
 
 			<div>
