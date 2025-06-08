@@ -14,6 +14,7 @@
 	import Close from '$lib/SVG/Close.svelte';
 	import { auth } from '$lib/utils/authentication';
 	import { exists } from '@tauri-apps/plugin-fs';
+	import { confirm } from '@tauri-apps/plugin-dialog';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
@@ -251,16 +252,16 @@
 		<button
 			id="tmdbAuth"
 			name="tmdbAuth"
-			class="btn {settings.tmdbSessionId ? 'btn-success' : 'btn-primary'}"
+			class="btn {settings.tmdbAccessToken ? 'btn-success' : 'btn-primary'}"
 			onclick={async () => {
-				if (settings.tmdbSessionId) {
+				if (settings.tmdbAccessToken) {
 					if (!(await confirm($_('settings.confirmReauth')))) return;
 				}
 				await auth();
 				markDirty();
 			}}
 		>
-			{settings.tmdbSessionId ? $_('settings.reauthenticate') : $_('settings.tmdbAuthButton')}
+			{settings.tmdbAccessToken ? $_('settings.reauthenticate') : $_('settings.tmdbAuthButton')}
 		</button>
 	</label>
 
