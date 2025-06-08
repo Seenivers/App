@@ -255,7 +255,7 @@
 			class="btn {settings.tmdbAccessToken ? 'btn-success' : 'btn-primary'}"
 			onclick={async () => {
 				if (settings.tmdbAccessToken) {
-					if (!(await confirm($_('settings.confirmReauth')))) return;
+					if (!(await confirm($_('settings.confirmReauth'), { kind: 'warning' }))) return;
 				}
 				await auth();
 				markDirty();
