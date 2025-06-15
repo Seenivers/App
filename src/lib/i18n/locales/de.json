@@ -173,8 +173,8 @@
 		"watchPaths": "Überwachte Verzeichnisse",
 		"addWatchPath": "Pfad hinzufügen",
 		"watchPathsHint": "Absoluter Verzeichnispfad (z.B. C:/Videos)",
-		"tmdbAuthLabel": "TMDB Authentifizierung",
 		"tmdbAuthButton": "Authentifizieren",
+		"tmdbAuthLabel": "TMDB Authentifizierung",
 		"confirmReauth": "Möchtest du die Authentifizierung wirklich neu starten?",
 		"reauthenticate": "Neu authentifizieren"
 	},
@@ -286,7 +286,7 @@
 	"downloading": "Wird heruntergeladen ({count})",
 	"downloaded": "Heruntergeladen ({count})",
 	"titleWithValue": "Titel: {title}",
-	"title": "Titel",
+	"title": "Titel:",
 	"path": "Pfad: {path}",
 	"releaseYear": "Erscheinungsjahr",
 	"optional": "Optional",
