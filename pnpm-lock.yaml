@@ -130,7 +130,7 @@ importers:
         specifier: ^24.2.5
         version: 24.2.5(typescript@5.8.3)
       svelte:
-        specifier: ^5.33.14
+        specifier: ^5.33.17
         version: 5.33.18
       svelte-check:
         specifier: ^4.2.1
@@ -4995,7 +4995,7 @@ snapshots:
   gel@2.0.2:
     dependencies:
       '@petamoriken/float16': 3.9.2
-      debug: 4.4.0
+      debug: 4.4.1
       env-paths: 3.0.0
       semver: 7.7.1
       shell-quote: 1.8.2
