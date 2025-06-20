@@ -330,9 +330,9 @@
 	"weekly": "Tygodniowo",
 	"monthly": "Miesięczny",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Rozmiar",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Ustawienia",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
