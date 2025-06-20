@@ -330,9 +330,9 @@
 	"weekly": "Еженедельно",
 	"monthly": "Ежемесячно",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Размер",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Настройки",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
