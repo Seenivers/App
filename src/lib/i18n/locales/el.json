@@ -330,9 +330,9 @@
 	"weekly": "Εβδομαδιαία",
 	"monthly": "Μηνιαία",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Μέγεθος",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Ρυθμίσεις",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
