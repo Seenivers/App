@@ -17,7 +17,7 @@ export async function syncWatchlist() {
 	// 📥 Lokale Filme und Serien abrufen, die in der Remote-Watchlist sind
 	const [localMovies, localSeries] = await Promise.all([
 		movie.getAll(remoteMovieIds),
-		serie.getAll(remoteSeriesIds.map((id) => ({ seriesId: id })))
+		serie.getAll(remoteSeriesIds)
 	]);
 
 	// 📑 Alle lokalen Einträge sammeln, die als Watchlist markiert sind
