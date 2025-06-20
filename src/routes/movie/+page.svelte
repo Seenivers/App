@@ -90,7 +90,7 @@
 			title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
 			onclick={() => {
 				isBookmarked = !isBookmarked;
-				collection.update(data.id, { wantsToWatch: isBookmarked });
+				movie.update(data.id, { wantsToWatch: isBookmarked });
 			}}
 			disabled={data.pathExists}
 		>
