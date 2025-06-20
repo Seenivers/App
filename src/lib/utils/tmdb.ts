@@ -9,6 +9,7 @@ import type { Serie } from '../types/tv/serie';
 import type { Season } from '../types/tv/season';
 import type { Episode } from '../types/tv/episode';
 import type { AccessToken, RequestToken, SessionId } from '$lib/types/authentication';
+import type { WatchList } from '$lib/types/watchlist';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -160,6 +161,17 @@ export const getSerieSeasonEpisode = (
 		episodeNumber,
 		language
 	});
+
+export const getWatchlist = (
+	account_object_id = settings.tmdbAccountID,
+	language: string = settings.language || window.navigator.language
+) => {
+	if (!account_object_id) return;
+	return fetchData<WatchList>('/api/tmdb/watchlist', {
+		account_object_id,
+		language
+	});
+};
 
 // Token
 export const postToken = async () => {
