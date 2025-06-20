@@ -8,8 +8,6 @@
 	import { discord } from '$lib/discord';
 	import { _ } from 'svelte-i18n';
 	import { collection } from '$lib/utils/db/collection';
-	import Bookmark from '$lib/SVG/Bookmark.svelte';
-	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
 
 	interface Props {
 		data: PageData;
@@ -20,7 +18,6 @@
 	let isGridView = $state(false); // Startwert für das Layout
 	let moviesStore = $state(data.result.parts);
 	let sortNewestFirst = $state(true);
-	let isBookmarked = $state(data.result.wantsToWatch || false);
 
 	// Verwende $derived mit einer einzigen Funktion, die beide Zustände referenziert:
 	let sortedMovies = $derived(() => {
@@ -44,7 +41,7 @@
 
 	async function toggleWatchedStatus() {
 		watched = !watched;
-		await collection.update(data.id, { watched: watched, wantsToWatch: false });
+		await collection.update(data.id, { watched: watched });
 	}
 
 	onMount(() => {
@@ -72,21 +69,6 @@
 		</button>
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
 			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
-		</button>
-		<button
-			class="btn btn-sm md:btn-md"
-			title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
-			onclick={() => {
-				isBookmarked = !isBookmarked;
-				collection.update(data.id, { wantsToWatch: isBookmarked });
-			}}
-			disabled={watched}
-		>
-			{#if isBookmarked}
-				<BookmarkSlash class="h-6 w-6" />
-			{:else}
-				<Bookmark class="h-6 w-6" />
-			{/if}
 		</button>
 		<a
 			href="https://www.themoviedb.org/collection/{data.id}"
