@@ -72,7 +72,7 @@ export async function selectTvFolder() {
 		const allPaths = (await Promise.all(folderList.map((folder) => resolvePaths(folder)))).flat();
 
 		if (allPaths.length > 0) {
-			await addNewFiles(allPaths);
+			await addNewFiles(folderList);
 		}
 	} catch (e) {
 		console.error('Fehler beim TV-Ordner-Auswählen:', e);

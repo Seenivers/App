@@ -79,12 +79,11 @@ export async function addNewPathsToStatus(newPaths: string[]) {
 		const fileNameWithExt = await basename(path);
 		const fileNameWithoutExt = fileNameWithExt.replace(/\.[^/.]+$/, '');
 
-		const parsed = filenameParse(fileNameWithoutExt, !hasMovieExtension(path));
+		const parsed = filenameParse(fileNameWithoutExt);
 
 		tempStatus.push({
 			status: 'waitForSearching',
-			// @ts-expect-error `isTv` ist optional
-			mediaType: parsed.isTv ? 'tv' : 'movie',
+			mediaType: !hasMovieExtension(path) ? 'tv' : 'movie',
 			search: {
 				page: 1,
 				results: [],
@@ -93,7 +92,7 @@ export async function addNewPathsToStatus(newPaths: string[]) {
 			},
 			options: {
 				path,
-				fileName: parsed.title ?? fileNameWithoutExt,
+				fileName: parsed.title.length > 1 ? parsed.title : fileNameWithoutExt,
 				primaryReleaseYear: parsed.year ?? ''
 			}
 		});
