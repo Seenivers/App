@@ -232,7 +232,7 @@
 			<h2 class="my-3 text-2xl font-bold">{$_('seriesCast')}</h2>
 			<div class="rounded-box bg-base-100 p-3">
 				<div class="carousel carousel-center rounded-box w-full space-x-3">
-					{#each data.serie.tmdb.credits.cast as cast (cast.id)}
+					{#each data.serie.tmdb.credits.cast as cast}
 						<a
 							href="./actor?id={cast.id}"
 							class="carousel-item flex flex-col items-center"
