@@ -7,6 +7,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { movie } from '$lib/utils/db/movie';
 	import { serie } from '$lib/utils/db/serie';
+	import Close from '$lib/SVG/Close.svelte';
 
 	export let data: PageData;
 
@@ -74,10 +75,10 @@
 								</div>
 							</a>
 							<button
-								class="btn btn-xs btn-error"
+								class="btn btn-error btn-circle"
 								ondblclick={() => removeFromWatchlist('movie', item.id)}
 							>
-								✕
+								<Close class="h-8 w-8" />
 							</button>
 						</li>
 					{/each}
@@ -119,10 +120,10 @@
 								</div>
 							</a>
 							<button
-								class="btn btn-xs btn-error"
+								class="btn btn-error btn-circle"
 								ondblclick={() => removeFromWatchlist('tv', item.id)}
 							>
-								✕
+								<Close class="h-8 w-8" />
 							</button>
 						</li>
 					{/each}
