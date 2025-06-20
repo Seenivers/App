@@ -330,9 +330,9 @@
 	"weekly": "أسبوعيا",
 	"monthly": "شهريا",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "الحجم",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "الإعدادات",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
