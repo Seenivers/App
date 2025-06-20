@@ -286,7 +286,7 @@
 	"downloading": "Downloading ({count})",
 	"downloaded": "Downloaded ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "标题：",
+	"title": "Title",
 	"path": "Path: {path}",
 	"releaseYear": "发布年份",
 	"optional": "可选的",
@@ -340,5 +340,7 @@
 	"guestStars": "Guest actor",
 	"yourRating": "Your rating",
 	"folderNotFoundTitle": "The specified folder does not exist.",
-	"folderNotFound": "Folder does not exist"
+	"folderNotFound": "Folder does not exist",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }
