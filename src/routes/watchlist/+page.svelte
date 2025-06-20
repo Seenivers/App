@@ -74,12 +74,14 @@
 									<p class="text-sm">{item.tmdb.overview}</p>
 								</div>
 							</a>
-							<button
-								class="btn btn-error btn-circle"
-								ondblclick={() => removeFromWatchlist('movie', item.id)}
-							>
-								<Close class="h-8 w-8" />
-							</button>
+							<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
+								<button
+									class="btn btn-error btn-circle"
+									ondblclick={() => removeFromWatchlist('movie', item.id)}
+								>
+									<Close class="h-8 w-8" />
+								</button>
+							</div>
 						</li>
 					{/each}
 				</ul>
@@ -119,12 +121,14 @@
 									<p class="text-sm">{item.tmdb.overview}</p>
 								</div>
 							</a>
-							<button
-								class="btn btn-error btn-circle"
-								ondblclick={() => removeFromWatchlist('tv', item.id)}
-							>
-								<Close class="h-8 w-8" />
-							</button>
+							<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
+								<button
+									class="btn btn-error btn-circle"
+									ondblclick={() => removeFromWatchlist('tv', item.id)}
+								>
+									<Close class="h-8 w-8" />
+								</button>
+							</div>
 						</li>
 					{/each}
 				</ul>
