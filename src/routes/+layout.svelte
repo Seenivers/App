@@ -24,6 +24,7 @@
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
+	import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -55,6 +56,7 @@
 				await autoBackup();
 				await cleanupBackups();
 				if (online.current) {
+					await syncWatchlist();
 					await updateOldDB();
 					await updateMovies();
 					await updateCollections();
