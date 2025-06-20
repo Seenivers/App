@@ -8,6 +8,8 @@
 	import { movie } from '$lib/utils/db/movie';
 	import { serie } from '$lib/utils/db/serie';
 	import Close from '$lib/SVG/Close.svelte';
+	import { online } from 'svelte/reactivity/window';
+	import { settings } from '$lib/stores.svelte';
 
 	export let data: PageData;
 
@@ -29,12 +31,27 @@
 				wantsToWatch: false
 			});
 		}
+
+		location.reload();
 	};
 </script>
 
 <Navbar back={true}>
 	{#snippet right()}
-		<button class="btn" onclick={syncWatchlist}>{$_('watchlistSync')}</button>
+		<div
+			class={!online.current || !settings.tmdbAccessToken ? 'tooltip tooltip-left' : ''}
+			data-tip={!online.current
+				? $_('networkStatus.offline')
+				: !settings.tmdbAccessToken
+					? $_('noTMDBAccessToken')
+					: ''}
+		>
+			<button
+				class="btn"
+				onclick={syncWatchlist}
+				disabled={!settings.tmdbAccessToken || !online.current}>{$_('watchlistSync')}</button
+			>
+		</div>
 	{/snippet}
 </Navbar>
 

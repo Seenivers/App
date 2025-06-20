@@ -338,5 +338,6 @@
 	"bookmarkAdd": "Add to Bookmarks",
 	"bookmarkRemove": "Remove from Bookmarks",
 	"watchlist": "Watchlist",
-	"watchlistSync": "Sync Watchlist"
+	"watchlistSync": "Sync Watchlist",
+	"noTMDBAccessToken": "TMDB access required. Please sign in via settings and authorize access."
 }

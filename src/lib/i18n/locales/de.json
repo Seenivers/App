@@ -342,5 +342,6 @@
 	"folderNotFoundTitle": "Der angegebene Ordner existiert nicht.",
 	"folderNotFound": "Ordner existiert nicht",
 	"watchlist": "Watchlist",
-	"watchlistSync": "Watchlist synchronisieren"
+	"watchlistSync": "Watchlist synchronisieren",
+	"noTMDBAccessToken": "TMDB-Zugriff erforderlich. Bitte in den Einstellungen anmelden und Zugriff erlauben."
 }
