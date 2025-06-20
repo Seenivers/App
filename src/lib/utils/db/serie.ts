@@ -41,13 +41,8 @@ export const serie = {
 		return result;
 	},
 
-	getAll: async (
-		items?: { id?: number; seriesId?: number }[]
-	): Promise<(typeof schema.serie.$inferSelect)[]> => {
-		if (items && items.length > 0) {
-			// Filtere alle definierten IDs heraus
-			const ids = items.map((s) => s.id).filter((id): id is number => id !== undefined);
-
+	getAll: async (ids?: number[]): Promise<(typeof schema.serie.$inferSelect)[]> => {
+		if (ids && ids.length > 0) {
 			const localResults = await db
 				.select()
 				.from(schema.serie)
@@ -55,15 +50,13 @@ export const serie = {
 
 			const foundIds = localResults.map((r) => r.id);
 			// Filtere nur Elemente, bei denen id definiert ist
-			const missingItems = items.filter(
-				(item) => item.id !== undefined && !foundIds.includes(item.id)
-			);
+			const missingItems = ids.filter((item) => item !== undefined && !foundIds.includes(item));
 
 			if (missingItems.length > 0 && online.current) {
 				const fetchedResults: (typeof schema.serie.$inferSelect | null)[] = await Promise.all(
 					missingItems.map(async (item) => {
-						if (item.seriesId === undefined) return null;
-						const onlineResult = await getSerie(item.seriesId);
+						if (item === undefined) return null;
+						const onlineResult = await getSerie(item);
 						if (onlineResult) {
 							await db.insert(schema.serie).values({
 								id: onlineResult.id,
