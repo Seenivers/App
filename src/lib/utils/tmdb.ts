@@ -180,7 +180,7 @@ export const postToken = async () => {
 		return await parseResponse<RequestToken>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		console.error(message);
+		error(message);
 		throw new Error(message);
 	}
 };
@@ -202,7 +202,7 @@ export const postAccessToken = async (request_token: string) => {
 		return await parseResponse<AccessToken>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		console.error(message);
+		error(message);
 		throw new Error(message);
 	}
 };
