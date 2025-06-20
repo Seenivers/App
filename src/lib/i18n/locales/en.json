@@ -332,5 +332,7 @@
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
-	"bookmarkRemove": "Remove from Bookmarks"
+	"bookmarkRemove": "Remove from Bookmarks",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }

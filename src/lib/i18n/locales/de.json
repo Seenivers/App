@@ -340,5 +340,7 @@
 	"guestStars": "Gastdarsteller",
 	"yourRating": "Deine Bewertung",
 	"folderNotFoundTitle": "Der angegebene Ordner existiert nicht.",
-	"folderNotFound": "Ordner existiert nicht"
+	"folderNotFound": "Ordner existiert nicht",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Watchlist synchronisieren"
 }
