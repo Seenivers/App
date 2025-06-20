@@ -258,7 +258,8 @@
 					if (!(await confirm($_('settings.confirmReauth'), { kind: 'warning' }))) return;
 				}
 				await auth();
-				markDirty();
+				settingsTemp.tmdbAccessToken = settings.tmdbAccessToken;
+				settingsTemp.tmdbAccountID = settings.tmdbAccountID;
 			}}
 		>
 			{settings.tmdbAccessToken ? $_('settings.reauthenticate') : $_('settings.tmdbAuthButton')}
