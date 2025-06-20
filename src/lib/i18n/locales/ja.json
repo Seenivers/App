@@ -330,9 +330,9 @@
 	"weekly": "Weekly",
 	"monthly": "月ごと",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "サイズ",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "設定",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
