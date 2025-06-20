@@ -17,7 +17,6 @@ export const collection = {
 			result = {
 				...(await getCollection(id)),
 				updated: new Date(),
-				wantsToWatch: false,
 				watched: false
 			};
 			if (result) {
