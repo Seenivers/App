@@ -44,8 +44,13 @@ export async function auth() {
 			return;
 		}
 
-		settingsDB.update({ tmdbAccessToken: accessToken.access_token });
+		settingsDB.update({
+			tmdbAccessToken: accessToken.access_token,
+			tmdbAccountID: accessToken.account_id
+		});
+
 		settings.tmdbAccessToken = accessToken.access_token;
+		settings.tmdbAccountID = accessToken.account_id;
 		newToast('success', 'TMDB-Authentifizierung erfolgreich abgeschlossen.');
 	});
 
