@@ -51,6 +51,7 @@
 		"vite": "^6.3.5"
 	},
 	"dependencies": {
+		"@ctrl/video-filename-parser": "^5.2.2",
 		"@tauri-apps/api": "^2.5.0",
 		"@tauri-apps/plugin-dialog": "^2.2.2",
 		"@tauri-apps/plugin-fs": "^2.3.0",

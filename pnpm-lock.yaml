@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ctrl/video-filename-parser':
+        specifier: ^5.2.2
+        version: 5.2.2
       '@tauri-apps/api':
         specifier: ^2.5.0
         version: 2.5.0
@@ -165,6 +168,10 @@ packages:
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
+
+  '@ctrl/video-filename-parser@5.2.2':
+    resolution: {integrity: sha512-AxKl+jKsoyanoqW6WRGcAqAURVFQ6h6LWGoTe5f5/VMosTELJuiVpin++GQMU8eLVVlM2MZF+5uNs9iexdnYdw==}
+    engines: {node: '>=18'}
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -3387,6 +3394,8 @@ snapshots:
 
   '@colors/colors@1.5.0':
     optional: true
+
+  '@ctrl/video-filename-parser@5.2.2': {}
 
   '@drizzle-team/brocli@0.10.2': {}
 
