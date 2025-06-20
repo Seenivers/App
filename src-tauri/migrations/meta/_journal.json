@@ -15,6 +15,13 @@
 			"when": 1748782697521,
 			"tag": "0001_faulty_titanium_man",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "6",
+			"when": 1750414248947,
+			"tag": "0002_glorious_wonder_man",
+			"breakpoints": true
 		}
 	]
 }
