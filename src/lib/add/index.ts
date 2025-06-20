@@ -14,9 +14,10 @@ import { episode } from '$lib/utils/db/episode';
 import { movie } from '$lib/utils/db/movie';
 import { collection } from '$lib/utils/db/collection';
 import { BaseDirectory, exists, readDir } from '@tauri-apps/plugin-fs';
-import { join } from '@tauri-apps/api/path';
+import { join, sep } from '@tauri-apps/api/path';
 import type { Season } from '$lib/types/tv/season';
 import type { Episode } from '$lib/types/tv/episode';
+import { filenameParse } from '@ctrl/video-filename-parser';
 
 //#region LOAD
 // Lade die Dateien und starte die Suche nur, wenn noch nicht alle Filme verarbeitet wurden
@@ -149,27 +150,15 @@ async function filterNewFiles(paths: string[]) {
  */
 export function addNewPathsToStatus(newPaths: string[]) {
 	const tempStatus: SearchList[] = newPaths.map((path) => {
-		const name =
-			path
-				.split('\\')
-				.pop()
-				?.replace(/\.[^/.]+$/, '') ?? '';
+		const fileNameWithExt = path.split(sep()).pop() ?? '';
+		const fileName = fileNameWithExt.replace(/\.[^/.]+$/, '');
 
-		// Bereinigung des Dateinamens
-		const fileName = name
-			.split(/[.\s]+/)
-			.filter(
-				(word) => !(settings.keywords ?? []).some((k) => k.toLowerCase() === word.toLowerCase())
-			)
-			.join(' ');
-
-		const yearMatch = /(\d{4})/.exec(fileName);
-		const year = yearMatch ? yearMatch[1] : '';
-		const cleanedFileName = fileName.replace(/\s*\(?\d{4}\)?\s*/g, '').trim();
+		const parsed = filenameParse(fileName, !hasMovieExtension(path));
 
 		return {
 			status: 'waitForSearching',
-			mediaType: hasMovieExtension(path) ? 'movie' : 'tv',
+			// @ts-expect-error `isTv` ist optional
+			mediaType: parsed.isTv ? 'tv' : 'movie',
 			search: {
 				page: 1,
 				results: [],
@@ -178,8 +167,8 @@ export function addNewPathsToStatus(newPaths: string[]) {
 			},
 			options: {
 				path,
-				fileName: cleanedFileName || name,
-				primaryReleaseYear: year
+				fileName: parsed.title ?? fileName,
+				primaryReleaseYear: parsed.year ?? ''
 			}
 		};
 	});
