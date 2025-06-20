@@ -172,7 +172,11 @@
 		"backupMaxSizeMB": "Maximum backup size (MB)",
 		"watchPaths": "Watch paths",
 		"addWatchPath": "Add path",
-		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)",
+		"tmdbAuthButton": "Authenticate",
+		"tmdbAuthLabel": "TMDB Authentication",
+		"confirmReauth": "Do you really want to restart the authentication?",
+		"reauthenticate": "Re-authenticate"
 	},
 	"main": {
 		"searchPlaceholder": "搜索...",
@@ -282,7 +286,7 @@
 	"downloading": "Downloading ({count})",
 	"downloaded": "Downloaded ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "Title",
+	"title": "标题",
 	"path": "Path: {path}",
 	"releaseYear": "发布年份",
 	"optional": "可选的",
@@ -326,11 +330,17 @@
 	"weekly": "每周的",
 	"monthly": "每月的",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "大小",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "设置",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
-	"bookmarkRemove": "Remove from Bookmarks"
+	"bookmarkRemove": "Remove from Bookmarks",
+	"guestStars": "Guest actor",
+	"yourRating": "Your rating",
+	"folderNotFoundTitle": "The specified folder does not exist.",
+	"folderNotFound": "Folder does not exist",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }

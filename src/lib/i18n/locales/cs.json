@@ -172,7 +172,11 @@
 		"backupMaxSizeMB": "Maximum backup size (MB)",
 		"watchPaths": "Watch paths",
 		"addWatchPath": "Add path",
-		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)",
+		"tmdbAuthButton": "Authenticate",
+		"tmdbAuthLabel": "TMDB Authentication",
+		"confirmReauth": "Do you really want to restart the authentication?",
+		"reauthenticate": "Re-authenticate"
 	},
 	"main": {
 		"searchPlaceholder": "Hledat...",
@@ -282,7 +286,7 @@
 	"downloading": "Stahování ({count})",
 	"downloaded": "Staženo ({count})",
 	"titleWithValue": "Název: {title}",
-	"title": "Titul",
+	"title": "Titul:",
 	"path": "Cesta: {path}",
 	"releaseYear": "Rok vydání",
 	"optional": "Nepovinné",
@@ -326,11 +330,17 @@
 	"weekly": "Týdenní",
 	"monthly": "Měsíčně",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Velikost",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Nastavení",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
-	"bookmarkRemove": "Remove from Bookmarks"
+	"bookmarkRemove": "Remove from Bookmarks",
+	"guestStars": "Guest actor",
+	"yourRating": "Your rating",
+	"folderNotFoundTitle": "The specified folder does not exist.",
+	"folderNotFound": "Folder does not exist",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }

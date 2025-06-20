@@ -172,7 +172,11 @@
 		"backupMaxSizeMB": "Maximum backup size (MB)",
 		"watchPaths": "Watch paths",
 		"addWatchPath": "Add path",
-		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)",
+		"tmdbAuthButton": "Authenticate",
+		"tmdbAuthLabel": "TMDB Authentication",
+		"confirmReauth": "Do you really want to restart the authentication?",
+		"reauthenticate": "Re-authenticate"
 	},
 	"main": {
 		"searchPlaceholder": "Soek...",
@@ -282,7 +286,7 @@
 	"downloading": "Besig om af te laai ({count})",
 	"downloaded": "Af gelaai ({count})",
 	"titleWithValue": "Titel: {title}",
-	"title": "Title",
+	"title": "Titel",
 	"path": "Pad: {path}",
 	"releaseYear": "Vrylating jaar",
 	"optional": "Opsioneel",
@@ -326,11 +330,17 @@
 	"weekly": "Weekliks",
 	"monthly": "Maandeliks",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Grootte",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Instellings",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
-	"bookmarkRemove": "Remove from Bookmarks"
+	"bookmarkRemove": "Remove from Bookmarks",
+	"guestStars": "Guest actor",
+	"yourRating": "Your rating",
+	"folderNotFoundTitle": "The specified folder does not exist.",
+	"folderNotFound": "Folder does not exist",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }

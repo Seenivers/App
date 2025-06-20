@@ -148,7 +148,7 @@
 		"updateFailed": "Налаштування оновлення не вдалося, помилка {error}",
 		"saved": "Налаштування збережено!",
 		"title": "Налаштування",
-		"language": "Мова",
+		"language": "Мова:",
 		"adultContent": "Дозволити матеріали для дорослих",
 		"toastPositionHorizontal": "Позиція оповіщень (по горизонталі)",
 		"toastPositionVertical": "Позиція сповіщення (вертикальна)",
@@ -172,7 +172,11 @@
 		"backupMaxSizeMB": "Maximum backup size (MB)",
 		"watchPaths": "Watch paths",
 		"addWatchPath": "Add path",
-		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)",
+		"tmdbAuthButton": "Authenticate",
+		"tmdbAuthLabel": "TMDB Authentication",
+		"confirmReauth": "Do you really want to restart the authentication?",
+		"reauthenticate": "Re-authenticate"
 	},
 	"main": {
 		"searchPlaceholder": "Пошук...",
@@ -282,7 +286,7 @@
 	"downloading": "Завантаження ({count})",
 	"downloaded": "Завантажено ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "Назва",
+	"title": "Назва:",
 	"path": "Path: {path}",
 	"releaseYear": "Рік випуску",
 	"optional": "За бажанням",
@@ -326,11 +330,17 @@
 	"weekly": "Щотижня",
 	"monthly": "Щомісячно",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Розмір",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Налаштування",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
-	"bookmarkRemove": "Remove from Bookmarks"
+	"bookmarkRemove": "Remove from Bookmarks",
+	"guestStars": "Guest actor",
+	"yourRating": "Your rating",
+	"folderNotFoundTitle": "The specified folder does not exist.",
+	"folderNotFound": "Folder does not exist",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }

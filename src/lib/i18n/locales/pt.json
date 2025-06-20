@@ -172,7 +172,11 @@
 		"backupMaxSizeMB": "Maximum backup size (MB)",
 		"watchPaths": "Watch paths",
 		"addWatchPath": "Add path",
-		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)"
+		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)",
+		"tmdbAuthButton": "Authenticate",
+		"tmdbAuthLabel": "TMDB Authentication",
+		"confirmReauth": "Do you really want to restart the authentication?",
+		"reauthenticate": "Re-authenticate"
 	},
 	"main": {
 		"searchPlaceholder": "Buscar...",
@@ -282,7 +286,7 @@
 	"downloading": "Baixando ({count})",
 	"downloaded": "Baixado ({count})",
 	"titleWithValue": "Título: {title}",
-	"title": "Titulo",
+	"title": "Titulo:",
 	"path": "Caminho: {path}",
 	"releaseYear": "Ano de lançamento",
 	"optional": "Opcional",
@@ -326,11 +330,17 @@
 	"weekly": "Semanalmente",
 	"monthly": "Mensual",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Tamanho",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Confirgurações",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
-	"bookmarkRemove": "Remove from Bookmarks"
+	"bookmarkRemove": "Remove from Bookmarks",
+	"guestStars": "Guest actor",
+	"yourRating": "Your rating",
+	"folderNotFoundTitle": "The specified folder does not exist.",
+	"folderNotFound": "Folder does not exist",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }
