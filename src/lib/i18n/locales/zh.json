@@ -286,7 +286,7 @@
 	"downloading": "Downloading ({count})",
 	"downloaded": "Downloaded ({count})",
 	"titleWithValue": "Title: {title}",
-	"title": "标题：",
+	"title": "Title",
 	"path": "Path: {path}",
 	"releaseYear": "发布年份",
 	"optional": "可选的",
@@ -330,9 +330,9 @@
 	"weekly": "每周的",
 	"monthly": "每月的",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "大小",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "设置",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
