@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import type { PageData } from './$types';
 	import { error } from '@tauri-apps/plugin-log';
 	import { openPath } from '@tauri-apps/plugin-opener';
@@ -13,6 +13,8 @@
 	import { _ } from 'svelte-i18n';
 	import Bookmark from '$lib/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
+	import Rating from '$lib/components/rating.svelte';
+	import { postWatchlist } from '$lib/utils/tmdb';
 
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
@@ -125,29 +127,30 @@
 				class="btn btn-sm md:btn-md"
 				onclick={() => {
 					watched = !watched;
-					serie.update(data.serie.id, { watched: watched });
+					serie.update(data.serie.id, { watched: watched, wantsToWatch: false });
 				}}
 				disabled={!data.serie}
 			>
 				{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 			</button>
-		{:else}
-			<button
-				class="btn btn-sm md:btn-md"
-				title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
-				onclick={() => {
-					isBookmarked = !isBookmarked;
-					serie.update(data.id, { wantsToWatch: isBookmarked });
-				}}
-				disabled={data.pathExists}
-			>
-				{#if isBookmarked}
-					<BookmarkSlash class="h-6 w-6" />
-				{:else}
-					<Bookmark class="h-6 w-6" />
-				{/if}
-			</button>
 		{/if}
+		<button
+			class="btn btn-sm md:btn-md"
+			title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
+			onclick={() => {
+				isBookmarked = !isBookmarked;
+				serie.update(data.id, { wantsToWatch: isBookmarked });
+				postWatchlist({ media_type: 'tv', media_id: data.id, watchlist: isBookmarked });
+			}}
+			disabled={data.pathExists}
+		>
+			{#if isBookmarked}
+				<BookmarkSlash class="h-6 w-6" />
+			{:else}
+				<Bookmark class="h-6 w-6" />
+			{/if}
+		</button>
+
 		<a
 			href="https://www.themoviedb.org/tv/{data.serie.id}"
 			class="btn btn-sm md:btn-md"
@@ -297,15 +300,25 @@
 			</div>
 
 			<div>
-				<h2 class="text-lg font-bold">{$_('averageRating')}</h2>
+				<h2 class="text-lg font-bold">{$_('rating')}</h2>
 				<p>
-					{data.serie.tmdb.vote_average
-						? `${Math.round(data.serie.tmdb.vote_average * 10) / 10}/10`
-						: $_('noReviews')}
-					{data.serie.tmdb.vote_count
-						? ` (${$_('reviews', { values: { reviews: data.serie.tmdb.vote_count } })})`
-						: ''}
+					{#if data.serie.tmdb.vote_average}
+						{$_('ratingSummary', {
+							values: {
+								average: Math.round(data.serie.tmdb.vote_average * 10) / 10,
+								count: data.serie.tmdb.vote_count ?? 0
+							}
+						})}
+					{:else}
+						{$_('noInformationAvailable')}
+					{/if}
+					| {$_('yourRating')}: {data.serie.rating}
 				</p>
+
+				<Rating
+					bind:value={data.serie.rating}
+					update={async () => await serie.update(data.id, { rating: data.serie.rating })}
+				/>
 			</div>
 
 			<div>

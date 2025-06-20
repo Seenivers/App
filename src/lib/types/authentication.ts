@@ -12,3 +12,8 @@ export interface AccessToken {
 	account_id: string;
 	access_token: string;
 }
+
+export interface SessionId {
+	success: boolean;
+	session_id: string;
+}

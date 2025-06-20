@@ -8,7 +8,10 @@ import type { Actor } from '$lib/types/actor';
 import type { Serie } from '../types/tv/serie';
 import type { Season } from '../types/tv/season';
 import type { Episode } from '../types/tv/episode';
-import type { AccessToken, RequestToken } from '$lib/types/authentication';
+import type { AccessToken, RequestToken, SessionId } from '$lib/types/authentication';
+import type { WatchList } from '$lib/types/watchlist';
+import type { TMDBPostResult } from '$lib/types/media_type';
+import { online } from 'svelte/reactivity/window';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -44,7 +47,10 @@ async function fetchData<T>(endpoint: string, params: Record<string, string | nu
 	try {
 		response = await fetch(url.toString(), {
 			method: 'GET',
-			headers: { 'Content-Type': 'application/json' }
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${settings.tmdbAccessToken}`
+			}
 		});
 	} catch (err) {
 		const msg = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannt'}`;
@@ -161,6 +167,17 @@ export const getSerieSeasonEpisode = (
 		language
 	});
 
+export const getWatchlist = (
+	account_object_id = settings.tmdbAccountID,
+	language: string = settings.language || window.navigator.language
+) => {
+	if (!account_object_id) return;
+	return fetchData<WatchList>('/api/tmdb/watchlist', {
+		account_object_id,
+		language
+	});
+};
+
 // Token
 export const postToken = async () => {
 	const endpoint = '/api/tmdb/token';
@@ -180,7 +197,7 @@ export const postToken = async () => {
 		return await parseResponse<RequestToken>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		console.error(message);
+		error(message);
 		throw new Error(message);
 	}
 };
@@ -202,7 +219,59 @@ export const postAccessToken = async (request_token: string) => {
 		return await parseResponse<AccessToken>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		console.error(message);
+		error(message);
+		throw new Error(message);
+	}
+};
+
+export const postSessionId = async () => {
+	if (!settings.tmdbAccessToken || !online.current) return;
+	const endpoint = '/api/tmdb/session';
+	const url = new URL(endpoint, seeniversURL);
+
+	try {
+		const response = await fetch(url.toString(), {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ access_token: settings.tmdbAccessToken })
+		});
+
+		return await parseResponse<SessionId>(response, endpoint);
+	} catch (err) {
+		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
+		error(message);
+		throw new Error(message);
+	}
+};
+
+export const postWatchlist = async (
+	body: {
+		media_type: 'movie' | 'tv';
+		media_id: number;
+		watchlist: boolean;
+	},
+	account_id = settings.tmdbAccountID
+) => {
+	if (!settings.tmdbAccessToken || !online.current) return;
+	const endpoint = `https://api.themoviedb.org/3/account/${account_id}/watchlist`;
+
+	try {
+		const response = await fetch(endpoint, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				Authorization: 'Bearer ' + settings.tmdbAccessToken,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(body)
+		});
+
+		return await parseResponse<TMDBPostResult>(response, endpoint);
+	} catch (err) {
+		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
 		throw new Error(message);
 	}
 };

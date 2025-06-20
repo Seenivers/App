@@ -7,12 +7,14 @@
 	import { onDestroy } from 'svelte';
 	import { settingsDB } from '$lib/utils/db/settings';
 	import { _, locale, locales } from 'svelte-i18n';
-	import { open } from '@tauri-apps/plugin-dialog';
+	import { message, open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
 	import FolderOpen from '$lib/SVG/FolderOpen.svelte';
 	import FolderAdd from '$lib/SVG/FolderAdd.svelte';
 	import Close from '$lib/SVG/Close.svelte';
 	import { auth } from '$lib/utils/authentication';
+	import { exists } from '@tauri-apps/plugin-fs';
+	import { confirm } from '@tauri-apps/plugin-dialog';
 
 	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
@@ -250,16 +252,17 @@
 		<button
 			id="tmdbAuth"
 			name="tmdbAuth"
-			class="btn {settings.tmdbSessionId ? 'btn-success' : 'btn-primary'}"
+			class="btn {settings.tmdbAccessToken ? 'btn-success' : 'btn-primary'}"
 			onclick={async () => {
-				if (settings.tmdbSessionId) {
-					if (!(await confirm($_('settings.confirmReauth')))) return;
+				if (settings.tmdbAccessToken) {
+					if (!(await confirm($_('settings.confirmReauth'), { kind: 'warning' }))) return;
 				}
 				await auth();
-				markDirty();
+				settingsTemp.tmdbAccessToken = settings.tmdbAccessToken;
+				settingsTemp.tmdbAccountID = settings.tmdbAccountID;
 			}}
 		>
-			{settings.tmdbSessionId ? $_('settings.reauthenticate') : $_('settings.tmdbAuthButton')}
+			{settings.tmdbAccessToken ? $_('settings.reauthenticate') : $_('settings.tmdbAuthButton')}
 		</button>
 	</label>
 
@@ -305,6 +308,19 @@
 						? 'input-error'
 						: ''}"
 					bind:value={settingsTemp.watchPaths[index]}
+					onchange={async () => {
+						if (
+							settingsTemp.watchPaths[index].length !== 0 &&
+							!(await exists(settingsTemp.watchPaths[index]))
+						) {
+							await message($_('folderNotFound'), {
+								kind: 'error',
+								title: $_('folderNotFoundTitle')
+							});
+						} else {
+							markDirty();
+						}
+					}}
 					placeholder="/path/to/folder"
 				/>
 
@@ -343,7 +359,10 @@
 			id="watchPaths"
 			name="watchPaths"
 			class="btn btn-primary"
-			onclick={() => settingsTemp.watchPaths.push('')}
+			onclick={() => {
+				settingsTemp.watchPaths.push('');
+				markDirty();
+			}}
 		>
 			<FolderAdd class="stroke-base-var(--btn-fg) h-6 w-6" />
 			{$_('settings.addWatchPath')}

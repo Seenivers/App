@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { settings } from '$lib/stores.svelte';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import type { PageData } from './$types';
 	import { error } from '@tauri-apps/plugin-log';
 	import { openPath } from '@tauri-apps/plugin-opener';
@@ -13,6 +13,7 @@
 	import { episode } from '$lib/utils/db/episode';
 	import { goto, invalidate } from '$app/navigation';
 	import { _ } from 'svelte-i18n';
+	import Rating from '$lib/components/rating.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -240,15 +241,23 @@
 					<div>
 						<h2 class="text-lg font-bold">{$_('rating')}</h2>
 						<p>
-							{data.result.tmdb.vote_average
-								? $_('ratingSummary', {
-										values: {
-											average: Math.round(data.result.tmdb.vote_average * 10) / 10,
-											count: data.result.tmdb.vote_count ?? 0
-										}
-									})
-								: $_('noInformationAvailable')}
+							{#if data.result.tmdb.vote_average}
+								{$_('ratingSummary', {
+									values: {
+										average: Math.round(data.result.tmdb.vote_average * 10) / 10,
+										count: data.result.tmdb.vote_count ?? 0
+									}
+								})}
+							{:else}
+								{$_('noInformationAvailable')}
+							{/if}
+							| {$_('yourRating')}: {data.result.rating}
 						</p>
+
+						<Rating
+							bind:value={data.result.rating}
+							update={async () => await episode.update(data.id, { rating: data.result.rating })}
+						/>
 					</div>
 				</div>
 			</div>

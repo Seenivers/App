@@ -9,4 +9,25 @@ export const extensions = [...new Set([...plyr, ...vidstack])];
 export const clearResultsOnLeave = false;
 export const WEEKS = 4; // Anzahl der Wochen, nach der die Filme aktualisiert werden sollen
 export const DiscordClientID = '1294754778756284477';
-export const themes = ['Default', 'Light', 'Dark'] as const;
+export const themes = [
+	'Default',
+	'Light',
+	'Dark',
+	'Cupcake',
+	'Bumblebee',
+	'Emerald',
+	'Corporate',
+	'Synthwave',
+	'Retro',
+	'Cyberpunk',
+	'Valentine',
+	'Halloween',
+	'Forest',
+	'Aqua',
+	'Wireframe',
+	'Dracula',
+	'Night',
+	'Dim',
+	'Nord',
+	'Sunset'
+] as const;

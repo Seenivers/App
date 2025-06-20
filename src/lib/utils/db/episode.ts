@@ -39,7 +39,8 @@ export const episode = {
 					path: null,
 					watched: false,
 					watchTime: 0,
-					updated: new Date()
+					updated: new Date(),
+					rating: 0
 				};
 			}
 		}
@@ -92,7 +93,8 @@ export const episode = {
 								path: null,
 								watched: false,
 								watchTime: 0,
-								updated: new Date()
+								updated: new Date(),
+								rating: 0
 							};
 						}
 

@@ -8,18 +8,14 @@
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { SearchStatus } from '$lib/types/add';
 	import { error, warn } from '@tauri-apps/plugin-log';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
 	import { online } from 'svelte/reactivity/window';
 	import { selectFile, selectFolder, selectTvFolder } from '$lib/add/select';
 	import { discord } from '$lib/discord';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data }: { data: PageData } = $props();
 	let modal = $state(false);
 	let modalID: number | null = $state(null);
 	let filter: SearchStatus | null = $state(null);

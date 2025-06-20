@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
-	import { getMovie } from '$lib/utils/tmdb';
+	import { getMovie, postWatchlist } from '$lib/utils/tmdb';
 	import { schema } from '$lib/db/schema';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
 	import { error } from '@tauri-apps/plugin-log';
 	import type { PageData } from './$types';
 	import { settings } from '$lib/stores.svelte';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import { onMount } from 'svelte';
@@ -19,10 +19,10 @@
 	import { _ } from 'svelte-i18n';
 	import Bookmark from '$lib/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
+	import Rating from '$lib/components/rating.svelte';
 
 	let { data }: { data: PageData } = $props();
 
-	const id = data.id;
 	let watched: boolean = $state(data.result.watched ?? false);
 	let modal = $state(false);
 	let form: HTMLFormElement;
@@ -32,12 +32,12 @@
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
 		watched = !watched;
-		await movie.update(id, { watched, wantsToWatch: false });
+		await movie.update(data.id, { watched, wantsToWatch: false });
 	}
 
 	// Entferne Film anhand der ID
 	async function removeElementById() {
-		await movie.update(id, { path: null });
+		await movie.update(data.id, { path: null });
 		data.pathExists = false;
 		movieData.path = null;
 	}
@@ -84,28 +84,28 @@
 			<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}>
 				{$_('edit')}
 			</button>
-		{:else}
-			<button
-				class="btn btn-sm md:btn-md"
-				title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
-				onclick={() => {
-					isBookmarked = !isBookmarked;
-					collection.update(data.id, { wantsToWatch: isBookmarked });
-				}}
-				disabled={data.pathExists}
-			>
-				{#if isBookmarked}
-					<BookmarkSlash class="h-6 w-6" />
-				{:else}
-					<Bookmark class="h-6 w-6" />
-				{/if}
-			</button>
 		{/if}
+		<button
+			class="btn btn-sm md:btn-md"
+			title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
+			onclick={() => {
+				isBookmarked = !isBookmarked;
+				movie.update(data.id, { wantsToWatch: isBookmarked });
+				postWatchlist({ media_type: 'movie', media_id: data.id, watchlist: isBookmarked });
+			}}
+			disabled={data.pathExists}
+		>
+			{#if isBookmarked}
+				<BookmarkSlash class="h-6 w-6" />
+			{:else}
+				<Bookmark class="h-6 w-6" />
+			{/if}
+		</button>
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
 			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
 		</button>
 		<a
-			href="https://www.themoviedb.org/movie/{id}"
+			href="https://www.themoviedb.org/movie/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
 			rel="noopener noreferrer">{$_('openOnTMDB')}</a
@@ -127,9 +127,19 @@
 			{#if movieData.path && data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
 					{#if settings.player === 'Plyr'}
-						<Plyr src={convertFileSrc(movieData.path)} poster={poster.src} {id} type="movie" />
+						<Plyr
+							src={convertFileSrc(movieData.path)}
+							poster={poster.src}
+							id={data.id}
+							type="movie"
+						/>
 					{:else}
-						<Vidstack src={convertFileSrc(movieData.path)} poster={poster.src} {id} type="movie" />
+						<Vidstack
+							src={convertFileSrc(movieData.path)}
+							poster={poster.src}
+							id={data.id}
+							type="movie"
+						/>
 					{/if}
 				{/await}
 			{:else if movieData.path}
@@ -266,15 +276,23 @@
 					<section>
 						<h2 class="text-lg font-bold">{$_('rating')}</h2>
 						<p>
-							{movieData.tmdb.vote_average
-								? $_('ratingSummary', {
-										values: {
-											average: Math.round(movieData.tmdb.vote_average * 10) / 10,
-											count: movieData.tmdb.vote_count ?? 0
-										}
-									})
-								: $_('noInformationAvailable')}
+							{#if movieData.tmdb.vote_average}
+								{$_('ratingSummary', {
+									values: {
+										average: Math.round(movieData.tmdb.vote_average * 10) / 10,
+										count: movieData.tmdb.vote_count ?? 0
+									}
+								})}
+							{:else}
+								{$_('noInformationAvailable')}
+							{/if}
+							| {$_('yourRating')}: {movieData.rating}
 						</p>
+
+						<Rating
+							bind:value={movieData.rating}
+							update={async () => await movie.update(data.id, { rating: movieData.rating })}
+						/>
 					</section>
 
 					<!-- Genres -->
@@ -376,10 +394,10 @@
 				if (!form || !form.newID || !movieData) return;
 				const newID = parseInt(form.newID.value, 10);
 				try {
-					if (id !== -1 && newID && newID !== movieData.id) {
+					if (data.id !== -1 && newID && newID !== movieData.id) {
 						const newMovieByTmdb = await getMovie(newID);
 
-						await movie.update(id, { id: newID, tmdb: newMovieByTmdb });
+						await movie.update(data.id, { id: newID, tmdb: newMovieByTmdb });
 
 						modal = false;
 						window.location.href = newID.toString();
