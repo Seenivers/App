@@ -4,47 +4,42 @@ import { updateSearchStatus } from './utils';
 import { serie } from '$lib/utils/db/serie';
 import { searchList } from '$lib/stores.svelte';
 import type { Serie } from '$lib/types/tv/serie';
-import { error, warn } from '@tauri-apps/plugin-log';
+import { error, warn, info } from '@tauri-apps/plugin-log';
 import { findSeasonsAndEpisodes } from './findEpisodes';
 import { loadImages } from './imageLoader';
 import { season } from '$lib/utils/db/season';
 import { episode } from '$lib/utils/db/episode';
 import { join } from '@tauri-apps/api/path';
 
-export async function addNewSerie(entrie: { id: number; index: number }) {
-	if (!entrie || !online.current) {
-		updateSearchStatus(entrie.index, 'notFound');
+export async function addNewSerie(entry: { id: number; index: number }) {
+	if (!entry) return;
+	if (!online.current) {
+		updateSearchStatus(entry.index, 'notFound');
 		return;
 	}
 
-	// Status auf "downloading" setzen
-	updateSearchStatus(entrie.index, 'downloading');
+	updateSearchStatus(entry.index, 'downloading');
 
-	if (!(await serie.isIDUnique(entrie.id))) {
-		serie.update(entrie.id, { path: searchList[entrie.index].options.path });
-		updateSearchStatus(entrie.index, 'downloaded');
+	if (!(await serie.isIDUnique(entry.id))) {
+		serie.update(entry.id, { path: searchList[entry.index].options.path });
+		updateSearchStatus(entry.index, 'downloaded');
 		return;
 	}
 
 	try {
-		// Serie abrufen
-		const response = await tmdb.getSerie(entrie.id);
-
-		// Serie speichern
+		const response = await tmdb.getSerie(entry.id);
 		await serie.add({
 			id: response.id,
-			path: searchList[entrie.index].options.path,
+			path: searchList[entry.index].options.path,
 			tmdb: response
 		});
 
-		await addSeasonToDatabase(entrie.index, response.id, response.seasons);
+		await addSeasonToDatabase(entry.index, response.id, response.seasons);
 
 		await loadImages(response);
-
-		updateSearchStatus(entrie.index, 'downloaded');
+		updateSearchStatus(entry.index, 'downloaded');
 	} catch (err) {
-		// Falls die gesamte Anfrage fehlschlägt, Serie als "notFound" markieren
-		updateSearchStatus(entrie.index, 'notFound');
+		updateSearchStatus(entry.index, 'notFound');
 		error(
 			`Fehler beim Abrufen der Serie: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
 		);
@@ -62,56 +57,76 @@ export async function addSeasonToDatabase(
 		return;
 	}
 
-	// Finde die Staffel- und Episodenpfade
 	const seasonData = await findSeasonsAndEpisodes(seriesPath);
 
-	// Verarbeite jede Staffel basierend auf ihrem season_number
+	// Vorbereiten der Pfade für alle Staffeln (asynchron joinen)
+	const seasonPaths = new Map<number, string>();
 	for (const seasonInfo of seasons) {
-		const seasonNumber = seasonInfo.season_number;
-		const resultSeason = await tmdb.getSerieSeason(serieId, seasonNumber);
-		if (!resultSeason) continue;
+		if (seasonData[seasonInfo.season_number]) {
+			seasonPaths.set(
+				seasonInfo.season_number,
+				await join(seriesPath, seasonInfo.season_number.toString())
+			);
+		} else {
+			seasonPaths.set(seasonInfo.season_number, seriesPath);
+		}
+	}
 
-		// Überprüfe, ob für diese Staffel spezielle Episodenpfade existieren
-		const seasonPath = seasonData[seasonNumber]
-			? await join(seriesPath, seasonNumber.toString())
-			: seriesPath;
+	for (const seasonInfo of seasons) {
+		try {
+			const seasonNumber = seasonInfo.season_number;
+			const resultSeason = await tmdb.getSerieSeason(serieId, seasonNumber);
+			if (!resultSeason) {
+				warn(`Staffel ${seasonNumber} der Serie ${serieId} konnte nicht geladen werden.`);
+				continue;
+			}
 
-		// Staffel zur Datenbank hinzufügen
-		await season.add({
-			id: resultSeason.id,
-			path: seasonPath,
-			tmdb: resultSeason
-		});
+			await season.add({
+				id: resultSeason.id,
+				path: seasonPaths.get(seasonNumber) ?? seriesPath,
+				tmdb: resultSeason
+			});
 
-		await loadImages(resultSeason);
+			await loadImages(resultSeason);
 
-		// Episoden zur Datenbank hinzufügen
-		await addEpisodeToDatabase(serieId, seasonNumber, seasonData[seasonNumber] || {});
+			await addEpisodeToDatabase(serieId, seasonNumber, seasonData[seasonNumber] || {});
+			info(`Staffel ${seasonNumber} erfolgreich hinzugefügt.`);
+		} catch (e) {
+			error(
+				`Fehler beim Verarbeiten der Staffel ${seasonInfo.season_number}: ${e instanceof Error ? e.message : e}`
+			);
+		}
 	}
 }
+
 export async function addEpisodeToDatabase(
 	serieId: number,
 	seasonNumber: number,
 	episodePaths: Record<number, string>
 ) {
-	for (const episodeNumber in episodePaths) {
-		const resultEpisode = await tmdb.getSerieSeasonEpisode(
-			serieId,
-			seasonNumber,
-			Number(episodeNumber)
-		);
-		if (!resultEpisode) continue;
+	const episodePromises = Object.entries(episodePaths).map(async ([episodeNumberStr, path]) => {
+		const episodeNumber = Number(episodeNumberStr);
+		try {
+			const resultEpisode = await tmdb.getSerieSeasonEpisode(serieId, seasonNumber, episodeNumber);
+			if (!resultEpisode) {
+				warn(`Episode ${episodeNumber} Staffel ${seasonNumber} Serie ${serieId} nicht gefunden.`);
+				return;
+			}
 
-		// Pfad zur Episode hinzufügen
-		const episodePath = episodePaths[Number(episodeNumber)] || null;
+			await episode.add({
+				id: resultEpisode.id,
+				path: path ?? null,
+				tmdb: resultEpisode
+			});
 
-		// Episode hinzufügen
-		await episode.add({
-			id: resultEpisode.id,
-			path: episodePath, // Den Pfad zur Episode speichern
-			tmdb: resultEpisode
-		});
+			await loadImages(resultEpisode);
+			info(`Episode ${episodeNumber} der Staffel ${seasonNumber} erfolgreich hinzugefügt.`);
+		} catch (e) {
+			error(
+				`Fehler bei Episode ${episodeNumber} Staffel ${seasonNumber}: ${e instanceof Error ? e.message : e}`
+			);
+		}
+	});
 
-		await loadImages(resultEpisode);
-	}
+	await Promise.all(episodePromises);
 }

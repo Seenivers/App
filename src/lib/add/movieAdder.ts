@@ -17,44 +17,41 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 		if (await movie.isIDUnique(id)) {
 			uniqueEntries.push({ id, index });
 		} else {
-			movie.update(id, { path: searchList[index].options.path });
+			await movie.update(id, { path: searchList[index].options.path });
 			updateSearchStatus(index, 'downloaded');
 		}
 	}
 
-	// Falls alle Filme bereits vorhanden sind, beenden
 	if (uniqueEntries.length === 0) return;
 
-	// Status auf "downloading" setzen
 	uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'downloading'));
 
 	try {
-		// Mehrere Filme abrufen
-		const response: {
-			movies?: { id: number; data: Movie }[];
-			errors?: { id: number; error: string }[];
-		} = await tmdb.getMovies(uniqueEntries.map((entry) => entry.id));
+		const response = await tmdb.getMovies(uniqueEntries.map((entry) => entry.id));
 
 		const movies = response.movies ?? [];
 		const errors = response.errors ?? [];
 
-		// Erfolgreiche Filme speichern
-		for (const movie of movies) {
-			const entry = uniqueEntries.find((e) => e.id === movie.id);
+		// Map für schnellen Zugriff von id zu index
+		const idToIndexMap = new Map(uniqueEntries.map(({ id, index }) => [id, index]));
 
-			if (entry) {
-				await addMovieToDatabase(movie.data, entry.index);
-				updateSearchStatus(entry.index, 'downloaded');
-			}
-		}
+		// Paralleles Speichern und Laden von Bildern
+		await Promise.all(
+			movies.map(async (movie) => {
+				const index = idToIndexMap.get(movie.id);
+				if (index !== undefined) {
+					await addMovieToDatabase(movie.data, index);
+					updateSearchStatus(index, 'downloaded');
+				}
+			})
+		);
 
-		// Fehlerhafte Filme auf "notFound" setzen
-		for (const { id } of errors) {
-			const entry = uniqueEntries.find((e) => e.id === id);
-			if (entry) updateSearchStatus(entry.index, 'notFound');
-		}
+		// Fehlerhafte Filme markieren
+		errors.forEach(({ id }) => {
+			const index = idToIndexMap.get(id);
+			if (index !== undefined) updateSearchStatus(index, 'notFound');
+		});
 	} catch (err) {
-		// Falls die gesamte Anfrage fehlschlägt, alle Filme als "notFound" markieren
 		uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'notFound'));
 		error(
 			`Fehler beim Abrufen der Filme: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`

@@ -4,58 +4,77 @@ import { readDir } from '@tauri-apps/plugin-fs';
 import { extensions, plyr, vidstack } from '$lib';
 import { addNewFiles } from './fileScanner';
 
-// Handle file selection
-export async function selectFile() {
-	const files = await open({
-		multiple: true,
-		directory: false,
-		defaultPath: await videoDir(),
-		filters: [
-			{ name: 'Video', extensions },
-			{ name: 'Plyr', extensions: plyr },
-			{ name: 'Vidstack', extensions: vidstack }
-		]
-	});
+async function resolvePaths(folder: string) {
+	const entries = await readDir(folder);
+	const paths = await Promise.all(entries.map((entry) => join(folder, entry.name)));
+	return paths;
+}
 
-	if (files && files.length > 0) {
-		// Neue Dateien hinzufügen
-		await addNewFiles(files);
+export async function selectFile() {
+	try {
+		const files = await open({
+			multiple: true,
+			directory: false,
+			defaultPath: await videoDir(),
+			filters: [
+				{ name: 'Video', extensions },
+				{ name: 'Plyr', extensions: plyr },
+				{ name: 'Vidstack', extensions: vidstack }
+			]
+		});
+
+		// Prüfen, ob Dateien ausgewählt wurden
+		if (!files) return;
+
+		// files kann string oder string[] sein, also normalisieren
+		const fileList = Array.isArray(files) ? files : [files];
+
+		await addNewFiles(fileList);
+	} catch (e) {
+		console.error('Fehler beim Datei-Auswählen:', e);
 	}
 }
 
-// Handle folder selection
 export async function selectFolder() {
-	const folder = await open({
-		multiple: false,
-		directory: true,
-		defaultPath: await videoDir()
-	});
+	try {
+		const folder = await open({
+			multiple: false,
+			directory: true,
+			defaultPath: await videoDir()
+		});
 
-	if (folder) {
-		const entries = await readDir(folder);
+		if (!folder || typeof folder !== 'string') return;
 
-		const pfads = await Promise.all(entries.map(async (entry) => await join(folder, entry.name)));
+		const paths = await resolvePaths(folder);
 
-		if (pfads && pfads.length > 0) {
-			// Neue Dateien hinzufügen
-			await addNewFiles(pfads);
+		if (paths.length > 0) {
+			await addNewFiles(paths);
 		}
+	} catch (e) {
+		console.error('Fehler beim Ordner-Auswählen:', e);
 	}
 }
 
 export async function selectTvFolder() {
-	const folder = await open({
-		multiple: true,
-		directory: true,
-		defaultPath: await videoDir()
-	});
+	try {
+		const folders = await open({
+			multiple: true,
+			directory: true,
+			defaultPath: await videoDir()
+		});
 
-	if (folder) {
-		const entries = await Promise.all(folder.map(async (entry) => await readDir(entry)));
+		if (!folders) return;
 
-		if (entries && entries.length > 0) {
-			// Neuen Ordner hinzufügen
-			await addNewFiles(folder);
+		// Normalize to array
+		const folderList = Array.isArray(folders) ? folders : [folders];
+
+		// Für jeden Ordner Pfade auflösen und flach zusammenfassen
+		const allPaths = (await Promise.all(folderList.map((folder) => resolvePaths(folder)))).flat();
+
+		if (allPaths.length > 0) {
+			await addNewFiles(allPaths);
 		}
+	} catch (e) {
+		console.error('Fehler beim TV-Ordner-Auswählen:', e);
 	}
 }

@@ -6,7 +6,6 @@ import * as tmdb from '$lib/utils/tmdb';
 import { error } from '@tauri-apps/plugin-log';
 
 export async function searchMediaStatus(i: number) {
-	// Prüfe die Internetverbindung
 	if (!online.current) {
 		updateSearchStatus(i, 'notFound');
 		return;
@@ -14,56 +13,49 @@ export async function searchMediaStatus(i: number) {
 
 	updateSearchStatus(i, 'searching');
 
-	const { fileName, primaryReleaseYear } = searchList[i].options;
-	const page = searchList[i].search?.page || 1;
+	const entry = searchList[i];
+	const { fileName, primaryReleaseYear } = entry.options;
+	const page = entry.search?.page ?? 1;
 
 	try {
-		// Bestimme die richtige TMDB-Suchfunktion basierend auf `mediaType`
-		const search =
-			searchList[i].mediaType === 'movie'
+		const searchResults =
+			entry.mediaType === 'movie'
 				? await tmdb.searchMovies(fileName, primaryReleaseYear, page)
 				: await tmdb.searchTv(fileName, primaryReleaseYear, page);
 
 		let status: SearchStatus;
-		let results = [...(searchList[i].search?.results || []), ...search.results];
+		let results = [...(entry.search?.results ?? []), ...searchResults.results];
 
-		if (search.results.length === 1) {
-			// Genau ein Ergebnis gefunden
+		if (searchResults.results.length === 1) {
 			status = 'waitForDownloading';
-			searchList[i].options.id = search.results[0].id;
-		} else if (search.results.length > 1) {
-			// Mehrere Ergebnisse gefunden
+			entry.options.id = searchResults.results[0].id;
+		} else if (searchResults.results.length > 1) {
 			status = 'foundMultiple';
 		} else {
-			// Keine Ergebnisse gefunden
 			status = 'notFound';
 			results = [];
 		}
 
-		// Gemeinsame Eigenschaften setzen
 		searchList[i] = {
-			...searchList[i],
+			...entry,
 			search: {
-				...searchList[i].search,
+				...entry.search,
 				results,
-				page: search.page,
-				total_results: search.total_results,
-				total_pages: search.total_pages
+				page: searchResults.page,
+				total_results: searchResults.total_results,
+				total_pages: searchResults.total_pages
 			},
 			status
 		};
 	} catch (err) {
-		// Fehlerbehandlung
-		const errorMessage =
-			err instanceof Error ? err.message : 'Ein unbekannter Fehler ist aufgetreten: ' + err;
+		const errorMessage = err instanceof Error ? err.message : `Unbekannter Fehler: ${err}`;
 		error('Fehler bei der Suche: ' + errorMessage);
 
-		// Fehlerstatus setzen
 		searchList[i] = {
 			...searchList[i],
 			search: {
 				...searchList[i].search,
-				results: [] // Leeres Array, da keine Ergebnisse gefunden wurden
+				results: []
 			},
 			status: 'notFound'
 		};

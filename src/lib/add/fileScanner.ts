@@ -1,11 +1,13 @@
-import { extensions } from '$lib';
+import { extensions as extensionsArray } from '$lib';
 import { serie } from '$lib/utils/db/serie';
 import { searchList } from '$lib/stores.svelte';
 import type { SearchList } from '$lib/types/add';
 import { movie } from '$lib/utils/db/movie';
 import { filenameParse } from '@ctrl/video-filename-parser';
 import { isFile, hasMovieExtension } from './utils';
-import { sep } from '@tauri-apps/api/path';
+import { basename } from '@tauri-apps/api/path';
+
+const extensions = new Set(extensionsArray); // Für performantere Suche
 
 /**
  * Fügt neue Filme & Serien zum Status hinzu, nachdem sie validiert wurden.
@@ -17,15 +19,16 @@ export async function addNewFiles(paths: string[]) {
 		paths.map(async (path) => {
 			const file = await isFile(path);
 			if (file) {
-				const fileExtension = path.split('.').pop()?.toLowerCase();
-				return extensions.includes(fileExtension ?? '') ? path : null;
+				const ext = path.split('.').pop()?.toLowerCase() ?? '';
+				return extensions.has(ext) ? path : null;
 			}
-			return path; // Ordner immer zulassen
+			// Ordner immer zulassen
+			return path;
 		})
 	);
 
-	// Filtere nur gültige (nicht-null) Pfade
-	const validFiles = validResults.filter((p): p is string => !!p);
+	// Nur gültige Pfade behalten (nicht null)
+	const validFiles = validResults.filter((p): p is string => p !== null);
 
 	if (validFiles.length === 0) {
 		alert('Keine gültigen Dateipfade gefunden.');
@@ -40,24 +43,20 @@ export async function addNewFiles(paths: string[]) {
 		return;
 	}
 
-	// Füge neue Filme zum Status hinzu
-	addNewPathsToStatus(newFiles);
+	// Füge neue Dateien zum Status hinzu
+	await addNewPathsToStatus(newFiles);
 }
 
 /**
  * Filtert nur die Dateien, die nicht bereits im Status enthalten sind und einzigartig sind.
- *
  * @param paths - Die Liste der zu überprüfenden Dateipfade.
- * @returns Ein Array von Dateipfaden, die einzigartig sind und noch nicht im Status enthalten sind.
+ * @returns Array von einzigartigen Dateipfaden.
  */
 export async function filterNewFiles(paths: string[]) {
-	// Erstelle ein Set für bereits existierende Pfade, um die Suche effizienter zu machen
 	const existingPaths = new Set(searchList.map((item) => item.options.path));
 
-	// Filtere die Dateien parallel
 	const newFiles = await Promise.all(
 		paths.map(async (path) => {
-			// Überprüfe, ob der Pfad einzigartig ist und noch nicht im Status enthalten
 			const unique = hasMovieExtension(path)
 				? await movie.isPathUnique(path)
 				: await serie.isPathUnique(path);
@@ -65,23 +64,24 @@ export async function filterNewFiles(paths: string[]) {
 		})
 	);
 
-	// Entferne `undefined` und gebe nur die einzigartigen Pfade zurück
-	return newFiles.filter(Boolean) as string[];
+	// Filtere undefined heraus und gebe nur gültige Pfade zurück
+	return newFiles.filter((p): p is string => p !== undefined);
 }
 
 /**
  * Fügt die neuen Dateien dem Status hinzu.
- *
  * @param newPaths - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
  */
-export function addNewPathsToStatus(newPaths: string[]) {
-	const tempStatus: SearchList[] = newPaths.map((path) => {
-		const fileNameWithExt = path.split(sep()).pop() ?? '';
-		const fileName = fileNameWithExt.replace(/\.[^/.]+$/, '');
+export async function addNewPathsToStatus(newPaths: string[]) {
+	const tempStatus: SearchList[] = [];
 
-		const parsed = filenameParse(fileName, !hasMovieExtension(path));
+	for (const path of newPaths) {
+		const fileNameWithExt = await basename(path);
+		const fileNameWithoutExt = fileNameWithExt.replace(/\.[^/.]+$/, '');
 
-		return {
+		const parsed = filenameParse(fileNameWithoutExt, !hasMovieExtension(path));
+
+		tempStatus.push({
 			status: 'waitForSearching',
 			// @ts-expect-error `isTv` ist optional
 			mediaType: parsed.isTv ? 'tv' : 'movie',
@@ -93,12 +93,12 @@ export function addNewPathsToStatus(newPaths: string[]) {
 			},
 			options: {
 				path,
-				fileName: parsed.title ?? fileName,
+				fileName: parsed.title ?? fileNameWithoutExt,
 				primaryReleaseYear: parsed.year ?? ''
 			}
-		};
-	});
+		});
+	}
 
-	// Aktualisiere den Status nur einmal
+	// Status aktualisieren
 	searchList.push(...tempStatus);
 }

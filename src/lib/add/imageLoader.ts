@@ -6,25 +6,32 @@ import type { Season } from '$lib/types/tv/season';
 import type { Serie } from '$lib/types/tv/serie';
 
 export async function loadImages(result: Movie | Serie | Season | Episode) {
-	if ('poster_path' in result) {
-		await image(result.poster_path, 'posters', true);
+	// Helper-Funktion zum sicheren Laden eines Bildpfads
+	async function loadImageIfExists(
+		path: string | null | undefined,
+		category: 'actors' | 'backdrops' | 'posters' | null
+	) {
+		if (path) {
+			await image(path, category, true);
+		}
 	}
 
-	if ('backdrop_path' in result) {
-		await image(result.backdrop_path, 'backdrops', true);
-	}
+	// Poster und Backdrop laden, falls vorhanden
+	await Promise.all([
+		loadImageIfExists('poster_path' in result ? result.poster_path : null, 'posters'),
+		loadImageIfExists('backdrop_path' in result ? result.backdrop_path : null, 'backdrops')
+	]);
 
+	// Cast-Bilder laden, begrenzt durch settings.castImages
 	const castImagePaths = result.credits.cast
 		.map((actor) => actor.profile_path)
-		.filter((path) => path != null);
+		.filter(Boolean) as string[];
 
-	const imagesToLoad =
+	const limit =
 		settings.castImages === 0
 			? castImagePaths.length
 			: Math.min(settings.castImages, castImagePaths.length);
 
-	for (let i = 0; i < imagesToLoad; i++) {
-		const path = castImagePaths[i];
-		await image(path, 'actors', true);
-	}
+	// Paralleles Laden der Cast-Bilder für bessere Performance
+	await Promise.all(castImagePaths.slice(0, limit).map((path) => image(path, 'actors', true)));
 }
