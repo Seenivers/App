@@ -340,5 +340,7 @@
 	"guestStars": "שחקנים אורחים",
 	"yourRating": "Your rating",
 	"folderNotFoundTitle": "The specified folder does not exist.",
-	"folderNotFound": "Folder does not exist"
+	"folderNotFound": "Folder does not exist",
+	"watchlist": "Watchlist",
+	"watchlistSync": "Sync Watchlist"
 }
