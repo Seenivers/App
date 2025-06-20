@@ -330,9 +330,9 @@
 	"weekly": "Ugentlig",
 	"monthly": "Månedligt",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Størrelse",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Indstillinger",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
