@@ -108,7 +108,7 @@
 <dialog class="modal backdrop-blur-sm" open={modalOpen}>
 	<div class="modal-box flex w-full max-w-lg flex-col space-y-2 md:max-w-2xl">
 		<button
-			class="btn btn-circle btn-sm absolute right-2 top-2"
+			class="btn btn-circle btn-sm absolute top-2 right-2"
 			onclick={() => {
 				modalOpen = false;
 				update?.close();
@@ -140,7 +140,7 @@
 				<p class="text-success mt-4 text-lg font-semibold">{$_('updater.downloadFinished')}</p>
 			{/if}
 
-			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
 				{#if update && !downloadStarted}
 					<button class="btn btn-primary" disabled={!online.current} onclick={download}>
 						{$_('updater.download')}
