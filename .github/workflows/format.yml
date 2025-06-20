@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           # Bei PRs checkt GitHub automatisch den PR-Branch aus
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -47,6 +47,10 @@ jobs:
           else
             echo "No changes to commit."
           fi
+
+      - name: Pull remote changes (rebase)
+        if: success()
+        run: git pull --rebase origin main
 
       - name: Push Changes
         if: success() # Nur ausführen, wenn die vorherigen Schritte erfolgreich sind
