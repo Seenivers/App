@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
-	import { getMovie } from '$lib/utils/tmdb';
+	import { getMovie, postWatchlist } from '$lib/utils/tmdb';
 	import { schema } from '$lib/db/schema';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
@@ -91,6 +91,7 @@
 			onclick={() => {
 				isBookmarked = !isBookmarked;
 				movie.update(data.id, { wantsToWatch: isBookmarked });
+				postWatchlist({ media_type: 'movie', media_id: data.id, watchlist: isBookmarked });
 			}}
 			disabled={data.pathExists}
 		>

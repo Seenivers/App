@@ -14,6 +14,7 @@
 	import Bookmark from '$lib/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
 	import Rating from '$lib/components/rating.svelte';
+	import { postWatchlist } from '$lib/utils/tmdb';
 
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
@@ -139,6 +140,7 @@
 			onclick={() => {
 				isBookmarked = !isBookmarked;
 				serie.update(data.id, { wantsToWatch: isBookmarked });
+				postWatchlist({ media_type: 'tv', media_id: data.id, watchlist: isBookmarked });
 			}}
 			disabled={data.pathExists}
 		>
