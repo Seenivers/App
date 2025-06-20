@@ -59,7 +59,7 @@
 				markDirty();
 			}}
 		>
-			{#each $locales as lang}
+			{#each $locales as lang (lang)}
 				<option value={lang}>
 					{new Intl.DisplayNames([settings.language, window.navigator.language], {
 						type: 'language'
@@ -140,7 +140,7 @@
 				markDirty();
 			}}
 		>
-			{#each themes as theme}
+			{#each themes as theme (theme)}
 				<option value={theme.toLowerCase()}>{theme}</option>
 			{/each}
 		</select>

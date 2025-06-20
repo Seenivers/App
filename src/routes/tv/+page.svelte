@@ -200,7 +200,7 @@
 	{#if !data.pathExists && online.current && data.serie.tmdb.videos.results.some((trailer) => trailer.site === 'YouTube')}
 		<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-			{#each data.serie.tmdb.videos.results as trailer}
+			{#each data.serie.tmdb.videos.results as trailer (trailer.id)}
 				{#if trailer.site === 'YouTube'}
 					<div class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl">
 						<img
@@ -232,7 +232,7 @@
 			<h2 class="my-3 text-2xl font-bold">{$_('seriesCast')}</h2>
 			<div class="rounded-box bg-base-100 p-3">
 				<div class="carousel carousel-center rounded-box w-full space-x-3">
-					{#each data.serie.tmdb.credits.cast as cast}
+					{#each data.serie.tmdb.credits.cast as cast (cast.id)}
 						<a
 							href="./actor?id={cast.id}"
 							class="carousel-item flex flex-col items-center"
@@ -325,7 +325,7 @@
 				<h2 class="text-lg font-bold">{$_('genres')}</h2>
 				{#if data.serie.tmdb.genres}
 					<div class="flex flex-wrap gap-1">
-						{#each data.serie.tmdb.genres as genre}
+						{#each data.serie.tmdb.genres as genre (genre.id)}
 							<span class="badge badge-outline">{genre.name}</span>
 						{/each}
 					</div>

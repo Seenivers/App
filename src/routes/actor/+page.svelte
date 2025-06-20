@@ -169,7 +169,7 @@
 							<div>
 								<span class="font-semibold">{$_('aliases')}:</span>
 								<ul class="list-inside list-disc space-y-1">
-									{#each actor.also_known_as as alias}
+									{#each actor.also_known_as as alias (alias)}
 										<li>{alias}</li>
 									{/each}
 								</ul>
@@ -194,14 +194,14 @@
 				</div>
 
 				<!-- Cast und Crew -->
-				{#each ['cast', 'crew'] as const as type}
+				{#each ['cast', 'crew'] as const as type (type)}
 					{#if actor.combined_credits[type].length > 0}
 						<div class="mt-8 space-y-3">
 							<h2 class="text-xl font-semibold">
 								{$_(type === 'cast' ? 'filmography' : 'crew')}
 							</h2>
 							<ul class="space-y-2">
-								{#each sortByDate(actor.combined_credits[type]) as item}
+								{#each sortByDate(actor.combined_credits[type]) as item (item.id)}
 									<li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
 										<div class="flex items-center gap-2">
 											<a

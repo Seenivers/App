@@ -36,7 +36,7 @@
 			class="collapse-content !min-h-unset !min-w-unset mb-3 box-border grid max-h-[33vh] w-full flex-col flex-wrap gap-3 overflow-y-auto p-3"
 		>
 			{#if $messages.length > 0}
-				{#each $messages as { type, text }}
+				{#each $messages as { type, text, id } (id)}
 					<div
 						class="alert min-h-fit w-fit shrink-0 snap-center rounded-lg p-4 break-words whitespace-normal shadow-lg transition-all
 						{toastAlertVariants[type]}"

@@ -118,7 +118,7 @@
 			{#if !data.pathExists && data.result.tmdb.videos.results.length > 0 && online.current}
 				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{#each data.result.tmdb.videos.results as trailer}
+					{#each data.result.tmdb.videos.results as trailer (trailer.id)}
 						{#if trailer.site === 'YouTube'}
 							<div
 								class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
@@ -154,7 +154,7 @@
 					<h2 class="my-2 text-2xl font-bold">{$_('guestStars')}</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
-							{#each data.result.tmdb.credits.guest_stars as guestStars}
+							{#each data.result.tmdb.credits.guest_stars as guestStars (guestStars.id)}
 								<a
 									href="./actor?id={guestStars.id}"
 									class="carousel-item flex flex-col items-center"
