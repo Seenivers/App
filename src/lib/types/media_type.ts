@@ -59,3 +59,8 @@ export type ISO3166_1 = 'DE' | 'ES' | 'FR' | 'US';
 export type Site = 'YouTube';
 
 export type Type = 'Trailer' | 'Featurette' | 'Behind the Scenes' | 'Teaser';
+
+export interface TMDBPostResult {
+	status_code: number;
+	status_message: string;
+}
