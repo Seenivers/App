@@ -47,7 +47,10 @@ async function fetchData<T>(endpoint: string, params: Record<string, string | nu
 	try {
 		response = await fetch(url.toString(), {
 			method: 'GET',
-			headers: { 'Content-Type': 'application/json' }
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${settings.tmdbAccessToken}`
+			}
 		});
 	} catch (err) {
 		const msg = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannt'}`;
