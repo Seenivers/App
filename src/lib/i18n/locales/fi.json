@@ -330,9 +330,9 @@
 	"weekly": "Viikoittain",
 	"monthly": "Kuukausittain",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Koko",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Asetukset",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
