@@ -178,6 +178,7 @@
 <Navbar>
 	{#snippet left()}
 		<a href="./add" class="btn btn-ghost">{$_('nav.add')}</a>
+		<a href="./watchlist" class="btn btn-ghost">{$_('watchlist')}</a>
 	{/snippet}
 	{#snippet right()}
 		<a href="./settings" class="btn btn-ghost">{$_('nav.settings')}</a>
