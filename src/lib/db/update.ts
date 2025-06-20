@@ -14,8 +14,9 @@ import { WEEKS } from '$lib';
 import { movie as movieDB } from '$lib/utils/db/movie';
 import { collection } from '$lib/utils/db/collection';
 import { actor } from '$lib/utils/db/actor';
-import { addNewFiles, load } from '$lib/add';
 import { join } from '@tauri-apps/api/path';
+import { load } from '$lib/add/loader';
+import { addNewFiles } from '$lib/add/fileScanner';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen

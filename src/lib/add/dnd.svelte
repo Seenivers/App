@@ -7,7 +7,8 @@
 	import { error } from '@tauri-apps/plugin-log';
 	import { join } from '@tauri-apps/api/path';
 	import { extensions } from '$lib';
-	import { addNewFiles, load } from '.';
+	import { addNewFiles } from './fileScanner';
+	import { load } from './loader';
 
 	let isDraggingOver = $state(false);
 	let handleDrop: UnlistenFn | undefined;
@@ -95,7 +96,7 @@
 {#if isDraggingOver}
 	<div class="fixed inset-0 z-40 flex items-center justify-center p-5 backdrop-blur-sm">
 		<div
-			class="border-base-content bg-opacity-50 flex h-full w-full flex-col items-center justify-center rounded-lg border-4 border-dashed shadow-lg"
+			class="border-base-content flex h-full w-full flex-col items-center justify-center rounded-lg border-4 border-dashed bg-opacity-50 shadow-lg"
 		>
 			<p class="text-base-content text-lg font-semibold">
 				Zieh eine Datei oder Ordner hierher, um sie hinzuzufügen

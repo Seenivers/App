@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { addNewFiles, load, searchMediaStatus } from '$lib/add/index';
 	import { buttonClass, getIcon } from '$lib/add/searchStatusUtils';
 	import { searchList } from '$lib/stores.svelte';
 	import type { PageData } from './$types';
@@ -14,6 +13,9 @@
 	import { online } from 'svelte/reactivity/window';
 	import { selectFile, selectFolder, selectTvFolder } from '$lib/add/select';
 	import { discord } from '$lib/discord';
+	import { addNewFiles } from '$lib/add/fileScanner';
+	import { load } from '$lib/add/loader';
+	import { searchMediaStatus } from '$lib/add/search';
 
 	let { data }: { data: PageData } = $props();
 	let modal = $state(false);
@@ -205,7 +207,7 @@
 <!-- Modal -->
 <dialog class="modal backdrop-blur-sm" open={modal}>
 	<div class="modal-box max-w-3xl">
-		<button class="btn btn-circle btn-sm absolute top-2 right-2" onclick={() => (modal = false)}>
+		<button class="btn btn-circle btn-sm absolute right-2 top-2" onclick={() => (modal = false)}>
 			✕
 		</button>
 		{#if modalID !== null && searchList[modalID]}
