@@ -330,9 +330,9 @@
 	"weekly": "wekelijks",
 	"monthly": "maandelijks",
 	"resetFilters": "Reset all filters",
-	"size": "Size",
+	"size": "Grootte",
 	"tabs": {
-		"settings": "Settings",
+		"settings": "Instellingen",
 		"backup": "Backup"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
