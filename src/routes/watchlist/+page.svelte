@@ -48,7 +48,10 @@
 		>
 			<button
 				class="btn"
-				onclick={syncWatchlist}
+				onclick={async () => {
+					await syncWatchlist();
+					location.reload();
+				}}
 				disabled={!settings.tmdbAccessToken || !online.current}>{$_('watchlistSync')}</button
 			>
 		</div>
