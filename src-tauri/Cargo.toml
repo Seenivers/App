@@ -30,7 +30,7 @@ tauri-plugin-dialog = "2.2.2"
 tauri-plugin-fs = "2.3.0"
 tauri-plugin-process = "2.2.1"
 tauri-plugin-sql = { version = "2.2.0", features = ["sqlite"] }
-tauri-plugin-opener = "2.2.7"
+tauri-plugin-opener = "2.4.0"
 tauri-plugin-drpc = "0.1.6"
 include_dir = "0.7.4"
 
