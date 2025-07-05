@@ -100,7 +100,7 @@ importers:
         specifier: ^5.0.43
         version: 5.0.43
       drizzle-kit:
-        specifier: ^0.31.2
+        specifier: ^0.31.4
         version: 0.31.4
       eslint:
         specifier: ^9.29.0
