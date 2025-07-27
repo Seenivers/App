@@ -337,6 +337,10 @@
 	},
 	"bookmarkAdd": "Add to Bookmarks",
 	"bookmarkRemove": "Remove from Bookmarks",
+	"guestStars": "Guest actor",
+	"yourRating": "Your rating",
+	"folderNotFoundTitle": "The specified folder does not exist.",
+	"folderNotFound": "Folder does not exist",
 	"watchlist": "Watchlist",
 	"watchlistSync": "Sync Watchlist",
 	"noTMDBAccessToken": "TMDB access required. Please sign in via settings and authorize access."
