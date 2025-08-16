@@ -1,3 +1,38 @@
+# [0.37.0](https://github.com/Seenivers/App/compare/v0.36.0...v0.37.0) (2025-08-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @tauri-apps/plugin-dialog to ^2.3.0 ([95e1b65](https://github.com/Seenivers/App/commit/95e1b65445e2873593091b234c620c0275c1b255))
+* **deps:** update dependency @tauri-apps/plugin-dialog to ^2.3.1 ([2bdfa0a](https://github.com/Seenivers/App/commit/2bdfa0afc0dae51642d22d32d7202d38f9c0f643))
+* **deps:** update dependency @tauri-apps/plugin-dialog to ^2.3.2 ([308a38e](https://github.com/Seenivers/App/commit/308a38e589caeb58e37d9dc57aad51bc7f01b315))
+* **deps:** update dependency @tauri-apps/plugin-process to ^2.2.2 ([27d2366](https://github.com/Seenivers/App/commit/27d23669eae6b93668f6abe3decbd2ca89dd1dff))
+* **deps:** update dependency @tauri-apps/plugin-sql to ^2.2.1 ([d2369b9](https://github.com/Seenivers/App/commit/d2369b9b79518b32046f8cb240d5e61198e2a1fc))
+* **deps:** update dependency @tauri-apps/plugin-sql to ^2.3.0 ([b314818](https://github.com/Seenivers/App/commit/b31481827075869a8b7a5fdcd4551b27d67f2627))
+* **deps:** update dependency drizzle-orm to ^0.44.3 ([c57e405](https://github.com/Seenivers/App/commit/c57e40568026a51894974379e6a0908e0daab526))
+* **deps:** update dependency drizzle-orm to ^0.44.4 ([d4a3861](https://github.com/Seenivers/App/commit/d4a386138ac7055e6602cb03d791976103e2beb2))
+* **deps:** update dependency hls.js to ^1.6.6 ([3e64002](https://github.com/Seenivers/App/commit/3e64002d5e49001a0a15c908f284f85f4ca84187))
+* **deps:** update dependency hls.js to ^1.6.7 ([80124fc](https://github.com/Seenivers/App/commit/80124fc0600921d1d3ebe40eceaaa0ddf73423e6))
+* **deps:** update dependency hls.js to ^1.6.8 ([807d41c](https://github.com/Seenivers/App/commit/807d41cfa83bab7539f73f9f347a4a7532631ad9))
+* **deps:** update rust crate serde_json to 1.0.142 ([59ddcb2](https://github.com/Seenivers/App/commit/59ddcb22fc35784c573f2fcf48888bfdfb3a0d8a))
+* **deps:** update rust crate tauri-plugin-dialog to 2.3.1 ([5d9f560](https://github.com/Seenivers/App/commit/5d9f56026990fdb2d8937bd8b20cda76ac54362a))
+* **deps:** update rust crate tauri-plugin-dialog to 2.3.2 ([13677e2](https://github.com/Seenivers/App/commit/13677e20533848273e2d9ba6070f224bd767125a))
+* **deps:** update rust crate tauri-plugin-fs to 2.4.1 ([307f4b2](https://github.com/Seenivers/App/commit/307f4b29af395bb2924cc9f1afccd333dfe72aad))
+* **deps:** update rust crate tauri-plugin-log to 2.6.0 ([37ad8cf](https://github.com/Seenivers/App/commit/37ad8cfff0b080ad435650d16d1914594a4727aa))
+* **deps:** update rust crate tauri-plugin-opener to 2.4.0 ([43e3af1](https://github.com/Seenivers/App/commit/43e3af16239ccabe633080c34c7a787f76503d99))
+* **deps:** update rust crate tauri-plugin-process to 2.3.0 ([727d9c8](https://github.com/Seenivers/App/commit/727d9c8fca3bf2d55831df3c1af229bf4515b353))
+* **deps:** update rust crate tauri-plugin-sql to 2.3.0 ([a9a7005](https://github.com/Seenivers/App/commit/a9a7005531448c12f84f8691af7539c5e360de36))
+* ensure watchlist sync updates UI immediately after action ([cf39bd7](https://github.com/Seenivers/App/commit/cf39bd7ed11ae502ff44e25089028ef07e9fa3e4))
+* optimize file addition logic by using folderList in selectTvFolder function ([50710eb](https://github.com/Seenivers/App/commit/50710ebe2f5922193ba06b2035dc193a2d8ab971))
+* remove key from each loop in series cast rendering for improved readability ([847a027](https://github.com/Seenivers/App/commit/847a027d9ecd41a90d5c921178e7a47a716996e3))
+* remove unnecessary key from each loop in movie cast rendering ([636d476](https://github.com/Seenivers/App/commit/636d4760bee952ebe50cf421d9381b3ebaa93e6e))
+
+
+### Features
+
+* **add:** integrate filename parsing for improved media type detection and filename cleanup ([ffca0a9](https://github.com/Seenivers/App/commit/ffca0a97270a084523ad0c495e94c5c35e1eb89a))
+* **dependencies:** add @ctrl/video-filename-parser package ([7199d37](https://github.com/Seenivers/App/commit/7199d371631d6c8f9aafec1684ccecc20ef05749))
+
 # [0.36.0](https://github.com/Seenivers/App/compare/v0.35.0...v0.36.0) (2025-06-20)
 
 
