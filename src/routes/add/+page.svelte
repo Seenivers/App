@@ -207,7 +207,7 @@
 <!-- Modal -->
 <dialog class="modal backdrop-blur-sm" open={modal}>
 	<div class="modal-box max-w-3xl">
-		<button class="btn btn-circle btn-sm absolute right-2 top-2" onclick={() => (modal = false)}>
+		<button class="btn btn-circle btn-sm absolute top-2 right-2" onclick={() => (modal = false)}>
 			✕
 		</button>
 		{#if modalID !== null && searchList[modalID]}

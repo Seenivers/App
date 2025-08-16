@@ -35,10 +35,9 @@
 
 # [0.36.0](https://github.com/Seenivers/App/compare/v0.35.0...v0.36.0) (2025-06-20)
 
-
 ### Features
 
-* **i18n:** add TMDB access token requirement message and update watchlist sync button behavior ([a5d3cb4](https://github.com/Seenivers/App/commit/a5d3cb46472cca7ad4d5c489fdfd9303d15bf77d))
+- **i18n:** add TMDB access token requirement message and update watchlist sync button behavior ([a5d3cb4](https://github.com/Seenivers/App/commit/a5d3cb46472cca7ad4d5c489fdfd9303d15bf77d))
 
 # [0.35.0](https://github.com/Seenivers/App/compare/v0.34.0...v0.35.0) (2025-06-20)
 

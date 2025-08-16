@@ -25,7 +25,6 @@ If you discover a vulnerability, please report it as follows:
    Alternatively, you can use **[Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability)** if enabled for the repository.
 
 3. **What to Include in Your Report:**
-
    - A clear and precise description of the vulnerability.
    - Steps to reproduce the issue.
    - Potential impact or exploit scenarios.
