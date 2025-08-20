@@ -42,7 +42,7 @@ importers:
         specifier: ^0.44.4
         version: 0.44.4(@types/better-sqlite3@7.6.13)(better-sqlite3@11.10.0)(gel@2.0.2)
       hls.js:
-        specifier: ^1.6.8
+        specifier: ^1.6.9
         version: 1.6.9
       plyr:
         specifier: ^3.7.8
