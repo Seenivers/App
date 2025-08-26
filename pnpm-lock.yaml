@@ -133,7 +133,7 @@ importers:
         specifier: ^24.2.7
         version: 24.2.7(typescript@5.9.2)
       svelte:
-        specifier: ^5.38.1
+        specifier: ^5.38.2
         version: 5.38.2
       svelte-check:
         specifier: ^4.3.1
