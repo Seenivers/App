@@ -5,25 +5,26 @@
 		"labels": ["security"]
 	},
 	"rebaseWhen": "auto",
-	"requiredStatusChecks": ["CodeQL", "build"],
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
 	"schedule": ["before 5am"],
 	"minimumReleaseAge": "7 days",
 	"rollbackPrs": true,
+	"separateMajorMinor": true,
+	"timezone": "Europe/Berlin",
 	"packageRules": [
 		{
-			"matchUpdateTypes": ["patch", "minor"],
-			"matchFileNames": ["package.json", "pnpm"],
-			"labels": ["javascript", "dependencies"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"groupName": "Non-breaking updates",
+			"matchFileNames": ["package.json", "pnpm", "Cargo.toml", "src-tauri/Cargo.toml"],
 			"automerge": true
 		},
 		{
-			"matchUpdateTypes": ["patch", "minor"],
-			"matchFileNames": ["Cargo.toml", "src-tauri/Cargo.toml"],
-			"labels": ["rust", "dependencies"],
-			"automerge": true
+			"matchUpdateTypes": ["major"],
+			"matchFileNames": ["package.json", "pnpm", "Cargo.toml", "src-tauri/Cargo.toml"],
+			"labels": ["dependencies"],
+			"automerge": false
 		},
 		{
 			"matchUpdateTypes": ["patch", "minor"],
@@ -31,7 +32,5 @@
 			"labels": ["github-actions", "dependencies"],
 			"automerge": false
 		}
-	],
-	"separateMajorMinor": true,
-	"timezone": "Europe/Berlin"
+	]
 }
