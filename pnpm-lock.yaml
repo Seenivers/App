@@ -73,7 +73,7 @@ importers:
         specifier: ^3.0.10
         version: 3.0.10(@sveltejs/kit@2.46.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.39.11)(vite@6.3.6(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.7.1)))(svelte@5.39.11)(vite@6.3.6(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.7.1)))
       '@sveltejs/kit':
-        specifier: ^2.43.8
+        specifier: ^2.46.2
         version: 2.46.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.39.11)(vite@6.3.6(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.7.1)))(svelte@5.39.11)(vite@6.3.6(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.7.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.1.1
@@ -97,7 +97,7 @@ importers:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.6)
       daisyui:
-        specifier: ^5.1.27
+        specifier: ^5.1.29
         version: 5.1.29
       drizzle-kit:
         specifier: ^0.31.5
@@ -133,7 +133,7 @@ importers:
         specifier: ^24.2.9
         version: 24.2.9(typescript@5.9.3)
       svelte:
-        specifier: ^5.39.8
+        specifier: ^5.39.10
         version: 5.39.11
       svelte-check:
         specifier: ^4.3.2
@@ -145,7 +145,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.45.0
+        specifier: ^8.46.0
         version: 8.46.0(eslint@9.37.0(jiti@2.6.1))(typescript@5.9.3)
       vite:
         specifier: ^6.3.6
