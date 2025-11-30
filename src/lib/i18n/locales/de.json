@@ -286,7 +286,7 @@
 	"downloading": "Wird heruntergeladen ({count})",
 	"downloaded": "Heruntergeladen ({count})",
 	"titleWithValue": "Titel: {title}",
-	"title": "Titel:",
+	"title": "Titel",
 	"path": "Pfad: {path}",
 	"releaseYear": "Erscheinungsjahr",
 	"optional": "Optional",
