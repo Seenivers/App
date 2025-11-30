@@ -1,3 +1,27 @@
+# [0.38.0](https://github.com/Seenivers/App/compare/v0.37.0...v0.38.0) (2025-11-30)
+
+
+### Bug Fixes
+
+* bind rating component value directly instead of using bind:value ([ab89650](https://github.com/Seenivers/App/commit/ab89650990919fb497d9b31869fc810a98bd275c))
+* correct 'title' translation formatting in German locale ([1e3721f](https://github.com/Seenivers/App/commit/1e3721ff408f005fd9a30627bf273fb7f2484f53))
+* **deps:** update dependency @tauri-apps/plugin-dialog to ^2.3.3 ([60441ca](https://github.com/Seenivers/App/commit/60441cad8cf553c696a4e729c92758a2b5d83719))
+* **deps:** update dependency better-sqlite3 to v12 ([0286c05](https://github.com/Seenivers/App/commit/0286c0555ace3fc1663572013605021197128ff0))
+* **deps:** update dependency hls.js to ^1.6.10 ([f2245aa](https://github.com/Seenivers/App/commit/f2245aa60546db971a55129a72772ec137e9524d))
+* **deps:** update dependency hls.js to ^1.6.9 ([32a18d8](https://github.com/Seenivers/App/commit/32a18d8fe826724fb3cf93c932d7c8a560824757))
+* **deps:** update non-breaking updates ([2178cb2](https://github.com/Seenivers/App/commit/2178cb2b718eeef2755199367b8d600ed2f1fbd6))
+* **deps:** update non-breaking updates ([d0d6f76](https://github.com/Seenivers/App/commit/d0d6f768cb41c40dd8de1bf4c4d8d5be95a5ecc0))
+* **deps:** update non-breaking updates ([74117fc](https://github.com/Seenivers/App/commit/74117fc246ef4eed9ee75d52c1c62cd34f885efa))
+* **deps:** update non-breaking updates ([1296c2f](https://github.com/Seenivers/App/commit/1296c2fe5223048ab73c7d435cf5b1c4b35713ed))
+* **deps:** update non-breaking updates ([2a1a49f](https://github.com/Seenivers/App/commit/2a1a49f3cd70f6707f8b70a8eedafc9a20ac90da))
+* **deps:** update rust crate serde_json to 1.0.143 ([ed716a0](https://github.com/Seenivers/App/commit/ed716a0b8a9761655fcad51107dba4c18aadecee))
+* improve series, season, and episode addition logic with uniqueness checks and path updates ([fe28e7e](https://github.com/Seenivers/App/commit/fe28e7ef5afd3bc9efef9b51c84c57eb5c6998ac))
+
+
+### Features
+
+* initialize Sentry in client with error handling and replay integration ([568816f](https://github.com/Seenivers/App/commit/568816fb2d030000976cf3a72ba200dfddc13c25))
+
 # [0.37.0](https://github.com/Seenivers/App/compare/v0.36.0...v0.37.0) (2025-08-16)
 
 
