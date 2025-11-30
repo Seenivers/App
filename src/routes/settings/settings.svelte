@@ -266,17 +266,101 @@
 		</button>
 	</label>
 
-	<!-- Schlüsselwörter -->
-	<label class="form-control w-full lg:col-span-2">
+	<!-- Sentry aktivieren -->
+	<label class="form-control flex w-full items-center justify-between">
+		<span class="label font-semibold">Sentry aktivieren</span>
+		<input
+			type="checkbox"
+			class="toggle toggle-primary"
+			bind:checked={settingsTemp.sentryEnabled}
+			onchange={markDirty}
+		/>
+	</label>
+
+	<!-- Sample Rate (INT 0–100) -->
+	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.keywords')}</span>
+			<span class="label-text font-semibold">Sample Rate (%)</span>
 		</div>
-		<textarea
-			class="textarea textarea-bordered h-20 w-full"
-			placeholder={$_('settings.keywordsPlaceholder')}
-			bind:value={settingsTemp.keywords}
-			onchange={(event) => handleInput(event, 'keywords')}
-		></textarea>
+		<input
+			type="number"
+			min="0"
+			max="100"
+			step="1"
+			class="input input-bordered w-full"
+			bind:value={settingsTemp.sentrySampleRate}
+			onchange={markDirty}
+		/>
+	</label>
+
+	<!-- Replay Sample Rate -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">Replay Sample Rate (%)</span>
+		</div>
+		<input
+			type="number"
+			min="0"
+			max="100"
+			step="1"
+			class="input input-bordered w-full"
+			bind:value={settingsTemp.sentryReplaySampleRate}
+			onchange={markDirty}
+		/>
+	</label>
+
+	<!-- Replay On Error Sample Rate -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">Replay bei Fehler (%)</span>
+		</div>
+		<input
+			type="number"
+			min="0"
+			max="100"
+			step="1"
+			class="input input-bordered w-full"
+			bind:value={settingsTemp.sentryReplayOnErrorSampleRate}
+			onchange={markDirty}
+		/>
+	</label>
+
+	<!-- Max Replay Duration -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">Maximale Replay Dauer (ms)</span>
+		</div>
+		<input
+			type="number"
+			min="1000"
+			max="300000"
+			step="1000"
+			class="input input-bordered w-full"
+			bind:value={settingsTemp.sentryMaxReplayDuration}
+			onchange={markDirty}
+		/>
+	</label>
+
+	<!-- Block All Media -->
+	<label class="form-control flex w-full items-center justify-between">
+		<span class="label font-semibold">Medien im Replay blockieren</span>
+		<input
+			type="checkbox"
+			class="toggle toggle-primary"
+			bind:checked={settingsTemp.sentryBlockAllMedia}
+			onchange={markDirty}
+		/>
+	</label>
+
+	<!-- Send PII -->
+	<label class="form-control flex w-full items-center justify-between">
+		<span class="label font-semibold">PII an Sentry senden</span>
+		<input
+			type="checkbox"
+			class="toggle toggle-primary"
+			bind:checked={settingsTemp.sentrySendDefaultPii}
+			onchange={markDirty}
+		/>
 	</label>
 
 	<!-- Ignorierte Schlüsselwörter -->
@@ -289,6 +373,19 @@
 			placeholder={$_('settings.keywordsPlaceholder')}
 			bind:value={settingsTemp.ignoredKeywords}
 			onchange={(event) => handleInput(event, 'ignoredKeywords')}
+		></textarea>
+	</label>
+
+	<!-- Schlüsselwörter -->
+	<label class="form-control w-full lg:col-span-2">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.keywords')}</span>
+		</div>
+		<textarea
+			class="textarea textarea-bordered h-20 w-full"
+			placeholder={$_('settings.keywordsPlaceholder')}
+			bind:value={settingsTemp.keywords}
+			onchange={(event) => handleInput(event, 'keywords')}
 		></textarea>
 	</label>
 
