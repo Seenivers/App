@@ -29,3 +29,6 @@ vite.config.ts.timestamp-*
 
 # Tauri
 /src-tauri/target
+
+# Sentry Config File
+.env.sentry-build-plugin
