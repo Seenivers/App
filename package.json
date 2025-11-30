@@ -52,6 +52,7 @@
 	},
 	"dependencies": {
 		"@ctrl/video-filename-parser": "^5.4.1",
+		"@sentry/sveltekit": "^10.27.0",
 		"@tauri-apps/api": "^2.9.0",
 		"@tauri-apps/plugin-dialog": "^2.4.2",
 		"@tauri-apps/plugin-fs": "^2.4.4",
