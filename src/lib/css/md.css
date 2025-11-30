@@ -1,5 +1,5 @@
 @reference "tailwindcss";
-@plugin "daisyui";
+@plugin 'daisyui';
 
 .body > h1 {
 	@apply text-primary my-5 text-3xl font-bold;
