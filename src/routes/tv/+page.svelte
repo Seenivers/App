@@ -316,7 +316,7 @@
 				</p>
 
 				<Rating
-					bind:value={data.serie.rating}
+					value={data.serie.rating}
 					update={async () => await serie.update(data.id, { rating: data.serie.rating })}
 				/>
 			</div>
