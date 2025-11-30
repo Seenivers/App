@@ -118,8 +118,8 @@ importers:
         specifier: ^16.5.0
         version: 16.5.0
       marked:
-        specifier: ^15.0.12
-        version: 15.0.12
+        specifier: ^17.0.0
+        version: 17.0.1
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -2417,6 +2417,11 @@ packages:
   marked@15.0.12:
     resolution: {integrity: sha512-8dD6FusOQSrpv9Z1rdNMdlSgQOIP880DHqnohobOmYLElGEqAL/JvxvuxZO16r4HtjTlfPRDC1hbvxC9dPN2nA==}
     engines: {node: '>= 18'}
+    hasBin: true
+
+  marked@17.0.1:
+    resolution: {integrity: sha512-boeBdiS0ghpWcSwoNm/jJBwdpFaMnZWRzjA6SkUMYb40SVaN1x7mmfGKp0jvexGcx+7y2La5zRZsYFZI6Qpypg==}
+    engines: {node: '>= 20'}
     hasBin: true
 
   media-captions@1.0.4:
@@ -5474,6 +5479,8 @@ snapshots:
       supports-hyperlinks: 3.2.0
 
   marked@15.0.12: {}
+
+  marked@17.0.1: {}
 
   media-captions@1.0.4: {}
 
