@@ -20,14 +20,16 @@ export async function addNewSerie(entry: { id: number; index: number }) {
 
 	updateSearchStatus(entry.index, 'downloading');
 
+	const response = await tmdb.getSerie(entry.id);
+
 	if (!(await serie.isIDUnique(entry.id))) {
 		serie.update(entry.id, { path: searchList[entry.index].options.path });
+		await addSeasonToDatabase(entry.index, response.id, response.seasons);
 		updateSearchStatus(entry.index, 'downloaded');
 		return;
 	}
 
 	try {
-		const response = await tmdb.getSerie(entry.id);
 		await serie.add({
 			id: response.id,
 			path: searchList[entry.index].options.path,
@@ -81,16 +83,20 @@ export async function addSeasonToDatabase(
 				continue;
 			}
 
-			await season.add({
-				id: resultSeason.id,
-				path: seasonPaths.get(seasonNumber) ?? seriesPath,
-				tmdb: resultSeason
-			});
+			const existing = await season.isIDUnique(resultSeason.id);
+			if (!existing) {
+				await season.update(resultSeason.id, { path: seasonPaths.get(seasonNumber) ?? seriesPath });
+			} else {
+				await season.add({
+					id: resultSeason.id,
+					path: seasonPaths.get(seasonNumber) ?? seriesPath,
+					tmdb: resultSeason
+				});
 
-			await loadImages(resultSeason);
+				await loadImages(resultSeason);
+			}
 
 			await addEpisodeToDatabase(serieId, seasonNumber, seasonData[seasonNumber] || {});
-			info(`Staffel ${seasonNumber} erfolgreich hinzugefügt.`);
 		} catch (e) {
 			error(
 				`Fehler beim Verarbeiten der Staffel ${seasonInfo.season_number}: ${e instanceof Error ? e.message : e}`
@@ -113,14 +119,19 @@ export async function addEpisodeToDatabase(
 				return;
 			}
 
-			await episode.add({
-				id: resultEpisode.id,
-				path: path ?? null,
-				tmdb: resultEpisode
-			});
-
-			await loadImages(resultEpisode);
-			info(`Episode ${episodeNumber} der Staffel ${seasonNumber} erfolgreich hinzugefügt.`);
+			const existing = await episode.isIDUnique(resultEpisode.id);
+			if (!existing) {
+				await episode.update(resultEpisode.id, { path: path ?? null });
+				info(`Episode ${episodeNumber} Pfad aktualisiert.`);
+			} else {
+				await episode.add({
+					id: resultEpisode.id,
+					path: path ?? null,
+					tmdb: resultEpisode
+				});
+				await loadImages(resultEpisode);
+				info(`Episode ${episodeNumber} hinzugefügt.`);
+			}
 		} catch (e) {
 			error(
 				`Fehler bei Episode ${episodeNumber} Staffel ${seasonNumber}: ${e instanceof Error ? e.message : e}`
