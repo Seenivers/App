@@ -71,10 +71,11 @@
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
-			"esbuild",
+			"@sentry/cli",
 			"better-sqlite3",
 			"core-js",
-			"es5-ext"
+			"es5-ext",
+			"esbuild"
 		]
 	}
 }
