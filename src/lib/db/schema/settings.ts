@@ -49,7 +49,7 @@ export const settings = sqliteTable('settings', {
 		.$type<ToastPosition>()
 		.default({ horizontal: 'end', vertical: 'bottom' }),
 	player: text('player').notNull().$type<Player>().default('Plyr'),
-	castImages: int('castImages').notNull().default(5), // 5 Actors Bilder Runterladen / 0 = Alle / -1 = Keine
+	castImages: int('castImages').notNull().default(5),
 	discordAktiv: int('discordAktiv', { mode: 'boolean' }).notNull().default(true),
 	backupInterval: text('backupInterval').notNull().$type<BackupInterval>().default('manual'),
 	backupConfig: text('backupConfig', { mode: 'json' })
@@ -60,5 +60,12 @@ export const settings = sqliteTable('settings', {
 	tmdbAccountID: text('tmdbAccountID'),
 	tmdbAccessToken: text('tmdbAccessToken'),
 	tmdbGuestSessionId: text('tmdbGuestSessionId'),
-	tmdbGuestSessionCreatedAt: int('tmdbGuestSessionCreatedAt', { mode: 'timestamp' })
+	tmdbGuestSessionCreatedAt: int('tmdbGuestSessionCreatedAt', { mode: 'timestamp' }),
+	sentryEnabled: int('sentryEnabled', { mode: 'boolean' }).notNull().default(true),
+	sentrySampleRate: int('sentrySampleRate').notNull().default(100), // 100% → entspricht 1.0
+	sentryReplaySampleRate: int('sentryReplaySampleRate').notNull().default(10), // 10% → entspricht 0.1
+	sentryReplayOnErrorSampleRate: int('sentryReplayOnErrorSampleRate').notNull().default(100), // 100% → entspricht 1.0
+	sentryMaxReplayDuration: int('sentryMaxReplayDuration').notNull().default(60_000), // 1 Minute
+	sentryBlockAllMedia: int('sentryBlockAllMedia', { mode: 'boolean' }).notNull().default(true),
+	sentrySendDefaultPii: int('sentrySendDefaultPii', { mode: 'boolean' }).notNull().default(true)
 });
