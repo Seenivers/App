@@ -3,7 +3,7 @@ buildImage = "ghcr.io/railwayapp/nixpacks:latest"
 
 [phases.setup]
 # Node Version
-node_version = "24.11.1"
+node_version = "24"
 
 # Package Manager
 package_manager = "pnpm"
