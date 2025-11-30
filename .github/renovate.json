@@ -8,8 +8,7 @@
 	"prCreation": "not-pending",
 	"dependencyDashboard": false,
 	"rangeStrategy": "bump",
-	"schedule": ["before 5am"],
-	"minimumReleaseAge": "7 days",
+	"minimumReleaseAge": "14 days",
 	"rollbackPrs": true,
 	"separateMajorMinor": true,
 	"timezone": "Europe/Berlin",
@@ -18,6 +17,7 @@
 			"matchUpdateTypes": ["minor", "patch"],
 			"groupName": "Non-breaking updates",
 			"matchFileNames": ["package.json", "pnpm", "Cargo.toml", "src-tauri/Cargo.toml"],
+			"labels": ["dependencies"],
 			"automerge": true
 		},
 		{
