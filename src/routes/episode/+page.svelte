@@ -2,7 +2,7 @@
 	import { settings } from '$lib/stores.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { PageData } from './$types';
-	import { error } from '@tauri-apps/plugin-log';
+	
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
 	import { image } from '$lib/image/image';
@@ -41,7 +41,7 @@
 			// Öffne die Datei mit dem Standardplayer
 			await openPath(data.result.path);
 		} catch (err) {
-			error('Failed to open Path: ' + err);
+			console.error('Failed to open Path: ' + err);
 		}
 	}
 
