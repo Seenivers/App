@@ -10,7 +10,6 @@ import {
 	readDir,
 	stat
 } from '@tauri-apps/plugin-fs';
-import { error, info } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm/sql';
 import { _ } from 'svelte-i18n';
 import { get } from 'svelte/store';
@@ -44,7 +43,7 @@ export const backup = {
 
 			return true;
 		} catch (err) {
-			error(`Create Backup: ${err}`);
+			console.error(`Create Backup: ${err}`);
 			return false;
 		}
 	},
@@ -56,7 +55,7 @@ export const backup = {
 				null
 			);
 		} catch (err) {
-			error(`Get Backup: ${err}`);
+			console.error(`Get Backup: ${err}`);
 			return null;
 		}
 	},
@@ -65,7 +64,7 @@ export const backup = {
 		try {
 			return await db.select().from(schema.backups).orderBy(schema.backups.id);
 		} catch (err) {
-			error(`Get All Backups: ${err}`);
+			console.error(`Get All Backups: ${err}`);
 			return [];
 		}
 	},
@@ -75,7 +74,7 @@ export const backup = {
 			const data = await backup.get(id);
 
 			if (!data) {
-				error(get(_)('backup.idNotFound', { values: { id: id } }));
+				console.error(get(_)('backup.idNotFound', { values: { id: id } }));
 				return false;
 			}
 
@@ -89,7 +88,7 @@ export const backup = {
 
 			return true;
 		} catch (err) {
-			error(`Delete Backup: ${err}`);
+			console.error(`Delete Backup: ${err}`);
 			return false;
 		}
 	},
@@ -99,13 +98,13 @@ export const backup = {
 			const data = await backup.get(id);
 
 			if (!data) {
-				error(get(_)('backup.idNotFound', { values: { id: id } }));
+				console.error(get(_)('backup.idNotFound', { values: { id: id } }));
 				return false;
 			}
 
 			// Falls Datei nicht existiert, lösche den DB-Eintrag
 			if (!(await exists(data.path, { baseDir: BaseDirectory.AppData }))) {
-				error(get(_)('backup.fileNotFound', { values: { filePath: data.path } }));
+				console.error(get(_)('backup.fileNotFound', { values: { filePath: data.path } }));
 				await backup.validateBackups();
 				return false;
 			}
@@ -122,7 +121,7 @@ export const backup = {
 
 			return true;
 		} catch (err) {
-			error(`Restore Backup: ${err}`);
+			console.error(`Restore Backup: ${err}`);
 			return false;
 		}
 	},
@@ -164,7 +163,9 @@ export const backup = {
 			for (const dbBackup of dbBackups) {
 				if (!(await exists(dbBackup.path, { baseDir: BaseDirectory.AppData }))) {
 					await db.delete(schema.backups).where(eq(schema.backups.id, dbBackup.id));
-					info(get(_)('backup.deletedBackup', { values: { filePath: dbBackup.path.toString() } }));
+					console.info(
+						get(_)('backup.deletedBackup', { values: { filePath: dbBackup.path.toString() } })
+					);
 				}
 			}
 
@@ -178,7 +179,7 @@ export const backup = {
 						createdAt: meta.birthtime ?? meta.mtime ?? meta.atime ?? new Date(),
 						size: meta.size
 					});
-					info(get(_)('backup.newBackup', { values: { filePath } }));
+					console.info(get(_)('backup.newBackup', { values: { filePath } }));
 				}
 			}
 
@@ -192,7 +193,7 @@ export const backup = {
 							.update(schema.backups)
 							.set({ size: meta.size })
 							.where(eq(schema.backups.id, dbBackup.id));
-						info(
+						console.info(
 							get(_)('backup.updatedSize', {
 								values: { filePath: dbBackup.path.toString(), size: meta.size }
 							})
@@ -203,7 +204,7 @@ export const backup = {
 
 			return true;
 		} catch (err) {
-			error(`Validate Backups: ${err}`);
+			console.error(`Validate Backups: ${err}`);
 			return false;
 		}
 	}
