@@ -13,13 +13,6 @@ pub fn run() {
         "sqlite:sqlite.db"
     };
 
-    // Log-Dateiname abhängig vom Build-Typ setzen
-    let log_file_name = if cfg!(debug_assertions) {
-        "DEV-logs".to_string()
-    } else {
-        "logs".to_string()
-    };
-
     tauri::Builder::default()
         .plugin(
             tauri_plugin_sql::Builder::default()
@@ -38,24 +31,6 @@ pub fn run() {
         })
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
-        .plugin(
-            tauri_plugin_log::Builder::new()
-                .timezone_strategy(tauri_plugin_log::TimezoneStrategy::UseLocal)
-                .max_file_size((10 * 1024 * 1024) as u128) // 10MB
-                .clear_targets()
-                .target(tauri_plugin_log::Target::new(
-                    tauri_plugin_log::TargetKind::Webview,
-                ))
-                .target(tauri_plugin_log::Target::new(
-                    tauri_plugin_log::TargetKind::LogDir {
-                        file_name: Some(log_file_name),
-                    },
-                ))
-                .filter(|metadata| {
-                    metadata.target() != "tao::platform_impl::platform::event_loop::runner"
-                })
-                .build(),
-        )
         .plugin(tauri_plugin_opener::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
