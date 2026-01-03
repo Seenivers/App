@@ -1,14 +1,14 @@
 import { db } from '$lib/db/database';
-import { schema } from '$lib/db/schema';
+import { episode as schemaEpisode } from '$lib/db/schema';
 
 import { eq, inArray } from 'drizzle-orm';
 import { getSerieSeasonEpisode } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
 
 export const episode = {
-	add: async (data: typeof schema.episode.$inferInsert) =>
+	add: async (data: typeof schemaEpisode.$inferInsert) =>
 		(await episode.isIDUnique(data.id))
-			? await db.insert(schema.episode).values(data)
+			? await db.insert(schemaEpisode).values(data)
 			: await episode.update(data.id, data),
 
 	get: async (
@@ -16,8 +16,8 @@ export const episode = {
 		seriesId?: number,
 		seasonNumber?: number,
 		episodeNumber?: number
-	): Promise<typeof schema.episode.$inferSelect | undefined> => {
-		let result = await db.query.episode.findFirst({ where: eq(schema.episode.id, id) });
+	): Promise<typeof schemaEpisode.$inferSelect | undefined> => {
+		let result = await db.query.episode.findFirst({ where: eq(schemaEpisode.id, id) });
 
 		if (
 			!result &&
@@ -29,7 +29,7 @@ export const episode = {
 			const fetched = await getSerieSeasonEpisode(seriesId, seasonNumber, episodeNumber);
 
 			if (fetched) {
-				await db.insert(schema.episode).values({
+				await db.insert(schemaEpisode).values({
 					id: fetched.id,
 					tmdb: fetched
 				});
@@ -50,14 +50,14 @@ export const episode = {
 
 	getAll: async (
 		items: { id: number; seriesId?: number; seasonNumber?: number; episodeNumber?: number }[]
-	): Promise<(typeof schema.episode.$inferSelect)[]> => {
+	): Promise<(typeof schemaEpisode.$inferSelect)[]> => {
 		if (items && items.length > 0) {
 			const localResults = await db
 				.select()
-				.from(schema.episode)
+				.from(schemaEpisode)
 				.where(
 					inArray(
-						schema.episode.id,
+						schemaEpisode.id,
 						items.map((s) => s.id)
 					)
 				);
@@ -66,7 +66,7 @@ export const episode = {
 			const missingIds = items.filter((item) => !foundIds.includes(item.id));
 
 			if (missingIds.length > 0 && online.current) {
-				const fetchedEpisodes: (typeof schema.episode.$inferSelect | null)[] = await Promise.all(
+				const fetchedEpisodes: (typeof schemaEpisode.$inferSelect | null)[] = await Promise.all(
 					missingIds.map(async (item) => {
 						if (
 							item.seriesId === undefined ||
@@ -80,7 +80,7 @@ export const episode = {
 							item.episodeNumber
 						);
 						if (onlineResult) {
-							await db.insert(schema.episode).values({
+							await db.insert(schemaEpisode).values({
 								id: onlineResult.id,
 								tmdb: onlineResult,
 								path: null,
@@ -109,15 +109,15 @@ export const episode = {
 			return localResults;
 		}
 
-		return await db.select().from(schema.episode);
+		return await db.select().from(schemaEpisode);
 	},
 
-	delete: async (id: number) => await db.delete(schema.episode).where(eq(schema.episode.id, id)),
+	delete: async (id: number) => await db.delete(schemaEpisode).where(eq(schemaEpisode.id, id)),
 
-	update: async (id: number, data: Partial<typeof schema.episode.$inferInsert>) => {
+	update: async (id: number, data: Partial<typeof schemaEpisode.$inferInsert>) => {
 		if (Object.keys(data).length === 0) return;
 		try {
-			await db.update(schema.episode).set(data).where(eq(schema.episode.id, id));
+			await db.update(schemaEpisode).set(data).where(eq(schemaEpisode.id, id));
 		} catch (err) {
 			console.error(`Update Episode (ID: ${id}) fehlgeschlagen: ${err}`);
 		}
