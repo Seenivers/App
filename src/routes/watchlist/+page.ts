@@ -9,7 +9,7 @@ export const load = (async () => {
 	}
 
 	const { db } = await import('$lib/db/database');
-	const { schema } = await import('$lib/db/schema');
+	const schema = await import('$lib/db/schema');
 
 	const movie = await db.select().from(schema.movies).where(eq(schema.movies.wantsToWatch, true));
 	const serie = await db.select().from(schema.serie).where(eq(schema.serie.wantsToWatch, true));
