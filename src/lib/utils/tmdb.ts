@@ -1,4 +1,3 @@
-import { error } from '@tauri-apps/plugin-log';
 import type { Movie } from '$lib/types/movie';
 import { settings } from '$lib/stores.svelte';
 import { seeniversURL } from '$lib';
@@ -23,7 +22,7 @@ async function parseResponse<T>(response: Response, endpoint: string): Promise<T
 		} catch {
 			message += ' (Fehler beim Lesen der Fehlermeldung)';
 		}
-		error(message);
+		console.error(message);
 		throw new Error(message);
 	}
 
@@ -31,7 +30,7 @@ async function parseResponse<T>(response: Response, endpoint: string): Promise<T
 		return (await response.json()) as T;
 	} catch (err) {
 		const msg = `Fehler beim Parsen von JSON (${endpoint}): ${err instanceof Error ? err.message : 'Unbekannt'}`;
-		error(msg);
+		console.error(msg);
 		throw new Error(msg);
 	}
 }
@@ -54,7 +53,7 @@ async function fetchData<T>(endpoint: string, params: Record<string, string | nu
 		});
 	} catch (err) {
 		const msg = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannt'}`;
-		error(msg);
+		console.error(msg);
 		throw new Error(msg);
 	}
 
@@ -74,7 +73,7 @@ async function postData<T>(endpoint: string, body: unknown): Promise<T> {
 		});
 	} catch (err) {
 		const msg = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannt'}`;
-		error(msg);
+		console.error(msg);
 		throw new Error(msg);
 	}
 
@@ -197,7 +196,7 @@ export const postToken = async () => {
 		return await parseResponse<RequestToken>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		error(message);
+		console.error(message);
 		throw new Error(message);
 	}
 };
@@ -219,7 +218,7 @@ export const postAccessToken = async (request_token: string) => {
 		return await parseResponse<AccessToken>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		error(message);
+		console.error(message);
 		throw new Error(message);
 	}
 };
@@ -242,7 +241,7 @@ export const postSessionId = async () => {
 		return await parseResponse<SessionId>(response, endpoint);
 	} catch (err) {
 		const message = `Netzwerkfehler bei ${endpoint}: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`;
-		error(message);
+		console.error(message);
 		throw new Error(message);
 	}
 };
