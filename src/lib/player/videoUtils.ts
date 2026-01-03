@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/database';
-import { schema } from '../db/schema';
 import { movie as movieDB } from '$lib/utils/db/movie';
 import { episode as episodeDB } from '$lib/utils/db/episode';
 import type { MediaType } from '$lib/types/add';
+import { episode, movies } from '$lib/db/schema';
 
 /**
  * Lädt die gespeicherte Watch-Time und setzt sie, falls vorhanden.
@@ -25,7 +25,7 @@ export async function saveWatchTime(
 	duration: number
 ) {
 	const watchTime = Math.max(0, Math.round(currentTime) - 2);
-	const newSchema = type === 'movie' ? schema.movies : schema.episode;
+	const newSchema = type === 'movie' ? movies : episode;
 
 	// Aktualisiere die Watch-Time in der Datenbank
 	await db.update(newSchema).set({ watchTime }).where(eq(newSchema.id, id));
@@ -41,7 +41,7 @@ export async function saveWatchTime(
  */
 export async function markAsWatched(id: number, type: MediaType) {
 	await db
-		.update(type === 'movie' ? schema.movies : schema.episode)
+		.update(type === 'movie' ? movies : episode)
 		.set({ watched: true, watchTime: 0 })
-		.where(eq(schema.movies.id, id));
+		.where(eq(movies.id, id));
 }
