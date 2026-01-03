@@ -6,7 +6,6 @@
 	import { networkStatus } from '$lib/utils/networkStatus';
 	import { db } from '$lib/db/database';
 	import { settings } from '$lib/stores.svelte';
-	import { forwardConsole } from '$lib/utils/log';
 	import { online } from 'svelte/reactivity/window';
 	import { discord } from '$lib/discord';
 	import { destroy } from 'tauri-plugin-drpc';
@@ -23,6 +22,7 @@
 	import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
 	import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
+	import { endClientSession, startClientSession } from '$lib/utils/telemetry';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -38,11 +38,12 @@
 	onMount(async () => {
 		const mainWindow = getCurrentWebview().label === 'main';
 		if (settings) {
+			setTheme(settings.theme);
+
 			if (mainWindow) {
 				await discord();
+				startClientSession();
 			}
-
-			setTheme(settings.theme);
 
 			if (import.meta.env.PROD && mainWindow) {
 				await autoBackup();
@@ -67,6 +68,7 @@
 	});
 
 	onDestroy(async () => {
+		endClientSession();
 		await destroy();
 		console.debug('App closed');
 	});
