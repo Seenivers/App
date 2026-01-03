@@ -4,7 +4,6 @@ import { updateSearchStatus } from './utils';
 import { serie } from '$lib/utils/db/serie';
 import { searchList } from '$lib/stores.svelte';
 import type { Serie } from '$lib/types/tv/serie';
-import { error, warn, info } from '@tauri-apps/plugin-log';
 import { findSeasonsAndEpisodes } from './findEpisodes';
 import { loadImages } from './imageLoader';
 import { season } from '$lib/utils/db/season';
@@ -42,7 +41,7 @@ export async function addNewSerie(entry: { id: number; index: number }) {
 		updateSearchStatus(entry.index, 'downloaded');
 	} catch (err) {
 		updateSearchStatus(entry.index, 'notFound');
-		error(
+		console.error(
 			`Fehler beim Abrufen der Serie: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
 		);
 	}
@@ -55,7 +54,7 @@ export async function addSeasonToDatabase(
 ) {
 	const seriesPath = searchList[index]?.options?.path;
 	if (!seriesPath) {
-		warn(`Kein gültiger Pfad für Serie mit ID ${serieId} gefunden.`);
+		console.warn(`Kein gültiger Pfad für Serie mit ID ${serieId} gefunden.`);
 		return;
 	}
 
@@ -79,7 +78,7 @@ export async function addSeasonToDatabase(
 			const seasonNumber = seasonInfo.season_number;
 			const resultSeason = await tmdb.getSerieSeason(serieId, seasonNumber);
 			if (!resultSeason) {
-				warn(`Staffel ${seasonNumber} der Serie ${serieId} konnte nicht geladen werden.`);
+				console.warn(`Staffel ${seasonNumber} der Serie ${serieId} konnte nicht geladen werden.`);
 				continue;
 			}
 
@@ -98,7 +97,7 @@ export async function addSeasonToDatabase(
 
 			await addEpisodeToDatabase(serieId, seasonNumber, seasonData[seasonNumber] || {});
 		} catch (e) {
-			error(
+			console.error(
 				`Fehler beim Verarbeiten der Staffel ${seasonInfo.season_number}: ${e instanceof Error ? e.message : e}`
 			);
 		}
@@ -115,14 +114,16 @@ export async function addEpisodeToDatabase(
 		try {
 			const resultEpisode = await tmdb.getSerieSeasonEpisode(serieId, seasonNumber, episodeNumber);
 			if (!resultEpisode) {
-				warn(`Episode ${episodeNumber} Staffel ${seasonNumber} Serie ${serieId} nicht gefunden.`);
+				console.warn(
+					`Episode ${episodeNumber} Staffel ${seasonNumber} Serie ${serieId} nicht gefunden.`
+				);
 				return;
 			}
 
 			const existing = await episode.isIDUnique(resultEpisode.id);
 			if (!existing) {
 				await episode.update(resultEpisode.id, { path: path ?? null });
-				info(`Episode ${episodeNumber} Pfad aktualisiert.`);
+				console.info(`Episode ${episodeNumber} Pfad aktualisiert.`);
 			} else {
 				await episode.add({
 					id: resultEpisode.id,
@@ -130,10 +131,10 @@ export async function addEpisodeToDatabase(
 					tmdb: resultEpisode
 				});
 				await loadImages(resultEpisode);
-				info(`Episode ${episodeNumber} hinzugefügt.`);
+				console.info(`Episode ${episodeNumber} hinzugefügt.`);
 			}
 		} catch (e) {
-			error(
+			console.error(
 				`Fehler bei Episode ${episodeNumber} Staffel ${seasonNumber}: ${e instanceof Error ? e.message : e}`
 			);
 		}
