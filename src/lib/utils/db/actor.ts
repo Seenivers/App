@@ -1,6 +1,6 @@
 import { db } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
-import { error } from '@tauri-apps/plugin-log';
+
 import { eq, inArray } from 'drizzle-orm';
 import { getActor } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
@@ -71,7 +71,7 @@ export const actor = {
 		try {
 			await db.update(schema.actors).set(data).where(eq(schema.actors.id, id));
 		} catch (err) {
-			error(`Update Actor (ID: ${id}) fehlgeschlagen: ${err}`);
+			console.error(`Update Actor (ID: ${id}) fehlgeschlagen: ${err}`);
 		}
 	},
 
