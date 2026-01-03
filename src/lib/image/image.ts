@@ -2,7 +2,7 @@ import { imageURL, placeholderURL, seeniversURL } from '$lib';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir, remove } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
-import { error } from '@tauri-apps/plugin-log';
+
 import { online } from 'svelte/reactivity/window';
 
 /**
@@ -18,7 +18,7 @@ async function ensureDirectoryExists(folderPath: string) {
 			});
 		}
 	} catch (err) {
-		error(`Error checking or creating directory: ${err}`);
+		console.error(`Error checking or creating directory: ${err}`);
 		return;
 	}
 }
@@ -32,53 +32,53 @@ export async function downloadImage(url: string, filename: string) {
 	// Download the image
 	const response = await fetch(`${seeniversURL}/api/image?path=${encodeURIComponent(url)}`).catch(
 		(err) => {
-			error(`Error fetching image from ${url}: ${err}`);
+			console.error(`Error fetching image from ${url}: ${err}`);
 			return null;
 		}
 	);
 
 	if (!response?.ok) {
-		error(`Error downloading image: ${response?.statusText ?? 'Unknown error'}`);
+		console.error(`Error downloading image: ${response?.statusText ?? 'Unknown error'}`);
 		return;
 	}
 
 	// Retrieve the Blob from the response
 	const blob = await response.blob().catch((err) => {
-		error(`Error processing image data: ${err}`);
+		console.error(`Error processing image data: ${err}`);
 		return null;
 	});
 	if (!blob) return;
 
 	// Create the file
 	const newFile = await create(filename, { baseDir: BaseDirectory.AppData }).catch((err) => {
-		error(`Error creating file ${filename}: ${err}`);
+		console.error(`Error creating file ${filename}: ${err}`);
 		return null;
 	});
 	if (!newFile) return;
 
 	// Write the image data to the file
 	const arrayBuffer = await blob.arrayBuffer().catch((err) => {
-		error(`Error converting image to arrayBuffer: ${err}`);
+		console.error(`Error converting image to arrayBuffer: ${err}`);
 		return null;
 	});
 	if (!arrayBuffer) return;
 
 	await newFile.write(new Uint8Array(arrayBuffer)).catch((err) => {
-		error(`Error writing image data to file ${filename}: ${err}`);
+		console.error(`Error writing image data to file ${filename}: ${err}`);
 	});
 
 	// Close the file
 	await newFile.close().catch((err) => {
-		error(`Error closing file ${filename}: ${err}`);
+		console.error(`Error closing file ${filename}: ${err}`);
 	});
 }
 
 const resolveImageSource = async (src: string) => {
 	const { width, height } = await fetchImageDimensions(src).catch((err) => {
 		if (err instanceof Error) {
-			error(`Fehler beim Abrufen der Bildabmessungen: ${err.message}`);
+			console.error(`Fehler beim Abrufen der Bildabmessungen: ${err.message}`);
 		} else {
-			error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
+			console.error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
 		}
 		// Rückfallwerte, falls das Bild nicht geladen werden kann
 		return { width: 300, height: 450 };
@@ -111,7 +111,7 @@ export async function image(
 	try {
 		await ensureDirectoryExists(folderPath);
 	} catch (err) {
-		error(`Fehler beim Erstellen des Verzeichnisses '${folderPath}': ${err}`);
+		console.error(`Fehler beim Erstellen des Verzeichnisses '${folderPath}': ${err}`);
 	}
 
 	// Überprüfen, ob das Bild lokal vorhanden ist oder heruntergeladen werden muss
@@ -124,9 +124,9 @@ export async function image(
 			if (download) {
 				await downloadImage(remoteSrc, filePath).catch((err) => {
 					if (err instanceof Error) {
-						error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err.message}`);
+						console.error(`Fehler beim Herunterladen des Bildes '${remoteSrc}': ${err.message}`);
 					} else {
-						error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
+						console.error('Ein unbekannter Fehler ist aufgetreten: ' + err); // Fallback, wenn es kein Error-Objekt ist
 					}
 				});
 			} else {
@@ -145,7 +145,7 @@ async function checkImageExistence(filePath: string): Promise<boolean> {
 	try {
 		return await exists(filePath, { baseDir: BaseDirectory.AppData });
 	} catch (err) {
-		error(`Fehler bei der Überprüfung des Bildpfads '${filePath}': ${err}`);
+		console.error(`Fehler bei der Überprüfung des Bildpfads '${filePath}': ${err}`);
 		return false;
 	}
 }
@@ -157,7 +157,7 @@ async function resolveImageFromLocal(filePath: string) {
 			return resolveImageSource(convertFileSrc(localPath));
 		}
 	} catch (err) {
-		error(`Fehler beim Zusammenfügen des lokalen Pfads: ${err}`);
+		console.error(`Fehler beim Zusammenfügen des lokalen Pfads: ${err}`);
 	}
 	return resolveImageSource(placeholderURL);
 }
@@ -184,7 +184,9 @@ export async function fetchImageDimensions(
 					try {
 						await remove(decodedPath);
 					} catch (removeError) {
-						error(`Fehler beim Verarbeiten des Pfads zum Entfernen des Bildes: ${removeError}`);
+						console.error(
+							`Fehler beim Verarbeiten des Pfads zum Entfernen des Bildes: ${removeError}`
+						);
 					}
 				}
 				return resolve({ width: 300, height: 450 });
