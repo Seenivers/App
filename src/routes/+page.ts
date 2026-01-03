@@ -1,7 +1,11 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
-import type { schema } from '$lib/db/schema';
+import type {
+	collections as schemaCollections,
+	movies as schemaMovie,
+	serie as schemaSerie
+} from '$lib/db/schema';
 
 export const load = (async () => {
 	if (!browser) {
@@ -13,9 +17,9 @@ export const load = (async () => {
 	const { serie } = await import('$lib/utils/db/serie');
 
 	// Daten aus der Datenbank abrufen
-	const collections: (typeof schema.collections.$inferSelect)[] = (await collection.getAll()) ?? [];
-	const movies: (typeof schema.movies.$inferSelect)[] = (await movie.getAll()) ?? [];
-	const series: (typeof schema.serie.$inferSelect)[] = (await serie.getAll()) ?? [];
+	const collections: (typeof schemaCollections.$inferSelect)[] = (await collection.getAll()) ?? [];
+	const movies: (typeof schemaMovie.$inferSelect)[] = (await movie.getAll()) ?? [];
+	const series: (typeof schemaSerie.$inferSelect)[] = (await serie.getAll()) ?? [];
 
 	if (movies.length === 0 && collections.length === 0 && series.length === 0) {
 		return { movies: [], series: [], collections: [], genres: [] };
