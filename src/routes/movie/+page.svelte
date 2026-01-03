@@ -5,8 +5,7 @@
 	import { schema } from '$lib/db/schema';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
-	import { error } from '@tauri-apps/plugin-log';
-	import type { PageData } from './$types';
+		import type { PageData } from './$types';
 	import { settings } from '$lib/stores.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
@@ -49,7 +48,7 @@
 			// Öffne die Datei mit dem Standardplayer
 			await openPath(movieData.path);
 		} catch (err) {
-			error('Failed to open video with external player: ' + err);
+			console.error('Failed to open video with external player: ' + err);
 		}
 	}
 
