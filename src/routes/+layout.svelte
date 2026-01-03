@@ -6,8 +6,6 @@
 	import { networkStatus } from '$lib/utils/networkStatus';
 	import { db } from '$lib/db/database';
 	import { settings } from '$lib/stores.svelte';
-	import { attachConsole, attachLogger, trace } from '@tauri-apps/plugin-log';
-	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import { forwardConsole } from '$lib/utils/log';
 	import { online } from 'svelte/reactivity/window';
 	import { discord } from '$lib/discord';
@@ -37,16 +35,10 @@
 		event.preventDefault();
 	};
 
-	let logLogger: UnlistenFn;
-	let logConsole: UnlistenFn;
-
 	onMount(async () => {
 		const mainWindow = getCurrentWebview().label === 'main';
 		if (settings) {
 			if (mainWindow) {
-				logConsole = await attachConsole();
-				logLogger = await attachLogger(forwardConsole);
-
 				await discord();
 			}
 
@@ -71,16 +63,12 @@
 		const observer = new MutationObserver(() => handleElements());
 		observer.observe(document.body, { childList: true, subtree: true });
 
-		trace('App loaded');
+		console.debug('App loaded');
 	});
 
 	onDestroy(async () => {
 		await destroy();
-
-		logLogger();
-		logConsole();
-
-		trace('App closed');
+		console.debug('App closed');
 	});
 </script>
 
