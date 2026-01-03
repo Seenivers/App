@@ -1,12 +1,12 @@
 import { extensions } from '$lib';
 import { searchList } from '$lib/stores.svelte';
 import type { SearchStatus } from '$lib/types/add';
-import { error } from '@tauri-apps/plugin-log';
+
 import { stat } from '@tauri-apps/plugin-fs';
 
 export function updateSearchStatus(index: number, newState: SearchStatus) {
 	if (index < 0 || index >= searchList.length) {
-		error(`updateSearchStatus: Ungültiger Index ${index}`);
+		console.error(`updateSearchStatus: Ungültiger Index ${index}`);
 		return;
 	}
 	searchList[index].status = newState;
@@ -29,7 +29,9 @@ export async function isFile(path: string): Promise<boolean> {
 		const fileInfo = await stat(path);
 		return fileInfo.isFile;
 	} catch (err) {
-		error(`Fehler beim Prüfen des Pfads "${path}": ${err instanceof Error ? err.message : err}`);
+		console.error(
+			`Fehler beim Prüfen des Pfads "${path}": ${err instanceof Error ? err.message : err}`
+		);
 		return false;
 	}
 }
