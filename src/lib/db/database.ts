@@ -1,7 +1,6 @@
 import { drizzle } from 'drizzle-orm/sqlite-proxy';
 import { schema } from '$lib/db/schema';
 import Database from '@tauri-apps/plugin-sql';
-import { error } from '@tauri-apps/plugin-log';
 
 /**
  * Exports the SQLite database instance as a promise.
@@ -19,13 +18,13 @@ export const db = drizzle<typeof schema>(
 		// Wenn die Abfrage ein SELECT ist, nutze die select-Methode
 		if (isSelect) {
 			results = await sqlite.select(sql, params).catch((e) => {
-				error('SQL Error: ' + e);
+				console.error('SQL Error: ' + e);
 				return [];
 			});
 		} else {
 			// Ansonsten, nutze die execute-Methode
 			await sqlite.execute(sql, params).catch((e) => {
-				error('SQL Error: ' + e);
+				console.error('SQL Error: ' + e);
 				return [];
 			});
 			return { rows: [] };
