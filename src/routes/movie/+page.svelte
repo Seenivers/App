@@ -5,7 +5,7 @@
 	import { schema } from '$lib/db/schema';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
-		import type { PageData } from './$types';
+	import type { PageData } from './$types';
 	import { settings } from '$lib/stores.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
@@ -22,11 +22,11 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let watched: boolean = $state(data.result.watched ?? false);
+	let watched: boolean = $derived(data.result.watched ?? false);
 	let modal = $state(false);
 	let form: HTMLFormElement;
-	let movieData: typeof schema.movies.$inferSelect = $state(data.result);
-	let isBookmarked = $state(data.result.wantsToWatch || false);
+	let movieData: typeof schema.movies.$inferSelect = $derived(data.result);
+	let isBookmarked = $derived(data.result.wantsToWatch || false);
 
 	// Markiere Film als gesehen/ungesehen
 	async function toggleWatchedStatus() {
