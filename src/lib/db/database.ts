@@ -1,5 +1,5 @@
 import { drizzle } from 'drizzle-orm/sqlite-proxy';
-import { schema } from '$lib/db/schema';
+import * as schema from '$lib/db/schema/index';
 import Database from '@tauri-apps/plugin-sql';
 
 /**
