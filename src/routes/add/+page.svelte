@@ -6,7 +6,6 @@
 	import { clearResultsOnLeave } from '$lib';
 	import Dnd from '$lib/add/dnd.svelte';
 	import type { SearchStatus } from '$lib/types/add';
-	import { error, warn } from '@tauri-apps/plugin-log';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
@@ -31,7 +30,7 @@
 					// Überprüfe, ob der Zustand existiert und validiere ihn
 					acc[state] = (acc[state] || 0) + 1;
 				} else {
-					warn($_('invalidState', { values: { state } }));
+					console.warn($_('invalidState', { values: { state } }));
 				}
 				return acc;
 			},
@@ -62,7 +61,7 @@
 		// Überprüfe, ob der Index gültig ist, um Fehler zu vermeiden
 		const movieResults = searchList[modalID]?.search.results ?? [];
 		if (movieIndex < 0 || movieIndex >= movieResults.length) {
-			error($_('invalidIndex', { values: { index: movieIndex } }));
+			console.error($_('invalidIndex', { values: { index: movieIndex } }));
 			return; // Verhindere die Auswahl eines ungültigen Films
 		}
 
