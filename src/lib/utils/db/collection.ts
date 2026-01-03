@@ -1,18 +1,18 @@
 import { db } from '$lib/db/database';
-import { schema } from '$lib/db/schema';
+import { collections } from '$lib/db/schema';
 
 import { eq, inArray } from 'drizzle-orm';
 import { getCollection } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
 
 export const collection = {
-	add: async (data: typeof schema.collections.$inferInsert) =>
+	add: async (data: typeof collections.$inferInsert) =>
 		(await collection.isIDUnique(data.id))
-			? await db.insert(schema.collections).values(data)
+			? await db.insert(collections).values(data)
 			: await collection.update(data.id, data),
 
-	get: async (id: number): Promise<typeof schema.collections.$inferSelect | undefined> => {
-		let result = await db.query.collections.findFirst({ where: eq(schema.collections.id, id) });
+	get: async (id: number): Promise<typeof collections.$inferSelect | undefined> => {
+		let result = await db.query.collections.findFirst({ where: eq(collections.id, id) });
 		if (!result && online.current && id !== undefined) {
 			result = {
 				...(await getCollection(id)),
@@ -20,18 +20,15 @@ export const collection = {
 				watched: false
 			};
 			if (result) {
-				await db.insert(schema.collections).values(result);
+				await db.insert(collections).values(result);
 			}
 		}
 		return result;
 	},
 
-	getAll: async (ids?: number[]): Promise<(typeof schema.collections.$inferSelect)[]> => {
+	getAll: async (ids?: number[]): Promise<(typeof collections.$inferSelect)[]> => {
 		if (ids && ids.length > 0) {
-			const localResults = await db
-				.select()
-				.from(schema.collections)
-				.where(inArray(schema.collections.id, ids));
+			const localResults = await db.select().from(collections).where(inArray(collections.id, ids));
 
 			const foundIds = localResults.map((item) => item.id);
 			const missingIds = ids.filter((id) => !foundIds.includes(id));
@@ -48,7 +45,7 @@ export const collection = {
 								wantsToWatch: false,
 								watched: false
 							};
-							await db.insert(schema.collections).values(collectionWithUpdated);
+							await db.insert(collections).values(collectionWithUpdated);
 							return collectionWithUpdated;
 						}
 
@@ -60,16 +57,15 @@ export const collection = {
 			}
 			return localResults;
 		}
-		return await db.select().from(schema.collections);
+		return await db.select().from(collections);
 	},
 
-	delete: async (id: number) =>
-		await db.delete(schema.collections).where(eq(schema.collections.id, id)),
+	delete: async (id: number) => await db.delete(collections).where(eq(collections.id, id)),
 
-	update: async (id: number, data: Partial<typeof schema.collections.$inferInsert>) => {
+	update: async (id: number, data: Partial<typeof collections.$inferInsert>) => {
 		if (Object.keys(data).length === 0) return;
 		try {
-			await db.update(schema.collections).set(data).where(eq(schema.collections.id, id));
+			await db.update(collections).set(data).where(eq(collections.id, id));
 		} catch (err) {
 			console.error(`Update Collection (ID: ${id}) fehlgeschlagen: ${err}`);
 		}
