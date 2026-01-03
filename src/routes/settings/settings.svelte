@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { schema } from '$lib/db/schema';
+	import { settings as schemaSettings } from '$lib/db/schema/settings';
 	import { settings } from '$lib/stores.svelte';
 	import { newToast } from '$lib/toast/toast';
 	import { themes } from '$lib';
@@ -16,7 +16,7 @@
 	import { exists } from '@tauri-apps/plugin-fs';
 	import { confirm } from '@tauri-apps/plugin-dialog';
 
-	let settingsTemp: typeof schema.settings.$inferSelect = $state({ ...settings });
+	let settingsTemp: typeof schemaSettings.$inferSelect = $state({ ...settings });
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
 
 	// Schlüsselwörter verarbeiten und Änderung tracken
