@@ -1,6 +1,6 @@
 import { db } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
-import { error } from '@tauri-apps/plugin-log';
+
 import { eq, inArray } from 'drizzle-orm';
 import { getSerieSeasonEpisode } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
@@ -119,7 +119,7 @@ export const episode = {
 		try {
 			await db.update(schema.episode).set(data).where(eq(schema.episode.id, id));
 		} catch (err) {
-			error(`Update Episode (ID: ${id}) fehlgeschlagen: ${err}`);
+			console.error(`Update Episode (ID: ${id}) fehlgeschlagen: ${err}`);
 		}
 	},
 
