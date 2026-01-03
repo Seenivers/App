@@ -1,6 +1,6 @@
 import { db } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
-import { error } from '@tauri-apps/plugin-log';
+
 import { eq, inArray } from 'drizzle-orm';
 import { getMovie, getMovies } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
@@ -69,7 +69,7 @@ export const movie = {
 				}));
 
 				for (const err of errors) {
-					error(`Fehler beim Abrufen von Movie ${err.id}: ${err.error}`);
+					console.error(`Fehler beim Abrufen von Movie ${err.id}: ${err.error}`);
 				}
 
 				return [...localResults, ...fetchedResults];
@@ -89,7 +89,7 @@ export const movie = {
 		try {
 			await db.update(schema.movies).set(data).where(eq(schema.movies.id, id));
 		} catch (err) {
-			error(`Update Movie (ID: ${id}) fehlgeschlagen: ${err}`);
+			console.error(`Update Movie (ID: ${id}) fehlgeschlagen: ${err}`);
 		}
 	},
 
