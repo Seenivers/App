@@ -1,4 +1,3 @@
-import { error } from '@tauri-apps/plugin-log';
 import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { settings } from '$lib/stores.svelte';
@@ -93,7 +92,7 @@ async function updateEntity(
 				.where(eq(schema[entityType].id, entity.id));
 		}
 	} catch (err) {
-		error(`Fehler beim Aktualisieren der ${entityType}: ${err}`);
+		console.error(`Fehler beim Aktualisieren der ${entityType}: ${err}`);
 	}
 }
 
@@ -119,7 +118,7 @@ export async function updateMovies() {
 			}
 		}
 	} catch (err) {
-		error('Fehler beim Aktualisieren der Filme: ' + err);
+		console.error('Fehler beim Aktualisieren der Filme: ' + err);
 	}
 }
 
@@ -154,7 +153,7 @@ export async function updateCollections() {
 			}
 		}
 	} catch (err) {
-		error('Fehler beim Aktualisieren der Collections: ' + err);
+		console.error('Fehler beim Aktualisieren der Collections: ' + err);
 	}
 }
 
@@ -171,7 +170,7 @@ export async function updateActors() {
 			}
 		}
 	} catch (err) {
-		error('Fehler beim Aktualisieren der Schauspieler: ' + err);
+		console.error('Fehler beim Aktualisieren der Schauspieler: ' + err);
 	}
 }
 
