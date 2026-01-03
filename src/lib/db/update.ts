@@ -8,7 +8,7 @@ import {
 	getCollection as getCollectionTmdb,
 	getActor as getActorTmdb
 } from '$lib/utils/tmdb';
-import { schema } from './schema';
+import * as schema from './schema';
 import { WEEKS } from '$lib';
 import { movie as movieDB } from '$lib/utils/db/movie';
 import { collection } from '$lib/utils/db/collection';
@@ -20,7 +20,6 @@ import { addNewFiles } from '$lib/add/fileScanner';
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
 
-// Besteht noch für die erstel versionen ohne DB
 export async function updateOldDB() {
 	const dataLibExists = await exists('data.lib', { baseDir: BaseDirectory.AppConfig });
 	if (dataLibExists) {
