@@ -1,6 +1,6 @@
 import { db } from '$lib/db/database';
 import { schema } from '$lib/db/schema';
-import { error } from '@tauri-apps/plugin-log';
+
 import { eq, inArray } from 'drizzle-orm';
 import { getCollection } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
@@ -71,7 +71,7 @@ export const collection = {
 		try {
 			await db.update(schema.collections).set(data).where(eq(schema.collections.id, id));
 		} catch (err) {
-			error(`Update Collection (ID: ${id}) fehlgeschlagen: ${err}`);
+			console.error(`Update Collection (ID: ${id}) fehlgeschlagen: ${err}`);
 		}
 	},
 
