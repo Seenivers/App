@@ -4,7 +4,7 @@
 	import { readDir, stat } from '@tauri-apps/plugin-fs';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import type { DropPayload } from '$lib/types/add';
-	import { error } from '@tauri-apps/plugin-log';
+	
 	import { join } from '@tauri-apps/api/path';
 	import { extensions } from '$lib';
 	import { addNewFiles } from './fileScanner';
@@ -30,7 +30,7 @@
 					// Hole die Metadaten des Pfads
 					metadata = await stat(path);
 				} catch (err) {
-					error(`Fehler beim Abrufen der Metadaten für den Pfad ${path}: ${err}`);
+					console.error(`Fehler beim Abrufen der Metadaten für den Pfad ${path}: ${err}`);
 					continue; // Überspringe diesen Pfad bei Fehlern
 				}
 
@@ -57,10 +57,10 @@
 							}
 						}
 					} catch (err) {
-						error(`Fehler beim Lesen des Verzeichnisses ${path}: ${err}`);
+						console.error(`Fehler beim Lesen des Verzeichnisses ${path}: ${err}`);
 					}
 				} else {
-					error(`Der Pfad ${path} ist weder eine Datei noch ein Verzeichnis.`);
+					console.error(`Der Pfad ${path} ist weder eine Datei noch ein Verzeichnis.`);
 				}
 			}
 
