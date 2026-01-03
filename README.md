@@ -10,6 +10,7 @@
 [![GitHub Release (latest SemVer)](https://img.shields.io/github/v/release/Seenivers/App?style=flat-square)](https://github.com/Seenivers/App/releases)
 [![GitHub License](https://img.shields.io/github/license/Seenivers/.github?style=flat-square)](https://github.com/Seenivers/.github/blob/main/LICENSE)
 [![Crowdin](https://badges.crowdin.net/seenivers/localized.svg)](https://crowdin.com)
+[![wakatime](https://wakatime.com/badge/user/4afc94c9-a8a1-4f2d-85ae-1fa6f9386f40/project/2558d3e8-4f35-44ae-a35c-5748ba613f5c.svg?style=flat-square)](https://wakatime.com/badge/user/4afc94c9-a8a1-4f2d-85ae-1fa6f9386f40/project/2558d3e8-4f35-44ae-a35c-5748ba613f5c)
 
 </div>
 
