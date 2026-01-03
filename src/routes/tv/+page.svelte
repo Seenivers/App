@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import type { PageData } from './$types';	
+	import type { PageData } from './$types';
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
 	import { online } from 'svelte/reactivity/window';
@@ -17,11 +17,11 @@
 
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
-	let isBookmarked = $state(data.serie.wantsToWatch || false);
+	let isBookmarked = $derived(data.serie.wantsToWatch || false);
 	let watched: boolean = $derived(data.serie.watched ?? false);
 
 	// Erstelle eine reaktive Kopie der Staffeln, die lokal bearbeitet wird
-	let seasons = $state([...data.seasons]);
+	let seasons = $derived(data.seasons);
 
 	// Ableiten der sortierten Staffeln; Extras (season_number 0) kommen immer ans Ende, ansonsten aufsteigend
 	let sortedSeasons = $derived(() =>
@@ -44,18 +44,24 @@
 	}
 
 	// Gruppiere alle Episoden anhand der Staffeln (über tmdb.season_number)
-	const episodesGrouped = new Map<number, (typeof data.episodes)[0][]>();
-	data.episodes.forEach((ep) => {
-		const seasonNumber = ep.tmdb.season_number;
-		if (!episodesGrouped.has(seasonNumber)) {
-			episodesGrouped.set(seasonNumber, []);
+	let episodesGrouped = $derived(() => {
+		const map = new Map<number, (typeof data.episodes)[0][]>();
+
+		for (const ep of data.episodes) {
+			const seasonNumber = ep.tmdb.season_number;
+			if (!map.has(seasonNumber)) {
+				map.set(seasonNumber, []);
+			}
+			map.get(seasonNumber)!.push(ep);
 		}
-		episodesGrouped.get(seasonNumber)?.push(ep);
+
+		// Episoden je Staffel sortieren
+		for (const episodes of map.values()) {
+			episodes.sort((a, b) => a.tmdb.episode_number - b.tmdb.episode_number);
+		}
+
+		return map;
 	});
-	// Sortiere die Episoden innerhalb jeder Staffel nach episode_number
-	for (const [, episodes] of episodesGrouped.entries()) {
-		episodes.sort((a, b) => a.tmdb.episode_number - b.tmdb.episode_number);
-	}
 
 	/**
 	 * Navigiert zur Episode-Seite mit den nötigen URL-Parametern.
@@ -420,10 +426,10 @@
 		</div>
 
 		<!-- Episodenliste für die ausgewählte Staffel -->
-		{#if episodesGrouped.has(selectedSeason)}
+		{#if episodesGrouped().has(selectedSeason)}
 			{@const seasonObj = data.seasons.find((s) => s.tmdb.season_number === selectedSeason)!}
 			<ul class="mt-4 space-y-2">
-				{#each episodesGrouped.get(seasonObj.tmdb.season_number) ?? [] as episode (episode.id)}
+				{#each episodesGrouped().get(seasonObj.tmdb.season_number) ?? [] as episode (episode.id)}
 					<li class="bg-base-200 hover:bg-base-300 relative cursor-pointer rounded p-1">
 						<button
 							class="flex w-full items-center"
