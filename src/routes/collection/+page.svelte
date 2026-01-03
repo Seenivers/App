@@ -16,7 +16,7 @@
 	let { data }: Props = $props();
 	let watched: boolean = $derived(data.result.watched ?? false);
 	let isGridView = $state(false); // Startwert für das Layout
-	let moviesStore = $state(data.result.parts);
+	let moviesStore = $derived(data.result.parts);
 	let sortNewestFirst = $state(true);
 
 	// Verwende $derived mit einer einzigen Funktion, die beide Zustände referenziert:
