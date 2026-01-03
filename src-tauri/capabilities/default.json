@@ -28,7 +28,6 @@
 		},
 		"sql:default",
 		"sql:allow-execute",
-		"log:default",
 		"process:default"
 	]
 }
