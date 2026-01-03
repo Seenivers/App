@@ -13,7 +13,7 @@ import { get } from 'svelte/store';
 
 export const load: LayoutLoad = async () => {
 	if (!browser) {
-		error(500, 'This operation is only supported in the browser');
+		console.error(500, 'This operation is only supported in the browser');
 	}
 
 	const { settings } = await import('$lib/stores.svelte');
