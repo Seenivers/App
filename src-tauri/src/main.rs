@@ -6,10 +6,12 @@ use sentry::ClientInitGuard;
 use sentry_log::SentryLogger;
 
 fn main() {
+    let release = format!("{}@{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+
     let _sentry: ClientInitGuard = sentry::init((
         "https://17b503b446664415a4c43e1619aa1cdf@glitchtip.webretter.com/7",
         sentry::ClientOptions {
-            release: Some("seenivers@1.0.0".into()), // Version deiner App
+            release: Some(release.into()),
             environment: Some(
                 if cfg!(debug_assertions) {
                     "development"
