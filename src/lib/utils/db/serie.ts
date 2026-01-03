@@ -1,26 +1,26 @@
 import { db } from '$lib/db/database';
-import { schema } from '$lib/db/schema';
+import { serie as schemaSerie } from '$lib/db/schema';
 
 import { eq, inArray } from 'drizzle-orm';
 import { getSerie } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
 
 export const serie = {
-	add: async (data: typeof schema.serie.$inferInsert) =>
+	add: async (data: typeof schemaSerie.$inferInsert) =>
 		(await serie.isIDUnique(data.id))
-			? await db.insert(schema.serie).values(data)
+			? await db.insert(schemaSerie).values(data)
 			: await serie.update(data.id, data),
 
 	get: async (
 		id: number,
 		seriesId?: number
-	): Promise<typeof schema.serie.$inferSelect | undefined> => {
-		let result = await db.query.serie.findFirst({ where: eq(schema.serie.id, id) });
+	): Promise<typeof schemaSerie.$inferSelect | undefined> => {
+		let result = await db.query.serie.findFirst({ where: eq(schemaSerie.id, id) });
 
 		if (!result && online.current && seriesId !== undefined) {
 			const fetched = await getSerie(seriesId);
 			if (fetched) {
-				await db.insert(schema.serie).values({
+				await db.insert(schemaSerie).values({
 					id: fetched.id,
 					tmdb: fetched,
 					path: null,
@@ -41,24 +41,21 @@ export const serie = {
 		return result;
 	},
 
-	getAll: async (ids?: number[]): Promise<(typeof schema.serie.$inferSelect)[]> => {
+	getAll: async (ids?: number[]): Promise<(typeof schemaSerie.$inferSelect)[]> => {
 		if (ids && ids.length > 0) {
-			const localResults = await db
-				.select()
-				.from(schema.serie)
-				.where(inArray(schema.serie.id, ids));
+			const localResults = await db.select().from(schemaSerie).where(inArray(schemaSerie.id, ids));
 
 			const foundIds = localResults.map((r) => r.id);
 			// Filtere nur Elemente, bei denen id definiert ist
 			const missingItems = ids.filter((item) => item !== undefined && !foundIds.includes(item));
 
 			if (missingItems.length > 0 && online.current) {
-				const fetchedResults: (typeof schema.serie.$inferSelect | null)[] = await Promise.all(
+				const fetchedResults: (typeof schemaSerie.$inferSelect | null)[] = await Promise.all(
 					missingItems.map(async (item) => {
 						if (item === undefined) return null;
 						const onlineResult = await getSerie(item);
 						if (onlineResult) {
-							await db.insert(schema.serie).values({
+							await db.insert(schemaSerie).values({
 								id: onlineResult.id,
 								tmdb: onlineResult
 							});
@@ -82,15 +79,15 @@ export const serie = {
 			return localResults;
 		}
 
-		return await db.select().from(schema.serie);
+		return await db.select().from(schemaSerie);
 	},
 
-	delete: async (id: number) => await db.delete(schema.serie).where(eq(schema.serie.id, id)),
+	delete: async (id: number) => await db.delete(schemaSerie).where(eq(schemaSerie.id, id)),
 
-	update: async (id: number, data: Partial<typeof schema.serie.$inferInsert>) => {
+	update: async (id: number, data: Partial<typeof schemaSerie.$inferInsert>) => {
 		if (Object.keys(data).length === 0) return;
 		try {
-			await db.update(schema.serie).set(data).where(eq(schema.serie.id, id));
+			await db.update(schemaSerie).set(data).where(eq(schemaSerie.id, id));
 		} catch (err) {
 			console.error(`Update Serie (ID: ${id}) fehlgeschlagen: ${err}`);
 		}
@@ -102,7 +99,7 @@ export const serie = {
 	},
 
 	isPathUnique: async (path: string): Promise<boolean> => {
-		const existingSerie = await db.query.serie.findFirst({ where: eq(schema.serie.path, path) });
+		const existingSerie = await db.query.serie.findFirst({ where: eq(schemaSerie.path, path) });
 		return !existingSerie;
 	}
 };
