@@ -1,6 +1,6 @@
 import { join } from '@tauri-apps/api/path';
 import { BaseDirectory, exists, readDir } from '@tauri-apps/plugin-fs';
-import { warn } from '@tauri-apps/plugin-log';
+
 
 const baseDir = BaseDirectory.AppData;
 
@@ -25,7 +25,7 @@ export async function findSeasonsAndEpisodes(seriesPath: string) {
 	// Prüfen, ob das Serienverzeichnis existiert
 	const dirExists = await exists(seriesPath, { baseDir });
 	if (!dirExists) {
-		warn(`Das Serienverzeichnis ${seriesPath} existiert nicht.`);
+		console.warn(`Das Serienverzeichnis ${seriesPath} existiert nicht.`);
 		return seasons;
 	}
 
