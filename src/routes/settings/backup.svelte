@@ -1,56 +1,47 @@
 <script lang="ts">
-	import type { schema } from '$lib/db/schema';
+	import type { BackupFile } from '$lib/utils/db/backup';
 	import { backup as backupfn, newDB } from '$lib/utils/db/backup';
 	import { formatBytes } from '$lib/utils/utils';
-	import { sep } from '@tauri-apps/api/path';
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
 
-	let backups: (typeof schema.backups.$inferSelect)[] = [];
-	let separator: string = sep();
+	let backups: BackupFile[] = [];
 
 	// Sortier-Status
-	let sortBy: 'id' | 'createdAt' | 'size' = 'id';
-	let sortAsc = true;
+	let sortBy: 'name' | 'createdAt' | 'size' = 'createdAt';
+	let sortAsc = false;
 
-	// Ruft die Backup-Liste beim Laden ab
+	// Backups laden
 	async function loadBackups() {
 		backups = await backupfn.getAll();
 	}
 
-	// Erstellt ein neues Backup und aktualisiert die Liste
+	// Backup erstellen
 	async function createBackup() {
 		if (await backupfn.create()) {
 			await loadBackups();
 		}
 	}
 
-	// Validiert alle Backups und aktualisiert die Liste
-	async function validateBackups() {
-		if (await backupfn.validateBackups()) {
+	// Backup löschen (per Dateiname)
+	async function deleteBackup(fileName: string) {
+		if (await backupfn.delete(fileName)) {
 			await loadBackups();
 		}
 	}
 
-	// Löscht ein Backup anhand der ID und aktualisiert die Liste
-	async function deleteBackup(id: number) {
-		if (await backupfn.delete(id)) {
-			await loadBackups();
-		}
+	// Restore (per Dateiname)
+	async function restoreBackup(fileName: string) {
+		await backupfn.restore(fileName);
 	}
 
-	// Extrahiert den Dateinamen aus einem Pfad
-	function extractFileName(path: string) {
-		return path.split(separator).pop();
+	// Löschen in DEV nur für DEV-Backups erlauben
+	function deleteDisabled(backup: BackupFile): boolean {
+		return import.meta.env.DEV && !backup.name.startsWith('DEV-');
 	}
 
-	// Prüft, ob der Löschen-Button deaktiviert sein soll
-	function deleteDisabled(backup: { path: string }): boolean {
-		return import.meta.env.DEV && !backup.path.includes('DEV-');
-	}
-
-	// Sortier-Funktion
-	function sortBackups(by: 'id' | 'createdAt' | 'size') {
+	// Sortierung umschalten
+	function sortBackups(by: 'name' | 'createdAt' | 'size') {
 		if (sortBy === by) {
 			sortAsc = !sortAsc;
 		} else {
@@ -59,13 +50,22 @@
 		}
 	}
 
-	// Sortierte Kopie der Backups für die Anzeige
+	// Sortierte Ansicht
 	$: sortedBackups = [...backups].sort((a, b) => {
 		let result = 0;
-		if (sortBy === 'id') result = a.id - b.id;
-		if (sortBy === 'createdAt')
-			result = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-		if (sortBy === 'size') result = (a.size ?? 0) - (b.size ?? 0);
+
+		if (sortBy === 'name') {
+			result = a.name.localeCompare(b.name);
+		}
+
+		if (sortBy === 'createdAt') {
+			result = a.createdAt.getTime() - b.createdAt.getTime();
+		}
+
+		if (sortBy === 'size') {
+			result = a.size - b.size;
+		}
+
 		return sortAsc ? result : -result;
 	});
 
@@ -73,13 +73,20 @@
 </script>
 
 <div class="flex items-center justify-between">
-	<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">{$_('backups.title')}</h1>
+	<h1 class="mb-6 text-xl font-bold md:text-2xl">
+		{$_('backups.title')}
+	</h1>
+
 	<div class="flex gap-2">
 		{#if import.meta.env.DEV}
-			<button class="btn hover:btn-error" ondblclick={newDB}>{$_('backups.newDatabase')}</button>
+			<button class="btn hover:btn-error" ondblclick={newDB}>
+				{$_('backups.newDatabase')}
+			</button>
 		{/if}
-		<button class="btn" onclick={validateBackups}>{$_('backups.validateBackups')}</button>
-		<button class="btn" onclick={createBackup}>{$_('backups.createBackup')}</button>
+
+		<button class="btn" onclick={createBackup}>
+			{$_('backups.createBackup')}
+		</button>
 	</div>
 </div>
 
@@ -87,44 +94,47 @@
 	<table class="table w-full">
 		<thead>
 			<tr>
-				<th class="cursor-pointer" onclick={() => sortBackups('id')}>
-					{$_('id')}
-					{#if sortBy === 'id'}
+				<th class="cursor-pointer" onclick={() => sortBackups('name')}>
+					{$_('fileName')}
+					{#if sortBy === 'name'}
 						<span>{sortAsc ? '▲' : '▼'}</span>
 					{/if}
 				</th>
-				<th>{$_('fileName')}</th>
+
 				<th class="cursor-pointer" onclick={() => sortBackups('createdAt')}>
 					{$_('creationDate')}
 					{#if sortBy === 'createdAt'}
 						<span>{sortAsc ? '▲' : '▼'}</span>
 					{/if}
 				</th>
+
 				<th class="cursor-pointer" onclick={() => sortBackups('size')}>
 					{$_('size')}
 					{#if sortBy === 'size'}
 						<span>{sortAsc ? '▲' : '▼'}</span>
 					{/if}
 				</th>
+
 				<th>{$_('actions')}</th>
 			</tr>
 		</thead>
+
 		<tbody>
-			{#each sortedBackups as backup (backup.id)}
+			{#each sortedBackups as backup (backup.name)}
 				<tr class="hover:bg-base-200">
-					<th>{backup.id}</th>
-					<td>{extractFileName(backup.path)}</td>
-					<td>{new Date(backup.createdAt).toLocaleString()}</td>
+					<td>{backup.name}</td>
+					<td>{backup.createdAt.toLocaleString()}</td>
 					<td>{formatBytes(backup.size)}</td>
 					<td>
 						<div class="flex gap-2">
-							<button class="btn btn-sm" onclick={() => backupfn.restore(backup.id)}>
+							<button class="btn btn-sm" onclick={() => restoreBackup(backup.name)}>
 								{$_('restore')}
 							</button>
+
 							<button
 								class="btn btn-sm hover:btn-error"
 								disabled={deleteDisabled(backup)}
-								ondblclick={() => deleteBackup(backup.id)}
+								ondblclick={() => deleteBackup(backup.name)}
 							>
 								{$_('delete')}
 							</button>
