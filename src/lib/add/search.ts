@@ -3,7 +3,6 @@ import type { SearchStatus } from '$lib/types/add';
 import { online } from 'svelte/reactivity/window';
 import { updateSearchStatus } from './utils';
 import * as tmdb from '$lib/utils/tmdb';
-import { error } from '@tauri-apps/plugin-log';
 
 export async function searchMediaStatus(i: number) {
 	if (!online.current) {
@@ -49,7 +48,7 @@ export async function searchMediaStatus(i: number) {
 		};
 	} catch (err) {
 		const errorMessage = err instanceof Error ? err.message : `Unbekannter Fehler: ${err}`;
-		error('Fehler bei der Suche: ' + errorMessage);
+		console.error('Fehler bei der Suche: ' + errorMessage);
 
 		searchList[i] = {
 			...searchList[i],
