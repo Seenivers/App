@@ -1,5 +1,5 @@
 import { db } from '$lib/db/database';
-import { schema } from '$lib/db/schema';
+import { movies as schemaMovies, serie as schemaSerie } from '$lib/db/schema';
 import { movie } from '../db/movie';
 import { serie } from '../db/serie';
 import { getWatchlist, postWatchlist } from '../tmdb';
@@ -24,23 +24,23 @@ export async function syncWatchlist() {
 	const [localWatchlistMovies, localWatchlistSeries] = await Promise.all([
 		db
 			.select({
-				media_id: schema.movies.id
+				media_id: schemaMovies.id
 			})
-			.from(schema.movies)
-			.where(eq(schema.movies.wantsToWatch, true)),
+			.from(schemaMovies)
+			.where(eq(schemaMovies.wantsToWatch, true)),
 
 		db
 			.select({
-				media_id: schema.serie.id
+				media_id: schemaSerie.id
 			})
-			.from(schema.serie)
-			.where(eq(schema.serie.wantsToWatch, true))
+			.from(schemaSerie)
+			.where(eq(schemaSerie.wantsToWatch, true))
 	]);
 
 	// 🧹 Alle wantsToWatch-Flags lokal zurücksetzen
 	await Promise.all([
-		db.update(schema.movies).set({ wantsToWatch: false }).run(),
-		db.update(schema.serie).set({ wantsToWatch: false }).run()
+		db.update(schemaMovies).set({ wantsToWatch: false }).run(),
+		db.update(schemaSerie).set({ wantsToWatch: false }).run()
 	]);
 
 	// ✅ wantsToWatch: true für Filme und Serien aus der Remote-Watchlist
