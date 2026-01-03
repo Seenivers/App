@@ -1,13 +1,13 @@
-import { schema } from '$lib/db/schema';
 import { extensions } from '$lib';
+import type { movies, collections, serie } from '$lib/db/schema';
 
 export function isMovieEntry(
 	item:
 		| string
-		| typeof schema.movies.$inferSelect
-		| typeof schema.collections.$inferSelect
-		| typeof schema.serie.$inferSelect
-): item is typeof schema.movies.$inferSelect {
+		| typeof movies.$inferSelect
+		| typeof collections.$inferSelect
+		| typeof serie.$inferSelect
+): item is typeof movies.$inferSelect {
 	if (typeof item === 'string') {
 		const fileExtension = item.split('.').pop()?.toLowerCase() ?? '';
 		return extensions.includes(fileExtension);
