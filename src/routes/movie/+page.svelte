@@ -2,7 +2,7 @@
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { getMovie, postWatchlist } from '$lib/utils/tmdb';
-	import { schema } from '$lib/db/schema';
+	import { movies as schemaMovies } from '$lib/db/schema/movies';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
 	import type { PageData } from './$types';
@@ -25,7 +25,7 @@
 	let watched: boolean = $derived(data.result.watched ?? false);
 	let modal = $state(false);
 	let form: HTMLFormElement;
-	let movieData: typeof schema.movies.$inferSelect = $derived(data.result);
+	let movieData: typeof schemaMovies.$inferSelect = $derived(data.result);
 	let isBookmarked = $derived(data.result.wantsToWatch || false);
 
 	// Markiere Film als gesehen/ungesehen
