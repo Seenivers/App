@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import type { PageData } from './$types';
-	import { error } from '@tauri-apps/plugin-log';
+	import type { PageData } from './$types';	
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
 	import { online } from 'svelte/reactivity/window';
@@ -102,7 +101,7 @@
 		try {
 			await openPath(data.serie.path);
 		} catch (err) {
-			error('Failed to open Path: ' + err);
+			console.error('Failed to open Path: ' + err);
 		}
 	}
 </script>
