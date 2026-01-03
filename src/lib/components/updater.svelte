@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { check, type DownloadEvent, type Update } from '@tauri-apps/plugin-updater';
 	import { relaunch } from '@tauri-apps/plugin-process';
-	import { debug, error } from '@tauri-apps/plugin-log';
 	import { marked } from 'marked';
 	import '$lib/css/md.css';
 	import { openUrl } from '@tauri-apps/plugin-opener';
@@ -46,7 +45,7 @@
 
 	async function download() {
 		if (!online.current) {
-			error($_('networkStatus.error'));
+			console.error($_('networkStatus.error'));
 			return;
 		}
 		if (update && !downloadStarted) {
@@ -57,13 +56,13 @@
 
 	async function downloadAndInstall() {
 		if (!online.current) {
-			error($_('networkStatus.error'));
+			console.error($_('networkStatus.error'));
 			return;
 		}
 		if (update && !downloadStarted) {
 			await backup.create();
 			await update.downloadAndInstall(downloadLog);
-			debug('Update installiert');
+			console.debug('Update installiert');
 			await relaunch();
 		}
 	}
@@ -75,31 +74,31 @@
 				downloadFinished = false;
 				contentLength = event.data.contentLength;
 
-				debug(
+				console.debug(
 					`Download gestartet für Version ${update?.version}. Erwartete Dateigröße: ${contentLength ?? 'unbekannt'} Bytes.`
 				);
 				break;
 			case 'Progress':
 				downloaded += event.data.chunkLength;
 				if (!contentLength) {
-					debug(
+					console.debug(
 						`Download-Fortschritt kann nicht berechnet werden: Content-Length nicht verfügbar.`
 					);
 					return;
 				}
 				if (downloaded > contentLength) {
-					debug(
+					console.debug(
 						`Download-Fortschritt: ${downloaded} von ${contentLength} Bytes (WARNUNG: Geladene Daten überschreiten erwartete Größe!)`
 					);
 					return;
 				}
 				downloadProgress = Math.round((downloaded / contentLength) * 100);
-				debug(`Download-Fortschritt: ${downloadProgress}% (${downloaded}/${contentLength} Bytes)`);
+				console.debug(`Download-Fortschritt: ${downloadProgress}% (${downloaded}/${contentLength} Bytes)`);
 				break;
 			case 'Finished':
 				downloadFinished = true;
 				downloadProgress = 100;
-				debug(`Download abgeschlossen für Version ${update?.version}.`);
+				console.debug(`Download abgeschlossen für Version ${update?.version}.`);
 				break;
 		}
 	}
