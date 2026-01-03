@@ -1,7 +1,7 @@
 import { searchList } from '$lib/stores.svelte';
 import { collection } from '$lib/utils/db/collection';
 import { movie } from '$lib/utils/db/movie';
-import { error } from '@tauri-apps/plugin-log';
+
 import { online } from 'svelte/reactivity/window';
 import { loadImages } from './imageLoader';
 import { updateSearchStatus } from './utils';
@@ -53,7 +53,7 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 		});
 	} catch (err) {
 		uniqueEntries.forEach(({ index }) => updateSearchStatus(index, 'notFound'));
-		error(
+		console.error(
 			`Fehler beim Abrufen der Filme: ${err instanceof Error ? err.message : 'Unbekannter Fehler'}`
 		);
 	}
