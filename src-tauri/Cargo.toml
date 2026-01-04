@@ -35,7 +35,7 @@ include_dir = "0.7.4"
 sentry = "0.46.0"
 sentry-log = "0.46.0"
 log = "0.4.29"
-tauri-plugin-os = "2"
+tauri-plugin-os = "2.3.2"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-updater = "2.9.0"
