@@ -1,5 +1,5 @@
 {
-	"identifier": "seenivers.app",
+	"identifier": "com.seenivers",
 	"bundle": {
 		"android": {
 			"minSdkVersion": 24
