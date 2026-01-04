@@ -23,12 +23,14 @@
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
 	import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
 	import { endClientSession, startClientSession } from '$lib/utils/telemetry';
+	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
 
 	let { children }: Props = $props();
+	let handleCloseRequested: UnlistenFn | undefined;
 
 	oncontextmenu = (event: MouseEvent) => {
 		if (import.meta.env.DEV) return;
@@ -36,7 +38,10 @@
 	};
 
 	onMount(async () => {
+		handleCloseRequested = await listen('tauri://close-requested', customDestroy);
+
 		const mainWindow = getCurrentWebview().label === 'main';
+
 		if (settings) {
 			setTheme(settings.theme);
 
@@ -67,11 +72,22 @@
 		console.debug('App loaded');
 	});
 
-	onDestroy(async () => {
+	onDestroy(customDestroy);
+
+	let counter = 0;
+
+	async function customDestroy() {
+		console.log('CLOSE');
+
+		if (counter > 100) {
+			console.log('SPAMM');
+			return;
+		}
+
 		endClientSession();
 		await destroy();
 		console.debug('App closed');
-	});
+	}
 </script>
 
 <div class="bg-base-300 flex h-fit min-h-screen flex-col">
