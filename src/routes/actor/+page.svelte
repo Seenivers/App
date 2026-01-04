@@ -4,7 +4,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { _ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
-	import { discord } from '$lib/discord/discord';
+	import { discord } from '$lib/utils/discord';
 	import Movie from '$lib/SVG/movie.svelte';
 	import Tv from '$lib/SVG/tv.svelte';
 
