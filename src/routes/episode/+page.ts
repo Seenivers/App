@@ -8,7 +8,7 @@ import {
 	parseSeasonId,
 	parseSeasonNumber,
 	parseSerieId
-} from '$lib/load/loadUtils';
+} from '$lib/utils/loadUtils';
 import { online } from 'svelte/reactivity/window';
 import { nextEpisode } from '$lib/utils/nextEpisode';
 
