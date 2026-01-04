@@ -11,7 +11,7 @@
 	import { _ } from 'svelte-i18n';
 	import { online } from 'svelte/reactivity/window';
 	import { selectFile, selectFolder, selectTvFolder } from '$lib/add/select';
-	import { discord } from '$lib/discord/discord';
+	import { discord } from '$lib/utils/discord';
 	import { addNewFiles } from '$lib/add/fileScanner';
 	import { load } from '$lib/add/loader';
 	import { searchMediaStatus } from '$lib/add/search';
