@@ -7,7 +7,7 @@
 	import { db } from '$lib/db/database';
 	import { settings } from '$lib/stores.svelte';
 	import { online } from 'svelte/reactivity/window';
-	import { discord } from '$lib/discord/discord';
+	import { discord } from '$lib/utils/discord';
 	import { stop as stopDrpc } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
 	import { setTheme } from '$lib/utils/themeUtils';
