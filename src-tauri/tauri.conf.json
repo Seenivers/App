@@ -27,7 +27,7 @@
 			"csp": {
 				"default-src": "'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org https://seenivers.com",
 				"connect-src": "'self' ipc: http://ipc.localhost https://seenivers.com",
-				"img-src": "'self' http://asset.localhost https://image.tmdb.org https://seenivers.com https://img.youtube.com data: blob:",
+				"img-src": "'self' http://asset.localhost https://image.tmdb.org https://seenivers.com https://img.youtube-nocookie.com data: blob:",
 				"style-src": "'self' https://seenivers.com 'unsafe-inline'",
 				"media-src": "'self' http://asset.localhost https://seenivers.com data: blob:"
 			},
