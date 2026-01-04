@@ -1,5 +1,5 @@
 {
-	"identifier": "seenivers",
+	"identifier": "com.seenivers",
 	"bundle": {
 		"iOS": {
 			"minimumSystemVersion": "14.0",
