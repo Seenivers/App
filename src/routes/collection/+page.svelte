@@ -5,7 +5,7 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { onMount } from 'svelte';
-	import { discord } from '$lib/discord';
+	import { discord } from '$lib/discord/discord';
 	import { _ } from 'svelte-i18n';
 	import { collection } from '$lib/utils/db/collection';
 
