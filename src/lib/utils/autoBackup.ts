@@ -1,4 +1,4 @@
-import { backup } from './db/backup';
+import { backup } from './backup';
 import { settings } from '$lib/stores.svelte';
 
 /**
