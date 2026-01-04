@@ -6,7 +6,7 @@
 	import '$lib/css/md.css';
 	import { openUrl } from '@tauri-apps/plugin-opener';
 	import { online } from 'svelte/reactivity/window';
-	import { backup } from '../utils/db/backup';
+	import { backup } from '../utils/backup';
 	import { _ } from 'svelte-i18n';
 
 	let update: Update | null = $state(null);
@@ -93,7 +93,9 @@
 					return;
 				}
 				downloadProgress = Math.round((downloaded / contentLength) * 100);
-				console.debug(`Download-Fortschritt: ${downloadProgress}% (${downloaded}/${contentLength} Bytes)`);
+				console.debug(
+					`Download-Fortschritt: ${downloadProgress}% (${downloaded}/${contentLength} Bytes)`
+				);
 				break;
 			case 'Finished':
 				downloadFinished = true;
