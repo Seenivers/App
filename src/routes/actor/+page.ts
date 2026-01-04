@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
-import { parseId } from '$lib/load/loadUtils';
+import { parseId } from '$lib/utils/loadUtils';
 import { online } from 'svelte/reactivity/window';
 
 export const load = (async ({ url }) => {
