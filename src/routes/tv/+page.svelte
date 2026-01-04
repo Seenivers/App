@@ -209,7 +209,7 @@
 				{#if trailer.site === 'YouTube'}
 					<div class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl">
 						<img
-							src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
+							src={`https://img.youtube-nocookie.com/vi/${trailer.key}/0.jpg`}
 							alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
 							draggable="false"
 							class="h-48 w-full rounded-t-lg object-cover"
@@ -217,7 +217,7 @@
 						<div class="card-body">
 							<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
 							<a
-								href={`https://www.youtube.com/watch?v=${trailer.key}`}
+								href={`https://www.youtube-nocookie.com/watch?v=${trailer.key}`}
 								target="_blank"
 								class="btn btn-primary mt-2"
 								rel="noopener noreferrer"
