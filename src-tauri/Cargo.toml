@@ -1,7 +1,7 @@
 [package]
 name = "seenivers"
 version = "0.1.0"
-description = "A Seenivers App"
+description = "Seenivers is your personal hub for managing and enjoying movies and TV series. Track, stream, and stay updated—all in one app."
 authors = ["BlackTiger007"]
 homepage = "https://seenivers.com"
 license = "GNU General Public License v3.0"
