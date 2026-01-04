@@ -2,7 +2,7 @@
 	"identifier": "seenivers",
 	"bundle": {
 		"windows": {
-			"allowDowngrades": true,
+			"allowDowngrades": false,
 			"certificateThumbprint": "D9397B9DB157E2642314E70D506A7C7DAACA21F1",
 			"digestAlgorithm": "sha256",
 			"timestampUrl": "http://timestamp.digicert.com",
