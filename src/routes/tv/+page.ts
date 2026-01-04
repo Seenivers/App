@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
-import { parseId } from '$lib/load/loadUtils';
+import { parseId } from '$lib/utils/loadUtils';
 
 export const load = (async ({ url }) => {
 	// ID validieren und parsen
