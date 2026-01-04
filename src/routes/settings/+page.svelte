@@ -3,7 +3,7 @@
 	import { app } from '@tauri-apps/api';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { onMount } from 'svelte';
-	import { discord } from '$lib/discord';
+	import { discord } from '$lib/discord/discord';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import Backup from './backup.svelte';
 	import Settings from './settings.svelte';
