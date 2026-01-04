@@ -120,7 +120,7 @@
 								{/if}
 								{#if actor.external_ids.youtube_id}
 									<a
-										href={`https://www.youtube.com/${actor.external_ids.youtube_id}`}
+										href={`https://www.youtube-nocookie.com/${actor.external_ids.youtube_id}`}
 										target="_blank"
 										rel="noopener noreferrer"
 										class="btn btn-outline btn-sm transition hover:bg-red-600 hover:text-white"
