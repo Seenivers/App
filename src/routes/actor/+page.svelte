@@ -60,7 +60,7 @@
 					<Img
 						params={[actor.profile_path, 'actors', false]}
 						alt={actor.name}
-						class="w-full max-w-[250px] rounded-lg object-cover shadow-lg"
+						class="w-full max-w-62.5 rounded-lg object-cover shadow-lg"
 					/>
 
 					<!-- Social media -->
