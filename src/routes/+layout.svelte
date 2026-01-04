@@ -8,7 +8,7 @@
 	import { settings } from '$lib/stores.svelte';
 	import { online } from 'svelte/reactivity/window';
 	import { discord } from '$lib/discord';
-	import { destroy } from 'tauri-plugin-drpc';
+	import { stop as stopDrpc } from 'tauri-plugin-drpc';
 	import { handleElements } from '$lib/utils/utils';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import {
@@ -76,7 +76,7 @@
 
 	async function customDestroy() {
 		endClientSession();
-		await destroy();
+		await stopDrpc();
 		console.debug('App closed');
 	}
 </script>
