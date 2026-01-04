@@ -10,12 +10,12 @@ import {
 	locale
 } from '@tauri-apps/plugin-os';
 
-let sessionId: string;
+let sessionId: string | null = sessionStorage.getItem('sessionId');
+let clientId: string | null = localStorage.getItem('clientId');
 
 /* ================================
  * Types
  * ================================ */
-
 export type ClientEnvironment = {
 	appVersion: string;
 
@@ -30,12 +30,14 @@ export type ClientEnvironment = {
 };
 
 /* ================================
- * Internal helpers
+ * Endpoints
  * ================================ */
-
 const START_ENDPOINT = seeniversURL + '/api/client/session/start';
 const END_ENDPOINT = seeniversURL + '/api/client/session/end';
 
+/* ================================
+ * Helpers
+ * ================================ */
 async function postJson<T>(url: string, data: unknown): Promise<T> {
 	const res = await fetch(url, {
 		method: 'POST',
@@ -50,10 +52,6 @@ async function postJson<T>(url: string, data: unknown): Promise<T> {
 
 	return res.json() as Promise<T>;
 }
-
-/* ================================
- * Environment collector (Tauri)
- * ================================ */
 
 async function collectClientEnvironment(): Promise<ClientEnvironment> {
 	return {
@@ -71,7 +69,7 @@ async function collectClientEnvironment(): Promise<ClientEnvironment> {
 }
 
 /* ================================
- * Public API (Client)
+ * Public API
  * ================================ */
 
 /**
@@ -79,29 +77,29 @@ async function collectClientEnvironment(): Promise<ClientEnvironment> {
  */
 export async function startClientSession(): Promise<void> {
 	const env = await collectClientEnvironment();
-	sessionId = (await postJson<{ sessionId: string }>(START_ENDPOINT, env)).sessionId;
+
+	const res = await postJson<{ clientId: string; sessionId: string }>(START_ENDPOINT, {
+		clientId,
+		sessionId,
+		...env
+	});
+
+	clientId = res.clientId;
+	sessionId = res.sessionId;
+
+	// IDs speichern
+	localStorage.setItem('clientId', clientId);
+	sessionStorage.setItem('sessionId', sessionId);
 }
 
 /**
- * Beendet eine Client-Session.
- * Wird beim App-Close verwendet.
+ * Beendet die Client-Session.
  */
-export function endClientSession(): void {
-	if (!sessionId) {
-		throw new Error('No sessionId set.');
-	}
+export async function endClientSession(): Promise<void> {
+	if (!sessionId) return;
 
-	if (navigator.sendBeacon) {
-		const blob = new Blob([JSON.stringify({ sessionId })], { type: 'application/json' });
+	await postJson(END_ENDPOINT, { clientId, sessionId });
 
-		navigator.sendBeacon(END_ENDPOINT, blob);
-		return;
-	}
-
-	void fetch(END_ENDPOINT, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ sessionId }),
-		credentials: 'include'
-	});
+	sessionStorage.removeItem('sessionId');
+	sessionId = null;
 }
