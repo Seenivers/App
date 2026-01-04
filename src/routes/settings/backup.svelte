@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { BackupFile } from '$lib/utils/db/backup';
-	import { backup as backupfn, newDB } from '$lib/utils/db/backup';
+	import type { BackupFile } from '$lib/utils/backup';
+	import { backup as backupfn, newDB } from '$lib/utils/backup';
 	import { formatBytes } from '$lib/utils/utils';
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
