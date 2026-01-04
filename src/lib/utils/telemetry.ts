@@ -9,6 +9,7 @@ import {
 	hostname,
 	locale
 } from '@tauri-apps/plugin-os';
+import { online } from 'svelte/reactivity/window';
 
 let sessionId: string | null = sessionStorage.getItem('sessionId');
 let clientId: string | null = localStorage.getItem('clientId');
@@ -76,6 +77,7 @@ async function collectClientEnvironment(): Promise<ClientEnvironment> {
  * Startet eine neue Client-Session (Tauri).
  */
 export async function startClientSession(): Promise<void> {
+	if (!online.current) return;
 	const env = await collectClientEnvironment();
 
 	const res = await postJson<{ clientId: string; sessionId: string }>(START_ENDPOINT, {
@@ -96,7 +98,7 @@ export async function startClientSession(): Promise<void> {
  * Beendet die Client-Session.
  */
 export async function endClientSession(): Promise<void> {
-	if (!sessionId) return;
+	if (!sessionId || !online.current) return;
 
 	await postJson(END_ENDPOINT, { clientId, sessionId });
 
