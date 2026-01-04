@@ -74,16 +74,7 @@
 
 	onDestroy(customDestroy);
 
-	let counter = 0;
-
 	async function customDestroy() {
-		console.log('CLOSE');
-
-		if (counter > 100) {
-			console.log('SPAMM');
-			return;
-		}
-
 		endClientSession();
 		await destroy();
 		console.debug('App closed');
