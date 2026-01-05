@@ -254,10 +254,9 @@
 							{/if}
 							| {$_('yourRating')}: {data.result.rating}
 						</p>
-
 						<Rating
-							bind:value={data.result.rating}
-							update={async () => await episode.update(data.id, { rating: data.result.rating })}
+							value={data.result.rating}
+							update={async (rating) => await episode.update(data.episodeID, { rating: rating })}
 						/>
 					</div>
 				</div>
