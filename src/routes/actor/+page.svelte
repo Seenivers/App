@@ -201,7 +201,7 @@
 								{$_(type === 'cast' ? 'filmography' : 'crew')}
 							</h2>
 							<ul class="space-y-2">
-								{#each sortByDate(actor.combined_credits[type]) as item (item.id)}
+								{#each sortByDate(actor.combined_credits[type]) as item (item.credit_id)}
 									<li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
 										<div class="flex items-center gap-2">
 											<a
