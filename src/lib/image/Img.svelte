@@ -53,5 +53,6 @@
 	decoding="async"
 	draggable="false"
 	aria-roledescription="image"
+	referrerpolicy="no-referrer"
 	{...attributes}
 />
