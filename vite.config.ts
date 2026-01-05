@@ -10,11 +10,9 @@ const host = process.env.TAURI_DEV_HOST;
 export default defineConfig({
 	plugins: [
 		sentrySvelteKit({
-			sourceMapsUploadOptions: {
-				org: 'Seenivers',
-				project: 'app',
-				url: 'https://glitchtip.webretter.com/'
-			}
+			org: 'seenivers',
+			project: 'app',
+			sentryUrl: 'https://glitchtip.webretter.com/'
 		}),
 		tailwindcss(),
 		vidstack(),
