@@ -10,8 +10,8 @@
 	import { season } from '$lib/utils/db/season';
 	import { placeholderURL } from '$lib';
 	import { _ } from 'svelte-i18n';
-	import Bookmark from '$lib/SVG/Bookmark.svelte';
-	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
+	import Bookmark from '$lib/assets/SVG/Bookmark.svelte';
+	import BookmarkSlash from '$lib/assets/SVG/BookmarkSlash.svelte';
 	import Rating from '$lib/components/rating.svelte';
 	import { postWatchlist } from '$lib/utils/tmdb';
 

@@ -5,8 +5,8 @@
 	import { _ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/utils/discord';
-	import Movie from '$lib/SVG/movie.svelte';
-	import Tv from '$lib/SVG/tv.svelte';
+	import Movie from '$lib/assets/SVG/movie.svelte';
+	import Tv from '$lib/assets/SVG/tv.svelte';
 
 	interface Props {
 		data: PageData;

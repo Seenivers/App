@@ -16,8 +16,8 @@
 	import { movie } from '$lib/utils/db/movie';
 	import { online } from 'svelte/reactivity/window';
 	import { _ } from 'svelte-i18n';
-	import Bookmark from '$lib/SVG/Bookmark.svelte';
-	import BookmarkSlash from '$lib/SVG/BookmarkSlash.svelte';
+	import Bookmark from '$lib/assets/SVG/Bookmark.svelte';
+	import BookmarkSlash from '$lib/assets/SVG/BookmarkSlash.svelte';
 	import Rating from '$lib/components/rating.svelte';
 
 	let { data }: { data: PageData } = $props();

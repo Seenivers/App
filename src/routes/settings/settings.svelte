@@ -9,9 +9,9 @@
 	import { _, locale, locales } from 'svelte-i18n';
 	import { message, open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
-	import FolderOpen from '$lib/SVG/FolderOpen.svelte';
-	import FolderAdd from '$lib/SVG/FolderAdd.svelte';
-	import Close from '$lib/SVG/Close.svelte';
+	import FolderOpen from '$lib/assets/SVG/FolderOpen.svelte';
+	import FolderAdd from '$lib/assets/SVG/FolderAdd.svelte';
+	import Close from '$lib/assets/SVG/Close.svelte';
 	import { auth } from '$lib/utils/authentication';
 	import { exists } from '@tauri-apps/plugin-fs';
 	import { confirm } from '@tauri-apps/plugin-dialog';

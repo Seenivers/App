@@ -7,7 +7,7 @@
 	import Img from '$lib/image/Img.svelte';
 	import { movie } from '$lib/utils/db/movie';
 	import { serie } from '$lib/utils/db/serie';
-	import Close from '$lib/SVG/Close.svelte';
+	import Close from '$lib/assets/SVG/Close.svelte';
 	import { online } from 'svelte/reactivity/window';
 	import { settings } from '$lib/stores.svelte';
 

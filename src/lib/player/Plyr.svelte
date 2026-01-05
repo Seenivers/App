@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Plyr from 'plyr';
 	import 'plyr/dist/plyr.css';
-	import plyrSVG from '$lib/SVG/plyr.svg';
-	import blankVideo from '$lib/videos/blank.mp4';
+	import plyrSVG from '$lib/assets/SVG/plyr.svg';
+	import blankVideo from '$lib/assets/videos/blank.mp4';
 	import { onMount, onDestroy } from 'svelte';
 	import { loadWatchTime, saveWatchTime, markAsWatched } from './videoUtils';
 	import type { MediaType } from '$lib/types/add';

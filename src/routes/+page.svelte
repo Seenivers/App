@@ -6,10 +6,10 @@
 	import Card from '$lib/components/card.svelte';
 	import { _ } from 'svelte-i18n';
 	import type { CardscaleNumbers } from '$lib/types/cardscale';
-	import Search from '$lib/SVG/search.svelte';
+	import Search from '$lib/assets/SVG/search.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { getFilter, setFilter, type SortOption } from '$lib/utils/sessionStorage';
-	import Reset from '$lib/SVG/reset.svelte';
+	import Reset from '$lib/assets/SVG/reset.svelte';
 
 	interface Props {
 		data: PageData;
