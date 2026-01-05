@@ -159,6 +159,7 @@
 									<img
 										src={`https://i.ytimg.com/vi/${trailer.key}/0.jpg`}
 										alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
+										referrerpolicy="no-referrer"
 										draggable="false"
 										class="h-48 w-full rounded-t-lg object-cover"
 									/>
