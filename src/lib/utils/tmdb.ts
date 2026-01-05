@@ -170,7 +170,7 @@ export const getWatchlist = (
 	account_object_id = settings.tmdbAccountID,
 	language: string = settings.language || window.navigator.language
 ) => {
-	if (!account_object_id) return;
+	if (!account_object_id || account_object_id === 'tmdbAccountID') return;
 	return fetchData<WatchList>('/api/tmdb/watchlist', {
 		account_object_id,
 		language
