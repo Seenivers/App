@@ -1,18 +1,19 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-
 	let {
 		value = $bindable(0),
 		update = async () => {}
-	}: { value: number; update: () => Promise<void> } = $props();
+	}: {
+		value: number;
+		update: (rating?: number) => Promise<void>;
+	} = $props();
 
 	const initialValue = value;
 
-	onDestroy(async () => {
+	function handleChange() {
 		if (value !== initialValue) {
-			await update();
+			update(value);
 		}
-	});
+	}
 </script>
 
 <div class="rating rating-lg rating-half">
@@ -23,6 +24,7 @@
 		aria-label="clear"
 		value="0"
 		bind:group={value}
+		onchange={handleChange}
 	/>
 
 	{#each Array(20) as _, i}
@@ -33,6 +35,7 @@
 			class="mask mask-star-2 {i % 2 === 0 ? 'mask-half-1' : 'mask-half-2'} bg-yellow-400"
 			aria-label="{(i + 1) * 0.5} star"
 			bind:group={value}
+			onchange={handleChange}
 		/>
 	{/each}
 </div>
