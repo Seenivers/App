@@ -289,7 +289,7 @@
 						</p>
 
 						<Rating
-							bind:value={movieData.rating}
+							value={movieData.rating}
 							update={async () => await movie.update(data.id, { rating: movieData.rating })}
 						/>
 					</section>
