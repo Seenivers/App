@@ -291,7 +291,7 @@
 
 						<Rating
 							value={movieData.rating}
-							update={async () => await movie.update(data.id, { rating: movieData.rating })}
+							update={async (rating) => await movie.update(data.id, { rating: rating })}
 						/>
 					</section>
 
