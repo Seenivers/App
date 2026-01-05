@@ -209,7 +209,7 @@
 				{#if trailer.site === 'YouTube'}
 					<div class="card bg-base-200 shadow-lg transition-shadow duration-300 hover:shadow-xl">
 						<img
-							src={`https://img.youtube-nocookie.com/vi/${trailer.key}/0.jpg`}
+							src={`https://i.ytimg.com/vi/${trailer.key}/0.jpg`}
 							alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
 							draggable="false"
 							class="h-48 w-full rounded-t-lg object-cover"
