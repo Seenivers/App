@@ -26,10 +26,12 @@
 		"security": {
 			"csp": {
 				"default-src": "'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org https://seenivers.com",
-				"connect-src": "'self' ipc: http://ipc.localhost https://seenivers.com",
-				"img-src": "'self' http://asset.localhost https://image.tmdb.org https://seenivers.com https://imghttps://i.ytimg.com/ data: blob:",
+				"connect-src": "'self' ipc: http://ipc.localhost https://seenivers.com https://glitchtip.webretter.com",
+				"img-src": "'self' http://asset.localhost https://image.tmdb.org https://seenivers.com https://i.ytimg.com data: blob:",
 				"style-src": "'self' https://seenivers.com 'unsafe-inline'",
-				"media-src": "'self' http://asset.localhost https://seenivers.com data: blob:"
+				"media-src": "'self' http://asset.localhost https://seenivers.com data: blob:",
+				"worker-src": "'self' blob:",
+				"script-src": "'self'"
 			},
 			"dangerousDisableAssetCspModification": false,
 			"assetProtocol": {
