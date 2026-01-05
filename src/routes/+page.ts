@@ -1,69 +1,65 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
-import type {
-	collections as schemaCollections,
-	movies as schemaMovie,
-	serie as schemaSerie
-} from '$lib/db/schema';
+import { movies as schemaMovie, serie as schemaSerie } from '$lib/db/schema';
+import { isNotNull } from 'drizzle-orm';
 
 export const load = (async () => {
 	if (!browser) {
 		error(500, 'This operation is only supported in the browser');
 	}
 
-	const { collection } = await import('$lib/utils/db/collection');
-	const { movie } = await import('$lib/utils/db/movie');
-	const { serie } = await import('$lib/utils/db/serie');
+	// ⏱️ Performance-Start
+	performance.mark('load:start');
 
-	// Daten aus der Datenbank abrufen
-	const collections: (typeof schemaCollections.$inferSelect)[] = (await collection.getAll()) ?? [];
-	const movies: (typeof schemaMovie.$inferSelect)[] = (await movie.getAll()) ?? [];
-	const series: (typeof schemaSerie.$inferSelect)[] = (await serie.getAll()) ?? [];
+	const { collection } = await import('$lib/utils/db/collection');
+	const { db } = await import('$lib/db/database');
+
+	// Parallele Abfragen: nur relevante Spalten laden
+	const [collections, movies, series] = await Promise.all([
+		collection.getAll().then((r) => r ?? []),
+
+		db.select().from(schemaMovie).where(isNotNull(schemaMovie.path)),
+
+		db.select().from(schemaSerie).where(isNotNull(schemaSerie.path))
+	]);
 
 	if (movies.length === 0 && collections.length === 0 && series.length === 0) {
+		performance.mark('load:end');
+		performance.measure('load:main', 'load:start', 'load:end');
 		return { movies: [], series: [], collections: [], genres: [] };
 	}
 
-	// Nur Filme & Serien mit gesetztem `path`
-	const moviesWithPath = movies
-		.filter((movie) => movie.path)
-		.map((c) => ({
-			...c,
-			tmdb: { ...c.tmdb, name: c.tmdb.title } // Platzhalter-Struktur für spätere Nutzung
-		}));
+	// TMDB-Name direkt setzen
+	const moviesWithPath = movies.map((c) => ({
+		...c,
+		tmdb: { ...c.tmdb, name: c.tmdb.title }
+	}));
 
-	const seriesWithPath = series.filter((serie) => serie.path);
+	const seriesWithPath = series.map((serie) => serie);
 
-	// Collections filtern: Nur, wenn mindestens ein Film mit `path` existiert
+	// Collections nur für Filme, die tatsächlich einer Collection zugeordnet sind
+	const movieCollectionIds = new Set(
+		moviesWithPath.map((m) => m.tmdb.belongs_to_collection?.id).filter(Boolean)
+	);
+
 	const filteredCollections = collections
-		.filter((c) => moviesWithPath.some((m) => m.tmdb.belongs_to_collection?.id === c.id))
-		.map((c) => ({
-			...c,
-			tmdb: { name: c.name } // Platzhalter-Struktur für spätere Nutzung
-		}));
+		.filter((c) => movieCollectionIds.has(c.id))
+		.map((c) => ({ ...c, tmdb: { name: c.name } }));
 
-	// 🎯 Alle Genres aus Filmen & Serien extrahieren
-	const genreSet = new Set<string>();
+	// const genres = Array.from(new Set([...moviesWithPath, ...seriesWithPath].flatMap((item) => item.tmdb?.genres?.map((g) => g?.name).filter(Boolean) ?? []))).sort().map((name) => ({ name }));
 
-	for (const item of [...moviesWithPath, ...seriesWithPath]) {
-		if (item.tmdb?.genres && Array.isArray(item.tmdb.genres)) {
-			for (const genre of item.tmdb.genres) {
-				if (genre?.name) {
-					genreSet.add(genre.name);
-				}
-			}
-		}
-	}
+	// ⏱️ Performance-Ende
+	performance.mark('load:end');
+	performance.measure('load:main', 'load:start', 'load:end');
 
-	const genres = Array.from(genreSet)
-		.sort((a, b) => a.localeCompare(b))
-		.map((name) => ({ name }));
+	const [measure] = performance.getEntriesByName('load:main');
+	console.debug('[perf] load:main', `${measure.duration.toFixed(2)} ms`);
 
 	return {
 		movies: moviesWithPath,
 		series: seriesWithPath,
-		collections: filteredCollections,
-		genres
+		collections: filteredCollections
+		// genres
 	};
 }) satisfies PageLoad;
