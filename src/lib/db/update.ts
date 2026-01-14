@@ -1,6 +1,5 @@
 import { eq } from 'drizzle-orm';
 import { db } from './database';
-import { settings } from '$lib/stores.svelte';
 import { BaseDirectory, exists, readDir, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import type { OldData } from '$lib/types/types';
 import {
@@ -16,6 +15,7 @@ import { actor } from '$lib/utils/db/actor';
 import { join } from '@tauri-apps/api/path';
 import { load } from '$lib/add/loader';
 import { addNewFiles } from '$lib/add/fileScanner';
+import { getSettings } from '$lib/utils/settings/state';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
@@ -30,7 +30,7 @@ export async function updateOldDB() {
 
 			await Promise.all(
 				data.movies.map(async (movie) => {
-					const result = await getMovieTmdb(movie.id, settings.language);
+					const result = await getMovieTmdb(movie.id, getSettings().language);
 
 					if (!result) {
 						throw new Error(`Movie with ID ${movie.id} could not be fetched.`);
@@ -83,7 +83,7 @@ async function updateEntity(
 			actors: getActorTmdb
 		}[entityType];
 
-		const result = await fetchTmdbData(entity.id, settings?.language);
+		const result = await fetchTmdbData(entity.id, getSettings().language);
 
 		if (result) {
 			await db
@@ -108,9 +108,9 @@ export async function updateMovies() {
 				if (movie.tmdb.credits.cast) {
 					// `castImages` bestimmen: 0 bedeutet alle Bilder laden
 					const imagesToLoad =
-						settings.castImages === 0
+						getSettings().castImages === 0
 							? movie.tmdb.credits.cast.length
-							: Math.min(settings.castImages, movie.tmdb.credits.cast.length);
+							: Math.min(getSettings().castImages, movie.tmdb.credits.cast.length);
 					for (let i = 0; i < imagesToLoad; i++) {
 						await processActor(movie.tmdb.credits.cast[i].id);
 					}
@@ -125,7 +125,7 @@ export async function updateMovies() {
 async function processCollection(collectionId: number) {
 	const collectionResult = await collection.get(collectionId);
 	if (!collectionResult) {
-		const result = await getCollectionTmdb(collectionId, settings?.language);
+		const result = await getCollectionTmdb(collectionId, getSettings().language);
 		if (result) {
 			await collection.add({ ...result });
 		}
@@ -135,7 +135,7 @@ async function processCollection(collectionId: number) {
 async function processActor(actorId: number) {
 	const actorResult = await actor.get(actorId);
 	if (!actorResult) {
-		const result = await getActorTmdb(actorId, settings?.language);
+		const result = await getActorTmdb(actorId, getSettings().language);
 		if (result) {
 			await actor.add({ id: result.id, name: result.name, tmdb: result });
 		}
@@ -161,10 +161,12 @@ export async function updateActors() {
 	try {
 		const actors = await actor.getAll();
 
-		if (actors && actors.length > 0 && settings.castImages !== -1) {
+		if (actors && actors.length > 0 && getSettings().castImages !== -1) {
 			// `castImages` bestimmen: 0 bedeutet alle Bilder laden
 			const imagesToLoad =
-				settings.castImages === 0 ? actors.length : Math.min(settings.castImages, actors.length);
+				getSettings().castImages === 0
+					? actors.length
+					: Math.min(getSettings().castImages, actors.length);
 			for (let i = 0; i < imagesToLoad; i++) {
 				await updateEntity(actors[i], 'actors');
 			}
@@ -175,10 +177,10 @@ export async function updateActors() {
 }
 
 export async function collectAndProcessWatchedFiles() {
-	if (settings.watchPaths.length > 0) {
+	if (getSettings().watchPaths.length > 0) {
 		const pfads = (
 			await Promise.all(
-				settings.watchPaths.map(async (path) => {
+				getSettings().watchPaths.map(async (path) => {
 					const entries = await readDir(path);
 					return Promise.all(entries.map((entry) => join(path, entry.name)));
 				})
