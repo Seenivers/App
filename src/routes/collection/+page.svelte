@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { settings } from '$lib/stores.svelte';
 	import { image } from '$lib/image/image';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
@@ -8,6 +7,7 @@
 	import { discord } from '$lib/utils/discord';
 	import { _ } from 'svelte-i18n';
 	import { collection } from '$lib/utils/db/collection';
+	import { getSettings } from '$lib/utils/settings/state';
 
 	interface Props {
 		data: PageData;
@@ -158,7 +158,7 @@
 								<p>
 									{movie.release_date
 										? new Date(movie.release_date).toLocaleDateString(
-												settings ? settings.language : window.navigator.language
+												getSettings() ? getSettings().language : window.navigator.language
 											)
 										: $_('noInformationAvailable')}
 								</p>
