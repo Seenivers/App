@@ -1,5 +1,4 @@
 import type { Movie } from '$lib/types/movie';
-import { settings } from '$lib/stores.svelte';
 import { seeniversURL } from '$lib';
 import type { CollectionDetails } from '$lib/types/collection';
 import type { Search, Movie as SearchMovie, TV as SearchTV } from '$lib/types/searchMovie';
@@ -11,6 +10,7 @@ import type { AccessToken, RequestToken, SessionId } from '$lib/types/authentica
 import type { WatchList } from '$lib/types/watchlist';
 import type { TMDBPostResult } from '$lib/types/media_type';
 import { online } from 'svelte/reactivity/window';
+import { getSettings } from './settings/state';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -48,7 +48,7 @@ async function fetchData<T>(endpoint: string, params: Record<string, string | nu
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${settings.tmdbAccessToken}`
+				Authorization: `Bearer ${getSettings().tmdbAccessToken}`
 			}
 		});
 	} catch (err) {
@@ -81,13 +81,15 @@ async function postData<T>(endpoint: string, body: unknown): Promise<T> {
 }
 
 // 📽 Einzelner Film
-export const getMovie = (id: number, language = settings.language || window.navigator.language) =>
-	fetchData<Movie>('/api/movie', { id, language });
+export const getMovie = (
+	id: number,
+	language = getSettings().language || window.navigator.language
+) => fetchData<Movie>('/api/movie', { id, language });
 
 // 📽 Mehrere Filme
 export const getMovies = async (
 	ids: number[],
-	language = settings.language || window.navigator.language
+	language = getSettings().language || window.navigator.language
 ) => {
 	const result = await postData<{ id: number; data?: Movie; error?: string }[]>('/api/movie', {
 		id: ids,
@@ -108,15 +110,15 @@ export const getMovies = async (
 // 📚 Collection
 export const getCollection = (
 	id: number,
-	language = settings.language || window.navigator.language
+	language = getSettings().language || window.navigator.language
 ) => fetchData<CollectionDetails>('/api/collection', { id, language });
 
 // 🔎 Suche Filme
 export const searchMovies = (name: string, primaryReleaseYear?: string | number, page = 1) => {
 	const params = {
 		name,
-		language: settings.language,
-		includeAdult: String(settings.adult),
+		language: getSettings().language,
+		includeAdult: String(getSettings().adult),
 		primaryReleaseYear: primaryReleaseYear?.toString() ?? '',
 		page: String(page)
 	};
@@ -124,15 +126,17 @@ export const searchMovies = (name: string, primaryReleaseYear?: string | number,
 };
 
 // 👤 Schauspieler
-export const getActor = (id: number, language = settings.language || window.navigator.language) =>
-	fetchData<Actor>('/api/actor', { id, language });
+export const getActor = (
+	id: number,
+	language = getSettings().language || window.navigator.language
+) => fetchData<Actor>('/api/actor', { id, language });
 
 // 📺 Suche Serien
 export const searchTv = (name: string, first_air_date_year?: string | number, page = 1) => {
 	const params = {
 		name,
-		language: settings.language,
-		includeAdult: String(settings.adult),
+		language: getSettings().language,
+		includeAdult: String(getSettings().adult),
 		first_air_date_year: first_air_date_year?.toString() ?? '',
 		page: String(page)
 	};
@@ -142,14 +146,14 @@ export const searchTv = (name: string, first_air_date_year?: string | number, pa
 // 📺 Serie
 export const getSerie = (
 	tvShowID: number,
-	language = settings.language || window.navigator.language
+	language = getSettings().language || window.navigator.language
 ) => fetchData<Serie>('/api/tv', { id: tvShowID, language });
 
 // 📅 Staffel
 export const getSerieSeason = (
 	tvShowID: number,
 	seasonNumber: number,
-	language = settings.language || window.navigator.language
+	language = getSettings().language || window.navigator.language
 ) => fetchData<Season>('/api/tv/season', { tvShowID, seasonNumber, language });
 
 // 🎬 Episode
@@ -157,7 +161,7 @@ export const getSerieSeasonEpisode = (
 	tvShowID: number,
 	seasonNumber: number,
 	episodeNumber: number,
-	language = settings.language || window.navigator.language
+	language = getSettings().language || window.navigator.language
 ) =>
 	fetchData<Episode>('/api/tv/season/episode', {
 		tvShowID,
@@ -167,8 +171,8 @@ export const getSerieSeasonEpisode = (
 	});
 
 export const getWatchlist = (
-	account_object_id = settings.tmdbAccountID,
-	language: string = settings.language || window.navigator.language
+	account_object_id = getSettings().tmdbAccountID,
+	language: string = getSettings().language || window.navigator.language
 ) => {
 	if (!account_object_id || account_object_id === 'tmdbAccountID') return;
 	return fetchData<WatchList>('/api/tmdb/watchlist', {
@@ -224,7 +228,7 @@ export const postAccessToken = async (request_token: string) => {
 };
 
 export const postSessionId = async () => {
-	if (!settings.tmdbAccessToken || !online.current) return;
+	if (!getSettings().tmdbAccessToken || !online.current) return;
 	const endpoint = '/api/tmdb/session';
 	const url = new URL(endpoint, seeniversURL);
 
@@ -235,7 +239,7 @@ export const postSessionId = async () => {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ access_token: settings.tmdbAccessToken })
+			body: JSON.stringify({ access_token: getSettings().tmdbAccessToken })
 		});
 
 		return await parseResponse<SessionId>(response, endpoint);
@@ -252,9 +256,9 @@ export const postWatchlist = async (
 		media_id: number;
 		watchlist: boolean;
 	},
-	account_id = settings.tmdbAccountID
+	account_id = getSettings().tmdbAccountID
 ) => {
-	if (!settings.tmdbAccessToken || !online.current) return;
+	if (!getSettings().tmdbAccessToken || !online.current) return;
 	const endpoint = `https://api.themoviedb.org/3/account/${account_id}/watchlist`;
 
 	try {
@@ -262,7 +266,7 @@ export const postWatchlist = async (
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
-				Authorization: 'Bearer ' + settings.tmdbAccessToken,
+				Authorization: 'Bearer ' + getSettings().tmdbAccessToken,
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(body)
