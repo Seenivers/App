@@ -1,10 +1,9 @@
 import { online } from 'svelte/reactivity/window';
 import { postAccessToken, postToken } from './tmdb';
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
-import { settingsDB } from './db/settings';
-import { settings } from '$lib/stores.svelte';
 
 import { newToast } from '$lib/toast/toast';
+import { getSettings, saveSettings } from './settings/state';
 
 const TMDB_AUTH_EVENT = 'tmdb-auth';
 
@@ -44,13 +43,13 @@ export async function auth() {
 			return;
 		}
 
-		settingsDB.update({
+		saveSettings({
 			tmdbAccessToken: accessToken.access_token,
 			tmdbAccountID: accessToken.account_id
 		});
 
-		settings.tmdbAccessToken = accessToken.access_token;
-		settings.tmdbAccountID = accessToken.account_id;
+		getSettings().tmdbAccessToken = accessToken.access_token;
+		getSettings().tmdbAccountID = accessToken.account_id;
 		newToast('success', 'TMDB-Authentifizierung erfolgreich abgeschlossen.');
 	});
 
