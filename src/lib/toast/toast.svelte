@@ -1,15 +1,13 @@
 <!-- https://daisyui.com/components/toast/ -->
 <script lang="ts">
-	import { settings } from '$lib/stores.svelte';
-	import type { AlertPositionHorizontally, AlertPositionVertically } from '$lib/types/settings';
 	import { messages } from '$lib/toast/toast';
 	import { fly } from 'svelte/transition';
 	import { cubicOut, cubicIn } from 'svelte/easing';
+	import { getSettings } from '$lib/utils/settings/state';
 
 	// Default-Werte setzen, falls Einstellungen nicht verfügbar sind
-	const positionHorizontally: AlertPositionHorizontally =
-		settings?.toastPosition.horizontal || 'end';
-	const positionVertically: AlertPositionVertically = settings?.toastPosition.vertical || 'bottom';
+	const positionHorizontally = getSettings().toastPosition.horizontal || 'end';
+	const positionVertically = getSettings().toastPosition.vertical || 'bottom';
 	const toastVariants = {
 		start: 'toast-start',
 		center: 'toast-center',
