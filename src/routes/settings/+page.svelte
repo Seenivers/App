@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { settings } from '$lib/stores.svelte';
 	import { app } from '@tauri-apps/api';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { onMount } from 'svelte';
@@ -8,6 +7,7 @@
 	import Backup from './backup.svelte';
 	import Settings from './settings.svelte';
 	import { _ } from 'svelte-i18n';
+	import { getSettings } from '$lib/utils/settings/state';
 
 	onMount(() => {
 		discord();
@@ -17,7 +17,7 @@
 <Navbar
 	back={true}
 	onclick={async () => {
-		setTheme(settings.theme);
+		setTheme(getSettings().theme);
 		window.history.length > 1 ? window.history.back() : (window.location.href = '/');
 	}}
 ></Navbar>
