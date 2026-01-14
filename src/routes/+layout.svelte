@@ -5,9 +5,9 @@
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import '../app.css';
 	import { db } from '$lib/db/database';
-	import { settings } from '$lib/stores.svelte';
 	import { online } from 'svelte/reactivity/window';
 	import { initApp, destroyApp } from '$lib/utils/appInit';
+	import { getSettings } from '$lib/utils/settings/state';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -26,7 +26,7 @@
 
 <div class="bg-base-300 flex h-fit min-h-screen flex-col">
 	<ProgressBar />
-	{#if db && settings}
+	{#if db && getSettings()}
 		{@render children?.()}
 		<Toast />
 		{#if online.current && !import.meta.env.DEV}
