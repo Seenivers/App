@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { settings as schemaSettings } from '$lib/db/schema/settings';
-	import { settings } from '$lib/stores.svelte';
 	import { newToast } from '$lib/toast/toast';
 	import { themes } from '$lib';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { onDestroy } from 'svelte';
-	import { settingsDB } from '$lib/utils/db/settings';
 	import { _, locale, locales } from 'svelte-i18n';
 	import { message, open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
@@ -15,8 +12,10 @@
 	import { auth } from '$lib/utils/authentication';
 	import { exists } from '@tauri-apps/plugin-fs';
 	import { confirm } from '@tauri-apps/plugin-dialog';
+	import { getSettings, saveSettings } from '$lib/utils/settings/state';
+	import type { Settings } from '$lib/schema/settings';
 
-	let settingsTemp: typeof schemaSettings.$inferSelect = $state({ ...settings });
+	let settingsTemp: Settings = $state(getSettings());
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
 
 	// Schlüsselwörter verarbeiten und Änderung tracken
@@ -36,8 +35,7 @@
 
 	onDestroy(async () => {
 		if (isDirty) {
-			Object.assign(settings, settingsTemp); // Eigenschaften von settingsTemp in settings kopieren
-			await settingsDB.update(settings);
+			saveSettings(settingsTemp);
 			isDirty = false; // Änderungen wurden gespeichert
 			newToast('info', $_('settings.saved'));
 		}
@@ -61,7 +59,7 @@
 		>
 			{#each $locales as lang (lang)}
 				<option value={lang}>
-					{new Intl.DisplayNames([settings.language, window.navigator.language], {
+					{new Intl.DisplayNames([getSettings().language, window.navigator.language], {
 						type: 'language'
 					}).of(lang)}
 				</option>
@@ -205,7 +203,6 @@
 			bind:value={settingsTemp.backupConfig.maxSizeMB}
 			onchange={markDirty}
 			min="0"
-			max="10000"
 			step="50"
 		/>
 	</label>
@@ -252,17 +249,19 @@
 		<button
 			id="tmdbAuth"
 			name="tmdbAuth"
-			class="btn {settings.tmdbAccessToken ? 'btn-success' : 'btn-primary'}"
+			class="btn {getSettings().tmdbAccessToken ? 'btn-success' : 'btn-primary'}"
 			onclick={async () => {
-				if (settings.tmdbAccessToken) {
+				if (getSettings().tmdbAccessToken) {
 					if (!(await confirm($_('settings.confirmReauth'), { kind: 'warning' }))) return;
 				}
 				await auth();
-				settingsTemp.tmdbAccessToken = settings.tmdbAccessToken;
-				settingsTemp.tmdbAccountID = settings.tmdbAccountID;
+				settingsTemp.tmdbAccessToken = getSettings().tmdbAccessToken;
+				settingsTemp.tmdbAccountID = getSettings().tmdbAccountID;
 			}}
 		>
-			{settings.tmdbAccessToken ? $_('settings.reauthenticate') : $_('settings.tmdbAuthButton')}
+			{getSettings().tmdbAccessToken
+				? $_('settings.reauthenticate')
+				: $_('settings.tmdbAuthButton')}
 		</button>
 	</label>
 

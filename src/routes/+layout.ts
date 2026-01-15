@@ -16,10 +16,12 @@ export const load: LayoutLoad = async () => {
 		error(500, 'This operation is only supported in the browser');
 	}
 
-	const { settings } = await import('$lib/stores.svelte');
+	const { getSettings } = await import('$lib/utils/settings/state');
 
 	const userLang = window.navigator.language.split('-')[0];
-	locale.set(get(locales).includes(settings.language) ? settings.language : userLang);
+	locale.set(get(locales).includes(getSettings().language) ? getSettings().language : userLang);
 
 	await waitLocale();
+
+	return {};
 };

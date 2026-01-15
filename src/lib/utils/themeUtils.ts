@@ -1,5 +1,5 @@
-import type { Theme } from '$lib/types/settings';
+import type { Settings } from '$lib/schema/settings';
 
-export function setTheme(theme: Theme) {
+export function setTheme(theme: Settings['theme']) {
 	document.documentElement.setAttribute('data-theme', theme);
 }

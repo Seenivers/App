@@ -9,7 +9,7 @@
 	import { serie } from '$lib/utils/db/serie';
 	import Close from '$lib/assets/SVG/Close.svelte';
 	import { online } from 'svelte/reactivity/window';
-	import { settings } from '$lib/stores.svelte';
+	import { getSettings } from '$lib/utils/settings/state';
 
 	export let data: PageData;
 
@@ -39,10 +39,10 @@
 <Navbar back={true}>
 	{#snippet right()}
 		<div
-			class={!online.current || !settings.tmdbAccessToken ? 'tooltip tooltip-left' : ''}
+			class={!online.current || !getSettings().tmdbAccessToken ? 'tooltip tooltip-left' : ''}
 			data-tip={!online.current
 				? $_('networkStatus.offline')
-				: !settings.tmdbAccessToken
+				: !getSettings().tmdbAccessToken
 					? $_('noTMDBAccessToken')
 					: ''}
 		>
@@ -52,7 +52,7 @@
 					await syncWatchlist();
 					location.reload();
 				}}
-				disabled={!settings.tmdbAccessToken || !online.current}>{$_('watchlistSync')}</button
+				disabled={!getSettings().tmdbAccessToken || !online.current}>{$_('watchlistSync')}</button
 			>
 		</div>
 	{/snippet}

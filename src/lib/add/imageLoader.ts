@@ -1,9 +1,9 @@
 import { image } from '$lib/image/image';
-import { settings } from '$lib/stores.svelte';
 import type { Movie } from '$lib/types/movie';
 import type { Episode } from '$lib/types/tv/episode';
 import type { Season } from '$lib/types/tv/season';
 import type { Serie } from '$lib/types/tv/serie';
+import { getSettings } from '$lib/utils/settings/state';
 
 export async function loadImages(result: Movie | Serie | Season | Episode) {
 	// Helper-Funktion zum sicheren Laden eines Bildpfads
@@ -28,9 +28,9 @@ export async function loadImages(result: Movie | Serie | Season | Episode) {
 		.filter(Boolean) as string[];
 
 	const limit =
-		settings.castImages === 0
+		getSettings().castImages === 0
 			? castImagePaths.length
-			: Math.min(settings.castImages, castImagePaths.length);
+			: Math.min(getSettings().castImages, castImagePaths.length);
 
 	// Paralleles Laden der Cast-Bilder für bessere Performance
 	await Promise.all(castImagePaths.slice(0, limit).map((path) => image(path, 'actors', true)));

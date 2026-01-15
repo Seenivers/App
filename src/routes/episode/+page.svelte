@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { settings } from '$lib/stores.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { PageData } from './$types';
 
@@ -14,6 +13,7 @@
 	import { goto, invalidate } from '$app/navigation';
 	import { _ } from 'svelte-i18n';
 	import Rating from '$lib/components/rating.svelte';
+	import { getSettings } from '$lib/utils/settings/state';
 
 	let { data }: { data: PageData } = $props();
 
@@ -93,7 +93,7 @@
 
 			{#if data.result.path && data.pathExists}
 				{#await image(data.result.tmdb.still_path, null, false) then poster}
-					{#if settings.player === 'Plyr'}
+					{#if getSettings().player === 'Plyr'}
 						<Plyr
 							src={convertFileSrc(data.result.path)}
 							poster={poster.src}

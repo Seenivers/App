@@ -6,7 +6,6 @@
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
 	import type { PageData } from './$types';
-	import { settings } from '$lib/stores.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { openPath } from '@tauri-apps/plugin-opener';
@@ -19,6 +18,7 @@
 	import Bookmark from '$lib/assets/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/assets/SVG/BookmarkSlash.svelte';
 	import Rating from '$lib/components/rating.svelte';
+	import { getSettings } from '$lib/utils/settings/state';
 
 	let { data }: { data: PageData } = $props();
 
@@ -125,7 +125,7 @@
 
 			{#if movieData.path && data.pathExists}
 				{#await image(movieData.tmdb.backdrop_path, 'backdrops', true) then poster}
-					{#if settings.player === 'Plyr'}
+					{#if getSettings().player === 'Plyr'}
 						<Plyr
 							src={convertFileSrc(movieData.path)}
 							poster={poster.src}

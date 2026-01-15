@@ -1,11 +1,11 @@
 import { backup } from './backup';
-import { settings } from '$lib/stores.svelte';
+import { getSettings } from './settings/state';
 
 /**
  * Führt automatisch ein Backup durch, abhängig von den Einstellungen
  */
 export async function autoBackup() {
-	if (settings.backupInterval === 'manual') return;
+	if (getSettings().backupInterval === 'manual') return;
 
 	const allBackups = await backup.getAll();
 
@@ -21,7 +21,7 @@ export async function autoBackup() {
 	const lastDate = latest.createdAt;
 	let nextDate = new Date(lastDate);
 
-	switch (settings.backupInterval) {
+	switch (getSettings().backupInterval) {
 		case 'daily':
 			nextDate.setDate(lastDate.getDate() + 1);
 			break;
@@ -56,8 +56,10 @@ export async function cleanupBackups() {
 	);
 
 	// 1️⃣ Alter: Backups löschen, die älter als erlaubt sind
-	if (settings.backupConfig.maxAgeDays > 0) {
-		const cutoff = new Date(Date.now() - settings.backupConfig.maxAgeDays * 24 * 60 * 60 * 1000);
+	if (getSettings().backupConfig.maxAgeDays > 0) {
+		const cutoff = new Date(
+			Date.now() - getSettings().backupConfig.maxAgeDays * 24 * 60 * 60 * 1000
+		);
 		for (const b of allBackups) {
 			if (b.createdAt < cutoff) {
 				await backup.delete(b.name);
@@ -66,19 +68,19 @@ export async function cleanupBackups() {
 	}
 
 	// 2️⃣ Anzahl: Nur die x neuesten behalten
-	if (settings.backupConfig.maxBackups > 0) {
-		const toDelete = allBackups.slice(settings.backupConfig.maxBackups);
+	if (getSettings().backupConfig.maxBackups > 0) {
+		const toDelete = allBackups.slice(getSettings().backupConfig.maxBackups);
 		for (const b of toDelete) {
 			await backup.delete(b.name);
 		}
 	}
 
 	// 3️⃣ Größe: Gesamtgröße überschreitet maxSizeMB
-	if (settings.backupConfig.maxSizeMB > 0) {
+	if (getSettings().backupConfig.maxSizeMB > 0) {
 		let totalSize = 0;
 		for (const b of allBackups) {
 			totalSize += b.size;
-			if (totalSize > settings.backupConfig.maxSizeMB * 1024 * 1024) {
+			if (totalSize > getSettings().backupConfig.maxSizeMB * 1024 * 1024) {
 				await backup.delete(b.name);
 				totalSize -= b.size; // Nach Löschen Größe anpassen
 			}
