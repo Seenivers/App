@@ -26,17 +26,17 @@
 
 <!-- Toast Container -->
 <div
-	class={`toast z-50 ${toastVariants[positionHorizontally]} ${toastVariants[positionVertically]} !min-w-unset max-h-full w-fit max-w-full print:hidden`}
+	class={`toast z-50 ${toastVariants[positionHorizontally]} ${toastVariants[positionVertically]} min-w-unset! max-h-full w-fit max-w-full print:hidden`}
 >
 	<details class="collapse-plus bg-base-100/70 collapse backdrop-blur-sm" open>
 		<summary class="collapse-title text-xl font-medium">Info-Panel</summary>
 		<div
-			class="collapse-content !min-h-unset !min-w-unset mb-3 box-border grid max-h-[33vh] w-full flex-col flex-wrap gap-3 overflow-y-auto p-3"
+			class="collapse-content min-h-unset! min-w-unset! mb-3 box-border grid max-h-[33vh] w-full flex-col flex-wrap gap-3 overflow-y-auto p-3"
 		>
 			{#if $messages.length > 0}
 				{#each $messages as { type, text, id } (id)}
 					<div
-						class="alert min-h-fit w-fit shrink-0 snap-center rounded-lg p-4 break-words whitespace-normal shadow-lg transition-all
+						class="alert min-h-fit w-fit shrink-0 snap-center rounded-lg p-4 wrap-break-word whitespace-normal shadow-lg transition-all
 						{toastAlertVariants[type]}"
 						in:fly={{ duration: 400, y: -50, easing: cubicOut }}
 						out:fly={{ duration: 400, y: 100, easing: cubicIn }}

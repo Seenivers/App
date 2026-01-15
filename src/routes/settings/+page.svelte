@@ -8,6 +8,8 @@
 	import Settings from './settings.svelte';
 	import { _ } from 'svelte-i18n';
 	import { getSettings } from '$lib/utils/settings/state';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	onMount(() => {
 		discord();
@@ -18,7 +20,7 @@
 	back={true}
 	onclick={async () => {
 		setTheme(getSettings().theme);
-		window.history.length > 1 ? window.history.back() : (window.location.href = '/');
+		goto(resolve('/'));
 	}}
 ></Navbar>
 
