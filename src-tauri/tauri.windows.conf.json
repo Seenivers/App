@@ -3,7 +3,7 @@
 	"bundle": {
 		"windows": {
 			"allowDowngrades": false,
-			"certificateThumbprint": "D9397B9DB157E2642314E70D506A7C7DAACA21F1",
+			"certificateThumbprint": "651D6220535D8395F2D719FEA1B54E5FBE388A51",
 			"digestAlgorithm": "sha256",
 			"timestampUrl": "http://timestamp.digicert.com",
 			"nsis": {
