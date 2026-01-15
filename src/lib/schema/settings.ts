@@ -12,7 +12,7 @@ const backupConfigSchema = z.object({
 	maxSizeMB: z.number().int().min(0)
 });
 
-const themeSchema = z.enum(themes);
+const themeSchema = z.enum(themes.map((v) => v.toLocaleLowerCase()));
 const playerSchema = z.enum(['Plyr', 'Vidstack']);
 const backupIntervalSchema = z.enum(['manual', 'onStartup', 'daily', 'weekly', 'monthly']);
 
@@ -42,10 +42,12 @@ const defaultKeywords = [
 	'hevc'
 ];
 
+const defaultIgnoredKeywords = ['Trailer', 'Preview', 'Sample'];
+
 export const settingsSchema = z.object({
 	language: z.string().default('en'),
 	keywords: z.array(z.string()).default(defaultKeywords),
-	ignoredKeywords: z.array(z.string()).default(['Trailer', 'Preview', 'Sample']),
+	ignoredKeywords: z.array(z.string()).default(defaultIgnoredKeywords),
 	theme: themeSchema.default('Default'),
 	adult: z.boolean().default(false),
 	toastPosition: toastPositionSchema.default({ horizontal: 'end', vertical: 'bottom' }),
