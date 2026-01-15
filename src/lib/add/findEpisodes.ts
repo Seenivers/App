@@ -1,7 +1,6 @@
 import { join } from '@tauri-apps/api/path';
 import { BaseDirectory, exists, readDir } from '@tauri-apps/plugin-fs';
 
-
 const baseDir = BaseDirectory.AppData;
 
 function parseSeasonEpisode(fileName: string): { season: number; episode: number } | null {

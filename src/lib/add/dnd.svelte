@@ -4,7 +4,7 @@
 	import { readDir, stat } from '@tauri-apps/plugin-fs';
 	import type { UnlistenFn } from '@tauri-apps/api/event';
 	import type { DropPayload } from '$lib/types/add';
-	
+
 	import { join } from '@tauri-apps/api/path';
 	import { extensions } from '$lib';
 	import { addNewFiles } from './fileScanner';
