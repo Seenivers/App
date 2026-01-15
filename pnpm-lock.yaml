@@ -59,6 +59,9 @@ importers:
       vidstack:
         specifier: ^1.12.13
         version: 1.12.13
+      zod:
+        specifier: ^4.3.5
+        version: 4.3.5
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.0
@@ -4243,6 +4246,9 @@ packages:
   zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
 
+  zod@4.3.5:
+    resolution: {integrity: sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g==}
+
 snapshots:
 
   '@actions/core@1.11.1':
@@ -8053,3 +8059,5 @@ snapshots:
   yoctocolors@2.1.1: {}
 
   zimmerframe@1.1.2: {}
+
+  zod@4.3.5: {}

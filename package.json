@@ -67,7 +67,8 @@
 		"plyr": "^3.8.3",
 		"svelte-i18n": "^4.0.1",
 		"tauri-plugin-drpc": "^1.0.3",
-		"vidstack": "^1.12.13"
+		"vidstack": "^1.12.13",
+		"zod": "^4.3.5"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
