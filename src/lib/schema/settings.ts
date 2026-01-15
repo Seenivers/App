@@ -12,7 +12,7 @@ const backupConfigSchema = z.object({
 	maxSizeMB: z.number().int().min(0)
 });
 
-const themeSchema = z.enum(themes.map((v) => v.toLocaleLowerCase()));
+const themeSchema = z.enum([...themes.map((v) => v.toLocaleLowerCase()), 'Default']);
 const playerSchema = z.enum(['Plyr', 'Vidstack']);
 const backupIntervalSchema = z.enum(['manual', 'onStartup', 'daily', 'weekly', 'monthly']);
 
