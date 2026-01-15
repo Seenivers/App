@@ -1,3 +1,55 @@
+# [0.39.0](https://github.com/Seenivers/App/compare/v0.38.0...v0.39.0) (2026-01-15)
+
+
+### Bug Fixes
+
+* **actor:** use stable credit_id as keyed each identifier ([5ec1e1e](https://github.com/Seenivers/App/commit/5ec1e1e73aa2da2099b16a76e30b27393405fd00))
+* **app:** handle Tauri close event and properly end client session ([5c8634a](https://github.com/Seenivers/App/commit/5c8634a26e21497601d1188b0c32f5ce7a5fc3b0))
+* **csp:** allow YouTube thumbnail domain i.ytimg.com ([1bd9013](https://github.com/Seenivers/App/commit/1bd901371d4c855dacceae695a0e05d3f22bba9d))
+* **deps:** update non-breaking updates ([e6e981e](https://github.com/Seenivers/App/commit/e6e981e1f70a40db30bc0be76d0cf16a521df699))
+* **deps:** update non-breaking updates ([2feac31](https://github.com/Seenivers/App/commit/2feac317a264be3fa1e5252cf551151679242acb))
+* **episode:** pass updated rating to episode.update ([8124047](https://github.com/Seenivers/App/commit/8124047b7f28299c3cdff89ff2d890eee8aebe43))
+* **episode:** prevent referrer leakage on YouTube thumbnails ([6890c87](https://github.com/Seenivers/App/commit/6890c8745434678e8d5266b0178cf05b651888da))
+* **episode:** switch YouTube thumbnails to i.ytimg.com ([6c38752](https://github.com/Seenivers/App/commit/6c38752fe9894942cfdbd3eb41e928fe57075ab1))
+* **image:** add no-referrer policy to Img component ([ad13fb2](https://github.com/Seenivers/App/commit/ad13fb21f3e8b18768c197c46329694fd1047bfb))
+* **layout:** replace console.error with error function ([9fdefae](https://github.com/Seenivers/App/commit/9fdefae98f1fd402c355a40bbbe207469e3b7626))
+* **movie:** pass updated rating to movie.update ([c0e03d5](https://github.com/Seenivers/App/commit/c0e03d5ce82c7be17113774a7c9450c77556d712))
+* **movie:** prevent referrer leakage on YouTube thumbnails ([a804c31](https://github.com/Seenivers/App/commit/a804c317c2e4e32a2febe1d7a51473ba2a1f621e))
+* **movie:** remove two-way binding from Rating component ([02078f9](https://github.com/Seenivers/App/commit/02078f9470dc3a24d5362e48395501020187bbbd))
+* **movie:** switch YouTube thumbnails to i.ytimg.com ([866d80c](https://github.com/Seenivers/App/commit/866d80c302de3e8f68bff092a305e35ca5c6329f))
+* **package:** add zod dependency to package.json ([fd4ed7d](https://github.com/Seenivers/App/commit/fd4ed7de9b4b96939bfe99fee7ac0f2832e2d53d))
+* **settings:** add 'Default' option to theme schema ([bf9c88f](https://github.com/Seenivers/App/commit/bf9c88f64857d87960c3c2e183499578993783c3))
+* **settings:** correct default theme value to lowercase 'default' ([ba080ba](https://github.com/Seenivers/App/commit/ba080bab16abb709bc985705a5b18ab402a921fd))
+* **telemetry:** skip session calls when offline ([394d4e6](https://github.com/Seenivers/App/commit/394d4e6bbe2a8b7be5f597660a8170840234c8d0))
+* **tmdb:** ignore placeholder tmdbAccountID in watchlist request ([b545bb9](https://github.com/Seenivers/App/commit/b545bb95570bff2057e77f27011751cbe12a0258))
+* **toast:** correct Tailwind class names for min/max width and word wrapping ([febc9a2](https://github.com/Seenivers/App/commit/febc9a2128764d2b1612dee71acfaca7bbe9a83c))
+* **tv:** prevent referrer leakage on YouTube thumbnails ([587d48c](https://github.com/Seenivers/App/commit/587d48c633583032008c1b0e5267571ca15e3468))
+* **tv:** switch YouTube thumbnails to i.ytimg.com ([73e8aa6](https://github.com/Seenivers/App/commit/73e8aa6ffae58716fc722783536ba135fec2fe05))
+
+
+### Features
+
+* **app:** integrate telemetry session start and end ([4d7ced1](https://github.com/Seenivers/App/commit/4d7ced102849c3b47bbd8a5ab5475f0c8523d6ff))
+* **backup:** add centralized backup utilities ([d5e18a4](https://github.com/Seenivers/App/commit/d5e18a49c2187c8386900262c0b6ea8984825189))
+* **discord:** add Discord Rich Presence integration module ([f516ceb](https://github.com/Seenivers/App/commit/f516cebbec0b253191ce298c9913f4d034afbe9c))
+* **discord:** add Discord Rich Presence utility ([49e5811](https://github.com/Seenivers/App/commit/49e5811df9547465f33405f4e138f2d2f41b7d59))
+* **load:** add shared URL ID parsing utilities ([a3aaf9e](https://github.com/Seenivers/App/commit/a3aaf9e4be0fcb9065185aea114fe4adc802a9df))
+* **migrations:** refactor settings table to key-value schema ([3b253f9](https://github.com/Seenivers/App/commit/3b253f976628c910ac498bd293668f68237dfd31))
+* **sentry:** derive release name dynamically from cargo package metadata ([ce9343c](https://github.com/Seenivers/App/commit/ce9343c3958334475e20870346bc5eb2ba6604bf))
+* **sentry:** initialize sentry from persisted user settings ([3003ced](https://github.com/Seenivers/App/commit/3003ced85129f2e7c23e8f5f850990de0792c725))
+* **settings:** add settings state initialization and update logic ([943fe59](https://github.com/Seenivers/App/commit/943fe595750f56539c267f99afb21fc085faa5f5))
+* **settings:** add zod-based settings schema with defaults ([04b8f03](https://github.com/Seenivers/App/commit/04b8f0301235da8f528d69e3117ecc35e6f87736))
+* **settings:** initialize settings state during client startup ([705c0e0](https://github.com/Seenivers/App/commit/705c0e089208aaa05346fa84d0ea2439c84090bd))
+* **settings:** persist settings to database with upsert support ([3aa7ce3](https://github.com/Seenivers/App/commit/3aa7ce30a67755f2686659aa6d6b05cdcc4b0b3e))
+* **tauri:** initialize tauri-plugin-os ([a868566](https://github.com/Seenivers/App/commit/a8685660ba8dd006bf5efbf2a2c63bf89fa43c4f))
+* **telemetry:** add client environment session tracking ([4b1a3e9](https://github.com/Seenivers/App/commit/4b1a3e903db07aa33067f1abc0cc3e33f4e123e7))
+* **telemetry:** persist clientId/sessionId and use API response for session start/end ([a5dcd86](https://github.com/Seenivers/App/commit/a5dcd8616c8b418915713c254337dec541fec9b6))
+
+
+### Performance Improvements
+
+* **load:** parallelize DB queries and add performance marks ([2ed1ac0](https://github.com/Seenivers/App/commit/2ed1ac0f597fde77777a28d3c5e0bbe24d67e56f))
+
 # [0.38.0](https://github.com/Seenivers/App/compare/v0.37.0...v0.38.0) (2025-11-30)
 
 
