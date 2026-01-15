@@ -48,7 +48,7 @@ export const settingsSchema = z.object({
 	language: z.string().default('en'),
 	keywords: z.array(z.string()).default(defaultKeywords),
 	ignoredKeywords: z.array(z.string()).default(defaultIgnoredKeywords),
-	theme: themeSchema.default('Default'),
+	theme: themeSchema.default('default'),
 	adult: z.boolean().default(false),
 	toastPosition: toastPositionSchema.default({ horizontal: 'end', vertical: 'bottom' }),
 	player: playerSchema.default('Plyr'),
