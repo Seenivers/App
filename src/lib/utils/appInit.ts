@@ -21,7 +21,7 @@ import { getSettings, initSettings } from './settings/state';
 let handleCloseRequested: UnlistenFn | undefined;
 
 export async function initApp() {
-	await initSettings();
+	// await initSettings();
 
 	const mainWindow = getCurrentWebview().label === 'main';
 
