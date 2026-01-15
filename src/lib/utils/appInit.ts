@@ -16,13 +16,11 @@ import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
 import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
 import { endClientSession, startClientSession } from '$lib/utils/telemetry';
 import { online } from 'svelte/reactivity/window';
-import { getSettings, initSettings } from './settings/state';
+import { getSettings } from './settings/state';
 
 let handleCloseRequested: UnlistenFn | undefined;
 
 export async function initApp() {
-	// await initSettings();
-
 	const mainWindow = getCurrentWebview().label === 'main';
 
 	setTheme(getSettings().theme);
