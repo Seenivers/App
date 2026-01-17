@@ -1,7 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from './database';
-import { BaseDirectory, exists, readDir, readTextFile, remove } from '@tauri-apps/plugin-fs';
-import type { OldData } from '$lib/types/types';
+import { readDir } from '@tauri-apps/plugin-fs';
 import {
 	getMovie as getMovieTmdb,
 	getCollection as getCollectionTmdb,
@@ -19,37 +18,6 @@ import { getSettings } from '$lib/utils/settings/state';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
-
-export async function updateOldDB() {
-	const dataLibExists = await exists('data.lib', { baseDir: BaseDirectory.AppConfig });
-	if (dataLibExists) {
-		const content = (await readTextFile('data.lib', { baseDir: BaseDirectory.AppConfig })).trim();
-
-		if (content) {
-			const data: OldData = JSON.parse(content);
-
-			await Promise.all(
-				data.movies.map(async (movie) => {
-					const result = await getMovieTmdb(movie.id, getSettings().language);
-
-					if (!result) {
-						throw new Error(`Movie with ID ${movie.id} could not be fetched.`);
-					}
-
-					await movieDB.add({
-						id: movie.id,
-						path: movie.path,
-						tmdb: result,
-						watched: movie.watched,
-						watchTime: movie.watchTime
-					});
-				})
-			);
-
-			await remove('data.lib', { baseDir: BaseDirectory.AppConfig });
-		}
-	}
-}
 
 async function updateEntity(
 	entity:
