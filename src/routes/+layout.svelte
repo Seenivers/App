@@ -15,11 +15,6 @@
 
 	let { children }: Props = $props();
 
-	oncontextmenu = (event: PointerEvent) => {
-		if (import.meta.env.DEV) return;
-		event.preventDefault();
-	};
-
 	onMount(async () => {
 		await initApp();
 		void initSettings();
