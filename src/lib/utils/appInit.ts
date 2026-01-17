@@ -32,14 +32,12 @@ export async function initApp() {
 
 	if (import.meta.env.PROD && mainWindow) {
 		await autoBackup();
-		await cleanupBackups();
+		void cleanupBackups().catch((err) => console.warn('Backup cleanup failed', err));
 
 		if (online.current) {
 			await syncWatchlist();
 			await updateOldDB();
-			await updateMovies();
-			await updateCollections();
-			await updateActors();
+			void Promise.allSettled([updateMovies(), updateCollections(), updateActors()]);
 			await collectAndProcessWatchedFiles();
 		}
 	}
@@ -50,9 +48,9 @@ export async function initApp() {
 	const observer = new MutationObserver(() => handleElements());
 	observer.observe(document.body, { childList: true, subtree: true });
 
-	console.debug('App loaded');
-
 	handleCloseRequested = await listen('tauri://close-requested', destroyApp);
+
+	console.debug('App loaded');
 }
 
 export async function destroyApp() {
