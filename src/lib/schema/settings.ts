@@ -64,9 +64,9 @@ export const settingsSchema = z.object({
 	sentryEnabled: z.boolean().default(true),
 	sentrySampleRate: z.number().int().min(0).max(100).default(100),
 	sentryReplaySampleRate: z.number().int().min(0).max(100).default(10),
-	sentryReplayOnErrorSampleRate: z.number().int().min(0).max(100).default(100),
-	sentryMaxReplayDuration: z.number().int().min(0).default(60_000),
-	sentryBlockAllMedia: z.boolean().default(true),
+	// sentryReplayOnErrorSampleRate: z.number().int().min(0).max(100).default(100),
+	// sentryMaxReplayDuration: z.number().int().min(0).default(60_000),
+	// sentryBlockAllMedia: z.boolean().default(true),
 	sentrySendDefaultPii: z.boolean().default(true)
 });
 
