@@ -51,6 +51,15 @@ export const load = (async ({ url }) => {
 		)
 	).filter(Boolean); // nur existierende Filme, path egal
 
+	// ✅ Prüfen, ob alle Filme watched=true haben
+	const allWatched = movies.every((m) => m?.watched === true);
+
+	// Nur setzen, wenn nötig
+	if (result.watched !== allWatched) {
+		await collectionDB.update(id, { watched: allWatched });
+		result.watched = allWatched;
+	}
+
 	// Nur relevante Daten zurückgeben
 	return { id, result, movies };
 }) satisfies PageLoad;
