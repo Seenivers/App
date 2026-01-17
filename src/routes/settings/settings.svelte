@@ -265,6 +265,38 @@
 		</button>
 	</label>
 
+	<div>
+		<!-- Platzhalter -->
+	</div>
+
+	<!-- Ignorierte Schlüsselwörter -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.ignoredKeywords')}</span>
+		</div>
+		<textarea
+			class="textarea textarea-bordered h-20 w-full"
+			placeholder={$_('settings.keywordsPlaceholder')}
+			bind:value={settingsTemp.ignoredKeywords}
+			onchange={(event) => handleInput(event, 'ignoredKeywords')}
+		></textarea>
+	</label>
+
+	<!-- Schlüsselwörter -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text font-semibold">{$_('settings.keywords')}</span>
+		</div>
+		<textarea
+			class="textarea textarea-bordered h-20 w-full"
+			placeholder={$_('settings.keywordsPlaceholder')}
+			bind:value={settingsTemp.keywords}
+			onchange={(event) => handleInput(event, 'keywords')}
+		></textarea>
+	</label>
+
+	<div class="divider divider-secondary col-span-2 m-0">Sentry</div>
+
 	<!-- Sentry aktivieren -->
 	<label class="form-control flex w-full items-center justify-between">
 		<span class="label font-semibold">Sentry aktivieren</span>
@@ -272,6 +304,17 @@
 			type="checkbox"
 			class="toggle toggle-primary"
 			bind:checked={settingsTemp.sentryEnabled}
+			onchange={markDirty}
+		/>
+	</label>
+
+	<!-- Send PII -->
+	<label class="form-control flex w-full items-center justify-between">
+		<span class="label font-semibold">PII an Sentry senden</span>
+		<input
+			type="checkbox"
+			class="toggle toggle-primary"
+			bind:checked={settingsTemp.sentrySendDefaultPii}
 			onchange={markDirty}
 		/>
 	</label>
@@ -351,44 +394,7 @@
 		/>
 	</label> -->
 
-	<!-- Send PII -->
-	<label class="form-control flex w-full items-center justify-between">
-		<span class="label font-semibold">PII an Sentry senden</span>
-		<input
-			type="checkbox"
-			class="toggle toggle-primary"
-			bind:checked={settingsTemp.sentrySendDefaultPii}
-			onchange={markDirty}
-		/>
-	</label>
-
-	<!-- Ignorierte Schlüsselwörter -->
-	<label class="form-control w-full lg:col-span-2">
-		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.ignoredKeywords')}</span>
-		</div>
-		<textarea
-			class="textarea textarea-bordered h-20 w-full"
-			placeholder={$_('settings.keywordsPlaceholder')}
-			bind:value={settingsTemp.ignoredKeywords}
-			onchange={(event) => handleInput(event, 'ignoredKeywords')}
-		></textarea>
-	</label>
-
-	<!-- Schlüsselwörter -->
-	<label class="form-control w-full lg:col-span-2">
-		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.keywords')}</span>
-		</div>
-		<textarea
-			class="textarea textarea-bordered h-20 w-full"
-			placeholder={$_('settings.keywordsPlaceholder')}
-			bind:value={settingsTemp.keywords}
-			onchange={(event) => handleInput(event, 'keywords')}
-		></textarea>
-	</label>
-
-	<hr class="border-base-content col-span-2 m-0 w-full" />
+	<div class="divider divider-secondary col-span-2 m-0"></div>
 
 	<div class="form-control col-span-2 w-full">
 		<label for="watchPaths" class="label">
