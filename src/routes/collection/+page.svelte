@@ -16,13 +16,12 @@
 	let { data }: Props = $props();
 	let watched: boolean = $derived(data.result.watched ?? false);
 	let isGridView = $state(false); // Startwert für das Layout
-	let moviesStore = $derived(data.result.parts);
 	let sortNewestFirst = $state(true);
 
 	// Verwende $derived mit einer einzigen Funktion, die beide Zustände referenziert:
 	let sortedMovies = $derived(() => {
 		// Zugriff auf die reaktiven Werte:
-		const movies = moviesStore;
+		const movies = data.result.parts;
 		const sortNewest = sortNewestFirst;
 		// Kopiere das Array, um keine direkte Mutation vorzunehmen:
 		return [...movies].sort((a, b) => {
@@ -82,22 +81,19 @@
 <!-- Main -->
 <main class="z-0 flex flex-col items-center p-3 md:p-5">
 	{#if data.result}
-		{@const collection = data.result}
-		{@const movies = data.movies}
-
 		<div class="mx-auto w-full max-w-full">
-			{#await image(collection.backdrop_path, 'backdrops', true) then backdropImage}
+			{#await image(data.result.backdrop_path, 'backdrops', true) then backdropImage}
 				<div class="hero rounded-box bg-base-200 bg-[url('{backdropImage.src}')]">
 					<div class="hero-overlay rounded-box bg-opacity-90"></div>
 					<div class="hero-content flex-col gap-4 lg:flex-row">
 						<Img
-							alt={$_('backdropAlt', { values: { title: collection.name } })}
-							params={[collection.poster_path, 'backdrops', true]}
+							alt={$_('backdropAlt', { values: { title: data.result.name } })}
+							params={[data.result.poster_path, 'backdrops', true]}
 							class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 						/>
 						<div class="text-neutral-content text-center lg:text-left">
-							<h1 class="text-4xl font-bold md:text-5xl">{collection.name}</h1>
-							<p class="py-6 text-lg md:text-2xl">{collection.overview}</p>
+							<h1 class="text-4xl font-bold md:text-5xl">{data.result.name}</h1>
+							<p class="py-6 text-lg md:text-2xl">{data.result.overview}</p>
 						</div>
 					</div>
 				</div>
@@ -119,9 +115,8 @@
 					{#each sortedMovies() as movie (movie.id)}
 						{@const dbMovie = data.movies.find((m) => m && m.id === movie.id)}
 						{@const downloadedMovie = !!dbMovie?.path}
-						<!-- true, wenn Pfad existiert -->
 						{@const watched = !!dbMovie?.watched}
-						<!-- true, wenn angeschaut -->
+
 						<a
 							href="/movie?id={movie.id}"
 							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
