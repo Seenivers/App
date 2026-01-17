@@ -9,8 +9,7 @@ import {
 	collectAndProcessWatchedFiles,
 	updateActors,
 	updateCollections,
-	updateMovies,
-	updateOldDB
+	updateMovies
 } from '$lib/db/update';
 import { autoBackup, cleanupBackups } from '$lib/utils/autoBackup';
 import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
@@ -36,7 +35,6 @@ export async function initApp() {
 
 		if (online.current) {
 			await syncWatchlist();
-			await updateOldDB();
 			void Promise.allSettled([updateMovies(), updateCollections(), updateActors()]);
 			await collectAndProcessWatchedFiles();
 		}
