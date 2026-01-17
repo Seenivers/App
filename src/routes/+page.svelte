@@ -230,6 +230,7 @@
 						{title}
 						href={`./collection?id=${item.id}`}
 						params={[item.poster_path, 'posters', true]}
+						watched={item.watched}
 						alt={$_('posterAlt', { values: { title } })}
 					/>
 				{/each}
