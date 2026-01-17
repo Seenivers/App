@@ -17,7 +17,7 @@ export const load = (async ({ url }) => {
 	const { movie: movieDB } = await import('$lib/utils/db/movie');
 
 	// Versuchen, die Collection aus der lokalen Datenbank zu laden
-	const result = await collectionDB.get(id);
+	let result = await collectionDB.get(id);
 
 	if (!result && online.current) {
 		// Wenn nicht vorhanden und online, Daten von TMDB abrufen
@@ -32,6 +32,8 @@ export const load = (async ({ url }) => {
 
 		// Collection speichern und aktualisiert setzen
 		await collectionDB.add({ ...collection });
+
+		result = await collectionDB.get(id);
 	}
 
 	// Wenn selbst nach TMDB-Aufruf keine Daten vorhanden sind, Fehler auslösen
