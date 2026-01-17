@@ -7,7 +7,7 @@
 	import { db } from '$lib/db/database';
 	import { online } from 'svelte/reactivity/window';
 	import { initApp, destroyApp } from '$lib/utils/appInit';
-	import { getSettings } from '$lib/utils/settings/state';
+	import { getSettings, initSettings } from '$lib/utils/settings/state';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -20,7 +20,10 @@
 		event.preventDefault();
 	};
 
-	onMount(initApp);
+	onMount(async () => {
+		await initApp();
+		void initSettings();
+	});
 	onDestroy(destroyApp);
 </script>
 
