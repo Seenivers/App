@@ -90,6 +90,11 @@
 			onclick={() => {
 				isBookmarked = !isBookmarked;
 				movie.update(data.id, { wantsToWatch: isBookmarked });
+
+				// TMDB liefert bei manchen Filmen nur einen "Rumored"-Eintrag.
+				// Diese Filme existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
+				// Deshalb überspringen wir diese Filme, um Fehler zu vermeiden.
+				if (data.result.tmdb.status === 'Rumored') return;
 				postWatchlist({ media_type: 'movie', media_id: data.id, watchlist: isBookmarked });
 			}}
 			disabled={data.pathExists}
