@@ -40,18 +40,18 @@ const END_ENDPOINT = seeniversURL + '/api/client/session/end';
  * Helpers
  * ================================ */
 async function postJson<T>(url: string, data: unknown): Promise<T> {
-	const res = await fetch(url, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(data),
-		credentials: 'include'
-	});
+	try {
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+			credentials: 'include'
+		});
 
-	if (!res.ok) {
-		throw new Error(`Telemetry request failed: ${res.status}`);
+		return res.json() as Promise<T>;
+	} catch (error) {
+		throw new Error(`Telemetry request failed: ${error}`);
 	}
-
-	return res.json() as Promise<T>;
 }
 
 async function collectClientEnvironment(): Promise<ClientEnvironment> {
@@ -77,7 +77,7 @@ async function collectClientEnvironment(): Promise<ClientEnvironment> {
  * Startet eine neue Client-Session (Tauri).
  */
 export async function startClientSession(): Promise<void> {
-	if (!online.current) return;
+	if (!online.current || import.meta.env.PROD) return;
 	const env = await collectClientEnvironment();
 
 	const res = await postJson<{ clientId: string; sessionId: string }>(START_ENDPOINT, {
@@ -98,7 +98,7 @@ export async function startClientSession(): Promise<void> {
  * Beendet die Client-Session.
  */
 export async function endClientSession(): Promise<void> {
-	if (!sessionId || !online.current) return;
+	if (!sessionId || !online.current || import.meta.env.PROD) return;
 
 	await postJson(END_ENDPOINT, { clientId, sessionId });
 
