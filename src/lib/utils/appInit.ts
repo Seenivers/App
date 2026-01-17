@@ -20,6 +20,11 @@ import { getSettings } from './settings/state';
 let handleCloseRequested: UnlistenFn | undefined;
 
 export async function initApp() {
+	oncontextmenu = (event: PointerEvent) => {
+		if (import.meta.env.DEV) return;
+		event.preventDefault();
+	};
+
 	const mainWindow = getCurrentWebview().label === 'main';
 
 	setTheme(getSettings().theme);
