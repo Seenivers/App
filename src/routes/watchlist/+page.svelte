@@ -10,6 +10,7 @@
 	import Close from '$lib/assets/SVG/Close.svelte';
 	import { online } from 'svelte/reactivity/window';
 	import { getSettings } from '$lib/utils/settings/state';
+	import { newToast } from '$lib/toast/toast';
 
 	export let data: PageData;
 
@@ -50,6 +51,7 @@
 				class="btn"
 				onclick={async () => {
 					await syncWatchlist();
+					newToast('success', 'Watchlist synchronized');
 					location.reload();
 				}}
 				disabled={!getSettings().tmdbAccessToken || !online.current}>{$_('watchlistSync')}</button
