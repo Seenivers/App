@@ -117,8 +117,11 @@
 					class:space-y-4={!isGridView}
 				>
 					{#each sortedMovies() as movie (movie.id)}
-						{@const downloadedMovie = movies.some((m) => m && m.id === movie.id && m.path !== null)}
-						{@const watched = movies.some((m) => m && m.id === movie.id && m.watched)}
+						{@const dbMovie = data.movies.find((m) => m && m.id === movie.id)}
+						{@const downloadedMovie = !!dbMovie?.path}
+						<!-- true, wenn Pfad existiert -->
+						{@const watched = !!dbMovie?.watched}
+						<!-- true, wenn angeschaut -->
 						<a
 							href="/movie?id={movie.id}"
 							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
