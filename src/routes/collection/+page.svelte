@@ -26,10 +26,10 @@
 		const sortNewest = sortNewestFirst;
 		// Kopiere das Array, um keine direkte Mutation vorzunehmen:
 		return [...movies].sort((a, b) => {
-			const dateA = a.release_date ? new Date(a.release_date).getTime() : 0;
-			const dateB = b.release_date ? new Date(b.release_date).getTime() : 0;
-			// Wenn sortNewestFirst true ist, werden die ältesten zuerst angezeigt (d.h. Datum aufsteigend)
-			return sortNewest ? dateA - dateB : dateB - dateA;
+			const dateA = a.release_date ? new Date(a.release_date).getTime() : Infinity;
+			const dateB = b.release_date ? new Date(b.release_date).getTime() : Infinity;
+			// Wenn sortNewestFirst false ist, werden die ältesten zuerst angezeigt
+			return sortNewest ? dateB - dateA : dateA - dateB;
 		});
 	});
 
