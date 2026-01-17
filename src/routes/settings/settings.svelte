@@ -309,7 +309,7 @@
 	</label>
 
 	<!-- Replay On Error Sample Rate -->
-	<label class="form-control w-full">
+	<!-- <label class="form-control w-full">
 		<div class="label">
 			<span class="label-text font-semibold">Replay bei Fehler (%)</span>
 		</div>
@@ -322,10 +322,10 @@
 			bind:value={settingsTemp.sentryReplayOnErrorSampleRate}
 			onchange={markDirty}
 		/>
-	</label>
+	</label> -->
 
 	<!-- Max Replay Duration -->
-	<label class="form-control w-full">
+	<!-- <label class="form-control w-full">
 		<div class="label">
 			<span class="label-text font-semibold">Maximale Replay Dauer (ms)</span>
 		</div>
@@ -338,10 +338,10 @@
 			bind:value={settingsTemp.sentryMaxReplayDuration}
 			onchange={markDirty}
 		/>
-	</label>
+	</label> -->
 
 	<!-- Block All Media -->
-	<label class="form-control flex w-full items-center justify-between">
+	<!-- <label class="form-control flex w-full items-center justify-between">
 		<span class="label font-semibold">Medien im Replay blockieren</span>
 		<input
 			type="checkbox"
@@ -349,7 +349,7 @@
 			bind:checked={settingsTemp.sentryBlockAllMedia}
 			onchange={markDirty}
 		/>
-	</label>
+	</label> -->
 
 	<!-- Send PII -->
 	<label class="form-control flex w-full items-center justify-between">
