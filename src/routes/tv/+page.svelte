@@ -145,6 +145,11 @@
 			onclick={() => {
 				isBookmarked = !isBookmarked;
 				serie.update(data.id, { wantsToWatch: isBookmarked });
+
+				// TMDB liefert bei manchen Serien nur einen "Rumored"-Eintrag.
+				// Diese Serie existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
+				// Deshalb überspringen wir diese Serie, um Fehler zu vermeiden.
+				if (data.serie.tmdb.status === 'Rumored') return;
 				postWatchlist({ media_type: 'tv', media_id: data.id, watchlist: isBookmarked });
 			}}
 			disabled={data.pathExists}
