@@ -44,10 +44,10 @@ export const load = (async ({ url }) => {
 		await Promise.all(
 			result.parts.map(async (part) => {
 				const movie = await movieDB.get(part.id);
-				return movie?.path ? movie : null;
+				return movie ?? null; // nur null entfernen, wenn Film nicht existiert
 			})
 		)
-	).filter(Boolean); // Filtert `null` oder `undefined` heraus
+	).filter(Boolean); // nur existierende Filme, path egal
 
 	// Nur relevante Daten zurückgeben
 	return { id, result, movies };
