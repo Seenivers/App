@@ -45,7 +45,6 @@ const defaultKeywords = [
 const defaultIgnoredKeywords = ['Trailer', 'Preview', 'Sample'];
 
 export const settingsSchema = z.object({
-	language: z.string().default('en'),
 	keywords: z.array(z.string()).default(defaultKeywords),
 	ignoredKeywords: z.array(z.string()).default(defaultIgnoredKeywords),
 	theme: themeSchema.default('default'),
