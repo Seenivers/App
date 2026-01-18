@@ -7,7 +7,7 @@
 	import { openUrl } from '@tauri-apps/plugin-opener';
 	import { online } from 'svelte/reactivity/window';
 	import { backup } from '../utils/backup';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 
 	let update: Update | null = $state(null);
 	let downloadProgress = $state(0);
@@ -45,7 +45,7 @@
 
 	async function download() {
 		if (!online.current) {
-			console.error($_('networkStatus.error'));
+			console.error(m['networkStatus.error']());
 			return;
 		}
 		if (update && !downloadStarted) {
@@ -56,7 +56,7 @@
 
 	async function downloadAndInstall() {
 		if (!online.current) {
-			console.error($_('networkStatus.error'));
+			console.error(m['networkStatus.error']());
 			return;
 		}
 		if (update && !downloadStarted) {
@@ -119,15 +119,15 @@
 		</button>
 
 		{#if update && update.body}
-			<h2 class="text-xl font-semibold md:text-2xl">{$_('updater.available')}</h2>
+			<h2 class="text-xl font-semibold md:text-2xl">{m['updater.available']()}</h2>
 			<h3 class="text-lg font-semibold md:text-xl">
-				{$_('updater.version', { values: { version: update.version } })}
+				{m['updater.version']({ version: update.version })}
 			</h3>
-			<h4 class="text-lg">{$_('updater.changelog')}</h4>
+			<h4 class="text-lg">{m['updater.changelog']()}</h4>
 
 			<div class="body bg-base-200 my-3 max-h-[70vh] flex-1 overflow-y-auto rounded-md px-3">
 				{#await marked.parse(update.body)}
-					<p>{$_('updater.loadChangelog')}</p>
+					<p>{m['updater.loadChangelog']()}</p>
 				{:then body}
 					{@html body} <!-- eslint-disable-line -->
 				{/await}
@@ -138,19 +138,20 @@
 				<progress class="progress progress-primary w-full" value={downloadProgress} max="100"
 				></progress>
 			{:else if downloadFinished}
-				<p class="text-success mt-4 text-lg font-semibold">{$_('updater.downloadFinished')}</p>
+				<p class="text-success mt-4 text-lg font-semibold">{m['updater.downloadFinished']()}</p>
 			{/if}
 
 			<div class="flex flex-col justify-end space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
 				{#if update && !downloadStarted}
 					<button class="btn btn-primary" disabled={!online.current} onclick={download}>
-						{$_('updater.download')}
+						{m['updater.download']()}
 					</button>
 					<button class="btn btn-primary" disabled={!online.current} onclick={downloadAndInstall}>
-						{$_('updater.downloadandInstall')}
+						{m['updater.downloadandInstall']()}
 					</button>
 				{:else if update && downloadFinished}
-					<button class="btn btn-secondary" onclick={update.install}>{$_('updater.install')}</button
+					<button class="btn btn-secondary" onclick={update.install}
+						>{m['updater.install']()}</button
 					>
 				{/if}
 			</div>
