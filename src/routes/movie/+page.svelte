@@ -14,7 +14,7 @@
 	import { collection } from '$lib/utils/db/collection';
 	import { movie } from '$lib/utils/db/movie';
 	import { online } from 'svelte/reactivity/window';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import Bookmark from '$lib/assets/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/assets/SVG/BookmarkSlash.svelte';
 	import Rating from '$lib/components/rating.svelte';
@@ -53,7 +53,7 @@
 	}
 
 	function formate(money: number) {
-		if (!money) return $_('noInformationAvailable');
+		if (!money) return m.noInformationAvailable();
 		return new Intl.NumberFormat(window.navigator.language, {
 			style: 'currency',
 			currency: 'USD',
@@ -71,22 +71,22 @@
 	{#snippet right()}
 		{#if data.result.path}
 			<button class="btn btn-sm md:btn-md" onclick={openExternalPlayer} disabled={!data.pathExists}>
-				{$_('startExternalPlayer')}
+				{m.startExternalPlayer()}
 			</button>
-			<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
+			<div class="tooltip tooltip-bottom" data-tip={m.doubleClickDelete()}>
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
-					disabled={!movieData}>{$_('delete')}</button
+					disabled={!movieData}>{m.delete()}</button
 				>
 			</div>
 			<button class="btn btn-sm md:btn-md" disabled={!movieData} onclick={() => (modal = true)}>
-				{$_('edit')}
+				{m.edit()}
 			</button>
 		{/if}
 		<button
 			class="btn btn-sm md:btn-md"
-			title={isBookmarked ? $_('bookmarkRemove') : $_('bookmarkAdd')}
+			title={isBookmarked ? m.bookmarkRemove() : m.bookmarkAdd()}
 			onclick={() => {
 				isBookmarked = !isBookmarked;
 				movie.update(data.id, { wantsToWatch: isBookmarked });
@@ -106,13 +106,13 @@
 			{/if}
 		</button>
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!movieData}>
-			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+			{watched ? m['marked.asWatched']() : m['marked.notWatched']()}
 		</button>
 		<a
 			href="https://www.themoviedb.org/movie/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">{$_('openOnTMDB')}</a
+			rel="noopener noreferrer">{m.openOnTMDB()}</a
 		>
 	{/snippet}
 </Navbar>
@@ -147,13 +147,13 @@
 					{/if}
 				{/await}
 			{:else if movieData.path}
-				<p class="text-error text-lg font-bold underline md:text-2xl">{$_('videoFileNotFound')}</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">{m.videoFileNotFound()}</p>
 				<p class="text-xs">{movieData.path}</p>
 			{/if}
 
 			{#if !data.pathExists && movieData.tmdb.videos.results.length > 0 && online.current}
 				<!-- Trailer -->
-				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
+				<h2 class="my-3 text-2xl font-bold">{m.trailer()}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each movieData.tmdb.videos.results as trailer (trailer.id)}
 						{#if trailer.site === 'YouTube'}
@@ -163,7 +163,7 @@
 								<figure>
 									<img
 										src={`https://i.ytimg.com/vi/${trailer.key}/0.jpg`}
-										alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
+										alt={m.thumbnailAlt({ title: trailer.name })}
 										referrerpolicy="no-referrer"
 										draggable="false"
 										class="h-48 w-full rounded-t-lg object-cover"
@@ -177,7 +177,7 @@
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
 									>
-										{$_('watchOnYouTube')}
+										{m.watchOnYouTube()}
 									</a>
 								</div>
 							</div>
@@ -200,7 +200,7 @@
 											{value?.overview}
 										</p>
 										<a href="./collection?id={value?.id}" class="btn btn-primary">
-											{$_('collection')}
+											{m.collection()}
 										</a>
 									</div>
 								</div>
@@ -213,7 +213,7 @@
 			<!-- Hauptdarsteller -->
 			{#if movieData.tmdb.credits.cast.length > 0}
 				<div class="my-4">
-					<h2 class="my-2 text-2xl font-bold">{$_('leadActor')}</h2>
+					<h2 class="my-2 text-2xl font-bold">{m.leadActor()}</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each movieData.tmdb.credits.cast as cast}
@@ -239,59 +239,55 @@
 			<div class="space-y-6">
 				<!-- Handlung -->
 				<section>
-					<h2 class="text-lg font-bold">{$_('plot')}</h2>
-					<p>{movieData.tmdb.overview || $_('noInformationAvailable')}</p>
+					<h2 class="text-lg font-bold">{m.plot()}</h2>
+					<p>{movieData.tmdb.overview || m.noInformationAvailable()}</p>
 				</section>
 
 				<div class="grid gap-6 md:grid-cols-2">
 					<!-- Veröffentlichungsdatum -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('releaseDate')}</h2>
+						<h2 class="text-lg font-bold">{m.releaseDate()}</h2>
 						<p>
 							{movieData.tmdb.release_date
 								? new Date(movieData.tmdb.release_date).toLocaleDateString(
 										window.navigator.language
 									)
-								: $_('noInformationAvailable')}
+								: m.noInformationAvailable()}
 						</p>
 					</section>
 
 					<!-- Laufzeit -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('runtime')}</h2>
+						<h2 class="text-lg font-bold">{m.runtime()}</h2>
 						<p>
 							{#if movieData.tmdb.runtime}
 								<time
 									datetime={`PT${Math.floor(movieData.tmdb.runtime / 60)}H${movieData.tmdb.runtime % 60}M`}
 								>
-									{$_('runtimeFormatted', {
-										values: {
-											hours: Math.floor(movieData.tmdb.runtime / 60),
-											minutes: movieData.tmdb.runtime % 60
-										}
+									{m.runtimeFormatted({
+										hours: Math.floor(movieData.tmdb.runtime / 60),
+										minutes: movieData.tmdb.runtime % 60
 									})}
 								</time>
 							{:else}
-								<span>{$_('noInformationAvailable')}</span>
+								<span>{m.noInformationAvailable()}</span>
 							{/if}
 						</p>
 					</section>
 
 					<!-- Bewertung -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('rating')}</h2>
+						<h2 class="text-lg font-bold">{m.rating()}</h2>
 						<p>
 							{#if movieData.tmdb.vote_average}
-								{$_('ratingSummary', {
-									values: {
-										average: Math.round(movieData.tmdb.vote_average * 10) / 10,
-										count: movieData.tmdb.vote_count ?? 0
-									}
+								{m.ratingSummary({
+									average: Math.round(movieData.tmdb.vote_average * 10) / 10,
+									count: movieData.tmdb.vote_count ?? 0
 								})}
 							{:else}
-								{$_('noInformationAvailable')}
+								{m.noInformationAvailable()}
 							{/if}
-							| {$_('yourRating')}: {movieData.rating}
+							| {m.yourRating()}: {movieData.rating}
 						</p>
 
 						<Rating
@@ -302,7 +298,7 @@
 
 					<!-- Genres -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('genres')}</h2>
+						<h2 class="text-lg font-bold">{m.genres()}</h2>
 						{#if movieData.tmdb.genres?.length}
 							<div class="flex flex-wrap gap-2">
 								{#each movieData.tmdb.genres as genre (genre.id)}
@@ -310,73 +306,73 @@
 								{/each}
 							</div>
 						{:else}
-							<p>{$_('noInformationAvailable')}</p>
+							<p>{m.noInformationAvailable()}</p>
 						{/if}
 					</section>
 
 					<!-- Produktionsfirmen -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('productionCompanies')}</h2>
+						<h2 class="text-lg font-bold">{m.productionCompanies()}</h2>
 						<p>
 							{movieData.tmdb.production_companies?.map((c) => c.name).join(', ') ||
-								$_('noInformationAvailable')}
+								m.noInformationAvailable()}
 						</p>
 					</section>
 
 					<!-- Produktionsländer -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('productionCountries')}</h2>
+						<h2 class="text-lg font-bold">{m.productionCountries()}</h2>
 						<p>
 							{movieData.tmdb.production_countries?.map((c) => c.name).join(', ') ||
-								$_('noInformationAvailable')}
+								m.noInformationAvailable()}
 						</p>
 					</section>
 
 					<!-- Beliebtheit -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('popularity')}</h2>
-						<p>{movieData.tmdb.popularity || $_('noInformationAvailable')}</p>
+						<h2 class="text-lg font-bold">{m.popularity()}</h2>
+						<p>{movieData.tmdb.popularity || m.noInformationAvailable()}</p>
 					</section>
 
 					<!-- Budget -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('budget')}</h2>
-						<p>{formate(movieData.tmdb.budget) || $_('noInformationAvailable')}</p>
+						<h2 class="text-lg font-bold">{m.budget()}</h2>
+						<p>{formate(movieData.tmdb.budget) || m.noInformationAvailable()}</p>
 					</section>
 
 					<!-- Einnahmen -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('revenue')}</h2>
-						<p>{formate(movieData.tmdb.revenue) || $_('noInformationAvailable')}</p>
+						<h2 class="text-lg font-bold">{m.revenue()}</h2>
+						<p>{formate(movieData.tmdb.revenue) || m.noInformationAvailable()}</p>
 					</section>
 
 					<!-- Originalsprache -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('originalLanguage')}</h2>
+						<h2 class="text-lg font-bold">{m.originalLanguage()}</h2>
 						<p>
 							{new Intl.DisplayNames([window.navigator.language], { type: 'language' }).of(
 								movieData.tmdb.original_language
-							) || $_('noInformationAvailable')}
+							) || m.noInformationAvailable()}
 						</p>
 					</section>
 
 					<!-- Originaltitel -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('originalTitle')}</h2>
-						<p>{movieData.tmdb.original_title || $_('noInformationAvailable')}</p>
+						<h2 class="text-lg font-bold">{m.originalTitle()}</h2>
+						<p>{movieData.tmdb.original_title || m.noInformationAvailable()}</p>
 					</section>
 
 					<!-- Status -->
 					<section>
-						<h2 class="text-lg font-bold">{$_('status')}</h2>
-						<p>{movieData.tmdb.status || $_('noInformationAvailable')}</p>
+						<h2 class="text-lg font-bold">{m.status()}</h2>
+						<p>{movieData.tmdb.status || m.noInformationAvailable()}</p>
 					</section>
 				</div>
 			</div>
 		</div>
 	{:else}
 		<div class="flex justify-center p-5">
-			<p class="text-4xl md:text-5xl">{$_('noInformationAvailable')}</p>
+			<p class="text-4xl md:text-5xl">{m.noInformationAvailable()}</p>
 		</div>
 	{/if}
 </main>
@@ -390,7 +386,7 @@
 			onclick={() => (modal = false)}>✕</button
 		>
 
-		<h3 class="text-lg font-bold">{$_('newTmdbId')}</h3>
+		<h3 class="text-lg font-bold">{m.newTmdbId()}</h3>
 
 		<form
 			bind:this={form}
@@ -407,10 +403,10 @@
 						modal = false;
 						window.location.href = newID.toString();
 					} else {
-						alert($_('somethingWentWrong'));
+						alert(m.somethingWentWrong());
 					}
 				} catch {
-					alert($_('invalidTmdbId'));
+					alert(m.invalidTmdbId());
 				}
 			}}
 			class="flex gap-2"
@@ -423,7 +419,7 @@
 				min="1"
 				required
 			/>
-			<button class="btn" type="submit">{$_('save')}</button>
+			<button class="btn" type="submit">{m.save()}</button>
 		</form>
 	</div>
 </dialog>
