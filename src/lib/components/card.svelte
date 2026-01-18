@@ -2,7 +2,7 @@
 	import { image } from '$lib/image/image';
 	import Img from '$lib/image/Img.svelte';
 	import type { CardscaleNumbers } from '$lib/types/cardscale';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import { scaleClasses } from '$lib/utils/cardscale';
 
 	let {
@@ -33,7 +33,7 @@
 		<Img {params} {alt} class="rounded-xl" />
 		{#if watched}
 			<div class="badge badge-accent badge-outline bg-base-300 absolute top-3 left-3">
-				{$_('badge.watched')}
+				{m['badge.watched']()}
 			</div>
 		{/if}
 	</figure>
