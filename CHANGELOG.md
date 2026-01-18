@@ -1,3 +1,32 @@
+# [0.40.0](https://github.com/Seenivers/App/compare/v0.39.0...v0.40.0) (2026-01-18)
+
+
+### Bug Fixes
+
+* **collection-sort:** correct release date sorting logic for newest/oldest ([e0dacff](https://github.com/Seenivers/App/commit/e0dacffb4268a34446e49f69112c762e341aba04))
+* **collection:** refresh collection after fetching from TMDB ([89993aa](https://github.com/Seenivers/App/commit/89993aafb23f06ec4380eb7488b2174929ac8b29))
+* **collection:** use data.result.parts directly and remove redundant store ([4deafbf](https://github.com/Seenivers/App/commit/4deafbf6d464f849e5dba8943aac7245f753d649))
+* **config:** update certificate thumbprint in tauri.windows.conf.json ([356ee63](https://github.com/Seenivers/App/commit/356ee63e16fd569dd1cc2bed7cee9b75c9056b70))
+* **i18n:** update HTML lang attribute to use dynamic language variable ([be1da78](https://github.com/Seenivers/App/commit/be1da78ac3e7e11f837b41f05ee09a416819896b))
+* **movie:** skip 'Rumored' movies when updating TMDB watchlist ([dcc8d38](https://github.com/Seenivers/App/commit/dcc8d385f08423877e67eebd73e3766039468904))
+* **sentry:** hardcode Sentry config for client telemetry with privacy defaults ([020f72e](https://github.com/Seenivers/App/commit/020f72e500a5d368c5318f0435771dcdfc3fd7d3))
+* **telemetry:** guard prod execution and improve request error handling ([b93b629](https://github.com/Seenivers/App/commit/b93b629c1a63d4502735f872ed28a4ede41b8227))
+* **tmdb:** skip 'Rumored' media in watchlist sync to prevent 404 errors ([a7f5feb](https://github.com/Seenivers/App/commit/a7f5febe3cc50ed50c7955973b7ae55a8cb015a2))
+* **tv:** skip 'Rumored' series when updating TMDB watchlist ([14992df](https://github.com/Seenivers/App/commit/14992df2ff4f0f497f3f6b62dde19e1333319c64))
+* update pnpm-lock.yaml to match package.json ([3bd301e](https://github.com/Seenivers/App/commit/3bd301eb3f22c4b2633aa815502e6d7729d4ea6c))
+
+
+### Features
+
+* **app:** prevent right-click context menu in production ([3e5e43a](https://github.com/Seenivers/App/commit/3e5e43a08a3fb64efa531918c6c32563ff6d688e))
+* **collection:** auto-update collection watched status ([01e3a04](https://github.com/Seenivers/App/commit/01e3a0406ceaa3f05d2dad5beec9eb88f1a50a3f))
+* **collection:** pass 'watched' state to collection items ([6afa4ce](https://github.com/Seenivers/App/commit/6afa4ce474a8e5c104e1ef331416970a8610ea61))
+* **i18n:** add inlang project configuration ([bd8f8b7](https://github.com/Seenivers/App/commit/bd8f8b7dd1ac6b34636507175df27e62905c189b))
+* **i18n:** integrate paraglide Vite plugin for inlang ([d2174dc](https://github.com/Seenivers/App/commit/d2174dcf351ebb0562ef4c4d0ed4130d834db732))
+* **layout:** initialize paraglide locale in browser ([82b4d9a](https://github.com/Seenivers/App/commit/82b4d9acf4cde10ac4a90aa0b8198358e9e532fb))
+* **types:** add 'Rumored' status to Status type ([ec19d76](https://github.com/Seenivers/App/commit/ec19d76b7ec06153f757dba2663c64d239acd512))
+* **watchlist:** show success toast after manual sync ([68c498c](https://github.com/Seenivers/App/commit/68c498cdf26e9219b246e5834bf5fd682f43cf28))
+
 # [0.39.0](https://github.com/Seenivers/App/compare/v0.38.0...v0.39.0) (2026-01-15)
 
 
