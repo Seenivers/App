@@ -15,6 +15,7 @@ import { join } from '@tauri-apps/api/path';
 import { load } from '$lib/add/loader';
 import { addNewFiles } from '$lib/add/fileScanner';
 import { getSettings } from '$lib/utils/settings/state';
+import { getLocale } from '$lib/paraglide/runtime';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
 const WEEKS_IN_MILLIS = WEEK_IN_MILLIS * WEEKS; // Dauer in Millisekunden für die gewünschte Wochen
@@ -51,7 +52,7 @@ async function updateEntity(
 			actors: getActorTmdb
 		}[entityType];
 
-		const result = await fetchTmdbData(entity.id, getSettings().language);
+		const result = await fetchTmdbData(entity.id, getLocale());
 
 		if (result) {
 			await db
@@ -93,7 +94,7 @@ export async function updateMovies() {
 async function processCollection(collectionId: number) {
 	const collectionResult = await collection.get(collectionId);
 	if (!collectionResult) {
-		const result = await getCollectionTmdb(collectionId, getSettings().language);
+		const result = await getCollectionTmdb(collectionId, getLocale());
 		if (result) {
 			await collection.add({ ...result });
 		}
@@ -103,7 +104,7 @@ async function processCollection(collectionId: number) {
 async function processActor(actorId: number) {
 	const actorResult = await actor.get(actorId);
 	if (!actorResult) {
-		const result = await getActorTmdb(actorId, getSettings().language);
+		const result = await getActorTmdb(actorId, getLocale());
 		if (result) {
 			await actor.add({ id: result.id, name: result.name, tmdb: result });
 		}
