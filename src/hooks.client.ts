@@ -1,8 +1,7 @@
-import * as Sentry from '@sentry/sveltekit';
-import { replayIntegration } from '@sentry/sveltekit';
+import { init, replayIntegration } from '@sentry/sveltekit';
 import { handleErrorWithSentry } from '@sentry/sveltekit';
 
-Sentry.init({
+init({
 	enabled: true,
 	dsn: 'https://4983cf9f418940b5a637ff576f3c8d4b@glitchtip.webretter.com/5',
 	tracesSampleRate: 0.05, // 5 % aller Aktionen
