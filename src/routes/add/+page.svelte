@@ -8,7 +8,7 @@
 	import type { SearchStatus } from '$lib/types/add';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import { online } from 'svelte/reactivity/window';
 	import { selectFile, selectFolder, selectTvFolder } from '$lib/add/select';
 	import { discord } from '$lib/utils/discord';
@@ -30,7 +30,7 @@
 					// Überprüfe, ob der Zustand existiert und validiere ihn
 					acc[state] = (acc[state] || 0) + 1;
 				} else {
-					console.warn($_('invalidState', { values: { state } }));
+					console.warn(m.invalidState({ state }));
 				}
 				return acc;
 			},
@@ -61,7 +61,7 @@
 		// Überprüfe, ob der Index gültig ist, um Fehler zu vermeiden
 		const movieResults = searchList[modalID]?.search.results ?? [];
 		if (movieIndex < 0 || movieIndex >= movieResults.length) {
-			console.error($_('invalidIndex', { values: { index: movieIndex } }));
+			console.error(m.invalidIndex({ index: movieIndex }));
 			return; // Verhindere die Auswahl eines ungültigen Films
 		}
 
@@ -105,7 +105,7 @@
 				load();
 			}}
 		>
-			{$_('selectSeriesFolder')}
+			{m.selectSeriesFolder()}
 		</button>
 		<button
 			class="btn grow"
@@ -114,7 +114,7 @@
 				load();
 			}}
 		>
-			{$_('selectMovies')}
+			{m.selectMovies()}
 		</button>
 		<button
 			class="btn grow"
@@ -123,7 +123,7 @@
 				load();
 			}}
 		>
-			{$_('selectFolder')}
+			{m.selectFolder()}
 		</button>
 		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 			<button
@@ -134,7 +134,7 @@
 				}}
 				disabled={searchList.length === 0}
 			>
-				{$_('deleteAll')}
+				{m.deleteAll()}
 			</button>
 		</div>
 		<select
@@ -143,30 +143,28 @@
 			disabled={!online || searchList.length === 0}
 		>
 			<option value={null} selected disabled={searchList.length === 0}>
-				{$_('noFilter')}
+				{m.noFilter()}
 			</option>
 			<option
 				value="waitForSearching"
 				disabled={counts.waitForSearching === 0 && counts.waitForDownloading === 0}
 			>
-				{$_('queueCount', {
-					values: { count: counts.waitForSearching + counts.waitForDownloading }
-				})}
+				{m.queueCount({ count: counts.waitForSearching + counts.waitForDownloading })}
 			</option>
 			<option value="searching" disabled={counts.searching === 0}>
-				{$_('searching', { values: { count: counts.searching } })}
+				{m.searching({ count: counts.searching })}
 			</option>
 			<option value="notFound" disabled={counts.notFound === 0}>
-				{$_('notFound', { values: { count: counts.notFound } })}
+				{m.notFound({ count: counts.notFound })}
 			</option>
 			<option value="foundMultiple" disabled={counts.foundMultiple === 0}>
-				{$_('foundMultiple', { values: { count: counts.foundMultiple } })}
+				{m.foundMultiple({ count: counts.foundMultiple })}
 			</option>
 			<option value="downloading" disabled={counts.downloading === 0}>
-				{$_('downloading', { values: { count: counts.downloading } })}
+				{m.downloading({ count: counts.downloading })}
 			</option>
 			<option value="downloaded" disabled={counts.downloaded === 0}>
-				{$_('downloaded', { values: { count: counts.downloaded } })}
+				{m.downloaded({ count: counts.downloaded })}
 			</option>
 		</select>
 	{/snippet}
@@ -175,7 +173,7 @@
 <main class="z-0 flex flex-col items-center p-5">
 	{#if !online.current}
 		<div class="alert alert-error text-center">
-			{$_('networkStatus.offline')}
+			{m['networkStatus.offline']()}
 		</div>
 	{:else}
 		<div class="grid w-full gap-3">
@@ -184,10 +182,10 @@
 					<div class="bg-base-200 flex justify-between gap-3 rounded-md p-3">
 						<span>
 							<p class="text-lg">
-								{$_('titleWithValue', { values: { title: item.options.fileName } })}
+								{m.titleWithValue({ title: item.options.fileName })}
 							</p>
 							<p class="text-sm">
-								{$_('path', { values: { path: item.options.path } })}
+								{m.path({ path: item.options.path })}
 							</p>
 						</span>
 						<button
@@ -224,7 +222,7 @@
 				class="my-3 grid gap-3"
 			>
 				<label class="input input-bordered flex w-full items-center gap-2">
-					{$_('title')}:
+					{m.title()}:
 					<input
 						type="text"
 						class="grow"
@@ -235,7 +233,7 @@
 					/>
 				</label>
 				<label class="input input-bordered flex w-full items-center gap-2">
-					{$_('releaseYear')}:
+					{m.releaseYear()}:
 					<input
 						type="number"
 						class="grow"
@@ -244,14 +242,14 @@
 						disabled={searchList[modalID].status === 'searching'}
 						bind:value={searchList[modalID].options.primaryReleaseYear}
 					/>
-					<span class="badge badge-info">{$_('optional')}</span>
+					<span class="badge badge-info">{m.optional()}</span>
 				</label>
 				<button
 					type="submit"
 					class="btn grow"
 					disabled={searchList[modalID].status === 'searching'}
 				>
-					{$_('search')}
+					{m.search()}
 				</button>
 			</form>
 
@@ -261,16 +259,16 @@
 				<div
 					class="bg-base-200 mx-auto flex max-w-md flex-col items-center rounded-lg p-5 shadow-md"
 				>
-					<h2 class="mb-2 text-2xl font-semibold">{$_('searchInProgress')}</h2>
+					<h2 class="mb-2 text-2xl font-semibold">{m.searchInProgress()}</h2>
 					<p class="mb-4 text-sm text-gray-600">
-						{$_('searchingDatabase')}
+						{m.searchingDatabase()}
 					</p>
 					<div class="mb-4 flex items-center justify-center">
 						<div
 							class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
 						></div>
 					</div>
-					<button class="btn btn-secondary w-full" disabled>{$_('search')}</button>
+					<button class="btn btn-secondary w-full" disabled>{m.search()}</button>
 				</div>
 			{:else if modalID !== null && searchList[modalID]?.search?.results.length > 0}
 				<div class="grid gap-4">
@@ -288,14 +286,14 @@
 						>
 							<Img
 								params={[result.poster_path, null, false]}
-								alt={$_('posterAlt', { values: { title } })}
+								alt={m.posterAlt({ title })}
 								class="h-72 w-fit rounded-lg object-contain"
 							/>
 
 							<div class="px-3 text-left">
 								<p><strong>{title}</strong></p>
 								<p class="text-sm text-gray-500">
-									{$_('releaseYear')}: {year}
+									{m.releaseYear()}: {year}
 								</p>
 								<p class="text-gray-400">{result.overview}</p>
 							</div>
@@ -310,17 +308,17 @@
 								searchMediaStatus(modalID);
 							}}
 						>
-							{$_('loadMoreResults')}
+							{m.loadMoreResults()}
 						</button>
 					{/if}
 				</div>
 			{:else if searchList[modalID].status === 'waitForSearching'}
 				<p class="text-center">
-					{$_('noSearchPerformed')}
+					{m.noSearchPerformed()}
 				</p>
 			{:else}
 				<p class="text-error text-center">
-					{$_('noResultsFound')}
+					{m.noResultsFound()}
 				</p>
 			{/if}
 		{/if}
@@ -332,6 +330,6 @@
 			modalID = null;
 		}}
 	>
-		{$_('close')}
+		{m.close()}
 	</button>
 </dialog>
