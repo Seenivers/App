@@ -6,7 +6,7 @@
 	import { setTheme } from '$lib/utils/themeUtils';
 	import Backup from './backup.svelte';
 	import Settings from './settings.svelte';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import { getSettings } from '$lib/utils/settings/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -32,7 +32,7 @@
 			name="my_tabs"
 			role="tab"
 			class="tab"
-			aria-label={$_('tabs.settings')}
+			aria-label={m['tabs.settings']()}
 			checked
 		/>
 		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 p-6">
@@ -40,7 +40,7 @@
 		</div>
 
 		<!-- Backup Tab -->
-		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label={$_('tabs.backup')} />
+		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label={m['tabs.backup']()} />
 		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 p-6">
 			<Backup />
 		</div>
