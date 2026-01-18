@@ -3,7 +3,6 @@
 	import { themes } from '$lib';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import { onDestroy } from 'svelte';
-	import { _, locale, locales } from 'svelte-i18n';
 	import { message, open } from '@tauri-apps/plugin-dialog';
 	import { videoDir } from '@tauri-apps/api/path';
 	import FolderOpen from '$lib/assets/SVG/FolderOpen.svelte';
@@ -14,9 +13,12 @@
 	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { getSettings, saveSettings } from '$lib/utils/settings/state';
 	import type { Settings } from '$lib/schema/settings';
+	import { m } from '$lib/paraglide/messages';
+	import { getLocale, locales, setLocale } from '$lib/paraglide/runtime';
 
 	let settingsTemp: Settings = $state(getSettings());
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
+	let language = $state(getLocale());
 
 	// Schlüsselwörter verarbeiten und Änderung tracken
 	function handleInput(event: Event, type: 'keywords' | 'ignoredKeywords') {
@@ -37,29 +39,29 @@
 		if (isDirty) {
 			saveSettings(settingsTemp);
 			isDirty = false; // Änderungen wurden gespeichert
-			newToast('info', $_('settings.saved'));
+			newToast('info', m['settings.saved']());
 		}
 	});
 </script>
 
-<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">{$_('settings.title')}</h1>
+<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">{m['settings.title']()}</h1>
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 	<!-- Spracheinstellung -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.language')}</span>
+			<span class="label-text font-semibold">{m['settings.language']()}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
-			bind:value={settingsTemp.language}
+			bind:value={language}
 			onchange={() => {
-				locale.set(settingsTemp.language);
+				setLocale(language);
 				markDirty();
 			}}
 		>
-			{#each $locales as lang (lang)}
+			{#each locales as lang (lang)}
 				<option value={lang}>
-					{new Intl.DisplayNames([getSettings().language, window.navigator.language], {
+					{new Intl.DisplayNames([getLocale(), window.navigator.language], {
 						type: 'language'
 					}).of(lang)}
 				</option>
@@ -69,7 +71,7 @@
 
 	<!-- Inhalte für Erwachsene -->
 	<label class="form-control flex w-full items-center justify-between">
-		<span class=" label font-semibold">{$_('settings.adultContent')}</span>
+		<span class=" label font-semibold">{m['settings.adultContent']()}</span>
 		<input
 			type="checkbox"
 			class="toggle toggle-primary"
@@ -81,39 +83,39 @@
 	<!-- Toast-Position (Horizontal) -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.toastPositionHorizontal')}</span>
+			<span class="label-text font-semibold">{m['settings.toastPositionHorizontal']()}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
 			bind:value={settingsTemp.toastPosition.horizontal}
 			onchange={markDirty}
 		>
-			<option value="start">{$_('settings.left')}</option>
-			<option value="center">{$_('settings.center')}</option>
-			<option value="end">{$_('settings.right')}</option>
+			<option value="start">{m['settings.left']()}</option>
+			<option value="center">{m['settings.center']()}</option>
+			<option value="end">{m['settings.right']()}</option>
 		</select>
 	</label>
 
 	<!-- Toast-Position (Vertikal) -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.toastPositionVertical')}</span>
+			<span class="label-text font-semibold">{m['settings.toastPositionVertical']()}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
 			bind:value={settingsTemp.toastPosition.vertical}
 			onchange={markDirty}
 		>
-			<option value="top">{$_('settings.top')}</option>
-			<option value="middle">{$_('settings.middle')}</option>
-			<option value="bottom">{$_('settings.bottom')}</option>
+			<option value="top">{m['settings.top']()}</option>
+			<option value="middle">{m['settings.middle']()}</option>
+			<option value="bottom">{m['settings.bottom']()}</option>
 		</select>
 	</label>
 
 	<!-- Video Player -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.videoPlayer')}</span>
+			<span class="label-text font-semibold">{m['settings.videoPlayer']()}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
@@ -128,7 +130,7 @@
 	<!-- Themen -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.theme')}</span>
+			<span class="label-text font-semibold">{m['settings.theme']()}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
@@ -147,25 +149,25 @@
 	<!-- Auto Backup -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.autoBackup')}</span>
+			<span class="label-text font-semibold">{m['settings.autoBackup']()}</span>
 		</div>
 		<select
 			class="select select-bordered w-full"
 			bind:value={settingsTemp.backupInterval}
 			onchange={markDirty}
 		>
-			<option value="manual">{$_('manual')}</option>
-			<option value="onStartup">{$_('onStartup')}</option>
-			<option value="daily">{$_('daily')}</option>
-			<option value="weekly">{$_('weekly')}</option>
-			<option value="monthly">{$_('monthly')}</option>
+			<option value="manual">{m.manual()}</option>
+			<option value="onStartup">{m.onStartup()}</option>
+			<option value="daily">{m.daily()}</option>
+			<option value="weekly">{m.weekly()}</option>
+			<option value="monthly">{m.monthly()}</option>
 		</select>
 	</label>
 
 	<!-- Maximales Alter der Backups (Tage) -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.backupMaxAgeDays')}</span>
+			<span class="label-text font-semibold">{m['settings.backupMaxAgeDays']()}</span>
 		</div>
 		<input
 			type="number"
@@ -180,7 +182,7 @@
 	<!-- Maximale Anzahl an Backups -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.backupMaxBackups')}</span>
+			<span class="label-text font-semibold">{m['settings.backupMaxBackups']()}</span>
 		</div>
 		<input
 			type="number"
@@ -195,7 +197,7 @@
 	<!-- Maximale Backup-Größe (MB) -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.backupMaxSizeMB')}</span>
+			<span class="label-text font-semibold">{m['settings.backupMaxSizeMB']()}</span>
 		</div>
 		<input
 			type="number"
@@ -210,7 +212,7 @@
 	<!-- Anzahl der heruntergeladenen Schauspielerbilder -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.castImages')}</span>
+			<span class="label-text font-semibold">{m['settings.castImages']()}</span>
 		</div>
 		<input
 			type="range"
@@ -224,9 +226,9 @@
 		<div class="flex w-full justify-between px-2 text-xs">
 			<span>
 				{settingsTemp.castImages === -1
-					? $_('settings.none')
+					? m['settings.none']()
 					: settingsTemp.castImages === 0
-						? $_('settings.all')
+						? m['settings.all']()
 						: settingsTemp.castImages}
 			</span>
 		</div>
@@ -234,7 +236,7 @@
 
 	<!-- Discord RPC -->
 	<label class="form-control flex w-full items-center justify-between">
-		<span class="label font-semibold">{$_('settings.discordRpc')}</span>
+		<span class="label font-semibold">{m['settings.discordRpc']()}</span>
 		<input
 			type="checkbox"
 			class="toggle toggle-primary"
@@ -245,14 +247,14 @@
 
 	<!-- TMDB Auth Sesson -->
 	<label for="tmdbAuth" class="flex w-full items-center justify-between">
-		<span class="label font-semibold">{$_('settings.tmdbAuthLabel')}</span>
+		<span class="label font-semibold">{m['settings.tmdbAuthLabel']()}</span>
 		<button
 			id="tmdbAuth"
 			name="tmdbAuth"
 			class="btn {getSettings().tmdbAccessToken ? 'btn-success' : 'btn-primary'}"
 			onclick={async () => {
 				if (getSettings().tmdbAccessToken) {
-					if (!(await confirm($_('settings.confirmReauth'), { kind: 'warning' }))) return;
+					if (!(await confirm(m['settings.confirmReauth'](), { kind: 'warning' }))) return;
 				}
 				await auth();
 				settingsTemp.tmdbAccessToken = getSettings().tmdbAccessToken;
@@ -260,8 +262,8 @@
 			}}
 		>
 			{getSettings().tmdbAccessToken
-				? $_('settings.reauthenticate')
-				: $_('settings.tmdbAuthButton')}
+				? m['settings.reauthenticate']()
+				: m['settings.tmdbAuthButton']()}
 		</button>
 	</label>
 
@@ -272,11 +274,11 @@
 	<!-- Ignorierte Schlüsselwörter -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.ignoredKeywords')}</span>
+			<span class="label-text font-semibold">{m['settings.ignoredKeywords']()}</span>
 		</div>
 		<textarea
 			class="textarea textarea-bordered h-20 w-full"
-			placeholder={$_('settings.keywordsPlaceholder')}
+			placeholder={m['settings.keywordsPlaceholder']()}
 			bind:value={settingsTemp.ignoredKeywords}
 			onchange={(event) => handleInput(event, 'ignoredKeywords')}
 		></textarea>
@@ -285,11 +287,11 @@
 	<!-- Schlüsselwörter -->
 	<label class="form-control w-full">
 		<div class="label">
-			<span class="label-text font-semibold">{$_('settings.keywords')}</span>
+			<span class="label-text font-semibold">{m['settings.keywords']()}</span>
 		</div>
 		<textarea
 			class="textarea textarea-bordered h-20 w-full"
-			placeholder={$_('settings.keywordsPlaceholder')}
+			placeholder={m['settings.keywordsPlaceholder']()}
 			bind:value={settingsTemp.keywords}
 			onchange={(event) => handleInput(event, 'keywords')}
 		></textarea>
@@ -398,9 +400,9 @@
 
 	<div class="form-control col-span-2 w-full">
 		<label for="watchPaths" class="label">
-			<span class="label-text font-semibold">{$_('settings.watchPaths')}</span>
+			<span class="label-text font-semibold">{m['settings.watchPaths']()}</span>
 		</label>
-		<p class="text-sm">{$_('settings.watchPathsHint')}</p>
+		<p class="text-sm">{m['settings.watchPathsHint']()}</p>
 
 		{#each settingsTemp.watchPaths, index}
 			<div class="mb-2 flex items-center gap-2">
@@ -415,9 +417,9 @@
 							settingsTemp.watchPaths[index].length !== 0 &&
 							!(await exists(settingsTemp.watchPaths[index]))
 						) {
-							await message($_('folderNotFound'), {
+							await message(m.folderNotFound(), {
 								kind: 'error',
-								title: $_('folderNotFoundTitle')
+								title: m.folderNotFoundTitle()
 							});
 						} else {
 							markDirty();
@@ -467,7 +469,7 @@
 			}}
 		>
 			<FolderAdd class="stroke-base-var(--btn-fg) h-6 w-6" />
-			{$_('settings.addWatchPath')}
+			{m['settings.addWatchPath']()}
 		</button>
 	</div>
 </div>

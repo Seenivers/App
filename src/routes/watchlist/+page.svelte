@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Navbar from '$lib/components/Navbar.svelte';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import { postWatchlist } from '$lib/utils/tmdb';
 	import type { PageData } from './$types';
 	import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
@@ -42,9 +42,9 @@
 		<div
 			class={!online.current || !getSettings().tmdbAccessToken ? 'tooltip tooltip-left' : ''}
 			data-tip={!online.current
-				? $_('networkStatus.offline')
+				? m['networkStatus.offline']()
 				: !getSettings().tmdbAccessToken
-					? $_('noTMDBAccessToken')
+					? m.noTMDBAccessToken()
 					: ''}
 		>
 			<button
@@ -54,14 +54,14 @@
 					newToast('success', 'Watchlist synchronized');
 					location.reload();
 				}}
-				disabled={!getSettings().tmdbAccessToken || !online.current}>{$_('watchlistSync')}</button
+				disabled={!getSettings().tmdbAccessToken || !online.current}>{m.watchlistSync()}</button
 			>
 		</div>
 	{/snippet}
 </Navbar>
 
 <main class="container mx-auto w-full grow space-y-8 px-4 py-6 lg:w-4/5 xl:w-2/3">
-	<h1 class="mb-4 text-3xl font-bold">{$_('watchlist')}</h1>
+	<h1 class="mb-4 text-3xl font-bold">{m.watchlist()}</h1>
 
 	<div role="tablist" class="tabs tabs-lift">
 		<!-- Filme Tab -->
@@ -70,7 +70,7 @@
 			name="tabs"
 			role="tab"
 			class="tab"
-			aria-label="{$_('movies')} - {data.movie.length}"
+			aria-label="{m.movies()} - {data.movie.length}"
 			checked
 		/>
 		<div role="tabpanel" class="tab-content bg-base-100 space-y-2 p-4">
@@ -82,7 +82,7 @@
 								<Img
 									params={[item.tmdb.poster_path, 'posters', false]}
 									class="h-48 w-auto rounded-lg object-cover"
-									alt={$_('posterAlt', { values: { title: item.tmdb.title } })}
+									alt={m.posterAlt({ title: item.tmdb.title })}
 								/>
 								<div>
 									<p class="font-medium">{item.tmdb.title}</p>
@@ -91,12 +91,12 @@
 											? new Date(item.tmdb.release_date).toLocaleDateString(
 													window.navigator.language
 												)
-											: $_('noInformationAvailable')}
+											: m.noInformationAvailable()}
 									</p>
 									<p class="text-sm">{item.tmdb.overview}</p>
 								</div>
 							</a>
-							<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
+							<div class="tooltip tooltip-bottom" data-tip={m.doubleClickDelete()}>
 								<button
 									class="btn btn-error btn-circle"
 									ondblclick={() => removeFromWatchlist('movie', item.id)}
@@ -108,7 +108,7 @@
 					{/each}
 				</ul>
 			{:else}
-				<p class="text-base-content/70">{$_('noInformationAvailable')}</p>
+				<p class="text-base-content/70">{m.noInformationAvailable()}</p>
 			{/if}
 		</div>
 
@@ -118,7 +118,7 @@
 			name="tabs"
 			role="tab"
 			class="tab"
-			aria-label="{$_('series')} - {data.serie.length}"
+			aria-label="{m.series()} - {data.serie.length}"
 		/>
 		<div role="tabpanel" class="tab-content bg-base-100 space-y-2 p-4">
 			{#if data.serie.length > 0}
@@ -129,7 +129,7 @@
 								<Img
 									params={[item.tmdb.poster_path, 'posters', false]}
 									class="h-48 w-auto rounded-lg object-cover"
-									alt={$_('posterAlt', { values: { title: item.tmdb.name } })}
+									alt={m.posterAlt({ title: item.tmdb.name })}
 								/>
 								<div>
 									<p class="font-medium">{item.tmdb.name}</p>
@@ -138,12 +138,12 @@
 											? new Date(item.tmdb.first_air_date).toLocaleDateString(
 													window.navigator.language
 												)
-											: $_('noInformationAvailable')}
+											: m.noInformationAvailable()}
 									</p>
 									<p class="text-sm">{item.tmdb.overview}</p>
 								</div>
 							</a>
-							<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
+							<div class="tooltip tooltip-bottom" data-tip={m.doubleClickDelete()}>
 								<button
 									class="btn btn-error btn-circle"
 									ondblclick={() => removeFromWatchlist('tv', item.id)}
@@ -155,7 +155,7 @@
 					{/each}
 				</ul>
 			{:else}
-				<p class="text-base-content/70">{$_('noInformationAvailable')}</p>
+				<p class="text-base-content/70">{m.noInformationAvailable()}</p>
 			{/if}
 		</div>
 	</div>

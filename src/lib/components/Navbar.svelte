@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	interface NavbarProps {
 		back?: boolean;
 		onclick?: () => void;
@@ -28,7 +28,7 @@
 		<div class="gap-1">
 			{#if back}
 				<button class="btn btn-sm md:btn-md" {onclick} {ondblclick}>
-					{window.history.length > 1 ? $_('nav.back') : $_('nav.backToHome')}
+					{window.history.length > 1 ? m['nav.back']() : m['nav.backToHome']()}
 				</button>
 			{/if}
 			{@render left?.()}

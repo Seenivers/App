@@ -4,7 +4,7 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { PageData } from './$types';
 	import Card from '$lib/components/card.svelte';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import type { CardscaleNumbers } from '$lib/types/cardscale';
 	import Search from '$lib/assets/SVG/search.svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -138,11 +138,11 @@
 
 <Navbar>
 	{#snippet left()}
-		<a href="./add" class="btn btn-ghost">{$_('nav.add')}</a>
-		<a href="./watchlist" class="btn btn-ghost">{$_('watchlist')}</a>
+		<a href="./add" class="btn btn-ghost">{m['nav.add']()}</a>
+		<a href="./watchlist" class="btn btn-ghost">{m['watchlist']()}</a>
 	{/snippet}
 	{#snippet right()}
-		<a href="./settings" class="btn btn-ghost">{$_('nav.settings')}</a>
+		<a href="./settings" class="btn btn-ghost">{m['nav.settings']()}</a>
 	{/snippet}
 </Navbar>
 
@@ -156,7 +156,7 @@
 						<input
 							type="text"
 							class="grow"
-							placeholder={$_('main.searchPlaceholder')}
+							placeholder={m['main.searchPlaceholder']()}
 							bind:value={search}
 						/>
 					</label>
@@ -164,7 +164,7 @@
 						type="reset"
 						class="btn btn-ghost"
 						onclick={resetFilters}
-						title={$_('resetFilters')}
+						title={m.resetFilters()}
 					>
 						<Reset class="h-8 w-8 opacity-70" />
 					</button>
@@ -174,7 +174,7 @@
 			<div class="flex flex-wrap justify-center gap-4 sm:gap-6">
 				<div class="flex flex-wrap gap-2">
 					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">{$_('movies')}</span>
+						<span class="label-text">{m.movies()}</span>
 						<input
 							type="checkbox"
 							class="toggle toggle-sm"
@@ -183,7 +183,7 @@
 						/>
 					</label>
 					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">{$_('series')}</span>
+						<span class="label-text">{m.series()}</span>
 						<input
 							type="checkbox"
 							class="toggle toggle-sm"
@@ -192,7 +192,7 @@
 						/>
 					</label>
 					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">{$_('collections')}</span>
+						<span class="label-text">{m.collections()}</span>
 						<input
 							type="checkbox"
 							class="toggle toggle-sm"
@@ -203,20 +203,20 @@
 				</div>
 
 				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={sortOption}>
-					<option value="added">{$_('newlyAdded')}</option>
-					<option value="rating">{$_('bestRating')}</option>
-					<option value="duration">{$_('longestDuration')}</option>
-					<option value="release_date_desc">{$_('releaseDateNew')}</option>
-					<option value="release_date_asc">{$_('releaseDateOld')}</option>
-					<option value="popularity">{$_('popularity')}</option>
-					<option value="alpha">{$_('alphabetical')}</option>
-					<option value="last_watched">{$_('lastWatched')}</option>
+					<option value="added">{m.newlyAdded()}</option>
+					<option value="rating">{m.bestRating()}</option>
+					<option value="duration">{m.longestDuration()}</option>
+					<option value="release_date_desc">{m.releaseDateNew()}</option>
+					<option value="release_date_asc">{m.releaseDateOld()}</option>
+					<option value="popularity">{m.popularity()}</option>
+					<option value="alpha">{m.alphabetical()}</option>
+					<option value="last_watched">{m.lastWatched()}</option>
 				</select>
 
 				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={watchedFilter}>
-					<option value="all">{$_('all')}</option>
-					<option value="watched">{$_('watched')}</option>
-					<option value="unwatched">{$_('unwatched')}</option>
+					<option value="all">{m.all()}</option>
+					<option value="watched">{m.watched()}</option>
+					<option value="unwatched">{m.unwatched()}</option>
 				</select>
 			</div>
 		</div>
@@ -231,7 +231,7 @@
 						href={`./collection?id=${item.id}`}
 						params={[item.poster_path, 'posters', true]}
 						watched={item.watched}
-						alt={$_('posterAlt', { values: { title } })}
+						alt={m.posterAlt({ title })}
 					/>
 				{/each}
 
@@ -243,7 +243,7 @@
 						href={`./movie?id=${item.id}`}
 						params={[item.tmdb.poster_path, 'posters', true]}
 						watched={item.watched}
-						alt={$_('posterAlt', { values: { title } })}
+						alt={m.posterAlt({ title })}
 					/>
 				{/each}
 
@@ -255,17 +255,17 @@
 						href={`./tv?id=${item.id}`}
 						params={[item.tmdb.poster_path, 'posters', true]}
 						watched={item.watched}
-						alt={$_('posterAlt', { values: { title } })}
+						alt={m.posterAlt({ title })}
 					/>
 				{/each}
 			{:else}
-				<p class="mt-10 w-full text-center text-gray-400">{$_('main.noneFound')}</p>
+				<p class="mt-10 w-full text-center text-gray-400">{m['main.noneFound']()}</p>
 			{/if}
 		</div>
 	{:else}
 		<div class="flex flex-col items-center space-y-4">
-			<p>{$_('main.noneAdded')}</p>
-			<a href="./add" class="btn">{$_('nav.add')}</a>
+			<p>{m['main.noneAdded']()}</p>
+			<a href="./add" class="btn">{m['nav.add']()}</a>
 		</div>
 	{/if}
 </main>

@@ -3,7 +3,7 @@
 	import { backup as backupfn, newDB } from '$lib/utils/backup';
 	import { formatBytes } from '$lib/utils/utils';
 	import { onMount } from 'svelte';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 
 	let backups: BackupFile[] = [];
 
@@ -74,18 +74,18 @@
 
 <div class="flex items-center justify-between">
 	<h1 class="mb-6 text-xl font-bold md:text-2xl">
-		{$_('backups.title')}
+		{m['backups.title']()}
 	</h1>
 
 	<div class="flex gap-2">
 		{#if import.meta.env.DEV}
 			<button class="btn hover:btn-error" ondblclick={newDB}>
-				{$_('backups.newDatabase')}
+				{m['backups.newDatabase']()}
 			</button>
 		{/if}
 
 		<button class="btn" onclick={createBackup}>
-			{$_('backups.createBackup')}
+			{m['backups.createBackup']()}
 		</button>
 	</div>
 </div>
@@ -95,27 +95,27 @@
 		<thead>
 			<tr>
 				<th class="cursor-pointer" onclick={() => sortBackups('name')}>
-					{$_('fileName')}
+					{m.fileName()}
 					{#if sortBy === 'name'}
 						<span>{sortAsc ? '▲' : '▼'}</span>
 					{/if}
 				</th>
 
 				<th class="cursor-pointer" onclick={() => sortBackups('createdAt')}>
-					{$_('creationDate')}
+					{m.creationDate()}
 					{#if sortBy === 'createdAt'}
 						<span>{sortAsc ? '▲' : '▼'}</span>
 					{/if}
 				</th>
 
 				<th class="cursor-pointer" onclick={() => sortBackups('size')}>
-					{$_('size')}
+					{m.size()}
 					{#if sortBy === 'size'}
 						<span>{sortAsc ? '▲' : '▼'}</span>
 					{/if}
 				</th>
 
-				<th>{$_('actions')}</th>
+				<th>{m.actions()}</th>
 			</tr>
 		</thead>
 
@@ -128,7 +128,7 @@
 					<td>
 						<div class="flex gap-2">
 							<button class="btn btn-sm" onclick={() => restoreBackup(backup.name)}>
-								{$_('restore')}
+								{m.restore()}
 							</button>
 
 							<button
@@ -136,7 +136,7 @@
 								disabled={deleteDisabled(backup)}
 								ondblclick={() => deleteBackup(backup.name)}
 							>
-								{$_('delete')}
+								{m.delete()}
 							</button>
 						</div>
 					</td>

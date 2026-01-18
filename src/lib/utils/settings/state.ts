@@ -34,13 +34,12 @@ export async function saveSettings(patch: Partial<Settings>) {
 }
 
 import { setTheme } from '$lib/utils/themeUtils';
-import { locale } from 'svelte-i18n';
 import * as Sentry from '@sentry/sveltekit';
+import { getLocale } from '$lib/paraglide/runtime';
 
 function applySettings() {
 	// UI
 	setTheme(settings.theme);
-	locale.set(settings.language);
 
 	// --- Telemetrie ---
 	const client = Sentry.getClient();
@@ -61,7 +60,7 @@ function applySettings() {
 	Sentry.getCurrentScope().setContext('settings', {
 		sentryEnabled: settings.sentryEnabled,
 		theme: settings.theme,
-		language: settings.language,
+		language: getLocale(),
 		replayEnabled: settings.sentryReplaySampleRate > 0
 	});
 }

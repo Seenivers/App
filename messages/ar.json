@@ -1,0 +1,260 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "plyr_labels": "\\{ \"restart\": \"Restart\", \"rewind\": \"Rewind \\{seektime\\} ثانية\", \"play\": \"تشغيل\", \"pause\": \"إيقاف مؤقت\", \"fastForward\": \"تقديم \\{seektime\\} ثانية\", \"seek\": \"بحث\", \"played\": \"تم التشغيل\", \"buffered\": \"مخزن مؤقتًا\", \"currentTime\": \"الوقت الحالي\", \"duration\": \"المدة\", \"volume\": \"مستوى الصوت\", \"mute\": \"كتم الصوت\", \"unmute\": \"إلغاء كتم الصوت\", \"enableCaptions\": \"تفعيل الترجمة\", \"disableCaptions\": \"تعطيل الترجمة\", \"enterFullscreen\": \"الدخول إلى وضع ملء الشاشة\", \"exitFullscreen\": \"الخروج من وضع ملء الشاشة\", \"frameTitle\": \"مشغل لـ \\{title\\} \", \"captions\": \"التعليقات التوضيحية\", \"settings\": \"الإعدادات\", \"speed\": \"السرعة\", \"normal\": \"عادي\", \"quality\": \"الجودة\", \"loop\": \"التكرار\", \"start\": \"البداية\", \"end\": \"النهاية\", \"all\": \"الكل\", \"reset\": \"إعادة الضبط\", \"disabled\": \"معطل\", \"advertisement\": \"إعلان\" \\}",
+  "vidstack_labels": "\\{ \"Caption Styles\": \"Caption Styles\", \"Captions look like this\": \"Captions look like this\", \"Closed-Captions Off\": \"Closed-Captions Off\", \"Closed-Captions On\": \"Closed-Captions On\", \"Display Background\": \"Display Background\", \"Enter Fullscreen\": \"Enter Fullscreen\", \"Enter PiP\": \"Enter PiP\", \"Exit Fullscreen\": \"Exit Fullscreen\", \"Exit PiP\": \"Exit PiP\", \"Google Cast\": \"Google Cast\", \"Keyboard Animations\": \"Keyboard Animations\", \"Seek Backward\": \"Seek Backward\", \"Seek Forward\": \"Seek Forward\", \"Skip To Live\": \"Skip To\", \"Text Background\": \"Text Background\", \"Accessibility\": \"Accessibility\", \"AirPlay\": \"AirPlay\", \"Announcements\": \"Announcements\", \"Audio\": \"Audio\", \"Auto\": \"Auto\", \"Boost\": \"Boost\", \"Captions\": \"Captions\", \"Chapters\": \"Chapters\", \"Color\": \"Color\", \"Connected\": \"Connected\", \"Connecting\": \"Connecting\", \"Continue\": \"Continue\", \"Default\": \"Default\", \"Disabled\": \"Disabled\", \"Disconnected\": \"Disconnected\", \"Download\": \"Download\", \"Family\": \"Family\", \"Font\": \"Font\", \"Fullscreen\": \"Fullscreen\", \"LIVE\": \"LIVE\", \"Loop\": \"Loop\", \"Mute\": \"Mute\", \"Normal\": \"Normal\", \"Off\": \"Off\", \"Opacity\": \"Opacity\", \"Pause\": \"Pause\", \"PiP\": \"PiP\", \"Play\": \"Play\", \"Playback\": \"Playback\", \"Quality\": \"Quality\", \"Replay\": \"Replay\", \"Reset\": \"Reset\", \"Seek\": \"Seek\", \"Settings\": \"Settings\", \"Shadow\": \"Shadow\", \"Size\": \"Size\", \"Speed\": \"Speed\", \"Text\": \"Text\", \"Track\": \"Track\", \"Unmute\": \"Unmute\", \"Volume\": \"Volume\"\\ }",
+  "nav": {
+    "back": "خلف",
+    "add": "يضيف",
+    "backToHome": "العودة إلى الصفحة الرئيسية",
+    "settings": "إعدادات"
+  },
+  "networkStatus": {
+    "online": "أنت متصل بالإنترنت",
+    "offline": "أنت غير متصل بالإنترنت",
+    "error": "أنت غير متصل بالإنترنت"
+  },
+  "updater": {
+    "changelog": "سجل التغييرات",
+    "available": "تحديث جديد متوفر",
+    "install": "قم بتثبيت التحديث",
+    "downloadandInstall": "قم بتنزيل التحديث وتثبيته",
+    "download": "قم بتنزيل التحديث",
+    "loadChangelog": "جارٍ تحميل سجل التغييرات...",
+    "downloadFinished": "تم تنزيل التحديث بنجاح!",
+    "version": "الإصدار {version}"
+  },
+  "error": {
+    "episodeNotFound": "الحلقة غير موجودة في الموسم",
+    "seasonNotFoundinSerie": "الموسم غير موجود في المسلسل",
+    "seasonNotFound": "لم يتم العثور على الموسم",
+    "serieNotFound": "لم يتم العثور على المسلسل"
+  },
+  "cardscale": {
+    "small": "صغير",
+    "medium": "واسطة",
+    "large": "كبير"
+  },
+  "badge": {
+    "watched": "تمت المشاهدة",
+    "collection": "في مجموعتك"
+  },
+  "marked": {
+    "notWatched": "مارك يشاهد",
+    "asWatched": "ضع علامة \"غير مُشاهد\""
+  },
+  "backup": {
+    "newBackup": "🗂️ إدخال جديد في قاعدة البيانات لملف النسخ الاحتياطي: {filePath}",
+    "deletedBackup": "🗑️ تم حذف إدخال قاعدة البيانات بسبب النسخة الاحتياطية المفقودة: {filePath}",
+    "fileNotFound": "لم يتم العثور على ملف النسخ الاحتياطي: {filePath}",
+    "idNotFound": "لم يتم العثور على نسخة احتياطية للمعرف: {id}",
+    "updatedSize": "تم تحديث حجم النسخة الاحتياطية لـ {filePath} إلى {size} بايت."
+  },
+  "settings": {
+    "language": "لغة",
+    "none": "لا أحد",
+    "all": "الجميع",
+    "discordRpc": "تفعيل Discord RPC",
+    "left": "غادر",
+    "center": "مركز",
+    "top": "قمة",
+    "createdOrRead": "تم إنشاء/قراءة الإعدادات بنجاح",
+    "noSettingsWait": "لم يتم العثور على أي إعدادات بعد، جارٍ الانتظار لمدة ثانية واحدة…",
+    "foundAfterMigration": "الإعدادات التي تم العثور عليها بعد الترحيل",
+    "reloadPage": "تعذر إنشاء الإعدادات. جارٍ إعادة تحميل الصفحة.",
+    "title": "إعدادات",
+    "adultContent": "السماح بالمحتوى المخصص للبالغين",
+    "toastPositionHorizontal": "وضعية التنبيه (أفقية)",
+    "videoPlayer": "مشغلات الفيديو",
+    "theme": "المواضيع",
+    "keywords": "الكلمات المفتاحية",
+    "keywordsPlaceholder": "الكلمات المفتاحية (مفصولة بفواصل)",
+    "right": "يمين",
+    "middle": "وسط",
+    "bottom": "قاع",
+    "backupMaxSizeMB": "الحد الأقصى لحجم النسخة الاحتياطية (ميغابايت)",
+    "tmdbAuthButton": "المصادقة",
+    "tmdbAuthLabel": "مصادقة TMDB",
+    "reauthenticate": "إعادة المصادقة",
+    "autoBackup": "النسخ الاحتياطي التلقائي",
+    "allAttemptsFailed": "فشلت جميع المحاولات. جارٍ محاولة نقل البيانات...",
+    "saved": "تم حفظ الإعدادات!",
+    "toastPositionVertical": "وضع التنبيه (عمودي)",
+    "castImages": "عدد صور الممثلين المطلوب تنزيلها",
+    "ignoredKeywords": "الكلمات الرئيسية المتجاهلة",
+    "backupMaxAgeDays": "الحد الأقصى لعمر النسخ الاحتياطي (بالأيام)",
+    "backupMaxBackups": "الحد الأقصى لعدد النسخ الاحتياطية",
+    "watchPaths": "مسارات المراقبة",
+    "addWatchPath": "إضافة مسار",
+    "watchPathsHint": "مسار الدليل المطلق (مثلاً C:/Videos)",
+    "confirmReauth": "هل تريد حقاً إعادة تشغيل عملية المصادقة؟",
+    "createAttempt": "محاولة {attempt} / {retries} : إنشاء الإعدادات الافتراضية",
+    "insertFailed": "فشلت عملية الإدخال، الخطأ: {error}",
+    "migrationFailed": "فشلت عملية الترحيل، الخطأ: {error}",
+    "updateFailed": "فشل تحديث الإعدادات، الخطأ: {error}"
+  },
+  "main": {
+    "searchPlaceholder": "يبحث...",
+    "added": "تمت إضافته مؤخراً",
+    "rating": "أفضل تقييم",
+    "duration": "أطول مدة",
+    "all": "الجميع",
+    "watched": "تمت المشاهدة",
+    "unwatched": "غير مشاهد",
+    "noneFound": "لا يوجد شيء يطابق هذه المعايير",
+    "noneAdded": "لم تقم بإضافة أي شيء بعد"
+  },
+  "movies": "أفلام",
+  "series": "مسلسل",
+  "collections": "المجموعات",
+  "collection": "مجموعة",
+  "errorTitle": "خطأ",
+  "tv": {
+    "noEpisodes": "لم يتم العثور على حلقات",
+    "episode": "الحلقة {number} : {name}"
+  },
+  "delete": "يمسح",
+  "edit": "يحرر",
+  "season": "موسم",
+  "posterAlt": "ملصق {title}",
+  "noInformationAvailable": "لا تتوفر معلومات",
+  "trailer": "جَرَّار",
+  "seriesCast": "طاقم عمل المسلسل",
+  "watchOnYouTube": "شاهد على يوتيوب",
+  "openFolder": "افتح المجلد",
+  "firstBroadcast": "أول بث",
+  "lastEpisode": "الحلقة الأخيرة",
+  "averageRating": "متوسط التقييم",
+  "genres": "الأنواع",
+  "productionCompanies": "شركات الإنتاج",
+  "productionCountries": "بلدان الإنتاج",
+  "popularity": "شعبية",
+  "originalLanguage": "اللغة الأصلية",
+  "budget": "ميزانية",
+  "revenue": "ربح",
+  "status": "حالة",
+  "backdropAlt": "خلفية {title}",
+  "homepage": "موقع إلكتروني",
+  "SeasonsAndEpisodes": "المواسم والحلقات",
+  "seasons": "المواسم",
+  "episodes": "الحلقات",
+  "runtimePerEpisode": "مدة العرض (لكل حلقة)",
+  "doubleClickDelete": "انقر نقراً مزدوجاً للحذف",
+  "notAired": "لم يُبث بعد",
+  "noReviews": "لا توجد تقييمات",
+  "reviews": "{reviews} reviews",
+  "extras": "إضافات",
+  "thumbnailAlt": "صورة مصغرة لـ {title}",
+  "backups": {
+    "title": "النسخ الاحتياطية",
+    "newDatabase": "قاعدة بيانات جديدة",
+    "validateBackups": "التحقق من صحة النسخ الاحتياطية",
+    "createBackup": "إنشاء نسخة احتياطية"
+  },
+  "id": "بطاقة تعريف",
+  "fileName": "اسم الملف",
+  "creationDate": "تاريخ الإنشاء",
+  "actions": "الإجراءات",
+  "restore": "يعيد",
+  "plot": "حبكة",
+  "episodeNumber": "رقم الحلقة",
+  "episodeNumberwithValue": "الحلقة {number}",
+  "episodeCount": "عدد الحلقات",
+  "averageRuntime": "متوسط وقت التشغيل",
+  "productionCrew": "فريق الإنتاج",
+  "doubleClickToDelete": "انقر نقراً مزدوجاً للحذف",
+  "openOnTMDB": "متاح على TMDB",
+  "noRatings": "لا توجد تقييمات",
+  "seasonNumber": "رقم الموسم",
+  "seasonwithValue": "الموسم {number}",
+  "cast": "يقذف",
+  "minutes": "دقائق",
+  "videoFileNotFound": "لم يتم العثور على ملف الفيديو",
+  "runtime": "وقت التشغيل",
+  "rating": "تصنيف",
+  "female": "أنثى",
+  "male": "ذكر",
+  "nonBinary": "غير ثنائي",
+  "unknown": "مجهول",
+  "socialMedia": "وسائل التواصل الاجتماعي",
+  "knownFor": "معروف بـ",
+  "gender": "جنس",
+  "birthdate": "تاريخ الميلاد",
+  "aliases": "يُعرف أيضًا باسم",
+  "roleUnknown": "الدور غير معروف",
+  "birthplace": "مكان الميلاد",
+  "biography": "سيرة",
+  "filmography": "فيلموغرافيا (ممثل)",
+  "crew": "مشاركة الطاقم",
+  "deathdate": "تاريخ الوفاة",
+  "invalidState": "تم العثور على حالة غير صالحة: {state}",
+  "invalidIndex": "فهرس غير صالح: {index}",
+  "selectSeriesFolder": "حدد مجلد السلسلة",
+  "selectMovies": "اختر الأفلام",
+  "selectFolder": "حدد المجلد",
+  "deleteAll": "حذف الكل",
+  "noFilter": "بدون فلتر",
+  "queueCount": "قائمة الانتظار ( {count} )",
+  "searching": "البحث ( {count} )",
+  "notFound": "لم يتم العثور على ( {count} )",
+  "foundMultiple": "تم العثور على عدة نتائج ( {count} )",
+  "downloading": "جارٍ التنزيل ( {count} )",
+  "downloaded": "تم التنزيل ( {count} )",
+  "titleWithValue": "العنوان: {title}",
+  "title": "عنوان",
+  "path": "المسار: {path}",
+  "releaseYear": "سنة الإصدار",
+  "optional": "خياري",
+  "search": "يبحث",
+  "searchInProgress": "البحث جارٍ...",
+  "searchingDatabase": "البحث في قاعدة البيانات",
+  "close": "يغلق",
+  "noResultsFound": "لم يتم العثور على نتائج لبحثك",
+  "noSearchPerformed": "لم يتم إجراء أي بحث حتى الآن",
+  "loadMoreResults": "عرض المزيد من النتائج",
+  "all": "الجميع",
+  "watched": "تمت المشاهدة",
+  "unwatched": "غير مشاهد",
+  "newlyAdded": "تمت إضافته حديثًا",
+  "bestRating": "أفضل تقييم",
+  "longestDuration": "أطول مدة",
+  "switchToListView": "انتقل إلى عرض القائمة",
+  "switchToGridView": "التبديل إلى عرض الشبكة",
+  "noDataFound": "لم يتم العثور على بيانات",
+  "startExternalPlayer": "تشغيل مشغلات خارجية",
+  "releaseDate": "تاريخ الافراج عنه",
+  "runtimeFormatted": "{hours} ساعة {minutes} دقيقة",
+  "ratingSummary": "{average} /10 ( {count} ratings)",
+  "originalTitle": "العنوان الأصلي",
+  "newTmdbId": "معرف TMDB جديد",
+  "save": "يحفظ",
+  "invalidTmdbId": "معرف TMDB هذا غير موجود",
+  "somethingWentWrong": "حدث خطأ ما",
+  "leadActor": "الممثل الرئيسي",
+  "sortOldestFirst": "فرز حسب الأقدم أولاً",
+  "sortNewestFirst": "الترتيب حسب الأحدث أولاً",
+  "nextEpisode": "الحلقة القادمة",
+  "alphabetical": "أبجديًا",
+  "releaseDateNew": "الأحدث أولاً",
+  "releaseDateOld": "الأقدم أولاً",
+  "lastWatched": "آخر مشاهدة",
+  "manual": "يدوي",
+  "onStartup": "عند بدء التشغيل",
+  "daily": "يوميًا",
+  "weekly": "أسبوعي",
+  "monthly": "شهريا",
+  "resetFilters": "إعادة ضبط جميع الفلاتر",
+  "size": "مقاس",
+  "tabs": {
+    "settings": "إعدادات",
+    "backup": "النسخ الاحتياطي"
+  },
+  "bookmarkAdd": "أضف إلى المفضلة",
+  "bookmarkRemove": "إزالة من الإشارات المرجعية",
+  "guestStars": "ممثل ضيف",
+  "yourRating": "تقييمك",
+  "folderNotFoundTitle": "المجلد المحدد غير موجود.",
+  "folderNotFound": "المجلد غير موجود",
+  "watchlist": "قائمة المراقبة",
+  "watchlistSync": "مزامنة قائمة المراقبة",
+  "noTMDBAccessToken": "يلزم الوصول إلى قاعدة بيانات TMDB. يرجى تسجيل الدخول عبر الإعدادات ومنح الإذن بالوصول."
+}

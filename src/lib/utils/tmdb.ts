@@ -11,6 +11,7 @@ import type { WatchList } from '$lib/types/watchlist';
 import type { TMDBPostResult } from '$lib/types/media_type';
 import { online } from 'svelte/reactivity/window';
 import { getSettings } from './settings/state';
+import { getLocale } from '$lib/paraglide/runtime';
 
 // 🔧 Fehlerbehandlung + JSON Parsing
 async function parseResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -81,14 +82,11 @@ async function postData<T>(endpoint: string, body: unknown): Promise<T> {
 }
 
 // 📽 Einzelner Film
-export const getMovie = (id: number, language = getSettings().language || navigator.language) =>
+export const getMovie = (id: number, language = getLocale() || navigator.language) =>
 	fetchData<Movie>('/api/movie', { id, language });
 
 // 📽 Mehrere Filme
-export const getMovies = async (
-	ids: number[],
-	language = getSettings().language || navigator.language
-) => {
+export const getMovies = async (ids: number[], language = getLocale() || navigator.language) => {
 	const result = await postData<{ id: number; data?: Movie; error?: string }[]>('/api/movie', {
 		id: ids,
 		language
@@ -106,16 +104,14 @@ export const getMovies = async (
 };
 
 // 📚 Collection
-export const getCollection = (
-	id: number,
-	language = getSettings().language || navigator.language
-) => fetchData<CollectionDetails>('/api/collection', { id, language });
+export const getCollection = (id: number, language = getLocale() || navigator.language) =>
+	fetchData<CollectionDetails>('/api/collection', { id, language });
 
 // 🔎 Suche Filme
 export const searchMovies = (name: string, primaryReleaseYear?: string | number, page = 1) => {
 	const params = {
 		name,
-		language: getSettings().language,
+		language: getLocale(),
 		includeAdult: String(getSettings().adult),
 		primaryReleaseYear: primaryReleaseYear?.toString() ?? '',
 		page: String(page)
@@ -124,14 +120,14 @@ export const searchMovies = (name: string, primaryReleaseYear?: string | number,
 };
 
 // 👤 Schauspieler
-export const getActor = (id: number, language = getSettings().language || navigator.language) =>
+export const getActor = (id: number, language = getLocale() || navigator.language) =>
 	fetchData<Actor>('/api/actor', { id, language });
 
 // 📺 Suche Serien
 export const searchTv = (name: string, first_air_date_year?: string | number, page = 1) => {
 	const params = {
 		name,
-		language: getSettings().language,
+		language: getLocale(),
 		includeAdult: String(getSettings().adult),
 		first_air_date_year: first_air_date_year?.toString() ?? '',
 		page: String(page)
@@ -140,16 +136,14 @@ export const searchTv = (name: string, first_air_date_year?: string | number, pa
 };
 
 // 📺 Serie
-export const getSerie = (
-	tvShowID: number,
-	language = getSettings().language || navigator.language
-) => fetchData<Serie>('/api/tv', { id: tvShowID, language });
+export const getSerie = (tvShowID: number, language = getLocale() || navigator.language) =>
+	fetchData<Serie>('/api/tv', { id: tvShowID, language });
 
 // 📅 Staffel
 export const getSerieSeason = (
 	tvShowID: number,
 	seasonNumber: number,
-	language = getSettings().language || navigator.language
+	language = getLocale() || navigator.language
 ) => fetchData<Season>('/api/tv/season', { tvShowID, seasonNumber, language });
 
 // 🎬 Episode
@@ -157,7 +151,7 @@ export const getSerieSeasonEpisode = (
 	tvShowID: number,
 	seasonNumber: number,
 	episodeNumber: number,
-	language = getSettings().language || navigator.language
+	language = getLocale() || navigator.language
 ) =>
 	fetchData<Episode>('/api/tv/season/episode', {
 		tvShowID,
@@ -168,7 +162,7 @@ export const getSerieSeasonEpisode = (
 
 export const getWatchlist = (
 	account_object_id = getSettings().tmdbAccountID,
-	language: string = getSettings().language || navigator.language
+	language: string = getLocale() || navigator.language
 ) => {
 	if (!account_object_id || account_object_id === 'tmdbAccountID') return;
 	return fetchData<WatchList>('/api/tmdb/watchlist', {

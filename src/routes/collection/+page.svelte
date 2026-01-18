@@ -5,9 +5,10 @@
 	import Img from '$lib/image/Img.svelte';
 	import { onMount } from 'svelte';
 	import { discord } from '$lib/utils/discord';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import { collection } from '$lib/utils/db/collection';
 	import { getSettings } from '$lib/utils/settings/state';
+	import { getLocale } from '$lib/paraglide/runtime';
 
 	interface Props {
 		data: PageData;
@@ -57,23 +58,23 @@
 	{#snippet right()}
 		<button class="btn" onclick={toggleSort}>
 			{#if sortNewestFirst}
-				{$_('sortOldestFirst')}
+				{m.sortOldestFirst()}
 			{:else}
-				{$_('sortNewestFirst')}
+				{m.sortNewestFirst()}
 			{/if}
 		</button>
 		<!-- Toggle für Grid/List-Ansicht -->
 		<button class="btn" onclick={() => (isGridView = !isGridView)}>
-			{isGridView ? $_('switchToListView') : $_('switchToGridView')}
+			{isGridView ? m.switchToListView() : m.switchToGridView()}
 		</button>
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
-			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+			{watched ? m['marked.asWatched']() : m['marked.notWatched']()}
 		</button>
 		<a
 			href="https://www.themoviedb.org/collection/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">{$_('openOnTMDB')}</a
+			rel="noopener noreferrer">{m.openOnTMDB()}</a
 		>
 	{/snippet}
 </Navbar>
@@ -87,7 +88,7 @@
 					<div class="hero-overlay rounded-box bg-opacity-90"></div>
 					<div class="hero-content flex-col gap-4 lg:flex-row">
 						<Img
-							alt={$_('backdropAlt', { values: { title: data.result.name } })}
+							alt={m.backdropAlt({ title: data.result.name })}
 							params={[data.result.poster_path, 'backdrops', true]}
 							class="max-w-xs rounded-lg shadow-2xl md:max-w-sm"
 						/>
@@ -125,7 +126,7 @@
 								: 'md:flex-row'}"
 						>
 							<Img
-								alt={$_('posterAlt', { values: { title: movie.title } })}
+								alt={m.posterAlt({ title: movie.title })}
 								params={[movie.poster_path, 'posters', true]}
 								class="aspect-2/3 w-full max-w-60 rounded-lg object-cover shadow-2xl"
 							/>
@@ -137,12 +138,12 @@
 								>
 									{#if downloadedMovie}
 										<div class="badge badge-accent badge-outline bg-base-300">
-											{$_('badge.collection')}
+											{m['badge.collection']()}
 										</div>
 									{/if}
 									{#if watched}
 										<div class="badge badge-accent badge-outline bg-base-300">
-											{$_('badge.watched')}
+											{m['badge.watched']()}
 										</div>
 									{/if}
 								</div>
@@ -156,9 +157,9 @@
 								<p>
 									{movie.release_date
 										? new Date(movie.release_date).toLocaleDateString(
-												getSettings() ? getSettings().language : window.navigator.language
+												getSettings() ? getLocale() : window.navigator.language
 											)
-										: $_('noInformationAvailable')}
+										: m.noInformationAvailable()}
 								</p>
 								<p>{movie.overview}</p>
 							</div>
@@ -170,8 +171,8 @@
 	{:else}
 		<div class="flex h-full w-full items-center justify-center">
 			<div class="grid gap-8 text-center">
-				<p class="text-4xl md:text-5xl">{$_('noDataFound')}</p>
-				<a href="/" class="btn btn-lg mt-4 text-2xl">{$_('nav.back')}</a>
+				<p class="text-4xl md:text-5xl">{m.noDataFound()}</p>
+				<a href="/" class="btn btn-lg mt-4 text-2xl">{m['nav.back']()}</a>
 			</div>
 		</div>
 	{/if}

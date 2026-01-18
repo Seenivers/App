@@ -1,17 +1,16 @@
 import { newToast } from '$lib/toast/toast';
-import { _ } from 'svelte-i18n';
-import { get } from 'svelte/store';
+import { m } from '$lib/paraglide/messages';
 
 // Online-Status überwachen und Einstellungen aktualisieren
 export function networkStatus() {
 	ononline = () => {
-		const message = get(_)('networkStatus.online');
+		const message = m['networkStatus.online']();
 		newToast('success', message);
 		console.debug(message);
 	};
 
 	onoffline = () => {
-		const message = get(_)('networkStatus.offline');
+		const message = m['networkStatus.offline']();
 		newToast('error', message);
 		console.debug(message);
 	};

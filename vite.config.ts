@@ -1,3 +1,4 @@
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import { sentrySvelteKit } from '@sentry/sveltekit';
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
@@ -9,6 +10,11 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
+		paraglideVitePlugin({
+			project: './project.inlang',
+			outdir: './src/lib/paraglide',
+			strategy: ['globalVariable', 'localStorage']
+		}),
 		sentrySvelteKit({
 			org: 'seenivers',
 			project: 'app',

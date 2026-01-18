@@ -6,8 +6,8 @@
 	import 'vidstack/player/styles/default/layouts/video.css';
 	import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player';
 	import type { MediaType } from '$lib/types/add';
-	import { json } from 'svelte-i18n';
 	import type { DefaultLayoutTranslations } from 'vidstack';
+	import { m } from '$lib/paraglide/messages';
 
 	interface Props {
 		id: number;
@@ -35,7 +35,7 @@
 
 			const layout = document.querySelector('media-video-layout');
 			if (layout !== null) {
-				layout.translations = $json('vidstack') as Partial<DefaultLayoutTranslations> | null;
+				layout.translations = JSON.parse(m.vidstack_labels());
 			}
 
 			player.addEventListener('loaded-metadata', async () => {

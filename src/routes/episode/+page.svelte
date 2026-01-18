@@ -11,7 +11,7 @@
 	import { online } from 'svelte/reactivity/window';
 	import { episode } from '$lib/utils/db/episode';
 	import { goto, invalidate } from '$app/navigation';
-	import { _ } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 	import Rating from '$lib/components/rating.svelte';
 	import { getSettings } from '$lib/utils/settings/state';
 
@@ -56,31 +56,31 @@
 	{#snippet right()}
 		{#if data.result.path}
 			<button class="btn btn-sm md:btn-md" onclick={openSeriePath} disabled={!data.pathExists}>
-				{$_('startExternalPlayer')}
+				{m.startExternalPlayer()}
 			</button>
-			<div class="tooltip tooltip-bottom" data-tip={$_('doubleClickDelete')}>
+			<div class="tooltip tooltip-bottom" data-tip={m.doubleClickDelete()}>
 				<button
 					class="btn btn-sm hover:btn-error md:btn-md"
 					ondblclick={removeElementById}
 					disabled={!data.result}
 				>
-					{$_('delete')}
+					{m.delete()}
 				</button>
 			</div>
-			<!-- <button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>{$_('edit')}</button> -->
+			<!-- <button class="btn btn-sm md:btn-md" disabled={!data.result} onclick={() => (modal = true)}>{m.edit()}</button> -->
 		{/if}
 		<button class="btn btn-sm md:btn-md" onclick={toggleWatchedStatus} disabled={!data.result}>
-			{watched ? $_('marked.asWatched') : $_('marked.notWatched')}
+			{watched ? m['marked.asWatched']() : m['marked.notWatched']()}
 		</button>
 		<button class="btn" disabled={data.nextEpisodeURL === null} onclick={navigateToNextEpisode}>
-			{$_('nextEpisode')}
+			{m.nextEpisode()}
 		</button>
 		<a
 			href="https://www.themoviedb.org/tv/{data.tvShowID}/season/{data.result.tmdb
 				.season_number}/episode/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">{$_('openOnTMDB')}</a
+			rel="noopener noreferrer">{m.openOnTMDB()}</a
 		>
 	{/snippet}
 </Navbar>
@@ -110,13 +110,13 @@
 					{/if}
 				{/await}
 			{:else if data.result.path}
-				<p class="text-error text-lg font-bold underline md:text-2xl">{$_('videoFileNotFound')}</p>
+				<p class="text-error text-lg font-bold underline md:text-2xl">{m.videoFileNotFound()}</p>
 				<p class="text-xs">{data.result.path}</p>
 			{/if}
 
 			<!-- Trailer -->
 			{#if !data.pathExists && data.result.tmdb.videos.results.length > 0 && online.current}
-				<h2 class="my-3 text-2xl font-bold">{$_('trailer')}</h2>
+				<h2 class="my-3 text-2xl font-bold">{m.trailer()}</h2>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{#each data.result.tmdb.videos.results as trailer (trailer.id)}
 						{#if trailer.site === 'YouTube'}
@@ -126,7 +126,7 @@
 								<figure>
 									<img
 										src={`https://i.ytimg.com/vi/${trailer.key}/0.jpg`}
-										alt={$_('thumbnailAlt', { values: { title: trailer.name } })}
+										alt={m.thumbnailAlt({ title: trailer.name })}
 										referrerpolicy="no-referrer"
 										draggable="false"
 										class="h-48 w-full rounded-t-lg object-cover"
@@ -140,7 +140,7 @@
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
 									>
-										{$_('watchOnYouTube')}
+										{m.watchOnYouTube()}
 									</a>
 								</div>
 							</div>
@@ -152,7 +152,7 @@
 			<!-- Gastdarsteller -->
 			{#if data.result.tmdb.credits.guest_stars.length > 0}
 				<div>
-					<h2 class="my-2 text-2xl font-bold">{$_('guestStars')}</h2>
+					<h2 class="my-2 text-2xl font-bold">{m.guestStars()}</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each data.result.tmdb.credits.guest_stars as guestStars (guestStars.id)}
@@ -178,13 +178,13 @@
 			<!-- Beschreibung -->
 			<div class="space-y-3">
 				<div>
-					<h2 class="text-lg font-bold">{$_('plot')}</h2>
-					<p>{data.result.tmdb.overview || $_('noInformationAvailable')}</p>
+					<h2 class="text-lg font-bold">{m.plot()}</h2>
+					<p>{data.result.tmdb.overview || m.noInformationAvailable()}</p>
 				</div>
 
 				<div class="col-span-1 grid gap-3 md:grid-cols-2">
 					<div>
-						<h2 class="text-lg font-bold">{$_('firstBroadcast')}</h2>
+						<h2 class="text-lg font-bold">{m.firstBroadcast()}</h2>
 						<p>
 							{data.result.tmdb.air_date
 								? new Date(data.result.tmdb.air_date).toLocaleDateString(
@@ -195,64 +195,58 @@
 											day: 'numeric'
 										}
 									)
-								: $_('noInformationAvailable')}
+								: m.noInformationAvailable()}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">{$_('episodeNumber')}</h2>
+						<h2 class="text-lg font-bold">{m.episodeNumber()}</h2>
 						<p>
 							{data.result.tmdb.episode_number !== undefined
-								? $_('episodeNumberwithValue', {
-										values: { number: data.result.tmdb.episode_number }
-									})
-								: $_('noInformationAvailable')}
+								? m.episodeNumberwithValue({ number: data.result.tmdb.episode_number })
+								: m.noInformationAvailable()}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">{$_('season')}</h2>
+						<h2 class="text-lg font-bold">{m.season()}</h2>
 						<p>
 							{data.result.tmdb.season_number !== undefined
-								? $_('seasonwithValue', { values: { number: data.result.tmdb.season_number } })
-								: $_('noInformationAvailable')}
+								? m.seasonwithValue({ number: data.result.tmdb.season_number })
+								: m.noInformationAvailable()}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">{$_('runtime')}</h2>
+						<h2 class="text-lg font-bold">{m.runtime()}</h2>
 						<p>
 							{#if data.result.tmdb.runtime}
 								<time
 									datetime={`PT${Math.floor(data.result.tmdb.runtime / 60)}H${data.result.tmdb.runtime % 60}M`}
 								>
-									{$_('runtimeFormatted', {
-										values: {
-											hours: Math.floor(data.result.tmdb.runtime / 60),
-											minutes: data.result.tmdb.runtime % 60
-										}
+									{m.runtimeFormatted({
+										hours: Math.floor(data.result.tmdb.runtime / 60),
+										minutes: data.result.tmdb.runtime % 60
 									})}
 								</time>
 							{:else}
-								<span>{$_('noInformationAvailable')}</span>
+								<span>{m.noInformationAvailable()}</span>
 							{/if}
 						</p>
 					</div>
 
 					<div>
-						<h2 class="text-lg font-bold">{$_('rating')}</h2>
+						<h2 class="text-lg font-bold">{m.rating()}</h2>
 						<p>
 							{#if data.result.tmdb.vote_average}
-								{$_('ratingSummary', {
-									values: {
-										average: Math.round(data.result.tmdb.vote_average * 10) / 10,
-										count: data.result.tmdb.vote_count ?? 0
-									}
+								{m.ratingSummary({
+									average: Math.round(data.result.tmdb.vote_average * 10) / 10,
+									count: data.result.tmdb.vote_count ?? 0
 								})}
 							{:else}
-								{$_('noInformationAvailable')}
+								{m.noInformationAvailable()}
 							{/if}
-							| {$_('yourRating')}: {data.result.rating}
+							| {m.yourRating()}: {data.result.rating}
 						</p>
 						<Rating
 							value={data.result.rating}
@@ -264,7 +258,7 @@
 		</div>
 	{:else}
 		<div class="flex justify-center p-5">
-			<p class="text-4xl md:text-5xl">{$_('noDataFound')}</p>
+			<p class="text-4xl md:text-5xl">{m.noDataFound()}</p>
 		</div>
 	{/if}
 </main>
