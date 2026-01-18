@@ -6,7 +6,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { loadWatchTime, saveWatchTime, markAsWatched } from './videoUtils';
 	import type { MediaType } from '$lib/types/add';
-	import { json } from 'svelte-i18n';
+	import { m } from '$lib/paraglide/messages';
 
 	interface Props {
 		id: number;
@@ -48,7 +48,7 @@
 			iconUrl: plyrSVG,
 			settings: ['captions', 'quality', 'speed'],
 			blankVideo: blankVideo,
-			i18n: $json('plyr')
+			i18n: JSON.parse(m.plyr_labels())
 		});
 
 		player.on('loadedmetadata', async () => {
