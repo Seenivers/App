@@ -457,16 +457,19 @@
 									<p class="text-sm text-gray-600">{episode.tmdb.overview}</p>
 								{/if}
 							</div>
-							{#if episode.watched}
-								<div class="badge badge-accent badge-outline bg-base-300 absolute top-3 left-3">
-									{m['badge.watched']()}
-								</div>
-							{/if}
-							{#if episode.path !== null}
-								<div class="badge badge-accent badge-outline bg-base-300 absolute top-3 right-3">
-									{m['badge.collection']()}
-								</div>
-							{/if}
+
+							<div class="absolute top-3 right-3 flex w-full flex-col items-end justify-end gap-1">
+								{#if episode.path !== null}
+									<div class="badge badge-accent badge-outline bg-base-300">
+										{m['badge.collection']()}
+									</div>
+								{/if}
+								{#if episode.watched}
+									<div class="badge badge-accent badge-outline bg-base-300">
+										{m['badge.watched']()}
+									</div>
+								{/if}
+							</div>
 						</button>
 					</li>
 				{/each}
