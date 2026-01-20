@@ -1,4 +1,5 @@
 import { seeniversURL } from '$lib';
+import * as Sentry from '@sentry/sveltekit';
 import { app } from '@tauri-apps/api';
 import {
 	arch,
@@ -78,6 +79,7 @@ async function collectClientEnvironment(): Promise<ClientEnvironment> {
  */
 export async function startClientSession(): Promise<void> {
 	if (!online.current || import.meta.env.PROD) return;
+
 	const env = await collectClientEnvironment();
 
 	const res = await postJson<{ clientId: string; sessionId: string }>(START_ENDPOINT, {
@@ -89,7 +91,21 @@ export async function startClientSession(): Promise<void> {
 	clientId = res.clientId;
 	sessionId = res.sessionId;
 
-	// IDs speichern
+	Sentry.withScope((scope) => {
+		scope.setUser({ id: clientId?.toString() });
+
+		scope.setTag('session_id', sessionId);
+		scope.setTag('runtime', 'tauri');
+
+		scope.setContext('client', {
+			clientId,
+			sessionId,
+			appVersion: env.appVersion
+		});
+
+		scope.setContext('os', env);
+	});
+
 	localStorage.setItem('clientId', clientId);
 	sessionStorage.setItem('sessionId', sessionId);
 }
