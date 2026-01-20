@@ -17,13 +17,13 @@
 
 Der aktuelle Stand der plattformübergreifenden Unterstützung sieht wie folgt aus:
 
-| Betriebssystem | Distribution / Version            | Status              | Anmerkungen |
-|---------------|-----------------------------------|---------------------|-------------|
-| Windows       | Windows 10                        | ✅ Unterstützt      | Erfolgreich getestet, funktioniert stabil |
-| Windows       | Windows 11                        | ✅ Unterstützt      | Erfolgreich getestet, funktioniert stabil |
-| Linux         | Ubuntu                            | ❌ Nicht funktionsfähig | Getestet, derzeit nicht lauffähig |
-| Linux         | Fedora Workstation                | ❌ Nicht funktionsfähig | Getestet, derzeit nicht lauffähig |
-| macOS         | –                                 | ⚠️ Nicht getestet  | Aktuell keine Testmöglichkeit vorhanden |
+| Betriebssystem | Distribution / Version | Status                  | Anmerkungen                               |
+| -------------- | ---------------------- | ----------------------- | ----------------------------------------- |
+| Windows        | Windows 10             | ✅ Unterstützt          | Erfolgreich getestet, funktioniert stabil |
+| Windows        | Windows 11             | ✅ Unterstützt          | Erfolgreich getestet, funktioniert stabil |
+| Linux          | Ubuntu                 | ❌ Nicht funktionsfähig | Getestet, derzeit nicht lauffähig         |
+| Linux          | Fedora Workstation     | ❌ Nicht funktionsfähig | Getestet, derzeit nicht lauffähig         |
+| macOS          | –                      | ⚠️ Nicht getestet       | Aktuell keine Testmöglichkeit vorhanden   |
 
 **Hinweis:**  
 Die Unterstützung für Linux (Ubuntu, Fedora Workstation) wird aktiv bearbeitet.  
