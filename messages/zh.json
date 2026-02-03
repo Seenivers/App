@@ -256,5 +256,6 @@
 	"folderNotFound": "文件夹不存在",
 	"watchlist": "观察名单",
 	"watchlistSync": "同步监视列表",
-	"noTMDBAccessToken": "需要TMDB访问权限。请通过设置登录并授权访问。"
+	"noTMDBAccessToken": "需要TMDB访问权限。请通过设置登录并授权访问。",
+	"selectMoviesFolder": "选择“电影”文件夹"
 }
