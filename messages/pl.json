@@ -256,5 +256,6 @@
 	"folderNotFound": "Folder nie istnieje",
 	"watchlist": "Lista obserwowanych",
 	"watchlistSync": "Synchronizuj listę obserwowanych",
-	"noTMDBAccessToken": "Wymagany dostęp do TMDB. Zaloguj się w ustawieniach i zezwól na dostęp."
+	"noTMDBAccessToken": "Wymagany dostęp do TMDB. Zaloguj się w ustawieniach i zezwól na dostęp.",
+	"selectMoviesFolder": "Wybierz folder Filmy"
 }
