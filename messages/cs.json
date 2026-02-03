@@ -256,5 +256,6 @@
 	"folderNotFound": "Složka neexistuje",
 	"watchlist": "Seznam sledovaných položek",
 	"watchlistSync": "Synchronizace seznamu sledovaných položek",
-	"noTMDBAccessToken": "Vyžadován přístup k TMDB. Přihlaste se prosím přes nastavení a autorizujte přístup."
+	"noTMDBAccessToken": "Vyžadován přístup k TMDB. Přihlaste se prosím přes nastavení a autorizujte přístup.",
+	"selectMoviesFolder": "Vyberte složku Filmy"
 }
