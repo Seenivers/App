@@ -256,5 +256,6 @@
 	"folderNotFound": "Le dossier n'existe pas.",
 	"watchlist": "Liste de surveillance",
 	"watchlistSync": "Liste de surveillance synchronisée",
-	"noTMDBAccessToken": "Accès à TMDB requis. Veuillez vous connecter via les paramètres et autoriser l'accès."
+	"noTMDBAccessToken": "Accès à TMDB requis. Veuillez vous connecter via les paramètres et autoriser l'accès.",
+	"selectMoviesFolder": "Sélectionnez le dossier Films"
 }
