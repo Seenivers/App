@@ -123,7 +123,7 @@
 				load();
 			}}
 		>
-			{m.selectFolder()}
+			{m.selectMoviesFolder()}
 		</button>
 		<div class="tooltip tooltip-bottom" data-tip="Doppel klicken zum löschen">
 			<button
