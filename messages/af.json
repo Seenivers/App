@@ -256,5 +256,6 @@
 	"folderNotFound": "Vouer bestaan nie",
 	"watchlist": "Kyklys",
 	"watchlistSync": "Sinkroniseer dophoulys",
-	"noTMDBAccessToken": "TMDB-toegang word vereis. Meld asseblief aan via instellings en magtig toegang."
+	"noTMDBAccessToken": "TMDB-toegang word vereis. Meld asseblief aan via instellings en magtig toegang.",
+	"selectMoviesFolder": "Kies Flieks-lêergids"
 }
