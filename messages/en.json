@@ -191,6 +191,7 @@
 	"selectSeriesFolder": "Select series folder",
 	"selectMovies": "Select movies",
 	"selectFolder": "Select folder",
+	"selectMoviesFolder": "Select movie folder",
 	"deleteAll": "Delete all",
 	"noFilter": "No filter",
 	"queueCount": "Queue ({count})",
