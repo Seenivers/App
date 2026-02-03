@@ -256,5 +256,6 @@
 	"folderNotFound": "폴더가 존재하지 않습니다",
 	"watchlist": "관심 목록",
 	"watchlistSync": "동기화 관심 목록",
-	"noTMDBAccessToken": "TMDB 접근 권한이 필요합니다. 설정에서 로그인 후 접근 권한을 승인해 주세요."
+	"noTMDBAccessToken": "TMDB 접근 권한이 필요합니다. 설정에서 로그인 후 접근 권한을 승인해 주세요.",
+	"selectMoviesFolder": "영화 폴더를 선택하세요"
 }
