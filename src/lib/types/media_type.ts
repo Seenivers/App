@@ -35,7 +35,7 @@ export type Genre = {
 	name: string;
 };
 
-export type Status = 'Released' | 'Rumored';
+export type Status = 'Released' | 'Rumored' | 'Planned' | 'Ended';
 
 export type Department =
 	| 'Acting'
