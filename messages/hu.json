@@ -256,5 +256,6 @@
 	"folderNotFound": "A mappa nem létezik",
 	"watchlist": "Figyelőlista",
 	"watchlistSync": "Figyelőlista szinkronizálása",
-	"noTMDBAccessToken": "TMDB hozzáférés szükséges. Kérjük, jelentkezzen be a beállításokon keresztül, és engedélyezze a hozzáférést."
+	"noTMDBAccessToken": "TMDB hozzáférés szükséges. Kérjük, jelentkezzen be a beállításokon keresztül, és engedélyezze a hozzáférést.",
+	"selectMoviesFolder": "Filmek mappa kiválasztása"
 }
