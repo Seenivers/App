@@ -256,5 +256,6 @@
 	"folderNotFound": "La cartella non esiste",
 	"watchlist": "Lista di controllo",
 	"watchlistSync": "Sincronizza la lista di controllo",
-	"noTMDBAccessToken": "È richiesto l'accesso al TMDB. Accedi tramite le impostazioni e autorizza l'accesso."
+	"noTMDBAccessToken": "È richiesto l'accesso al TMDB. Accedi tramite le impostazioni e autorizza l'accesso.",
+	"selectMoviesFolder": "Seleziona la cartella Film"
 }
