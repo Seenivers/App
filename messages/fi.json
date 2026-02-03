@@ -256,5 +256,6 @@
 	"folderNotFound": "Kansiota ei ole olemassa",
 	"watchlist": "Seurantalista",
 	"watchlistSync": "Synkronoi seurantalista",
-	"noTMDBAccessToken": "TMDB-käyttöoikeus vaaditaan. Kirjaudu sisään asetuksista ja valtuuta käyttöoikeus."
+	"noTMDBAccessToken": "TMDB-käyttöoikeus vaaditaan. Kirjaudu sisään asetuksista ja valtuuta käyttöoikeus.",
+	"selectMoviesFolder": "Valitse Elokuvat-kansio"
 }
