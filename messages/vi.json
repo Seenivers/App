@@ -256,5 +256,6 @@
 	"folderNotFound": "Thư mục không tồn tại",
 	"watchlist": "Danh sách theo dõi",
 	"watchlistSync": "Danh sách theo dõi đồng bộ",
-	"noTMDBAccessToken": "Cần có quyền truy cập TMDB. Vui lòng đăng nhập qua phần cài đặt và cấp quyền truy cập."
+	"noTMDBAccessToken": "Cần có quyền truy cập TMDB. Vui lòng đăng nhập qua phần cài đặt và cấp quyền truy cập.",
+	"selectMoviesFolder": "Chọn thư mục Phim"
 }
