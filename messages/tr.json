@@ -256,5 +256,6 @@
 	"folderNotFound": "Klasör mevcut değil.",
 	"watchlist": "İzleme listesi",
 	"watchlistSync": "İzleme Listesini Senkronize Et",
-	"noTMDBAccessToken": "TMDB erişimi gereklidir. Lütfen ayarlar üzerinden giriş yapın ve erişimi yetkilendirin."
+	"noTMDBAccessToken": "TMDB erişimi gereklidir. Lütfen ayarlar üzerinden giriş yapın ve erişimi yetkilendirin.",
+	"selectMoviesFolder": "Filmler klasörünü seçin"
 }
