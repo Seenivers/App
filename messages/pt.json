@@ -256,5 +256,6 @@
 	"folderNotFound": "A pasta não existe.",
 	"watchlist": "Lista de observação",
 	"watchlistSync": "Lista de observação de sincronização",
-	"noTMDBAccessToken": "É necessário acesso ao TMDB. Faça login nas configurações e autorize o acesso."
+	"noTMDBAccessToken": "É necessário acesso ao TMDB. Faça login nas configurações e autorize o acesso.",
+	"selectMoviesFolder": "Selecione a pasta Filmes"
 }
