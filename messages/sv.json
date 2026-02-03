@@ -256,5 +256,6 @@
 	"folderNotFound": "Mappen finns inte",
 	"watchlist": "Bevakningslista",
 	"watchlistSync": "Synkronisera bevakningslista",
-	"noTMDBAccessToken": "TMDB-åtkomst krävs. Vänligen logga in via inställningar och auktorisera åtkomst."
+	"noTMDBAccessToken": "TMDB-åtkomst krävs. Vänligen logga in via inställningar och auktorisera åtkomst.",
+	"selectMoviesFolder": "Välj mappen Filmer"
 }
