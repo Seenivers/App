@@ -256,5 +256,6 @@
 	"folderNotFound": "La carpeta no existeix",
 	"watchlist": "Llista de seguiment",
 	"watchlistSync": "Sincronitza la llista de seguiment",
-	"noTMDBAccessToken": "Cal accés a TMDB. Si us plau, inicia la sessió a través de la configuració i autoritza l'accés."
+	"noTMDBAccessToken": "Cal accés a TMDB. Si us plau, inicia la sessió a través de la configuració i autoritza l'accés.",
+	"selectMoviesFolder": "Selecciona la carpeta Pel·lícules"
 }
