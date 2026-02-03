@@ -256,5 +256,6 @@
 	"folderNotFound": "De map bestaat niet.",
 	"watchlist": "Kijklijst",
 	"watchlistSync": "Synchroniseer de volglijst",
-	"noTMDBAccessToken": "TMDB-toegang is vereist. Meld u aan via de instellingen en geef toestemming voor toegang."
+	"noTMDBAccessToken": "TMDB-toegang is vereist. Meld u aan via de instellingen en geef toestemming voor toegang.",
+	"selectMoviesFolder": "Selecteer de map Films"
 }
