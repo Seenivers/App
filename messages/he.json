@@ -256,5 +256,6 @@
 	"folderNotFound": "התיקייה לא קיימת",
 	"watchlist": "רשימת מעקב",
 	"watchlistSync": "סנכרון רשימת מעקב",
-	"noTMDBAccessToken": "נדרשת גישה ל-TMDB. אנא התחבר דרך ההגדרות ואשר גישה."
+	"noTMDBAccessToken": "נדרשת גישה ל-TMDB. אנא התחבר דרך ההגדרות ואשר גישה.",
+	"selectMoviesFolder": "בחר תיקיית סרטים"
 }
