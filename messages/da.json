@@ -256,5 +256,6 @@
 	"folderNotFound": "Mappen findes ikke",
 	"watchlist": "Overvågningsliste",
 	"watchlistSync": "Synkroniser overvågningsliste",
-	"noTMDBAccessToken": "TMDB-adgang kræves. Log venligst ind via indstillinger og godkend adgang."
+	"noTMDBAccessToken": "TMDB-adgang kræves. Log venligst ind via indstillinger og godkend adgang.",
+	"selectMoviesFolder": "Vælg Film-mappen"
 }
