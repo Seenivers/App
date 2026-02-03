@@ -256,5 +256,6 @@
 	"folderNotFound": "La carpeta no existe",
 	"watchlist": "Lista de vigilancia",
 	"watchlistSync": "Sincronizar lista de seguimiento",
-	"noTMDBAccessToken": "Se requiere acceso a TMDB. Inicie sesión en la configuración y autorice el acceso."
+	"noTMDBAccessToken": "Se requiere acceso a TMDB. Inicie sesión en la configuración y autorice el acceso.",
+	"selectMoviesFolder": "Seleccionar carpeta de películas"
 }
