@@ -256,5 +256,6 @@
 	"folderNotFound": "Ordner existiert nicht",
 	"watchlist": "Watchlist",
 	"watchlistSync": "Watchlist synchronisieren",
-	"noTMDBAccessToken": "TMDB-Zugriff erforderlich. Bitte in den Einstellungen anmelden und Zugriff erlauben."
+	"noTMDBAccessToken": "TMDB-Zugriff erforderlich. Bitte in den Einstellungen anmelden und Zugriff erlauben.",
+	"selectMoviesFolder": "Filme Ordner auswählen"
 }
