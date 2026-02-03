@@ -256,5 +256,6 @@
 	"folderNotFound": "Dosarul nu există",
 	"watchlist": "Listă de urmărire",
 	"watchlistSync": "Sincronizați lista de urmărire",
-	"noTMDBAccessToken": "Este necesar acces la TMDB. Vă rugăm să vă conectați prin setări și să autorizați accesul."
+	"noTMDBAccessToken": "Este necesar acces la TMDB. Vă rugăm să vă conectați prin setări și să autorizați accesul.",
+	"selectMoviesFolder": "Selectați folderul Filme"
 }
