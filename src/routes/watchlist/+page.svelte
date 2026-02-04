@@ -12,7 +12,10 @@
 	import { getSettings } from '$lib/utils/settings/state';
 	import { newToast } from '$lib/toast/toast';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
+
+	let movies = $derived(data.movie);
+	let series = $derived(data.serie);
 
 	const removeFromWatchlist = async (mediaType: 'movie' | 'tv', mediaId: number) => {
 		await postWatchlist({
@@ -22,18 +25,16 @@
 		});
 
 		if (mediaType === 'movie') {
-			data.movie = data.movie.filter((item) => item.id !== mediaId);
+			movies = movies.filter((item) => item.id !== mediaId);
 			movie.update(mediaId, {
 				wantsToWatch: false
 			});
 		} else if (mediaType === 'tv') {
-			data.serie = data.serie.filter((item) => item.id !== mediaId);
+			series = series.filter((item) => item.id !== mediaId);
 			serie.update(mediaId, {
 				wantsToWatch: false
 			});
 		}
-
-		location.reload();
 	};
 </script>
 
@@ -52,7 +53,6 @@
 				onclick={async () => {
 					await syncWatchlist();
 					newToast('success', 'Watchlist synchronized');
-					location.reload();
 				}}
 				disabled={!getSettings().tmdbAccessToken || !online.current}>{m.watchlistSync()}</button
 			>
@@ -70,13 +70,13 @@
 			name="tabs"
 			role="tab"
 			class="tab"
-			aria-label="{m.movies()} - {data.movie.length}"
+			aria-label="{m.movies()} - {movies.length}"
 			checked
 		/>
 		<div role="tabpanel" class="tab-content bg-base-100 space-y-2 p-4">
-			{#if data.movie.length > 0}
+			{#if movies.length > 0}
 				<ul class="space-y-2">
-					{#each data.movie as item (item.id)}
+					{#each movies as item (item.id)}
 						<li class="hover:bg-base-300 flex items-center gap-3 rounded-lg p-2 transition">
 							<a href={`/movie?id=${item.id}`} class="flex flex-1 items-center gap-3">
 								<Img
@@ -118,12 +118,12 @@
 			name="tabs"
 			role="tab"
 			class="tab"
-			aria-label="{m.series()} - {data.serie.length}"
+			aria-label="{m.series()} - {series.length}"
 		/>
 		<div role="tabpanel" class="tab-content bg-base-100 space-y-2 p-4">
-			{#if data.serie.length > 0}
+			{#if series.length > 0}
 				<ul class="space-y-2">
-					{#each data.serie as item (item.id)}
+					{#each series as item (item.id)}
 						<li class="hover:bg-base-300 flex items-center gap-3 rounded-lg p-2 transition">
 							<a href={`/tv?id=${item.id}`} class="flex flex-1 items-center gap-3">
 								<Img
