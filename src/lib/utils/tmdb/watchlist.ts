@@ -1,26 +1,18 @@
 import { db } from '$lib/db/database';
 import { movies as schemaMovies, serie as schemaSerie } from '$lib/db/schema';
-import { movie } from '../db/movie';
-import { serie } from '../db/serie';
 import { getWatchlist, postWatchlist } from '../tmdb';
 import { eq } from 'drizzle-orm';
 
 export async function syncWatchlist() {
-	// 📥 Remote-Watchlist von TMDB abrufen
 	const remoteWatchlist = await getWatchlist();
 	if (!remoteWatchlist) return;
 
-	// 📦 IDs der Filme und Serien aus der Remote-Watchlist
 	const remoteMovieIds = remoteWatchlist.movies.map((m) => m.id);
 	const remoteSeriesIds = remoteWatchlist.tv.map((s) => s.id);
 
-	// 📥 Lokale Filme und Serien abrufen, die in der Remote-Watchlist sind
-	const [localMovies, localSeries] = await Promise.all([
-		movie.getAll(remoteMovieIds),
-		serie.getAll(remoteSeriesIds)
-	]);
+	const remoteMovieIdSet = new Set(remoteMovieIds);
+	const remoteSeriesIdSet = new Set(remoteSeriesIds);
 
-	// 📑 Alle lokalen Einträge sammeln, die als Watchlist markiert sind
 	const [localWatchlistMovies, localWatchlistSeries] = await Promise.all([
 		db
 			.select({
@@ -39,21 +31,33 @@ export async function syncWatchlist() {
 			.where(eq(schemaSerie.wantsToWatch, true))
 	]);
 
-	// 🧹 Alle wantsToWatch-Flags lokal zurücksetzen
+	const localMovieIdSet = new Set(localWatchlistMovies.map((m) => m.media_id));
+
+	const localSeriesIdSet = new Set(localWatchlistSeries.map((s) => s.media_id));
+
+	// MOVIES – symmetrische Differenz
+
+	const remote_Movies = remoteMovieIds.filter((id) => !localMovieIdSet.has(id));
+
+	const locale_Movies = localWatchlistMovies.filter((m) => !remoteMovieIdSet.has(m.media_id));
+
+	// TV – symmetrische Differenz
+
+	const remote_Tv = remoteSeriesIds.filter((id) => !localSeriesIdSet.has(id));
+
+	const locale_Tv = localWatchlistSeries.filter((s) => !remoteSeriesIdSet.has(s.media_id));
+
 	await Promise.all([
-		db.update(schemaMovies).set({ wantsToWatch: false }).run(),
-		db.update(schemaSerie).set({ wantsToWatch: false }).run()
+		remote_Movies.map(async (id) => {
+			await db.update(schemaMovies).set({ wantsToWatch: true }).where(eq(schemaMovies.id, id));
+		}),
+		remote_Tv.map(async (id) => {
+			await db.update(schemaSerie).set({ wantsToWatch: true }).where(eq(schemaSerie.id, id));
+		})
 	]);
 
-	// ✅ wantsToWatch: true für Filme und Serien aus der Remote-Watchlist
-	await Promise.all([
-		...localMovies.map((entry) => movie.update(entry.id, { wantsToWatch: true })),
-		...localSeries.map((entry) => serie.update(entry.id, { wantsToWatch: true }))
-	]);
-
-	// 📤 Sync-Payload für TMDB vorbereiten
 	const watchlistSyncPayload = [
-		...localWatchlistMovies
+		...locale_Movies
 			// TMDB liefert bei manchen Filmen nur einen "Rumored"-Eintrag.
 			// Diese Filme existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
 			// Deshalb überspringen wir diese Filme, um Fehler zu vermeiden.
@@ -63,7 +67,7 @@ export async function syncWatchlist() {
 				media_id: movie.media_id,
 				watchlist: true
 			})),
-		...localWatchlistSeries
+		...locale_Tv
 			// TMDB liefert bei manchen Serien nur einen "Rumored"-Eintrag.
 			// Diese Serie existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
 			// Deshalb überspringen wir diese Serie, um Fehler zu vermeiden.
@@ -75,6 +79,5 @@ export async function syncWatchlist() {
 			}))
 	];
 
-	// 📤 Watchlist-Payload an TMDB senden
 	await Promise.all(watchlistSyncPayload.map((entry) => postWatchlist(entry)));
 }
