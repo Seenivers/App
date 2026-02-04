@@ -80,4 +80,9 @@ export async function syncWatchlist() {
 	];
 
 	await Promise.all(watchlistSyncPayload.map((entry) => postWatchlist(entry)));
+
+	const movie = await db.select().from(schemaMovies).where(eq(schemaMovies.wantsToWatch, true));
+	const serie = await db.select().from(schemaSerie).where(eq(schemaSerie.wantsToWatch, true));
+
+	return { movie, serie };
 }
