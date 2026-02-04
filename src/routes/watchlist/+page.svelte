@@ -51,8 +51,12 @@
 			<button
 				class="btn"
 				onclick={async () => {
-					await syncWatchlist();
+					const result = await syncWatchlist();
 					newToast('success', 'Watchlist synchronized');
+					if (!result) return;
+
+					movies = result.movie;
+					series = result.serie;
 				}}
 				disabled={!getSettings().tmdbAccessToken || !online.current}>{m.watchlistSync()}</button
 			>
