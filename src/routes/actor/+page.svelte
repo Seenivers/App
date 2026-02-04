@@ -96,7 +96,7 @@
 		{@const actor = data.result}
 
 		<div class="grid w-full max-w-(--breakpoint-xl) grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
-			<!-- Sidebar -->
+			<!-- Sidebar: Actor Infos -->
 			<aside class="card bg-base-200 h-fit w-full p-5 shadow-md">
 				<div class="flex flex-col items-center gap-4">
 					<Img
@@ -105,6 +105,76 @@
 						class="w-full max-w-62.5 rounded-lg object-cover shadow-lg"
 					/>
 
+					<!-- Social media -->
+					{#if actor.external_ids}
+						<div class="w-full space-y-2">
+							<h2 class="text-lg font-semibold">{m.socialMedia()}</h2>
+							<div class="flex flex-wrap gap-2">
+								{#if actor.external_ids.imdb_id}
+									<a
+										href={`https://www.imdb.com/name/${actor.external_ids.imdb_id}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="btn btn-outline btn-sm transition hover:bg-yellow-500 hover:text-white"
+									>
+										IMDb
+									</a>
+								{/if}
+								{#if actor.external_ids.instagram_id}
+									<a
+										href={`https://www.instagram.com/${actor.external_ids.instagram_id}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="btn btn-outline btn-sm transition hover:bg-linear-to-r hover:from-pink-500 hover:to-yellow-500 hover:text-white"
+									>
+										Instagram
+									</a>
+								{/if}
+								{#if actor.external_ids.tiktok_id}
+									<a
+										href={`https://www.tiktok.com/@${actor.external_ids.tiktok_id}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="btn btn-outline btn-sm transition hover:bg-black hover:text-white"
+									>
+										TikTok
+									</a>
+								{/if}
+								{#if actor.external_ids.facebook_id}
+									<a
+										href={`https://www.facebook.com/${actor.external_ids.facebook_id}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="btn btn-outline btn-sm transition hover:bg-blue-600 hover:text-white"
+									>
+										Facebook
+									</a>
+								{/if}
+								{#if actor.external_ids.twitter_id}
+									<a
+										href={`https://twitter.com/${actor.external_ids.twitter_id}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="btn btn-outline btn-sm transition hover:bg-blue-400 hover:text-white"
+									>
+										Twitter
+									</a>
+								{/if}
+								{#if actor.external_ids.youtube_id}
+									<a
+										href={`https://www.youtube-nocookie.com/${actor.external_ids.youtube_id}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="btn btn-outline btn-sm transition hover:bg-red-600 hover:text-white"
+									>
+										YouTube
+									</a>
+								{/if}
+							</div>
+						</div>
+					{/if}
+
+					<!-- Infos -->
 					<div class="w-full space-y-4 text-sm">
 						<div>
 							<span class="font-semibold">{m.knownFor()}:</span>
@@ -118,10 +188,10 @@
 							<span class="font-semibold">{m.birthdate()}:</span>
 							<p>
 								{#if actor.birthday}
-									{@const birth = new Date(actor.birthday)}
-									{@const end = actor.deathday ? new Date(actor.deathday) : new Date()}
-									{@const age = end.getFullYear() - birth.getFullYear()}
-									{birth.toLocaleDateString()} ({age})
+									{@const birthDate = new Date(actor.birthday)}
+									{@const deathDate = actor.deathday ? new Date(actor.deathday) : new Date()}
+									{@const age = deathDate.getFullYear() - birthDate.getFullYear()}
+									{birthDate.toLocaleDateString()} ({age})
 								{:else}
 									{m.noInformationAvailable()}
 								{/if}
@@ -133,24 +203,39 @@
 								<p>{new Date(actor.deathday).toLocaleDateString()}</p>
 							</div>
 						{/if}
+						<div>
+							<span class="font-semibold">{m.birthplace()}:</span>
+							<p>{actor.place_of_birth || m.noInformationAvailable()}</p>
+						</div>
+						{#if actor.also_known_as.length > 0}
+							<div>
+								<span class="font-semibold">{m.aliases()}:</span>
+								<ul class="list-inside list-disc space-y-1">
+									{#each actor.also_known_as as alias (alias)}
+										<li>{alias}</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
 					</div>
 				</div>
 			</aside>
 
-			<!-- Main -->
+			<!-- Main Content -->
 			<section class="card bg-base-200 w-full p-5 shadow-md">
 				<h1 class="text-3xl font-bold">{actor.name}</h1>
 
+				<!-- Biografie -->
 				<div class="mt-6 space-y-2">
 					<h2 class="text-xl font-semibold">{m.biography()}</h2>
 					{#if actor.biography}
-						<p class="leading-relaxed whitespace-pre-wrap">{actor.biography}</p>
+						<p class="text-base-content leading-relaxed whitespace-pre-wrap">{actor.biography}</p>
 					{:else}
-						<p class="text-base-content/70 italic">{m.noInformationAvailable()}</p>
+						<p class="text-base-content/80 mt-6 italic">{m.noInformationAvailable()}</p>
 					{/if}
 				</div>
 
-				<!-- Filmografie nach Jahr -->
+				<!-- Cast und Crew -->
 				{#each ['cast', 'crew'] as const as type (type)}
 					{@const grouped = groupByYear(actor.combined_credits[type])}
 
