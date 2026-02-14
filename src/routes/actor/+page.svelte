@@ -3,8 +3,7 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { m } from '$lib/paraglide/messages';
-	import { onMount } from 'svelte';
-	import { discord } from '$lib/utils/discord';
+
 	import Movie from '$lib/assets/SVG/movie.svelte';
 	import Tv from '$lib/assets/SVG/tv.svelte';
 
@@ -72,10 +71,6 @@
 
 		return map;
 	}
-
-	onMount(() => {
-		discord();
-	});
 </script>
 
 <Navbar back={true}>
