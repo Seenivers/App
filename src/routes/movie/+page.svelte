@@ -9,8 +9,6 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { openPath } from '@tauri-apps/plugin-opener';
-	import { onMount } from 'svelte';
-	import { discord } from '$lib/utils/discord';
 	import { collection } from '$lib/utils/db/collection';
 	import { movie } from '$lib/utils/db/movie';
 	import { online } from 'svelte/reactivity/window';
@@ -61,10 +59,6 @@
 			maximumFractionDigits: 0
 		}).format(money);
 	}
-
-	onMount(() => {
-		discord();
-	});
 </script>
 
 <Navbar back={true}>
