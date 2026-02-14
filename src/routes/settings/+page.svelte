@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { app } from '@tauri-apps/api';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import { onMount } from 'svelte';
-	import { discord } from '$lib/utils/discord';
 	import { setTheme } from '$lib/utils/themeUtils';
 	import Backup from './backup.svelte';
 	import Settings from './settings.svelte';
@@ -10,10 +8,6 @@
 	import { getSettings } from '$lib/utils/settings/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-
-	onMount(() => {
-		discord();
-	});
 </script>
 
 <Navbar
