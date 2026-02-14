@@ -11,7 +11,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { online } from 'svelte/reactivity/window';
 	import { selectFile, selectFolder, selectTvFolder } from '$lib/add/select';
-	import { discord } from '$lib/utils/discord';
+
 	import { addNewFiles } from '$lib/add/fileScanner';
 	import { load } from '$lib/add/loader';
 	import { searchMediaStatus } from '$lib/add/search';
@@ -48,8 +48,6 @@
 
 	// Überprüfe beim Mounten, ob die Daten valide sind und starte den Ladevorgang
 	onMount(async () => {
-		discord();
-
 		if (Array.isArray(data.paths) && data.paths.length > 0) {
 			// Wenn data.paths ein Array ist und nicht leer, füge die Dateien hinzu
 			await addNewFiles(data.paths);
