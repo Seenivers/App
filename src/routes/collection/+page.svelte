@@ -4,7 +4,6 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Img from '$lib/image/Img.svelte';
 	import { onMount } from 'svelte';
-	import { discord } from '$lib/utils/discord';
 	import { m } from '$lib/paraglide/messages';
 	import { collection } from '$lib/utils/db/collection';
 	import { getSettings } from '$lib/utils/settings/state';
@@ -49,8 +48,6 @@
 		if (stored !== null) {
 			sortNewestFirst = stored === 'true';
 		}
-
-		discord();
 	});
 </script>
 
