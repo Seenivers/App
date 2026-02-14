@@ -1,4 +1,3 @@
-// src/migrations.rs
 use include_dir::{include_dir, Dir};
 use tauri_plugin_sql::{Migration, MigrationKind};
 
