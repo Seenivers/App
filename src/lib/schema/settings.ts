@@ -52,7 +52,6 @@ export const settingsSchema = z.object({
 	toastPosition: toastPositionSchema.default({ horizontal: 'end', vertical: 'bottom' }),
 	player: playerSchema.default('Plyr'),
 	castImages: z.number().int().min(0).default(5),
-	discordAktiv: z.boolean().default(true),
 	backupInterval: backupIntervalSchema.default('manual'),
 	backupConfig: backupConfigSchema.default({ maxAgeDays: 0, maxBackups: 14, maxSizeMB: 0 }),
 	watchPaths: z.array(z.string()).default([]),
