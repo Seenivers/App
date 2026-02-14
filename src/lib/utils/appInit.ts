@@ -1,7 +1,6 @@
 import { getCurrentWebview } from '@tauri-apps/api/webview';
 import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { networkStatus } from '$lib/utils/networkStatus';
-import { discord } from '$lib/utils/discord';
 import { stop as stopDrpc } from 'tauri-plugin-drpc';
 import { handleElements } from '$lib/utils/utils';
 import { setTheme } from '$lib/utils/themeUtils';
@@ -30,7 +29,6 @@ export async function initApp() {
 	setTheme(getSettings().theme);
 
 	if (mainWindow) {
-		await discord();
 		startClientSession();
 	}
 
