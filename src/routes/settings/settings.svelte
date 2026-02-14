@@ -234,17 +234,6 @@
 		</div>
 	</label>
 
-	<!-- Discord RPC -->
-	<label class="form-control flex w-full items-center justify-between">
-		<span class="label font-semibold">{m['settings.discordRpc']()}</span>
-		<input
-			type="checkbox"
-			class="toggle toggle-primary"
-			bind:checked={settingsTemp.discordAktiv}
-			onchange={markDirty}
-		/>
-	</label>
-
 	<!-- TMDB Auth Sesson -->
 	<label for="tmdbAuth" class="flex w-full items-center justify-between">
 		<span class="label font-semibold">{m['settings.tmdbAuthLabel']()}</span>
