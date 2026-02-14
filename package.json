@@ -68,7 +68,6 @@
 		"drizzle-orm": "^0.45.1",
 		"hls.js": "^1.6.15",
 		"plyr": "^3.8.4",
-		"tauri-plugin-drpc": "^1.0.3",
 		"vidstack": "^1.12.13",
 		"zod": "^4.3.5"
 	},
