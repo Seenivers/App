@@ -1,138 +1,177 @@
 <script lang="ts">
-	import Fuse from 'fuse.js';
-	import type { IFuseOptions } from 'fuse.js';
-	import Navbar from '$lib/components/Navbar.svelte';
-	import type { PageData } from './$types';
 	import Card from '$lib/components/card.svelte';
 	import { m } from '$lib/paraglide/messages';
-	import type { CardscaleNumbers } from '$lib/types/cardscale';
-	import Search from '$lib/assets/SVG/search.svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import { getFilter, setFilter, type SortOption } from '$lib/utils/sessionStorage';
+	import { loadBatch } from './load';
+	import { getFilter, resetFilter, setFilter } from '$lib/utils/sessionStorage';
+	import Navbar from '$lib/components/Navbar.svelte';
+	import Search from '$lib/assets/SVG/search.svelte';
 	import Reset from '$lib/assets/SVG/reset.svelte';
+	import { buildIndex, type SearchItem } from './searchIndex';
+	import type Fuse from 'fuse.js';
 
-	interface Props {
-		data: PageData;
-	}
+	let fuse: Fuse<SearchItem> | null = null;
+	let indexMap = new Map<string, Item>();
 
-	let { data }: Props = $props();
+	type Batch = Awaited<ReturnType<typeof loadBatch>>;
+	type Item = Batch extends Array<infer T> ? T : never;
 
-	type MovieItem = (typeof data.movies)[number];
-	type SeriesItem = (typeof data.series)[number];
-	type CollectionItem = (typeof data.collections)[number];
+	let items: Batch | null = null;
 
-	let CARDSCALE: CardscaleNumbers = $state(2);
-	let search = $state('');
-	let showCollections = $state(false);
-	let showMovies = $state(true);
-	let showSeries = $state(true);
-	let sortOption: SortOption = $state('added');
-	let selectedGenres: string[] = $state([]);
-	let watchedFilter: 'all' | 'watched' | 'unwatched' = $state('all');
+	let filter = getFilter();
 
-	let fuseMovies: Fuse<MovieItem> | null = $state(null);
-	let fuseSeries: Fuse<SeriesItem> | null = $state(null);
-	let fuseCollections: Fuse<CollectionItem> | null = $state(null);
+	function getTitle(item: Item): string {
+		switch (item.type) {
+			case 'collection':
+				return item.name;
 
-	const genreFilter = (genres: { name: string }[]) =>
-		selectedGenres.length === 0 || genres.some((g) => selectedGenres.includes(g.name));
+			case 'movie':
+				return item.tmdb.title;
 
-	const filteredItems = <T extends { tmdb: any; watched?: boolean }>(
-		items: T[],
-		fuse: Fuse<T> | null,
-		visible: boolean
-	) => {
-		if (!visible || !fuse) return [];
-		const base = search.trim() === '' ? items : fuse.search(search).map((r) => r.item);
-		return base
-			.filter((item) => genreFilter(item.tmdb.genres || []))
-			.filter((item) =>
-				watchedFilter === 'all' ? true : watchedFilter === 'watched' ? item.watched : !item.watched
-			)
-			.sort(sortBy);
-	};
+			case 'series':
+				return item.tmdb.name;
 
-	function sortBy(a: any, b: any) {
-		switch (sortOption) {
-			case 'rating':
-				return (b.tmdb.vote_average ?? 0) - (a.tmdb.vote_average ?? 0);
-			case 'duration':
-				return (b.tmdb.runtime ?? 0) - (a.tmdb.runtime ?? 0);
-			case 'release_date_desc':
-				return (
-					new Date(b.tmdb.release_date ?? '').getTime() -
-					new Date(a.tmdb.release_date ?? '').getTime()
-				);
-			case 'release_date_asc':
-				return (
-					new Date(a.tmdb.release_date ?? '').getTime() -
-					new Date(b.tmdb.release_date ?? '').getTime()
-				);
-			case 'popularity':
-				return (b.tmdb.popularity ?? 0) - (a.tmdb.popularity ?? 0);
-			case 'alpha':
-				return (a.tmdb.title || a.tmdb.name || '').localeCompare(b.tmdb.title || b.tmdb.name || '');
-			case 'last_watched':
-				return new Date(b.watchTime ?? 0).getTime() - new Date(a.watchTime ?? 0).getTime();
 			default:
-				return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+				return '';
 		}
 	}
 
-	function resetFilters() {
-		CARDSCALE = 2;
-		search = '';
-		showCollections = false;
-		showMovies = true;
-		showSeries = true;
-		sortOption = 'added';
-		selectedGenres = [];
-		watchedFilter = 'all';
+	function getPoster(item: Item): string | null {
+		if (item.type === 'collection') return item.poster_path;
+		return item.tmdb?.poster_path ?? null;
 	}
 
-	onMount(() => {
-		const filter = getFilter();
-		CARDSCALE = filter.CARDSCALE;
-		search = filter.search;
-		showCollections = filter.showCollections;
-		showMovies = filter.showMovies;
-		showSeries = filter.showSeries;
-		sortOption = filter.sortOption;
-		selectedGenres = filter.selectedGenres;
-		watchedFilter = filter.watchedFilter;
+	function getHref(item: Item): string {
+		if (item.type === 'series') return `/tv?id=${item.id}`;
+		return `/${item.type}?id=${item.id}`;
+	}
 
-		const makeFuse = <T,>(list: T[], keys: { name: string; weight: number }[]) => {
-			const options: IFuseOptions<T> = {
-				keys,
-				threshold: 0.3,
-				ignoreLocation: true
-			};
-			return new Fuse<T>(list, options);
-		};
+	function resetFilters() {
+		filter = resetFilter();
+	}
 
-		fuseMovies = makeFuse(data.movies, [
-			{ name: 'tmdb.title', weight: 0.7 },
-			{ name: 'tmdb.genres.name', weight: 0.3 }
-		]);
-		fuseSeries = makeFuse(data.series, [
-			{ name: 'tmdb.name', weight: 0.7 },
-			{ name: 'tmdb.genres.name', weight: 0.3 }
-		]);
-		fuseCollections = makeFuse(data.collections, [{ name: 'tmdb.name', weight: 1.0 }]);
+	function getDate(i: Item) {
+		return new Date(i.updated).getTime();
+	}
 
-		onDestroy(() => {
-			// Session-Storage speichern
-			setFilter({
-				CARDSCALE,
-				search,
-				showCollections,
-				showMovies,
-				showSeries,
-				sortOption,
-				selectedGenres,
-				watchedFilter
-			});
-		});
+	function getRating(i: Item) {
+		return i.type === 'collection' ? 0 : (i.tmdb.vote_average ?? 0);
+	}
+
+	function getTitleSafe(i: Item) {
+		return getTitle(i).toLowerCase();
+	}
+
+	function getDuration(i: Item): number {
+		if (i.type === 'movie') return i.tmdb.runtime ?? 0;
+
+		if (i.type === 'series') {
+			// episode_run_time ist Array
+			const ep = i.tmdb.episode_run_time?.[0] ?? 0;
+			const seasons = i.tmdb.number_of_seasons ?? 1;
+			return ep * seasons;
+		}
+
+		return 0; // collections
+	}
+
+	function getReleaseDate(i: Item): number {
+		const d =
+			i.type === 'movie' ? i.tmdb.release_date : i.type === 'series' ? i.tmdb.first_air_date : null;
+
+		return d ? new Date(d).getTime() : 0;
+	}
+
+	function getPopularity(i: Item): number {
+		return i.type === 'collection' ? 0 : (i.tmdb.popularity ?? 0);
+	}
+
+	function getLastWatched(i: Item): number {
+		switch (i.type) {
+			case 'movie':
+				return i.watchTime ?? 0;
+
+			default:
+				return 0;
+		}
+	}
+
+	function sortBy(a: Item, b: Item) {
+		switch (filter.sortOption) {
+			case 'rating':
+				return getRating(b) - getRating(a);
+
+			case 'duration':
+				return getDuration(b) - getDuration(a);
+
+			case 'release_date_desc':
+				return getReleaseDate(b) - getReleaseDate(a);
+
+			case 'release_date_asc':
+				return getReleaseDate(a) - getReleaseDate(b);
+
+			case 'popularity':
+				return getPopularity(b) - getPopularity(a);
+
+			case 'last_watched':
+				return getLastWatched(b) - getLastWatched(a);
+
+			case 'alpha':
+				return getTitleSafe(a).localeCompare(getTitleSafe(b));
+
+			case 'added':
+			default:
+				return getDate(b) - getDate(a);
+		}
+	}
+
+	function getFilteredItems(): Item[] {
+		if (!items) return [];
+
+		let base: Item[];
+
+		if (!filter.search.trim() || !fuse) {
+			base = items;
+		} else {
+			base = fuse
+				.search(filter.search)
+				.map((r) => indexMap.get(`${r.item.type}-${r.item.ref}`)!)
+				.filter(Boolean);
+		}
+
+		return base
+			.filter(
+				(i) =>
+					(filter.showCollections && i.type === 'collection') ||
+					(filter.showMovies && i.type === 'movie') ||
+					(filter.showSeries && i.type === 'series')
+			)
+			.filter((i) =>
+				filter.watchedFilter === 'all'
+					? true
+					: filter.watchedFilter === 'watched'
+						? i.watched
+						: !i.watched
+			)
+			.sort(sortBy);
+	}
+
+	onMount(async () => {
+		items = await loadBatch();
+
+		const { index, fuse: f } = buildIndex(items);
+		fuse = f;
+
+		indexMap = new Map(
+			index.map((i) => [
+				`${i.type}-${i.ref}`,
+				items!.find((x) => x.id === i.ref && x.type === i.type)!
+			])
+		);
+	});
+
+	onDestroy(() => {
+		setFilter(filter);
 	});
 </script>
 
@@ -147,125 +186,88 @@
 </Navbar>
 
 <main class="z-0 flex flex-col p-1 sm:p-3">
-	{#if data.movies.length + data.series.length + data.collections.length > 0}
-		<div class="my-2 space-y-2 print:hidden">
-			<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
-				<div class="flex grow gap-2">
-					<label class="input input-bordered flex w-full items-center gap-2">
-						<Search class="h-4 w-4 opacity-70" />
-						<input
-							type="text"
-							class="grow"
-							placeholder={m['main.searchPlaceholder']()}
-							bind:value={search}
-						/>
-					</label>
-					<button
-						type="reset"
-						class="btn btn-ghost"
-						onclick={resetFilters}
-						title={m.resetFilters()}
-					>
-						<Reset class="h-8 w-8 opacity-70" />
-					</button>
-				</div>
-			</div>
-
-			<div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-				<div class="flex flex-wrap gap-2">
-					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">{m.movies()}</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-sm"
-							disabled={data.movies.length === 0}
-							bind:checked={showMovies}
-						/>
-					</label>
-					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">{m.series()}</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-sm"
-							disabled={data.series.length === 0}
-							bind:checked={showSeries}
-						/>
-					</label>
-					<label class="label cursor-pointer space-x-2">
-						<span class="label-text">{m.collections()}</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-sm"
-							disabled={data.collections.length === 0}
-							bind:checked={showCollections}
-						/>
-					</label>
-				</div>
-
-				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={sortOption}>
-					<option value="added">{m.newlyAdded()}</option>
-					<option value="rating">{m.bestRating()}</option>
-					<option value="duration">{m.longestDuration()}</option>
-					<option value="release_date_desc">{m.releaseDateNew()}</option>
-					<option value="release_date_asc">{m.releaseDateOld()}</option>
-					<option value="popularity">{m.popularity()}</option>
-					<option value="alpha">{m.alphabetical()}</option>
-					<option value="last_watched">{m.lastWatched()}</option>
-				</select>
-
-				<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={watchedFilter}>
-					<option value="all">{m.all()}</option>
-					<option value="watched">{m.watched()}</option>
-					<option value="unwatched">{m.unwatched()}</option>
-				</select>
+	<div class="my-2 space-y-2 print:hidden">
+		<div class="mx-auto flex w-full max-w-md flex-wrap items-center gap-3 sm:max-w-lg">
+			<div class="flex grow gap-2">
+				<label class="input input-bordered flex w-full items-center gap-2">
+					<Search class="h-4 w-4 opacity-70" />
+					<input
+						type="text"
+						class="grow"
+						placeholder={m['main.searchPlaceholder']()}
+						bind:value={filter.search}
+					/>
+				</label>
+				<button type="reset" class="btn btn-ghost" onclick={resetFilters} title={m.resetFilters()}>
+					<Reset class="h-8 w-8 opacity-70" />
+				</button>
 			</div>
 		</div>
 
+		<div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+			<div class="flex flex-wrap gap-2">
+				<label class="label cursor-pointer space-x-2">
+					<span class="label-text">{m.movies()}</span>
+					<input type="checkbox" class="toggle toggle-sm" bind:checked={filter.showMovies} />
+				</label>
+				<label class="label cursor-pointer space-x-2">
+					<span class="label-text">{m.series()}</span>
+					<input type="checkbox" class="toggle toggle-sm" bind:checked={filter.showSeries} />
+				</label>
+				<label class="label cursor-pointer space-x-2">
+					<span class="label-text">{m.collections()}</span>
+					<input type="checkbox" class="toggle toggle-sm" bind:checked={filter.showCollections} />
+				</label>
+			</div>
+
+			<select class="select select-bordered select-sm w-36 sm:w-48" bind:value={filter.sortOption}>
+				<option value="added">{m.newlyAdded()}</option>
+				<option value="rating">{m.bestRating()}</option>
+				<option value="duration">{m.longestDuration()}</option>
+				<option value="release_date_desc">{m.releaseDateNew()}</option>
+				<option value="release_date_asc">{m.releaseDateOld()}</option>
+				<option value="popularity">{m.popularity()}</option>
+				<option value="alpha">{m.alphabetical()}</option>
+				<option value="last_watched">{m.lastWatched()}</option>
+			</select>
+
+			<select
+				class="select select-bordered select-sm w-36 sm:w-48"
+				bind:value={filter.watchedFilter}
+			>
+				<option value="all">{m.all()}</option>
+				<option value="watched">{m.watched()}</option>
+				<option value="unwatched">{m.unwatched()}</option>
+			</select>
+		</div>
+	</div>
+
+	{#if !items}
+		<p class="w-full pb-2 text-center">loading...</p>
 		<div class="flex flex-wrap justify-center gap-4 pb-2 sm:gap-5">
-			{#if filteredItems(data.collections, fuseCollections, showCollections).length + filteredItems(data.movies, fuseMovies, showMovies).length + filteredItems(data.series, fuseSeries, showSeries).length > 0}
-				{#each filteredItems(data.collections, fuseCollections, showCollections) as item (item.id)}
-					{@const title = item.tmdb?.name}
-					<Card
-						bind:CARDSCALE
-						{title}
-						href={`./collection?id=${item.id}`}
-						params={[item.poster_path, 'posters', true]}
-						watched={item.watched}
-						alt={m.posterAlt({ title })}
-					/>
-				{/each}
-
-				{#each filteredItems(data.movies, fuseMovies, showMovies) as item (item.id)}
-					{@const title = item.tmdb?.title}
-					<Card
-						bind:CARDSCALE
-						{title}
-						href={`./movie?id=${item.id}`}
-						params={[item.tmdb.poster_path, 'posters', true]}
-						watched={item.watched}
-						alt={m.posterAlt({ title })}
-					/>
-				{/each}
-
-				{#each filteredItems(data.series, fuseSeries, showSeries) as item (item.id)}
-					{@const title = item.tmdb?.name}
-					<Card
-						bind:CARDSCALE
-						{title}
-						href={`./tv?id=${item.id}`}
-						params={[item.tmdb.poster_path, 'posters', true]}
-						watched={item.watched}
-						alt={m.posterAlt({ title })}
-					/>
-				{/each}
-			{:else}
-				<p class="mt-10 w-full text-center text-gray-400">{m['main.noneFound']()}</p>
-			{/if}
+			{#each Array(30).fill(0) as _, i (i)}
+				<div
+					class="skeleton card hover:bg-base-content/20 h-115 w-72 max-w-[18rem] min-w-48 grow shadow-xl transition-all duration-300 select-none hover:scale-105"
+				></div>
+			{/each}
+		</div>
+	{:else if getFilteredItems().length > 0}
+		<div class="flex flex-wrap justify-center gap-4 pb-2 sm:gap-5">
+			{#each getFilteredItems() as item (item.type + '-' + item.id)}
+				{@const title = getTitle(item)}
+				<Card
+					bind:CARDSCALE={filter.CARDSCALE}
+					{title}
+					href={getHref(item)}
+					params={[getPoster(item), 'posters', true]}
+					watched={item.watched}
+					alt={m.posterAlt({ title })}
+				/>
+			{/each}
 		</div>
 	{:else}
-		<div class="flex flex-col items-center space-y-4">
-			<p>{m['main.noneAdded']()}</p>
-			<a href="./add" class="btn">{m['nav.add']()}</a>
-		</div>
+		<p class="mt-10 w-full text-center text-gray-400">
+			{m['main.noneFound']()}
+		</p>
 	{/if}
 </main>
