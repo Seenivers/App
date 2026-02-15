@@ -22,19 +22,21 @@ export type SortOption =
 	| 'alpha'
 	| 'last_watched';
 
+const defaultSearchCriteria: SearchCriteria = {
+	CARDSCALE: 2,
+	search: '',
+	showCollections: false,
+	showMovies: true,
+	showSeries: true,
+	sortOption: 'added',
+	selectedGenres: [],
+	watchedFilter: 'all'
+};
+
 export function getFilter() {
 	const filter = sessionStorage.getItem('filter');
 
-	let searchCriteria: SearchCriteria = {
-		CARDSCALE: 2,
-		search: '',
-		showCollections: false,
-		showMovies: true,
-		showSeries: true,
-		sortOption: 'added',
-		selectedGenres: [],
-		watchedFilter: 'all'
-	};
+	let searchCriteria = defaultSearchCriteria;
 
 	if (filter) {
 		searchCriteria = JSON.parse(filter);
@@ -45,4 +47,8 @@ export function getFilter() {
 
 export function setFilter(searchCriteria: SearchCriteria) {
 	sessionStorage.setItem('filter', JSON.stringify(searchCriteria));
+}
+
+export function resetFilter() {
+	return defaultSearchCriteria;
 }
