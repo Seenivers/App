@@ -1,3 +1,50 @@
+# [0.41.0](https://github.com/Seenivers/App/compare/v0.40.0...v0.41.0) (2026-02-15)
+
+
+### Bug Fixes
+
+* **deps:** update non-breaking updates ([19292ac](https://github.com/Seenivers/App/commit/19292ac2e5671ad9e7d15d0c71ed47bea65a685a))
+* update pnpm-lock.yaml to match package.json ([6cd44a8](https://github.com/Seenivers/App/commit/6cd44a89fa31998bb5d695d78d49512e4bc56197))
+
+
+### Features
+
+* **actor:** add social links and enrich actor details UI ([310cf83](https://github.com/Seenivers/App/commit/310cf839f39adb22d5451a5025331f2c1592302d))
+* **i18n:** add selectMoviesFolder key ([8f07e50](https://github.com/Seenivers/App/commit/8f07e506ddd38db7deded2356a1f2acab8df454e))
+* **i18n:** add selectMoviesFolder translation ([d50cf26](https://github.com/Seenivers/App/commit/d50cf260c5e7c2d5ab1e0e8cf9b93d8d71676804))
+* **i18n:** add selectMoviesFolder translation ([8e1883f](https://github.com/Seenivers/App/commit/8e1883ffc854ceaa372686e5a91bb1e0cc172293))
+* **i18n:** add selectMoviesFolder translation ([32a0658](https://github.com/Seenivers/App/commit/32a06583ce9f73db3196fb9eae9521f83ab804a8))
+* **i18n:** add selectMoviesFolder translation ([e9ffa32](https://github.com/Seenivers/App/commit/e9ffa32f10d07ebf5a0d5d408bcb6deb33e8aa41))
+* **i18n:** add selectMoviesFolder translation ([b7b942e](https://github.com/Seenivers/App/commit/b7b942eac2af3a3cc438fefb1023fe945e9e61bd))
+* **i18n:** add selectMoviesFolder translation ([ebb9dd1](https://github.com/Seenivers/App/commit/ebb9dd118e6173c04cb64b5154f1bcc595297c2b))
+* **i18n:** add selectMoviesFolder translation ([5b17ad4](https://github.com/Seenivers/App/commit/5b17ad479b5cede3e118e126bd56fa51d31e6227))
+* **i18n:** add selectMoviesFolder translation ([ab44152](https://github.com/Seenivers/App/commit/ab44152a8468c9c8121a5fd9955df08bdd91dc82))
+* **i18n:** add selectMoviesFolder translation ([6d60835](https://github.com/Seenivers/App/commit/6d60835f9cf5bc648311bd0f413f9426ca5983fd))
+* **i18n:** add selectMoviesFolder translation ([30c2f18](https://github.com/Seenivers/App/commit/30c2f185b372a609e319adf758eea3f0581981bf))
+* **i18n:** add selectMoviesFolder translation ([d98e92a](https://github.com/Seenivers/App/commit/d98e92a867f0e9c48cc97c2ed662ebe3131fef45))
+* **i18n:** add selectMoviesFolder translation ([bc52d79](https://github.com/Seenivers/App/commit/bc52d79854abdec74ffa49b9a35df28296d6e177))
+* **i18n:** add selectMoviesFolder translation ([624b0fd](https://github.com/Seenivers/App/commit/624b0fdda95b36492a8bf81a830ba0774952892e))
+* **i18n:** add selectMoviesFolder translation ([652605b](https://github.com/Seenivers/App/commit/652605bc1a0d87d149c6baf0ba2f5fd0b515cb65))
+* **i18n:** add selectMoviesFolder translation ([a452a89](https://github.com/Seenivers/App/commit/a452a89ac00a2907aed7306e500eec7cbf3900a3))
+* **i18n:** add selectMoviesFolder translation ([9a1df0c](https://github.com/Seenivers/App/commit/9a1df0cf7d0b07c26077bad70703496c449c1711))
+* **i18n:** add selectMoviesFolder translation ([3d715b7](https://github.com/Seenivers/App/commit/3d715b71739367ca5aa8c05d2ac726e615249501))
+* **i18n:** add selectMoviesFolder translation ([cc3d076](https://github.com/Seenivers/App/commit/cc3d076b78624a6ac16f5b36475b29b4a54be704))
+* **i18n:** add selectMoviesFolder translation ([a8fe7dd](https://github.com/Seenivers/App/commit/a8fe7ddaee4bb68a55601675113c5a05766b5fdf))
+* **i18n:** add selectMoviesFolder translation ([ccf4a2b](https://github.com/Seenivers/App/commit/ccf4a2bc9d227bcc8bc816002a32712c23a65e9d))
+* **i18n:** add selectMoviesFolder translation ([958124c](https://github.com/Seenivers/App/commit/958124cf44e9ed4533a0372a2fcce827c2181f78))
+* **i18n:** add selectMoviesFolder translation ([3c2dfde](https://github.com/Seenivers/App/commit/3c2dfde16af1f457b01cf30dc6e0d64037db4709))
+* **i18n:** add selectMoviesFolder translation ([28fc1f0](https://github.com/Seenivers/App/commit/28fc1f0b4e0b1eda43ef04a33eb02b8efd5d038b))
+* **i18n:** add selectMoviesFolder translation ([1da1d7b](https://github.com/Seenivers/App/commit/1da1d7bc590bf8477969e3e0aa9507231c1321b9))
+* **i18n:** add selectMoviesFolder translation ([f7e1b13](https://github.com/Seenivers/App/commit/f7e1b1336a298d9300507e943e7984ad9a2d1b52))
+* **i18n:** add selectMoviesFolder translation ([b6c0700](https://github.com/Seenivers/App/commit/b6c0700dda0eb07dae800af7277aaad8ea8102a5))
+* **i18n:** add selectMoviesFolder translation ([310059e](https://github.com/Seenivers/App/commit/310059ee5b0afd288f1ab03af7e370f103917143))
+* **main:** add loadBatch utility for unified movie, series and collection loading ([14fc103](https://github.com/Seenivers/App/commit/14fc1039e8d55b02a7280a6b7134489399c791d9))
+* **media_type:** add Planned and Ended to Status enum ([a9126b5](https://github.com/Seenivers/App/commit/a9126b599fb3a8ab9ad88a821e410fd49b8d2e5e))
+* **search:** add centralized Fuse index builder for main view ([dcd9f32](https://github.com/Seenivers/App/commit/dcd9f3207d73cb8b4bb979b3c25ce03e49db58df))
+* **telemetry:** integrate Sentry for enhanced session tracking ([d38f6e6](https://github.com/Seenivers/App/commit/d38f6e638f3bac607292d2a7a5550046d7ad97f7))
+* **watchlist:** return synced watchlist items from syncWatchlist ([ed955bf](https://github.com/Seenivers/App/commit/ed955bf7e6d7476c0955d49142f4e87da936610d))
+* **watchlist:** update UI state from sync result without reload ([5fb80a4](https://github.com/Seenivers/App/commit/5fb80a4d3b68c7ecebb824d855f668277b9bd6c1))
+
 # [0.40.0](https://github.com/Seenivers/App/compare/v0.39.0...v0.40.0) (2026-01-18)
 
 ### Bug Fixes
