@@ -256,10 +256,6 @@
 		</button>
 	</label>
 
-	<div>
-		<!-- Platzhalter -->
-	</div>
-
 	<!-- Ignorierte Schlüsselwörter -->
 	<label class="form-control w-full">
 		<div class="label">
