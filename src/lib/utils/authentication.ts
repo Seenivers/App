@@ -5,7 +5,7 @@ import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { newToast } from '$lib/toast/toast';
 import { getSettings, saveSettings } from './settings/state';
 
-const TMDB_AUTH_EVENT = 'tmdb-auth';
+export const TMDB_AUTH_EVENT = 'tmdb-auth';
 
 /**
  * Führt den TMDB-Authentifizierungs-Flow über ein Webview durch.
@@ -20,7 +20,7 @@ export async function auth() {
 		return;
 	}
 
-	const webview = new WebviewWindow('tmdb-auth', {
+	const webview = new WebviewWindow(TMDB_AUTH_EVENT, {
 		url: `https://www.themoviedb.org/auth/access?request_token=${tokenResponse.request_token}`,
 		width: 1000,
 		height: 800,
