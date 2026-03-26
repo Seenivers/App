@@ -1,9 +1,10 @@
 import { db } from '$lib/db/database';
 import { actors as schemaActor } from '$lib/db/schema';
+import { api } from '$lib/trpc';
 
 import { eq, inArray } from 'drizzle-orm';
-import { getActor } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const actor = {
 	add: async (data: typeof schemaActor.$inferInsert) =>
@@ -14,7 +15,7 @@ export const actor = {
 	get: async (id: number): Promise<typeof schemaActor.$inferSelect | undefined> => {
 		let result = await db.query.actors.findFirst({ where: eq(schemaActor.id, id) });
 		if (!result && online.current && id !== undefined) {
-			const fetched = await getActor(id);
+			const fetched = await api.media.getPersonDetails.query({ personId: id, language: getLocale() });
 			if (fetched) {
 				await db.insert(schemaActor).values({ id: fetched.id, tmdb: fetched, name: fetched.name });
 				result = { id: fetched.id, tmdb: fetched, name: fetched.name, updated: new Date() };
@@ -34,7 +35,10 @@ export const actor = {
 				const fetchedActors = await Promise.all(
 					missingIds.map(async (id) => {
 						if (id === undefined) return null;
-						const onlineResult = await getActor(id);
+						const onlineResult = await api.media.getPersonDetails.query({
+							personId: id,
+							language: getLocale()
+						});
 						if (onlineResult) {
 							await db
 								.insert(schemaActor)
