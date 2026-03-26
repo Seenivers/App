@@ -1,9 +1,10 @@
 import { db } from '$lib/db/database';
 import { movies } from '$lib/db/schema';
+import { api } from '$lib/trpc';
 
 import { eq, inArray } from 'drizzle-orm';
-import { getMovie, getMovies } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const movie = {
 	add: async (data: typeof movies.$inferInsert) =>
@@ -15,7 +16,10 @@ export const movie = {
 		let result = await db.query.movies.findFirst({ where: eq(movies.id, id) });
 
 		if (!result && online.current && id !== undefined) {
-			const fetched = await getMovie(id);
+			const fetched = await api.media.getMovieDetails.query({
+				tmdbId: id,
+				language: getLocale()
+			});
 			if (fetched) {
 				await db
 					.insert(movies)
@@ -45,17 +49,25 @@ export const movie = {
 			const missingIds = ids.filter((id) => !foundIds.includes(id));
 
 			if (missingIds.length > 0 && online.current && ids !== undefined) {
-				const { movies: fetchedMovies, errors } = await getMovies(missingIds);
+				type Movie = Awaited<ReturnType<typeof api.media.getMovieDetails.query>>;
+				const fetchedMovies: Movie[] = [];
+				const errors: { id: number; error: unknown }[] = [];
 
-				// Erfolgreich gefundene speichern
-				for (const { id, data } of fetchedMovies) {
-					await db
-						.insert(movies)
-						.values({ id, tmdb: data, path: null, watched: false, watchTime: 0 });
-				}
+				missingIds.map(async (id) => {
+					try {
+						const result = await api.media.getMovieDetails.query({
+							tmdbId: id,
+							language: getLocale()
+						});
+						await db.insert(movies).values({ id, tmdb: result });
+						fetchedMovies.push(result);
+					} catch (error) {
+						errors.push({ id, error });
+					}
+				});
 
-				const fetchedResults = fetchedMovies.map(({ id, data }) => ({
-					id,
+				const fetchedResults: (typeof movies.$inferSelect)[] = fetchedMovies.map((data) => ({
+					id: data.id,
 					tmdb: data,
 					path: null,
 					watched: false,
