@@ -3,6 +3,7 @@ import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { parseId } from '$lib/utils/loadUtils';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const load = (async ({ url }) => {
 	// ID validieren und parsen
@@ -29,9 +30,11 @@ export const load = (async ({ url }) => {
 	// Wenn kein Ergebnis in der lokalen Datenbank und online
 	if (!result && online.current) {
 		// Daten von TMDB abrufen
-		const tmdb = await import('$lib/utils/tmdb');
-		const fetchedActor = await tmdb.getActor(id);
-
+		const { api } = await import('$lib/trpc');
+		const fetchedActor = await api.media.getPersonDetails.query({
+			personId: id,
+			language: getLocale()
+		});
 		if (!fetchedActor) {
 			error(404, 'Actor not found'); // Fehler auslösen, wenn der Schauspieler nicht gefunden wurde
 		}
