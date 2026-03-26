@@ -13,7 +13,9 @@
 	import Bookmark from '$lib/assets/SVG/Bookmark.svelte';
 	import BookmarkSlash from '$lib/assets/SVG/BookmarkSlash.svelte';
 	import Rating from '$lib/components/rating.svelte';
-	import { postWatchlist } from '$lib/utils/tmdb';
+	import { resolve } from '$app/paths';
+	import { api } from '$lib/trpc';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
@@ -45,7 +47,7 @@
 
 	// Gruppiere alle Episoden anhand der Staffeln (über tmdb.season_number)
 	let episodesGrouped = $derived(() => {
-		const map = new Map<number, (typeof data.episodes)[0][]>();
+		const map = new SvelteMap<number, (typeof data.episodes)[0][]>();
 
 		for (const ep of data.episodes) {
 			const seasonNumber = ep.tmdb.season_number;
@@ -72,7 +74,19 @@
 		seasonObj: (typeof data.seasons)[0],
 		episode: (typeof data.episodes)[0]
 	) {
-		const url = `./episode?id=${episode.tmdb.episode_number}&tvShowID=${data.id}&seasonNumber=${seasonObj.tmdb.season_number}&seasonID=${seasonObj.id}&episodeID=${episode.id}`;
+		// Erstelle ein URLSearchParams Objekt für sauberes Encodieren
+		const params = new URLSearchParams({
+			id: String(episode.tmdb.episode_number),
+			tvShowID: String(data.id),
+			seasonNumber: String(seasonObj.tmdb.season_number),
+			seasonID: String(seasonObj.id),
+			episodeID: String(episode.id)
+		});
+
+		// Resolve-URL korrekt + Query-Params
+		const url = resolve('/episode') + '?' + params.toString();
+
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
 		goto(url);
 	}
 
@@ -150,7 +164,7 @@
 				// Diese Serie existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
 				// Deshalb überspringen wir diese Serie, um Fehler zu vermeiden.
 				if (data.serie.tmdb.status === 'Rumored') return;
-				postWatchlist({ media_type: 'tv', media_id: data.id, watchlist: isBookmarked });
+				api.sync.setWatchlist.mutate({ mediaType: 'tv', tmdbId: data.id, watchlist: isBookmarked });
 			}}
 			disabled={data.pathExists}
 		>
@@ -223,7 +237,7 @@
 						<div class="card-body">
 							<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
 							<a
-								href={`https://www.youtube-nocookie.com/watch?v=${trailer.key}`}
+								href={`https://youtu.be/${trailer.key}`}
 								target="_blank"
 								class="btn btn-primary mt-2"
 								rel="noopener noreferrer"
@@ -243,9 +257,9 @@
 			<h2 class="my-3 text-2xl font-bold">{m.seriesCast()}</h2>
 			<div class="rounded-box bg-base-100 p-3">
 				<div class="carousel carousel-center rounded-box w-full space-x-3">
-					{#each data.serie.tmdb.credits.cast as cast}
+					{#each data.serie.tmdb.credits.cast as cast (cast.id)}
 						<a
-							href="./actor?id={cast.id}"
+							href="{resolve('/actor')}?id={cast.id}"
 							class="carousel-item flex flex-col items-center"
 							data-sveltekit-preload-data="tap"
 						>
@@ -394,7 +408,12 @@
 			<div>
 				<h2 class="text-lg font-bold">{m.homepage()}</h2>
 				{#if data.serie.tmdb.homepage}
-					<a href={data.serie.tmdb.homepage} target="_blank" rel="noopener noreferrer" class="link">
+					<a
+						href={data.serie.tmdb.homepage}
+						target="_blank"
+						rel="noopener noreferrer external"
+						class="link"
+					>
 						{data.serie.tmdb.homepage}
 					</a>
 				{:else}
