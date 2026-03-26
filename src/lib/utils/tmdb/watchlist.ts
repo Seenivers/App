@@ -1,14 +1,18 @@
 import { db } from '$lib/db/database';
 import { movies as schemaMovies, serie as schemaSerie } from '$lib/db/schema';
-import { getWatchlist, postWatchlist } from '../tmdb';
+import { api } from '$lib/trpc';
 import { eq } from 'drizzle-orm';
 
 export async function syncWatchlist() {
-	const remoteWatchlist = await getWatchlist();
+	const remoteWatchlist = await api.sync.getWatchlist.query();
 	if (!remoteWatchlist) return;
 
-	const remoteMovieIds = remoteWatchlist.movies.map((m) => m.id);
-	const remoteSeriesIds = remoteWatchlist.tv.map((s) => s.id);
+	const remoteMovieIds = remoteWatchlist
+		.filter((m) => m.mediaType === 'movie' && Boolean(m.id))
+		.map((m) => m.id);
+	const remoteSeriesIds = remoteWatchlist
+		.filter((s) => s.mediaType === 'tv' && Boolean(s.id))
+		.map((s) => s.id);
 
 	const remoteMovieIdSet = new Set(remoteMovieIds);
 	const remoteSeriesIdSet = new Set(remoteSeriesIds);
@@ -63,8 +67,8 @@ export async function syncWatchlist() {
 			// Deshalb überspringen wir diese Filme, um Fehler zu vermeiden.
 			.filter((m) => m.tmdb.status !== 'Rumored')
 			.map((movie) => ({
-				media_type: 'movie' as const,
-				media_id: movie.media_id,
+				mediaType: 'movie' as const,
+				tmdbId: movie.media_id,
 				watchlist: true
 			})),
 		...locale_Tv
@@ -73,13 +77,13 @@ export async function syncWatchlist() {
 			// Deshalb überspringen wir diese Serie, um Fehler zu vermeiden.
 			.filter((s) => s.tmdb.status !== 'Rumored')
 			.map((serie) => ({
-				media_type: 'tv' as const,
-				media_id: serie.media_id,
+				mediaType: 'tv' as const,
+				tmdbId: serie.media_id,
 				watchlist: true
 			}))
 	];
 
-	await Promise.all(watchlistSyncPayload.map((entry) => postWatchlist(entry)));
+	await Promise.all(watchlistSyncPayload.map((entry) => api.sync.setWatchlist.mutate(entry)));
 
 	const movie = await db.select().from(schemaMovies).where(eq(schemaMovies.wantsToWatch, true));
 	const serie = await db.select().from(schemaSerie).where(eq(schemaSerie.wantsToWatch, true));
