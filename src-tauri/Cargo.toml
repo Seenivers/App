@@ -1,6 +1,6 @@
 [package]
 name = "seenivers"
-version = "0.1.0"
+version = "0.41.0"
 description = "Seenivers is your personal hub for managing and enjoying movies and TV series. Track, stream, and stay updated—all in one app."
 authors = ["BlackTiger007"]
 homepage = "https://seenivers.com"
@@ -24,20 +24,20 @@ tauri-build = { version = "2.5.3", features = [] }
 [dependencies]
 serde_json = "1.0.149"
 serde = { version = "1.0.228", features = ["derive"] }
-tauri = { version = "2.9.5", features = ["protocol-asset"] }
+tauri = { version = "2.10.1", features = ["protocol-asset"] }
 tauri-plugin-dialog = "2.6.0"
 tauri-plugin-fs = "2.4.5"
 tauri-plugin-process = "2.3.1"
 tauri-plugin-sql = { version = "2.3.1", features = ["sqlite"] }
 tauri-plugin-opener = "2.5.3"
 include_dir = "0.7.4"
-sentry = "0.46.1"
+sentry = { version = "0.46.1", features = ["panic", "log"] }
 sentry-log = "0.46.1"
 log = "0.4.29"
 tauri-plugin-os = "2.3.2"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
-tauri-plugin-updater = "2.9.0"
+tauri-plugin-updater = "2.10.0"
 
 [profile.dev]
 opt-level = 1          # Aktiviert ein wenig Optimierung für schnelleren Code, ohne lange Build-Zeiten.
