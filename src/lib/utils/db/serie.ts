@@ -1,9 +1,10 @@
 import { db } from '$lib/db/database';
 import { serie as schemaSerie } from '$lib/db/schema';
+import { api } from '$lib/trpc';
 
 import { eq, inArray } from 'drizzle-orm';
-import { getSerie } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const serie = {
 	add: async (data: typeof schemaSerie.$inferInsert) =>
@@ -18,7 +19,10 @@ export const serie = {
 		let result = await db.query.serie.findFirst({ where: eq(schemaSerie.id, id) });
 
 		if (!result && online.current && seriesId !== undefined) {
-			const fetched = await getSerie(seriesId);
+			const fetched = await api.media.getTvDetails.query({
+				tmdbId: seriesId,
+				language: getLocale()
+			});
 			if (fetched) {
 				await db.insert(schemaSerie).values({
 					id: fetched.id,
@@ -53,7 +57,10 @@ export const serie = {
 				const fetchedResults: (typeof schemaSerie.$inferSelect | null)[] = await Promise.all(
 					missingItems.map(async (item) => {
 						if (item === undefined) return null;
-						const onlineResult = await getSerie(item);
+						const onlineResult = await api.media.getTvDetails.query({
+							tmdbId: item,
+							language: getLocale()
+						});
 						if (onlineResult) {
 							await db.insert(schemaSerie).values({
 								id: onlineResult.id,
