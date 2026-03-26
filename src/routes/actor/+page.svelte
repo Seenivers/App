@@ -6,14 +6,26 @@
 
 	import Movie from '$lib/assets/SVG/movie.svelte';
 	import Tv from '$lib/assets/SVG/tv.svelte';
+	import { SvelteMap } from 'svelte/reactivity';
+	import { resolve } from '$app/paths';
 
-	interface Props {
-		data: PageData;
-	}
+	// Page data (SvelteKit): export the data prop
+	export let data: PageData;
 
-	let { data }: Props = $props();
+	// Minimal credit type used where strict typing caused errors
+	type Credit = {
+		release_date?: string | null;
+		first_air_date?: string | null;
+		media_type?: 'movie' | 'tv' | string;
+		id: number;
+		credit_id?: string;
+		character?: string;
+		job?: string;
+		title?: string;
+		name?: string;
+	};
 
-	const genderMapping = {
+	const genderMapping: Record<number | string, string> = {
 		1: m.female(),
 		2: m.male(),
 		3: m.nonBinary(),
@@ -36,10 +48,7 @@
 	}
 
 	function sortByYearDesc<
-		T extends {
-			release_date?: string | null;
-			first_air_date?: string | null;
-		}
+		T extends { release_date?: string | null; first_air_date?: string | null }
 	>(items: T[]): T[] {
 		return items.slice().sort((a, b) => {
 			const dateA = getItemDate(a);
@@ -53,13 +62,10 @@
 		});
 	}
 
-	function groupByYear<
-		T extends {
-			release_date?: string | null;
-			first_air_date?: string | null;
-		}
-	>(items: T[]) {
-		const map = new Map<number | 'unknown', T[]>();
+	function groupByYear<T extends { release_date?: string | null; first_air_date?: string | null }>(
+		items: T[]
+	) {
+		const map = new SvelteMap<number | 'unknown', T[]>();
 
 		for (const item of sortByYearDesc(items)) {
 			const date = getItemDate(item);
@@ -87,7 +93,7 @@
 </Navbar>
 
 <main class="flex flex-col items-center gap-6 px-4 py-6 md:px-6 lg:px-8">
-	{#if data.result}
+	{#if data?.result}
 		{@const actor = data.result}
 
 		<div class="grid w-full max-w-(--breakpoint-xl) grid-cols-1 gap-6 lg:grid-cols-[350px_1fr]">
@@ -177,7 +183,7 @@
 						</div>
 						<div>
 							<span class="font-semibold">{m.gender()}:</span>
-							<p>{genderMapping[actor.gender]}</p>
+							<p>{genderMapping[actor.gender] ?? m.unknown()}</p>
 						</div>
 						<div>
 							<span class="font-semibold">{m.birthdate()}:</span>
@@ -202,7 +208,7 @@
 							<span class="font-semibold">{m.birthplace()}:</span>
 							<p>{actor.place_of_birth || m.noInformationAvailable()}</p>
 						</div>
-						{#if actor.also_known_as.length > 0}
+						{#if actor.also_known_as?.length > 0}
 							<div>
 								<span class="font-semibold">{m.aliases()}:</span>
 								<ul class="list-inside list-disc space-y-1">
@@ -232,7 +238,8 @@
 
 				<!-- Cast und Crew -->
 				{#each ['cast', 'crew'] as const as type (type)}
-					{@const grouped = groupByYear(actor.combined_credits[type])}
+					{@const credits = (actor.combined_credits?.[type] ?? []) as Credit[]}
+					{@const grouped = groupByYear<Credit>(credits)}
 
 					{#if grouped.size > 0}
 						<div class="mt-8 space-y-4">
@@ -240,17 +247,19 @@
 								{type === 'cast' ? m.filmography() : m.crew()}
 							</h2>
 
-							{#each Array.from(grouped.entries()) as [year, items]}
+							{#each Array.from(grouped.entries()) as [year, items] (year)}
 								<h3 class="mt-4 text-lg font-semibold">
 									{year === 'unknown' ? m.noInformationAvailable() : year}
 								</h3>
 
 								<ul class="space-y-2">
-									{#each items as item (item.credit_id)}
+									{#each items as item (item.credit_id ?? `${item.media_type}-${item.id}`)}
 										<li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
 											<div class="flex items-center gap-2">
 												<a
-													href={`${item.media_type}?id=${item.id}`}
+													href="{resolve(
+														item.media_type === 'movie' ? '/movie' : '/tv'
+													)}?id={item.id}"
 													class="inline-flex items-center gap-2 font-medium hover:underline"
 													data-sveltekit-preload-data="tap"
 												>
@@ -264,8 +273,8 @@
 												<span class="text-base-content/70 text-sm">–</span>
 												<span class="text-base-content/70 text-sm">
 													{type === 'cast'
-														? item.character || m.noInformationAvailable()
-														: item.job}
+														? (item.character ?? m.noInformationAvailable())
+														: (item.job ?? m.noInformationAvailable())}
 												</span>
 											</div>
 										</li>
