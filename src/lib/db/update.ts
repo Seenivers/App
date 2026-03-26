@@ -1,11 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from './database';
 import { readDir } from '@tauri-apps/plugin-fs';
-import {
-	getMovie as getMovieTmdb,
-	getCollection as getCollectionTmdb,
-	getActor as getActorTmdb
-} from '$lib/utils/tmdb';
 import * as schema from './schema';
 import { WEEKS } from '$lib';
 import { movie as movieDB } from '$lib/utils/db/movie';
@@ -15,6 +10,7 @@ import { join } from '@tauri-apps/api/path';
 import { load } from '$lib/add/loader';
 import { addNewFiles } from '$lib/add/fileScanner';
 import { getSettings } from '$lib/utils/settings/state';
+import { api } from '$lib/trpc';
 import { getLocale } from '$lib/paraglide/runtime';
 
 const WEEK_IN_MILLIS = 6.048e8; // 1 Woche in Millisekunden
@@ -29,6 +25,7 @@ async function updateEntity(
 ) {
 	try {
 		const currentDate = new Date();
+		const language = getLocale();
 
 		// Aktualisiere das "updated"-Feld, wenn es fehlt
 		if (!entity.updated) {
@@ -47,12 +44,13 @@ async function updateEntity(
 
 		// Abrufen der aktuellen Daten basierend auf dem Typ
 		const fetchTmdbData = {
-			movies: getMovieTmdb,
-			collections: getCollectionTmdb,
-			actors: getActorTmdb
+			movies: (id: number) => api.media.getMovieDetails.query({ tmdbId: id, language }),
+			collections: (id: number) =>
+				api.media.getCollectionDetails.query({ collectionId: id, language }),
+			actors: (id: number) => api.media.getPersonDetails.query({ personId: id, language })
 		}[entityType];
 
-		const result = await fetchTmdbData(entity.id, getLocale());
+		const result = await fetchTmdbData(entity.id);
 
 		if (result) {
 			await db
@@ -94,7 +92,10 @@ export async function updateMovies() {
 async function processCollection(collectionId: number) {
 	const collectionResult = await collection.get(collectionId);
 	if (!collectionResult) {
-		const result = await getCollectionTmdb(collectionId, getLocale());
+		const result = await api.media.getCollectionDetails.query({
+			collectionId: collectionId,
+			language: getLocale()
+		});
 		if (result) {
 			await collection.add({ ...result });
 		}
@@ -104,7 +105,10 @@ async function processCollection(collectionId: number) {
 async function processActor(actorId: number) {
 	const actorResult = await actor.get(actorId);
 	if (!actorResult) {
-		const result = await getActorTmdb(actorId, getLocale());
+		const result = await api.media.getPersonDetails.query({
+			personId: actorId,
+			language: getLocale()
+		});
 		if (result) {
 			await actor.add({ id: result.id, name: result.name, tmdb: result });
 		}
