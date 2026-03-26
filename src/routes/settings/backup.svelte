@@ -73,7 +73,7 @@
 </script>
 
 <div class="flex items-center justify-between">
-	<h1 class="mb-6 text-xl font-bold md:text-2xl">
+	<h1 class="text-primary mb-3 text-5xl font-bold">
 		{m['backups.title']()}
 	</h1>
 
