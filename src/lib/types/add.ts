@@ -1,4 +1,4 @@
-import type { Movie, Search, TV } from './searchMovie';
+import type { api } from '$lib/trpc';
 
 /**
  * Represents the payload for a drag-and-drop operation,
@@ -50,17 +50,21 @@ export interface SearchOptions {
 	id?: number;
 }
 
-/**
- * Represents the context of a movie search operation,
- * including its state, results, and search options.
- */
-export interface SearchList {
-	/** The current state of the search. */
-	status: SearchStatus;
-	/** The list of movie results returned by the search. */
-	search: Search<Movie | TV>;
-	/** The search options used for the query. */
+type MovieSearch = Awaited<ReturnType<typeof api.media.searchMovies.query>>;
+type TvSearch = Awaited<ReturnType<typeof api.media.searchTv.query>>;
+
+export interface SearchListMovie {
+	mediaType: 'movie';
+	search: MovieSearch;
 	options: SearchOptions;
-	/** The type of media being searched for, either 'movie' or 'tv'. */
-	mediaType: MediaType;
+	status: SearchStatus;
 }
+
+export interface SearchListTv {
+	mediaType: 'tv';
+	search: TvSearch;
+	options: SearchOptions;
+	status: SearchStatus;
+}
+
+export type SearchList = SearchListMovie | SearchListTv;
