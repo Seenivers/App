@@ -1,9 +1,10 @@
 import { db } from '$lib/db/database';
 import { season as schemaSeason } from '$lib/db/schema';
+import { api } from '$lib/trpc';
 
 import { eq, inArray } from 'drizzle-orm';
-import { getSerieSeason } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const season = {
 	add: async (data: typeof schemaSeason.$inferInsert) =>
@@ -19,7 +20,11 @@ export const season = {
 		let result = await db.query.season.findFirst({ where: eq(schemaSeason.id, id) });
 
 		if (!result && online.current && seriesId !== undefined && seasonNumber !== undefined) {
-			const fetched = await getSerieSeason(seriesId, seasonNumber);
+			const fetched = await api.media.getSeasonDetails.query({
+				tvId: seriesId,
+				seasonNumber: seasonNumber,
+				language: getLocale()
+			});
 			if (fetched) {
 				await db.insert(schemaSeason).values({
 					id: fetched.id,
@@ -61,7 +66,11 @@ export const season = {
 				const fetchedSeasons: (typeof schemaSeason.$inferSelect | null)[] = await Promise.all(
 					missingIds.map(async (item) => {
 						if (item.seriesId === undefined || item.seasonNumber === undefined) return null;
-						const onlineResult = await getSerieSeason(item.seriesId, item.seasonNumber);
+						const onlineResult = await api.media.getSeasonDetails.query({
+							tvId: item.seriesId,
+							seasonNumber: item.seasonNumber,
+							language: getLocale()
+						});
 						if (onlineResult) {
 							await db.insert(schemaSeason).values({
 								id: onlineResult.id,
