@@ -1,4 +1,3 @@
-import { seeniversURL } from '$lib';
 import * as Sentry from '@sentry/sveltekit';
 import { app } from '@tauri-apps/api';
 import {
@@ -11,6 +10,7 @@ import {
 	locale
 } from '@tauri-apps/plugin-os';
 import { online } from 'svelte/reactivity/window';
+import { api } from '$lib/trpc';
 
 let sessionId: string | null = sessionStorage.getItem('sessionId');
 let clientId: string | null = localStorage.getItem('clientId');
@@ -30,30 +30,6 @@ export type ClientEnvironment = {
 	hostname?: string | null;
 	locale?: string | null;
 };
-
-/* ================================
- * Endpoints
- * ================================ */
-const START_ENDPOINT = seeniversURL + '/api/client/session/start';
-const END_ENDPOINT = seeniversURL + '/api/client/session/end';
-
-/* ================================
- * Helpers
- * ================================ */
-async function postJson<T>(url: string, data: unknown): Promise<T> {
-	try {
-		const res = await fetch(url, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data),
-			credentials: 'include'
-		});
-
-		return res.json() as Promise<T>;
-	} catch (error) {
-		throw new Error(`Telemetry request failed: ${error}`);
-	}
-}
 
 async function collectClientEnvironment(): Promise<ClientEnvironment> {
 	return {
@@ -81,8 +57,7 @@ export async function startClientSession(): Promise<void> {
 	if (!online.current || import.meta.env.PROD) return;
 
 	const env = await collectClientEnvironment();
-
-	const res = await postJson<{ clientId: string; sessionId: string }>(START_ENDPOINT, {
+	const res = await api.telemetry.startSession.mutate({
 		clientId,
 		sessionId,
 		...env
@@ -116,7 +91,7 @@ export async function startClientSession(): Promise<void> {
 export async function endClientSession(): Promise<void> {
 	if (!sessionId || !online.current || import.meta.env.PROD) return;
 
-	await postJson(END_ENDPOINT, { clientId, sessionId });
+	await api.telemetry.endSession.mutate({ clientId, sessionId });
 
 	sessionStorage.removeItem('sessionId');
 	sessionId = null;
