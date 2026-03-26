@@ -8,6 +8,7 @@
 	import { getSettings } from '$lib/utils/settings/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import Login from './login.svelte';
 </script>
 
 <Navbar
@@ -37,6 +38,12 @@
 		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label={m['tabs.backup']()} />
 		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 p-6">
 			<Backup />
+		</div>
+
+		<!-- login Tab -->
+		<input type="radio" name="my_tabs" role="tab" class="tab" aria-label={m['tabs.auth']()} />
+		<div role="tabpanel" class="tab-content bg-base-100 border-base-300 p-6">
+			<Login />
 		</div>
 	</div>
 </main>
