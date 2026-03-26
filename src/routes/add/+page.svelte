@@ -23,15 +23,16 @@
 
 	// Zähle die Anzahl der Filme für jeden Zustand
 	let counts = $derived(
-		searchList.reduce(
+		searchList.reduce<Record<SearchStatus, number>>(
 			(acc, item) => {
-				const state = item.status; // Hole den Zustand des Films
-				if (state && acc.hasOwnProperty(state)) {
-					// Überprüfe, ob der Zustand existiert und validiere ihn
-					acc[state] = (acc[state] || 0) + 1;
+				const state = item.status as SearchStatus;
+
+				if (state in acc) {
+					acc[state]++;
 				} else {
 					console.warn(m.invalidState({ state }));
 				}
+
 				return acc;
 			},
 			{
@@ -73,12 +74,15 @@
 		load();
 	}
 
-	// Öffne das Modal nur, wenn der Status des Films 'downloading' oder 'foundOne' ist
+	// Öffne das Modal nur, wenn der Status der Richtige ist
 	function openModal(index: number) {
-		// Sicherstellen, dass der Status des Films gültig ist, bevor das Modal geöffnet wird
-		if (searchList[index]?.status !== 'downloading' || 'waitForDownloading') {
+		const status = searchList[index]?.status;
+
+		const allowedStatuses: SearchStatus[] = ['foundMultiple', 'notFound', 'downloaded'];
+
+		if (status && allowedStatuses.includes(status)) {
 			modalID = index;
-			modal = true; // Öffne das Modal nur, wenn der Status gültig ist
+			modal = true;
 		}
 	}
 </script>
@@ -88,7 +92,12 @@
 <Navbar
 	back={true}
 	onclick={() => {
-		window.history.length > 1 ? window.history.back() : (window.location.href = '/');
+		if (window.history.length > 1) {
+			window.history.back();
+		} else {
+			window.location.href = '/';
+		}
+
 		if (clearResultsOnLeave) {
 			searchList.length = 0;
 			filter = null;
@@ -175,7 +184,7 @@
 		</div>
 	{:else}
 		<div class="grid w-full gap-3">
-			{#each searchList as item, index}
+			{#each searchList as item, index (index)}
 				{#if item.status === filter || filter === null}
 					<div class="bg-base-200 flex justify-between gap-3 rounded-md p-3">
 						<span>
@@ -270,14 +279,14 @@
 				</div>
 			{:else if modalID !== null && searchList[modalID]?.search?.results.length > 0}
 				<div class="grid gap-4">
-					{#each searchList[modalID].search.results as result, i}
+					{#each searchList[modalID].search.results as result, index (index)}
 						{@const title = 'title' in result ? result.title : result.name}
 						{@const year = 'release_date' in result ? result.release_date : result.first_air_date}
 						<button
 							class="border-base-300 bg-base-200 flex cursor-pointer space-y-2 rounded-lg border p-3"
 							onclick={async () => {
 								if (modalID !== null) {
-									await selectMovie(modalID, i);
+									await selectMovie(modalID, index);
 									modalID = null;
 								}
 							}}
