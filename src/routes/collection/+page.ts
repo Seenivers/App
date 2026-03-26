@@ -3,6 +3,7 @@ import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
 import { parseId } from '$lib/utils/loadUtils';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
@@ -21,9 +22,12 @@ export const load = (async ({ url }) => {
 
 	if (!result && online.current) {
 		// Wenn nicht vorhanden und online, Daten von TMDB abrufen
-		const { getCollection: getTMDBCollection } = await import('$lib/utils/tmdb');
+		const { api } = await import('$lib/trpc');
 
-		const collection = await getTMDBCollection(id);
+		const collection = await api.media.getCollectionDetails.query({
+			collectionId: id,
+			language: getLocale()
+		});
 
 		// Wenn keine Daten gefunden wurden, Fehler auslösen
 		if (!collection) {
