@@ -1,4 +1,5 @@
-import { imageURL, placeholderURL, seeniversURL } from '$lib';
+import { imageURL, placeholderURL } from '$lib';
+import { api } from '$lib/trpc';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { BaseDirectory, create, exists, mkdir, remove } from '@tauri-apps/plugin-fs';
 import { appDataDir, join } from '@tauri-apps/api/path';
@@ -22,55 +23,45 @@ async function ensureDirectoryExists(folderPath: string) {
 		return;
 	}
 }
-
 /**
  * Downloads an image from a URL and saves it in the AppData directory.
  * @param url The URL of the image.
  * @param filename The filename under which the image should be saved.
  */
 export async function downloadImage(url: string, filename: string) {
-	// Download the image
-	const response = await fetch(`${seeniversURL}/api/image?path=${encodeURIComponent(url)}`).catch(
-		(err) => {
-			console.error(`Error fetching image from ${url}: ${err}`);
+	console.log('URL', url);
+
+	const proxyResult = await api.image.query({ url }).catch((err) => {
+		console.error(`Error proxying image from ${url}: ${err}`);
+		return null;
+	});
+
+	console.log('proxyResult', proxyResult);
+
+	if (!proxyResult) return;
+
+	const uint8 = new Uint8Array(proxyResult.data);
+
+	try {
+		const newFile = await create(filename, {
+			baseDir: BaseDirectory.AppData
+		}).catch((err) => {
+			console.error(`Error creating file ${filename}: ${err}`);
 			return null;
-		}
-	);
+		});
 
-	if (!response?.ok) {
-		console.error(`Error downloading image: ${response?.statusText ?? 'Unknown error'}`);
-		return;
+		if (!newFile) return;
+
+		await newFile.write(uint8).catch((err) => {
+			console.error(`Error writing image data to file ${filename}: ${err}`);
+		});
+
+		await newFile.close().catch((err) => {
+			console.error(`Error closing file ${filename}: ${err}`);
+		});
+	} catch (err) {
+		console.error(`Unexpected error while saving ${filename}:`, err);
 	}
-
-	// Retrieve the Blob from the response
-	const blob = await response.blob().catch((err) => {
-		console.error(`Error processing image data: ${err}`);
-		return null;
-	});
-	if (!blob) return;
-
-	// Create the file
-	const newFile = await create(filename, { baseDir: BaseDirectory.AppData }).catch((err) => {
-		console.error(`Error creating file ${filename}: ${err}`);
-		return null;
-	});
-	if (!newFile) return;
-
-	// Write the image data to the file
-	const arrayBuffer = await blob.arrayBuffer().catch((err) => {
-		console.error(`Error converting image to arrayBuffer: ${err}`);
-		return null;
-	});
-	if (!arrayBuffer) return;
-
-	await newFile.write(new Uint8Array(arrayBuffer)).catch((err) => {
-		console.error(`Error writing image data to file ${filename}: ${err}`);
-	});
-
-	// Close the file
-	await newFile.close().catch((err) => {
-		console.error(`Error closing file ${filename}: ${err}`);
-	});
 }
 
 const resolveImageSource = async (src: string) => {
@@ -84,6 +75,26 @@ const resolveImageSource = async (src: string) => {
 		return { width: 300, height: 450 };
 	});
 	return { src, width, height };
+};
+
+const resolveProxiedImageSource = async (url: string) => {
+	const proxyResult = await api.image.query({ url }).catch((err) => {
+		console.error(`Error proxying image from ${url}: ${err}`);
+		return null;
+	});
+
+	if (!proxyResult) {
+		return resolveImageSource(placeholderURL);
+	}
+
+	const uint8 = new Uint8Array(proxyResult.data);
+
+	const blob = new Blob([uint8], {
+		type: proxyResult.contentType ?? 'application/octet-stream'
+	});
+
+	const objectUrl = URL.createObjectURL(blob);
+	return resolveImageSource(objectUrl);
 };
 
 /**
@@ -130,7 +141,7 @@ export async function image(
 					}
 				});
 			} else {
-				return resolveImageSource(remoteSrc);
+				return resolveProxiedImageSource(remoteSrc);
 			}
 		} else {
 			return resolveImageSource(placeholderURL);
