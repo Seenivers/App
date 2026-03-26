@@ -4,6 +4,7 @@ import { browser } from '$app/environment';
 import { exists } from '@tauri-apps/plugin-fs';
 import { parseId } from '$lib/utils/loadUtils';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const load = (async ({ url }) => {
 	const id = parseId(url); // ID validieren und parsen
@@ -20,8 +21,11 @@ export const load = (async ({ url }) => {
 	if (!result && online.current) {
 		// Wenn der Film nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
 
-		const tmdb = await import('$lib/utils/tmdb');
-		const fetchedMovie = await tmdb.getMovie(id);
+		const { api } = await import('$lib/trpc');
+		const fetchedMovie = await api.media.getMovieDetails.query({
+			tmdbId: id,
+			language: getLocale()
+		});
 
 		if (!fetchedMovie) {
 			// Wenn der Film auch online nicht gefunden wurde
