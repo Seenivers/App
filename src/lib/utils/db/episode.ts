@@ -1,9 +1,10 @@
 import { db } from '$lib/db/database';
 import { episode as schemaEpisode } from '$lib/db/schema';
+import { api } from '$lib/trpc';
 
 import { eq, inArray } from 'drizzle-orm';
-import { getSerieSeasonEpisode } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const episode = {
 	add: async (data: typeof schemaEpisode.$inferInsert) =>
@@ -26,7 +27,12 @@ export const episode = {
 			seasonNumber !== undefined &&
 			episodeNumber !== undefined
 		) {
-			const fetched = await getSerieSeasonEpisode(seriesId, seasonNumber, episodeNumber);
+			const fetched = await api.media.getEpisodeDetails.query({
+				tvId: seriesId,
+				seasonNumber: seasonNumber,
+				episodeNumber: episodeNumber,
+				language: getLocale()
+			});
 
 			if (fetched) {
 				await db.insert(schemaEpisode).values({
@@ -74,11 +80,12 @@ export const episode = {
 							item.episodeNumber === undefined
 						)
 							return null;
-						const onlineResult = await getSerieSeasonEpisode(
-							item.seriesId,
-							item.seasonNumber,
-							item.episodeNumber
-						);
+						const onlineResult = await api.media.getEpisodeDetails.query({
+							tvId: item.seriesId,
+							seasonNumber: item.seasonNumber,
+							episodeNumber: item.episodeNumber,
+							language: getLocale()
+						});
 						if (onlineResult) {
 							await db.insert(schemaEpisode).values({
 								id: onlineResult.id,
@@ -126,5 +133,12 @@ export const episode = {
 	isIDUnique: async (id: number): Promise<boolean> => {
 		const existing = await episode.get(id);
 		return !existing;
+	},
+
+	isPathUnique: async (path: string): Promise<boolean> => {
+		const existingEpisode = await db.query.episode.findFirst({
+			where: eq(schemaEpisode.path, path)
+		});
+		return !existingEpisode;
 	}
 };
