@@ -8,9 +8,7 @@
 	import FolderOpen from '$lib/assets/SVG/FolderOpen.svelte';
 	import FolderAdd from '$lib/assets/SVG/FolderAdd.svelte';
 	import Close from '$lib/assets/SVG/Close.svelte';
-	import { auth } from '$lib/utils/authentication';
 	import { exists } from '@tauri-apps/plugin-fs';
-	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { getSettings, saveSettings } from '$lib/utils/settings/state';
 	import type { Settings } from '$lib/schema/settings';
 	import { m } from '$lib/paraglide/messages';
@@ -19,6 +17,15 @@
 	let settingsTemp: Settings = $state(getSettings());
 	let isDirty = $state(false); // Überwachungsvariable für Änderungen
 	let language = $state(getLocale());
+
+	const getLangCode = (locale: string) => locale.split('-')[0];
+	const localLanguageNames = new Intl.DisplayNames([getLocale(), navigator.language], {
+		type: 'language'
+	});
+
+	const englishLanguageNames = new Intl.DisplayNames(['en'], {
+		type: 'language'
+	});
 
 	// Schlüsselwörter verarbeiten und Änderung tracken
 	function handleInput(event: Event, type: 'keywords' | 'ignoredKeywords') {
@@ -44,13 +51,14 @@
 	});
 </script>
 
-<h1 class="mb-6 text-center text-xl font-bold md:text-left md:text-2xl">{m['settings.title']()}</h1>
+<h1 class="text-primary mb-3 text-5xl font-bold">{m['settings.title']()}</h1>
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 	<!-- Spracheinstellung -->
 	<label class="form-control w-full">
 		<div class="label">
 			<span class="label-text font-semibold">{m['settings.language']()}</span>
 		</div>
+
 		<select
 			class="select select-bordered w-full"
 			bind:value={language}
@@ -61,9 +69,7 @@
 		>
 			{#each locales as lang (lang)}
 				<option value={lang}>
-					{new Intl.DisplayNames([getLocale(), window.navigator.language], {
-						type: 'language'
-					}).of(lang)}
+					{localLanguageNames.of(getLangCode(lang))} ({englishLanguageNames.of(getLangCode(lang))})
 				</option>
 			{/each}
 		</select>
@@ -232,28 +238,6 @@
 						: settingsTemp.castImages}
 			</span>
 		</div>
-	</label>
-
-	<!-- TMDB Auth Sesson -->
-	<label for="tmdbAuth" class="flex w-full items-center justify-between">
-		<span class="label font-semibold">{m['settings.tmdbAuthLabel']()}</span>
-		<button
-			id="tmdbAuth"
-			name="tmdbAuth"
-			class="btn {getSettings().tmdbAccessToken ? 'btn-success' : 'btn-primary'}"
-			onclick={async () => {
-				if (getSettings().tmdbAccessToken) {
-					if (!(await confirm(m['settings.confirmReauth'](), { kind: 'warning' }))) return;
-				}
-				await auth();
-				settingsTemp.tmdbAccessToken = getSettings().tmdbAccessToken;
-				settingsTemp.tmdbAccountID = getSettings().tmdbAccountID;
-			}}
-		>
-			{getSettings().tmdbAccessToken
-				? m['settings.reauthenticate']()
-				: m['settings.tmdbAuthButton']()}
-		</button>
 	</label>
 
 	<!-- Ignorierte Schlüsselwörter -->
