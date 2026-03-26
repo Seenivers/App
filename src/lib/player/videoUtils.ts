@@ -4,6 +4,7 @@ import { movie as movieDB } from '$lib/utils/db/movie';
 import { episode as episodeDB } from '$lib/utils/db/episode';
 import type { MediaType } from '$lib/types/add';
 import { episode, movies } from '$lib/db/schema';
+import { markAsWatched as markAsWatchedRemote } from '$lib/add/mediaService';
 
 /**
  * Lädt die gespeicherte Watch-Time und setzt sie, falls vorhanden.
@@ -33,6 +34,9 @@ export async function saveWatchTime(
 	// Markiere den Film als "gesehen", wenn zu 85 % angeschaut
 	if (Math.round((currentTime / duration) * 100) >= 85) {
 		await db.update(newSchema).set({ watched: true }).where(eq(newSchema.id, id));
+		if (type === 'movie') {
+			void markAsWatchedRemote(id, 'movie');
+		}
 	}
 }
 
@@ -40,8 +44,10 @@ export async function saveWatchTime(
  * Setzt den Film auf "gesehen" und die Watch-Time auf 0.
  */
 export async function markAsWatched(id: number, type: MediaType) {
-	await db
-		.update(type === 'movie' ? movies : episode)
-		.set({ watched: true, watchTime: 0 })
-		.where(eq(movies.id, id));
+	const targetSchema = type === 'movie' ? movies : episode;
+	await db.update(targetSchema).set({ watched: true, watchTime: 0 }).where(eq(targetSchema.id, id));
+
+	if (type === 'movie') {
+		void markAsWatchedRemote(id, 'movie');
+	}
 }
