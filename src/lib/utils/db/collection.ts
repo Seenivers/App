@@ -1,9 +1,10 @@
 import { db } from '$lib/db/database';
 import { collections } from '$lib/db/schema';
+import { api } from '$lib/trpc';
 
 import { eq, inArray } from 'drizzle-orm';
-import { getCollection } from '../tmdb';
 import { online } from 'svelte/reactivity/window';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const collection = {
 	add: async (data: typeof collections.$inferInsert) =>
@@ -15,7 +16,10 @@ export const collection = {
 		let result = await db.query.collections.findFirst({ where: eq(collections.id, id) });
 		if (!result && online.current && id !== undefined) {
 			result = {
-				...(await getCollection(id)),
+				...(await api.media.getCollectionDetails.query({
+					collectionId: id,
+					language: getLocale()
+				})),
 				updated: new Date(),
 				watched: false
 			};
@@ -37,7 +41,10 @@ export const collection = {
 				const fetchedCollections = await Promise.all(
 					missingIds.map(async (id) => {
 						if (id === undefined) return null;
-						const onlineResult = await getCollection(id);
+						const onlineResult = await api.media.getCollectionDetails.query({
+							collectionId: id,
+							language: getLocale()
+						});
 						if (onlineResult) {
 							const collectionWithUpdated = {
 								...onlineResult,
