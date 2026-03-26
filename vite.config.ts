@@ -17,8 +17,8 @@ export default defineConfig({
 		}),
 		sentrySvelteKit({
 			org: 'seenivers',
-			project: 'app',
-			sentryUrl: 'https://glitchtip.webretter.com/'
+			project: 'app-svelte',
+			sentryUrl: 'https://glitchtip.seenivers.com/'
 		}),
 		tailwindcss(),
 		vidstack(),
@@ -34,11 +34,6 @@ export default defineConfig({
 	clearScreen: false,
 	// 2. tauri expects a fixed port, fail if that port is not available
 	server: {
-		headers: {
-			'content-security-policy':
-				"default-src 'self' ipc: http://ipc.localhost http://asset.localhost https://image.tmdb.org; connect-src 'self' ipc: http://ipc.localhost; img-src 'self' http://asset.localhost https://image.tmdb.org data: blob:;",
-			'access-control-allow-origin': 'http://localhost:1420'
-		},
 		host: host ?? false,
 		port: 1420,
 		strictPort: true,
