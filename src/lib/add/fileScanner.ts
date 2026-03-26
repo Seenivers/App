@@ -1,76 +1,112 @@
-import { extensions as extensionsArray } from '$lib';
-import { serie } from '$lib/utils/db/serie';
-import { searchList } from '$lib/stores.svelte';
-import type { SearchList } from '$lib/types/add';
-import { movie } from '$lib/utils/db/movie';
-import { filenameParse } from '@ctrl/video-filename-parser';
-import { isFile, hasMovieExtension } from './utils';
 import { basename } from '@tauri-apps/api/path';
+import { readDir } from '@tauri-apps/plugin-fs';
+import { filenameParse } from '@ctrl/video-filename-parser';
+import { searchList } from '$lib/stores.svelte';
+import type { MediaType, SearchList } from '$lib/types/add';
+import { episode } from '$lib/utils/db/episode';
+import { movie } from '$lib/utils/db/movie';
+import { findSeasonsAndEpisodes } from './findEpisodes';
+import { hasMovieExtension, isFile } from './utils';
 
-const extensions = new Set(extensionsArray); // Für performantere Suche
+const TV_HINT = /(S\d{1,2}E\d{1,2}|\d{1,2}x\d{1,2}|season[\s._-]?\d{1,2}|staffel[\s._-]?\d{1,2})/i;
+
+type EpisodeInfo = {
+	title: string;
+	season: number;
+	episode: number;
+};
+
+async function parseEpisodeInfo(path: string): Promise<EpisodeInfo | null> {
+	const name = await basename(path);
+	const nameWithoutExt = name.replace(/\.[^/.]+$/, '');
+	const parsed = filenameParse(nameWithoutExt, true);
+
+	if (!('isTv' in parsed) || !parsed.isTv) return null;
+
+	const season = parsed.seasons?.[0];
+	const episode = parsed.episodeNumbers?.[0];
+	if (!Number.isFinite(season) || !Number.isFinite(episode)) return null;
+
+	return {
+		title: parsed.title,
+		season: Number(season),
+		episode: Number(episode)
+	};
+}
+
+async function inferMediaType(path: string): Promise<MediaType> {
+	const file = await isFile(path);
+
+	// Dateien: Episode-Muster => TV, sonst Movie.
+	if (file) {
+		return (await parseEpisodeInfo(path)) ? 'tv' : 'movie';
+	}
+
+	// Ordner: sobald Season-/Episode-Muster in Untereinträgen auftauchen => TV.
+	try {
+		const entries = await readDir(path);
+		for (const entry of entries) {
+			if (TV_HINT.test(entry.name)) return 'tv';
+			if (entry.isDirectory && /^\d+$/.test(entry.name)) return 'tv';
+		}
+	} catch {
+		// Fallback unten.
+	}
+
+	return 'movie';
+}
 
 /**
- * Fügt neue Filme & Serien zum Status hinzu, nachdem sie validiert wurden.
- * @param paths - Die Liste der neuen Dateipfade, die verarbeitet werden sollen.
+ * Fügt neue Medienpfade hinzu, nachdem sie validiert und dedupliziert wurden.
  */
 export async function addNewFiles(paths: string[]) {
-	// Filtere und validiere die Dateien
 	const validResults = await Promise.all(
 		paths.map(async (path) => {
 			const file = await isFile(path);
-			if (file) {
-				const ext = path.split('.').pop()?.toLowerCase() ?? '';
-				return extensions.has(ext) ? path : null;
-			}
-			// Ordner immer zulassen
-			return path;
+			if (!file) return path;
+			return hasMovieExtension(path) ? path : null;
 		})
 	);
 
-	// Nur gültige Pfade behalten (nicht null)
 	const validFiles = validResults.filter((p): p is string => p !== null);
-
 	if (validFiles.length === 0) {
 		alert('Keine gültigen Dateipfade gefunden.');
 		return;
 	}
 
-	// Filtere neue Dateien, die noch nicht im Status enthalten sind
 	const newFiles = await filterNewFiles(validFiles);
-
 	if (newFiles.length === 0) {
 		alert('Keine neuen Filme und Serien zum Hinzufügen gefunden.');
 		return;
 	}
 
-	// Füge neue Dateien zum Status hinzu
 	await addNewPathsToStatus(newFiles);
 }
 
 /**
- * Filtert nur die Dateien, die nicht bereits im Status enthalten sind und einzigartig sind.
- * @param paths - Die Liste der zu überprüfenden Dateipfade.
- * @returns Array von einzigartigen Dateipfaden.
+ * Filtert nur neue, noch nicht in Queue/DB vorhandene Pfade.
  */
 export async function filterNewFiles(paths: string[]) {
 	const existingPaths = new Set(searchList.map((item) => item.options.path));
+	const newFiles: string[] = [];
 
-	const newFiles = await Promise.all(
-		paths.map(async (path) => {
-			const unique = hasMovieExtension(path)
-				? await movie.isPathUnique(path)
-				: await serie.isPathUnique(path);
-			return unique && !existingPaths.has(path) ? path : undefined;
-		})
-	);
+	for (const path of paths) {
+		if (existingPaths.has(path)) continue;
 
-	// Filtere undefined heraus und gebe nur gültige Pfade zurück
-	return newFiles.filter((p): p is string => p !== undefined);
+		const mediaType = await inferMediaType(path);
+		if (mediaType === 'movie') {
+			if (await movie.isPathUnique(path)) newFiles.push(path);
+			continue;
+		}
+
+		newFiles.push(path);
+	}
+
+	return newFiles;
 }
 
 /**
- * Fügt die neuen Dateien dem Status hinzu.
- * @param newPaths - Die Liste der neuen Dateipfade, die dem Status hinzugefügt werden sollen.
+ * Baut Queue-Einträge für den Add-Workflow auf.
  */
 export async function addNewPathsToStatus(newPaths: string[]) {
 	const tempStatus: SearchList[] = [];
@@ -78,12 +114,20 @@ export async function addNewPathsToStatus(newPaths: string[]) {
 	for (const path of newPaths) {
 		const fileNameWithExt = await basename(path);
 		const fileNameWithoutExt = fileNameWithExt.replace(/\.[^/.]+$/, '');
-
 		const parsed = filenameParse(fileNameWithoutExt);
+		const mediaType = await inferMediaType(path);
+
+		if (mediaType === 'tv') {
+			const file = await isFile(path);
+			const shouldAdd = file
+				? await isEpisodePathUnique(path)
+				: await hasUniqueEpisodeInFolder(path);
+			if (!shouldAdd) continue;
+		}
 
 		tempStatus.push({
 			status: 'waitForSearching',
-			mediaType: !hasMovieExtension(path) ? 'tv' : 'movie',
+			mediaType,
 			search: {
 				page: 1,
 				results: [],
@@ -98,6 +142,35 @@ export async function addNewPathsToStatus(newPaths: string[]) {
 		});
 	}
 
-	// Status aktualisieren
 	searchList.push(...tempStatus);
+}
+
+async function hasUniqueEpisodeInFolder(seriesPath: string): Promise<boolean> {
+	const seasonData = await findSeasonsAndEpisodes(seriesPath);
+	const episodePaths = Object.values(seasonData).flatMap((episodes) => Object.values(episodes));
+
+	if (episodePaths.length === 0) return false;
+
+	for (const episodePath of episodePaths) {
+		if (await isEpisodePathUnique(episodePath)) return true;
+	}
+
+	return false;
+}
+
+export async function isEpisodePathUnique(path: string): Promise<boolean> {
+	const fileNameWithExt = await basename(path);
+	const fileNameWithoutExt = fileNameWithExt.replace(/\.[^/.]+$/, '');
+	const parsed = filenameParse(fileNameWithoutExt, true);
+
+	console.log('Parsed episode:', parsed);
+	console.log('Checking episode path:', path);
+
+	const episodeInfo = await parseEpisodeInfo(path);
+	if (!episodeInfo) return false;
+
+	const isUnique = await episode.isPathUnique(path);
+	console.log('Episode already exists:', !isUnique);
+
+	return isUnique;
 }
