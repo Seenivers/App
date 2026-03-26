@@ -88,9 +88,11 @@
 		"watchPathsHint": "Absolute directory path (e.g. C:/Videos)",
 		"tmdbAuthButton": "Authenticate",
 		"tmdbAuthLabel": "TMDB Authentication",
-		"confirmReauth": "Do you really want to restart the authentication?",
-		"reauthenticate": "Re-authenticate",
-		"autoBackup": "Auto Backup"
+		"autoBackup": "Auto Backup",
+		"authLabel": "Account",
+		"authButton": "Login",
+		"reauthenticate": "Login again",
+		"confirmReauth": "Do you want to log in again?"
 	},
 	"main": {
 		"searchPlaceholder": "Search...",
@@ -247,7 +249,8 @@
 	"size": "Size",
 	"tabs": {
 		"settings": "Settings",
-		"backup": "Backup"
+		"backup": "Backup",
+		"auth": "Account"
 	},
 	"bookmarkAdd": "Add to Bookmarks",
 	"bookmarkRemove": "Remove from Bookmarks",
@@ -257,5 +260,10 @@
 	"folderNotFound": "Folder does not exist",
 	"watchlist": "Watchlist",
 	"watchlistSync": "Sync Watchlist",
-	"noTMDBAccessToken": "TMDB access required. Please sign in via settings and authorize access."
+	"noTMDBAccessToken": "TMDB access required. Please sign in via settings and authorize access.",
+	"loginTitle": "Login",
+	"loginEmail": "Email",
+	"loginPassword": "Password",
+	"loginLogin": "Login",
+	"registerRegister": "Register"
 }
