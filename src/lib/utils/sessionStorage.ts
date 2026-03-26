@@ -1,8 +1,6 @@
-import type { CardscaleNumbers } from '$lib/types/cardscale';
-
 // Typ für die Suchparameter
 interface SearchCriteria {
-	CARDSCALE: CardscaleNumbers;
+	CARDSCALE: 1 | 2 | 3;
 	search: string;
 	showCollections: boolean;
 	showMovies: boolean;
