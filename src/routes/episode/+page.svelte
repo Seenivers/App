@@ -135,7 +135,7 @@
 								<div class="card-body">
 									<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
 									<a
-										href={`https://www.youtube-nocookie.com/watch?v=${trailer.key}`}
+										href={`https://youtu.be/${trailer.key}`}
 										target="_blank"
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
