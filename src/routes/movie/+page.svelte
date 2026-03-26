@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { image } from '$lib/image/image';
 	import { convertFileSrc } from '@tauri-apps/api/core';
-	import { getMovie, postWatchlist } from '$lib/utils/tmdb';
 	import { movies as schemaMovies } from '$lib/db/schema/movies';
 	import Plyr from '$lib/player/Plyr.svelte';
 	import Vidstack from '$lib/player/Vidstack.svelte';
@@ -17,6 +16,9 @@
 	import BookmarkSlash from '$lib/assets/SVG/BookmarkSlash.svelte';
 	import Rating from '$lib/components/rating.svelte';
 	import { getSettings } from '$lib/utils/settings/state';
+	import { api } from '$lib/trpc';
+	import { resolve } from '$app/paths';
+	import { getLocale } from '$lib/paraglide/runtime';
 
 	let { data }: { data: PageData } = $props();
 
@@ -89,7 +91,11 @@
 				// Diese Filme existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
 				// Deshalb überspringen wir diese Filme, um Fehler zu vermeiden.
 				if (data.result.tmdb.status === 'Rumored') return;
-				postWatchlist({ media_type: 'movie', media_id: data.id, watchlist: isBookmarked });
+				api.sync.setWatchlist.mutate({
+					mediaType: 'movie',
+					tmdbId: data.id,
+					watchlist: isBookmarked
+				});
 			}}
 			disabled={data.pathExists}
 		>
@@ -166,7 +172,7 @@
 								<div class="card-body">
 									<h3 class="card-title text-lg font-bold">{trailer.name}</h3>
 									<a
-										href={`https://www.youtube-nocookie.com/watch?v=${trailer.key}`}
+										href={`https://youtu.be/${trailer.key}`}
 										target="_blank"
 										class="btn btn-primary mt-2"
 										rel="noopener noreferrer"
@@ -193,7 +199,7 @@
 										<p class="mb-5 text-lg">
 											{value?.overview}
 										</p>
-										<a href="./collection?id={value?.id}" class="btn btn-primary">
+										<a href="{resolve('/collection')}?id={value?.id}" class="btn btn-primary">
 											{m.collection()}
 										</a>
 									</div>
@@ -210,9 +216,9 @@
 					<h2 class="my-2 text-2xl font-bold">{m.leadActor()}</h2>
 					<div class="rounded-box bg-base-100 p-3">
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
-							{#each movieData.tmdb.credits.cast as cast}
+							{#each movieData.tmdb.credits.cast as cast (cast.id)}
 								<a
-									href="./actor?id={cast.id}"
+									href="{resolve('/actor')}?id={cast.id}"
 									class="carousel-item flex flex-col items-center"
 									data-sveltekit-preload-data="tap"
 								>
@@ -390,7 +396,10 @@
 				const newID = parseInt(form.newID.value, 10);
 				try {
 					if (data.id !== -1 && newID && newID !== movieData.id) {
-						const newMovieByTmdb = await getMovie(newID);
+						const newMovieByTmdb = await api.media.getMovieDetails.query({
+							tmdbId: newID,
+							language: getLocale()
+						});
 
 						await movie.update(data.id, { id: newID, tmdb: newMovieByTmdb });
 
