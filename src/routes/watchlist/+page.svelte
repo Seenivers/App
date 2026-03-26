@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { m } from '$lib/paraglide/messages';
-	import { postWatchlist } from '$lib/utils/tmdb';
 	import type { PageData } from './$types';
 	import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
 	import Img from '$lib/image/Img.svelte';
@@ -9,20 +8,25 @@
 	import { serie } from '$lib/utils/db/serie';
 	import Close from '$lib/assets/SVG/Close.svelte';
 	import { online } from 'svelte/reactivity/window';
-	import { getSettings } from '$lib/utils/settings/state';
 	import { newToast } from '$lib/toast/toast';
+	import { api } from '$lib/trpc';
+	import { resolve } from '$app/paths';
+	import { getUserSession } from '$lib/utils/auth/session';
 
 	let { data }: { data: PageData } = $props();
 
 	let movies = $derived(data.movie);
 	let series = $derived(data.serie);
+	let { loggedIn } = getUserSession();
 
 	const removeFromWatchlist = async (mediaType: 'movie' | 'tv', mediaId: number) => {
-		await postWatchlist({
-			media_type: mediaType,
-			media_id: mediaId,
-			watchlist: false
-		});
+		if (loggedIn) {
+			await api.sync.setWatchlist.mutate({
+				mediaType: mediaType,
+				tmdbId: mediaId,
+				watchlist: false
+			});
+		}
 
 		if (mediaType === 'movie') {
 			movies = movies.filter((item) => item.id !== mediaId);
@@ -41,12 +45,8 @@
 <Navbar back={true}>
 	{#snippet right()}
 		<div
-			class={!online.current || !getSettings().tmdbAccessToken ? 'tooltip tooltip-left' : ''}
-			data-tip={!online.current
-				? m['networkStatus.offline']()
-				: !getSettings().tmdbAccessToken
-					? m.noTMDBAccessToken()
-					: ''}
+			class={!online.current ? 'tooltip tooltip-left' : ''}
+			data-tip={!online.current ? m['networkStatus.offline']() : ''}
 		>
 			<button
 				class="btn"
@@ -58,7 +58,7 @@
 					movies = result.movie;
 					series = result.serie;
 				}}
-				disabled={!getSettings().tmdbAccessToken || !online.current}>{m.watchlistSync()}</button
+				disabled={!online.current || !loggedIn}>{m.watchlistSync()}</button
 			>
 		</div>
 	{/snippet}
@@ -82,7 +82,7 @@
 				<ul class="space-y-2">
 					{#each movies as item (item.id)}
 						<li class="hover:bg-base-300 flex items-center gap-3 rounded-lg p-2 transition">
-							<a href={`/movie?id=${item.id}`} class="flex flex-1 items-center gap-3">
+							<a href="{resolve('/movie')}?id={item.id}" class="flex flex-1 items-center gap-3">
 								<Img
 									params={[item.tmdb.poster_path, 'posters', false]}
 									class="h-48 w-auto rounded-lg object-cover"
@@ -129,7 +129,7 @@
 				<ul class="space-y-2">
 					{#each series as item (item.id)}
 						<li class="hover:bg-base-300 flex items-center gap-3 rounded-lg p-2 transition">
-							<a href={`/tv?id=${item.id}`} class="flex flex-1 items-center gap-3">
+							<a href="{resolve('/tv')}?id={item.id}" class="flex flex-1 items-center gap-3">
 								<Img
 									params={[item.tmdb.poster_path, 'posters', false]}
 									class="h-48 w-auto rounded-lg object-cover"
