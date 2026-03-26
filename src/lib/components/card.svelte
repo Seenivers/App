@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { image } from '$lib/image/image';
 	import Img from '$lib/image/Img.svelte';
-	import type { CardscaleNumbers } from '$lib/types/cardscale';
 	import { m } from '$lib/paraglide/messages';
 	import { scaleClasses } from '$lib/utils/cardscale';
 
@@ -13,7 +12,7 @@
 		watched = false,
 		params
 	}: {
-		CARDSCALE: CardscaleNumbers;
+		CARDSCALE: 1 | 2 | 3;
 		href: string;
 		alt: string;
 		title: string;
