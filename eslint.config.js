@@ -6,8 +6,10 @@ import globals from 'globals';
 import { includeIgnoreFile } from '@eslint/compat';
 import { fileURLToPath } from 'node:url';
 import svelteConfig from './svelte.config.js';
+import { dirname } from 'node:path';
 
-const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const gitignorePath = path.resolve(__dirname, '.gitignore');
 
 export default ts.config(
 	includeIgnoreFile(gitignorePath),
@@ -27,6 +29,8 @@ export default ts.config(
 		ignores: ['eslint.config.js', 'svelte.config.js'],
 		languageOptions: {
 			parserOptions: {
+				project: './tsconfig.json',
+				tsconfigRootDir: __dirname,
 				projectService: true,
 				extraFileExtensions: ['.svelte'],
 				parser: ts.parser,
