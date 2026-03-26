@@ -6,12 +6,10 @@ use sentry::ClientInitGuard;
 use sentry_log::SentryLogger;
 
 fn main() {
-    let release = format!("{}@{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
-
     let _sentry: ClientInitGuard = sentry::init((
-        "https://17b503b446664415a4c43e1619aa1cdf@glitchtip.webretter.com/7",
+        "https://31369000a8c24384bb298cd1efa37ea2@glitchtip.seenivers.com/2",
         sentry::ClientOptions {
-            release: Some(release.into()),
+            release: sentry::release_name!(),
             environment: Some(
                 if cfg!(debug_assertions) {
                     "development"
@@ -26,7 +24,7 @@ fn main() {
 
     let logger = SentryLogger::with_dest(log::logger());
     log::set_boxed_logger(Box::new(logger)).unwrap();
-    log::set_max_level(LevelFilter::Error);
+    log::set_max_level(LevelFilter::Warn);
 
     seenivers_lib::run();
 }
