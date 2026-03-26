@@ -11,6 +11,7 @@ import {
 } from '$lib/utils/loadUtils';
 import { online } from 'svelte/reactivity/window';
 import { nextEpisode } from '$lib/utils/nextEpisode';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const load = (async ({ url, depends }) => {
 	depends('app:episode');
@@ -33,8 +34,13 @@ export const load = (async ({ url, depends }) => {
 	if (!result && online.current) {
 		// Wenn die Episode nicht lokal gefunden wurde und online verfügbar ist, Daten von TMDB abrufen
 
-		const tmdb = await import('$lib/utils/tmdb');
-		const fetchedEpisode = await tmdb.getSerieSeasonEpisode(tvShowID, seasonNumber, id);
+		const { api } = await import('$lib/trpc');
+		const fetchedEpisode = await api.media.getEpisodeDetails.query({
+			tvId: tvShowID,
+			seasonNumber: seasonNumber,
+			episodeNumber: id,
+			language: getLocale()
+		});
 
 		if (!fetchedEpisode) {
 			// Wenn die Episode auch online nicht gefunden wurde
