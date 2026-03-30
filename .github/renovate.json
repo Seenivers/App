@@ -12,6 +12,14 @@
 	"rollbackPrs": true,
 	"separateMajorMinor": true,
 	"timezone": "Europe/Berlin",
+	"npmrc": "//npm.pkg.github.com/:_authToken=${GHCR_TOKEN}",
+	"hostRules": [
+		{
+			"hostType": "npm",
+			"matchHost": "npm.pkg.github.com",
+			"token": "${GHCR_TOKEN}"
+		}
+	],
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["minor", "patch"],
