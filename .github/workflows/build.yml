@@ -12,6 +12,10 @@ jobs:
 
     permissions:
       contents: read
+      packages: read
+
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GHCR_TOKEN }}
 
     steps:
       - name: Checkout
@@ -23,6 +27,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
+          registry-url: https://npm.pkg.github.com
+          scope: '@seenivers'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.2.0

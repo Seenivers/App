@@ -7,6 +7,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.GHCR_TOKEN }}
+
 jobs:
   semantic-release:
     name: Semantic Release
@@ -18,6 +21,7 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
+      packages: read
       id-token: write
 
     steps:
@@ -30,7 +34,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
+          registry-url: https://npm.pkg.github.com
+          scope: "@seenivers"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.2.0
@@ -44,6 +50,7 @@ jobs:
         id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GHCR_TOKEN }}
         run: pnpm exec semantic-release
 
       - name: Save Release Details
@@ -92,7 +99,7 @@ jobs:
 
     permissions:
       contents: read
-
+      packages: read
     uses: ./.github/workflows/build.yml
 
   format:
@@ -101,7 +108,7 @@ jobs:
 
     permissions:
       contents: write
-
+      packages: read
     uses: ./.github/workflows/format.yml
 
   tauri-release:
@@ -111,7 +118,7 @@ jobs:
 
     permissions:
       contents: write
-
+      packages: read
     strategy:
       fail-fast: false
       matrix:
@@ -122,8 +129,8 @@ jobs:
           #   args: '--target x86_64-apple-darwin'
           # - platform: 'ubuntu-22.04'
           #   args: ''
-          - platform: 'windows-latest'
-            args: ''
+          - platform: "windows-latest"
+            args: ""
 
     runs-on: ${{ matrix.platform }}
 
@@ -158,7 +165,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
+          registry-url: https://npm.pkg.github.com
+          scope: "@seenivers"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.2.0
