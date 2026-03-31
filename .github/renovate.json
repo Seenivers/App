@@ -12,16 +12,7 @@
 	"rollbackPrs": true,
 	"separateMajorMinor": true,
 	"timezone": "Europe/Berlin",
-
-	"npmrc": "@seenivers:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${GHCR_TOKEN}",
-
-	"hostRules": [
-		{
-			"hostType": "npm",
-			"matchHost": "npm.pkg.github.com"
-		}
-	],
-
+	"npmrc": "@seenivers:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${MEND_GHCR_TOKEN}",
 	"packageRules": [
 		{
 			"matchPackageNames": ["@seenivers"],
