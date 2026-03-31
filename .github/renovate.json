@@ -12,11 +12,8 @@
 	"rollbackPrs": true,
 	"separateMajorMinor": true,
 	"timezone": "Europe/Berlin",
+	"ignoreDeps": ["@seenivers/api", "@seenivers/db"],
 	"packageRules": [
-		{
-			"matchPackageNames": ["@seenivers"],
-			"enabled": false
-		},
 		{
 			"matchUpdateTypes": ["minor", "patch"],
 			"groupName": "Non-breaking updates",
