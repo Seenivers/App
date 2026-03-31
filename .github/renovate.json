@@ -15,10 +15,6 @@
 	"npmrc": "@seenivers:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${MEND_GHCR_TOKEN}",
 	"packageRules": [
 		{
-			"matchPackageNames": ["@seenivers"],
-			"registryUrls": ["https://npm.pkg.github.com"]
-		},
-		{
 			"matchUpdateTypes": ["minor", "patch"],
 			"groupName": "Non-breaking updates",
 			"matchFileNames": ["package.json", "pnpm", "Cargo.toml", "src-tauri/Cargo.toml"],
