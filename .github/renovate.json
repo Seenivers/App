@@ -12,15 +12,21 @@
 	"rollbackPrs": true,
 	"separateMajorMinor": true,
 	"timezone": "Europe/Berlin",
-	"npmrc": "//npm.pkg.github.com/:_authToken=${GHCR_TOKEN}",
+
+	"npmrc": "@seenivers:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${GHCR_TOKEN}",
+
 	"hostRules": [
 		{
 			"hostType": "npm",
-			"matchHost": "npm.pkg.github.com",
-			"token": "${GHCR_TOKEN}"
+			"matchHost": "npm.pkg.github.com"
 		}
 	],
+
 	"packageRules": [
+		{
+			"matchPackageNames": ["@seenivers"],
+			"registryUrls": ["https://npm.pkg.github.com"]
+		},
 		{
 			"matchUpdateTypes": ["minor", "patch"],
 			"groupName": "Non-breaking updates",
