@@ -12,7 +12,6 @@
 	"rollbackPrs": true,
 	"separateMajorMinor": true,
 	"timezone": "Europe/Berlin",
-	"npmrc": "@seenivers:registry=https://npm.pkg.github.com",
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["minor", "patch"],
