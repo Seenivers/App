@@ -14,6 +14,10 @@
 	"timezone": "Europe/Berlin",
 	"packageRules": [
 		{
+			"matchPackageNames": ["@seenivers"],
+			"enabled": false
+		},
+		{
 			"matchUpdateTypes": ["minor", "patch"],
 			"groupName": "Non-breaking updates",
 			"matchFileNames": ["package.json", "pnpm", "Cargo.toml", "src-tauri/Cargo.toml"],
