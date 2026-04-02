@@ -72,5 +72,10 @@
 		"plyr": "^3.8.4",
 		"vidstack": "^1.12.13",
 		"zod": "^4.3.6"
+	},
+	"pnpm": {
+		"overrides": {
+			"handlebars": "^4.7.9"
+		}
 	}
 }
