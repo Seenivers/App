@@ -15,7 +15,7 @@
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"tauri": "tauri",
-		"prepare": "svelte-kit sync",
+		"prepare": "svelte-kit sync || echo ''",
 		"machine-translate": "inlang machine translate --project project.inlang"
 	},
 	"devDependencies": {
