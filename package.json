@@ -52,7 +52,7 @@
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.57.1",
 		"vite": "^8.0.1",
-		"@seenivers/api": "1.0.8"
+		"@seenivers/api": "1.0.9"
 	},
 	"dependencies": {
 		"@ctrl/video-filename-parser": "^5.4.1",
