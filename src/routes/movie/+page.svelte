@@ -19,6 +19,7 @@
 	import { api } from '$lib/trpc';
 	import { resolve } from '$app/paths';
 	import { getLocale } from '$lib/paraglide/runtime';
+	import { getUserSession } from '$lib/utils/auth/session';
 
 	let { data }: { data: PageData } = $props();
 
@@ -90,8 +91,8 @@
 				// TMDB liefert bei manchen Filmen nur einen "Rumored"-Eintrag.
 				// Diese Filme existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
 				// Deshalb überspringen wir diese Filme, um Fehler zu vermeiden.
-				if (data.result.tmdb.status === 'Rumored') return;
-				api.sync.setWatchlist.mutate({
+				if (!getUserSession().loggedIn || data.result.tmdb.status === 'Rumored') return;
+				void api.sync.setWatchlist.mutate({
 					mediaType: 'movie',
 					tmdbId: data.id,
 					watchlist: isBookmarked
