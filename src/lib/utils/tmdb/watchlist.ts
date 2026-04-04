@@ -2,8 +2,11 @@ import { db } from '$lib/db/database';
 import { movies as schemaMovies, serie as schemaSerie } from '$lib/db/schema';
 import { api } from '$lib/trpc';
 import { eq } from 'drizzle-orm';
+import { getUserSession } from '../auth/session';
 
 export async function syncWatchlist() {
+	if (!getUserSession().loggedIn) return;
+
 	const remoteWatchlist = await api.sync.getWatchlist.query();
 	if (!remoteWatchlist) return;
 
