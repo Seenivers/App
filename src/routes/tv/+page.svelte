@@ -16,6 +16,7 @@
 	import { resolve } from '$app/paths';
 	import { api } from '$lib/trpc';
 	import { SvelteMap } from 'svelte/reactivity';
+	import { getUserSession } from '$lib/utils/auth/session';
 
 	// Seite-Daten, z. B. aus load()
 	let { data }: { data: PageData } = $props();
@@ -163,8 +164,12 @@
 				// TMDB liefert bei manchen Serien nur einen "Rumored"-Eintrag.
 				// Diese Serie existieren nicht offiziell, daher würde ein API-Aufruf zur Watchlist einen 404-Fehler erzeugen.
 				// Deshalb überspringen wir diese Serie, um Fehler zu vermeiden.
-				if (data.serie.tmdb.status === 'Rumored') return;
-				api.sync.setWatchlist.mutate({ mediaType: 'tv', tmdbId: data.id, watchlist: isBookmarked });
+				if (!getUserSession().loggedIn || data.serie.tmdb.status === 'Rumored') return;
+				void api.sync.setWatchlist.mutate({
+					mediaType: 'tv',
+					tmdbId: data.id,
+					watchlist: isBookmarked
+				});
 			}}
 			disabled={data.pathExists}
 		>
