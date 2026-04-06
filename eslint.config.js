@@ -6,6 +6,7 @@ import globals from 'globals';
 import { includeIgnoreFile } from '@eslint/compat';
 import { fileURLToPath } from 'node:url';
 import svelteConfig from './svelte.config.js';
+import path from 'node:path';
 import { dirname } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -22,7 +23,15 @@ export default ts.config(
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.node }
 		},
-		rules: { 'no-undef': 'off' }
+		rules: {
+			'no-undef': 'off',
+			'no-restricted-imports': [
+				'error',
+				{
+					patterns: ['@seenivers/api/server', '@seenivers/db', '@seenivers/db/*', '$lib/server/*']
+				}
+			]
+		}
 	},
 	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
