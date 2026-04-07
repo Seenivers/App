@@ -2,12 +2,20 @@ import { db } from '$lib/db/database';
 import { movies as schemaMovies, serie as schemaSerie } from '$lib/db/schema';
 import { api } from '$lib/trpc';
 import { eq } from 'drizzle-orm';
-import { getUserSession } from '../auth/session';
+import { clearUserSession, getUserSession } from '../auth/session';
 
 export async function syncWatchlist() {
 	if (!getUserSession().loggedIn) return false;
 
-	const remoteWatchlist = await api.sync.getWatchlist.query();
+	let remoteWatchlist: null | Awaited<ReturnType<typeof api.sync.getWatchlist.query>>;
+
+	try {
+		remoteWatchlist = await api.sync.getWatchlist.query();
+	} catch {
+		clearUserSession();
+		return false;
+	}
+
 	if (!remoteWatchlist) return false;
 
 	const remoteMovieIds = remoteWatchlist
