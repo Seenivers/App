@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { m } from '$lib/paraglide/messages';
-	import type { PageData } from './$types';
 	import { syncWatchlist } from '$lib/utils/tmdb/watchlist';
 	import Img from '$lib/image/Img.svelte';
 	import { movie } from '$lib/utils/db/movie';
@@ -12,11 +11,14 @@
 	import { api } from '$lib/trpc';
 	import { resolve } from '$app/paths';
 	import { getUserSession } from '$lib/utils/auth/session';
+	import type { Movies, Serie } from '$lib/db/schema';
+	import { onMount } from 'svelte';
+	import { db } from '$lib/db/database';
+	import { eq } from 'drizzle-orm';
+	import * as schema from '$lib/db/schema';
 
-	let { data }: { data: PageData } = $props();
-
-	let movies = $derived(data.movie);
-	let series = $derived(data.serie);
+	let movies: Movies[] = [];
+	let series: Serie[] = [];
 	let { loggedIn } = getUserSession();
 
 	const removeFromWatchlist = async (mediaType: 'movie' | 'tv', mediaId: number) => {
@@ -40,6 +42,19 @@
 			});
 		}
 	};
+
+	async function loadMovies() {
+		movies = await db.select().from(schema.movies).where(eq(schema.movies.wantsToWatch, true));
+	}
+
+	async function loadSeries() {
+		series = await db.select().from(schema.serie).where(eq(schema.serie.wantsToWatch, true));
+	}
+
+	onMount(() => {
+		void loadMovies();
+		void loadSeries();
+	});
 </script>
 
 <Navbar back={true}>
@@ -51,12 +66,10 @@
 			<button
 				class="btn"
 				onclick={async () => {
-					const result = await syncWatchlist();
+					await syncWatchlist();
 					newToast('success', 'Watchlist synchronized');
-					if (!result) return;
-
-					movies = result.movie;
-					series = result.serie;
+					void loadMovies();
+					void loadSeries();
 				}}
 				disabled={!online.current || !loggedIn}>{m.watchlistSync()}</button
 			>
