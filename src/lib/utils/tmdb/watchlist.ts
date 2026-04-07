@@ -5,17 +5,17 @@ import { eq } from 'drizzle-orm';
 import { getUserSession } from '../auth/session';
 
 export async function syncWatchlist() {
-	if (!getUserSession().loggedIn) return;
+	if (!getUserSession().loggedIn) return false;
 
 	const remoteWatchlist = await api.sync.getWatchlist.query();
-	if (!remoteWatchlist) return;
+	if (!remoteWatchlist) return false;
 
 	const remoteMovieIds = remoteWatchlist
-		.filter((m) => m.mediaType === 'movie' && Boolean(m.id))
-		.map((m) => m.id);
+		.filter((m) => m.mediaType === 'movie' && Boolean(m.tmdbId))
+		.map((m) => m.tmdbId);
 	const remoteSeriesIds = remoteWatchlist
-		.filter((s) => s.mediaType === 'tv' && Boolean(s.id))
-		.map((s) => s.id);
+		.filter((s) => s.mediaType === 'tv' && Boolean(s.tmdbId))
+		.map((s) => s.tmdbId);
 
 	const remoteMovieIdSet = new Set(remoteMovieIds);
 	const remoteSeriesIdSet = new Set(remoteSeriesIds);
@@ -88,8 +88,5 @@ export async function syncWatchlist() {
 
 	await Promise.all(watchlistSyncPayload.map((entry) => api.sync.setWatchlist.mutate(entry)));
 
-	const movie = await db.select().from(schemaMovies).where(eq(schemaMovies.wantsToWatch, true));
-	const serie = await db.select().from(schemaSerie).where(eq(schemaSerie.wantsToWatch, true));
-
-	return { movie, serie };
+	return true;
 }
