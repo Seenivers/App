@@ -159,18 +159,8 @@ async function hasUniqueEpisodeInFolder(seriesPath: string): Promise<boolean> {
 }
 
 export async function isEpisodePathUnique(path: string): Promise<boolean> {
-	const fileNameWithExt = await basename(path);
-	const fileNameWithoutExt = fileNameWithExt.replace(/\.[^/.]+$/, '');
-	const parsed = filenameParse(fileNameWithoutExt, true);
-
-	console.log('Parsed episode:', parsed);
-	console.log('Checking episode path:', path);
-
 	const episodeInfo = await parseEpisodeInfo(path);
 	if (!episodeInfo) return false;
 
-	const isUnique = await episode.isPathUnique(path);
-	console.log('Episode already exists:', !isUnique);
-
-	return isUnique;
+	return await episode.isPathUnique(path);
 }
