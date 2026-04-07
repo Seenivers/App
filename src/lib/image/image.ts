@@ -29,14 +29,10 @@ async function ensureDirectoryExists(folderPath: string) {
  * @param filename The filename under which the image should be saved.
  */
 export async function downloadImage(url: string, filename: string) {
-	console.log('URL', url);
-
 	const proxyResult = await api.image.query({ url }).catch((err) => {
 		console.error(`Error proxying image from ${url}: ${err}`);
 		return null;
 	});
-
-	console.log('proxyResult', proxyResult);
 
 	if (!proxyResult) return;
 
