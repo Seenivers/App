@@ -1,3 +1,39 @@
+# [0.42.0](https://github.com/Seenivers/App/compare/v0.41.0...v0.42.0) (2026-04-07)
+
+
+### Bug Fixes
+
+* **add-page:** correct modal logic and typing ([4d58538](https://github.com/Seenivers/App/commit/4d5853876de8f946ee31e1214feb15e7823904bc))
+* **deps:** add pnpm overrides for handlebars to package.json ([cd0869f](https://github.com/Seenivers/App/commit/cd0869f709895a4386d1263a3b7ef7c8b4024a3c))
+* **deps:** update @seenivers/api to version 1.0.6 ([9b2b0ef](https://github.com/Seenivers/App/commit/9b2b0ef293a37fcc98e197f283a8279441f08465))
+* **deps:** update @sveltejs/kit to ^2.53.3 ([47654d0](https://github.com/Seenivers/App/commit/47654d0b3e87953b1408e771aac85b55f03505da))
+* **deps:** update dependency @sentry/sveltekit to ^10.44.0 ([09e8288](https://github.com/Seenivers/App/commit/09e828849bfdb265d09903ce80ef9866805419df))
+* **deps:** update dependency @sentry/sveltekit to ^10.45.0 ([3497a4b](https://github.com/Seenivers/App/commit/3497a4bbee5724541e48767861004dee05f0f883))
+* **deps:** update non-breaking updates ([62c6b3e](https://github.com/Seenivers/App/commit/62c6b3e3c84eb8f5369242441f682085efda2d69))
+* **deps:** update non-breaking updates ([254528d](https://github.com/Seenivers/App/commit/254528dde3226e121ceabdc7df783748057717fd))
+* **episode-ui:** update trailer link format ([673de5d](https://github.com/Seenivers/App/commit/673de5dbd890ef731546397d18e37dae33512b9d))
+* **eslint:** resolve gitignore path and ts config ([b8f695e](https://github.com/Seenivers/App/commit/b8f695ebb3f3575c2ff6cdd4417472d38064f314))
+* **movie:** guard watchlist actions for auth state ([b56f61f](https://github.com/Seenivers/App/commit/b56f61f9d5d72b59dbe1ada8ae296d2e5ac66649))
+* **tauri:** update CSP endpoints ([d079563](https://github.com/Seenivers/App/commit/d07956395a14856fc681b21e215dd9d800e50383))
+* **tmdb:** skip sync when user not logged in ([41aade8](https://github.com/Seenivers/App/commit/41aade8a8b10a149093030587740e1ec35acd722))
+* **tv:** prevent watchlist updates if not logged in ([e3008a2](https://github.com/Seenivers/App/commit/e3008a2191856f9ee52139095e6a9f128016cc7b))
+* update @seenivers/api version from workspace to 1.0.1 ([8d01e84](https://github.com/Seenivers/App/commit/8d01e848ca87ad119e57e5a284c7ec66a72f31aa))
+* update pnpm-lock.yaml to match package.json ([256a213](https://github.com/Seenivers/App/commit/256a213e72102daf3593fdf6ba182427d7af310b))
+* update prepare script to handle sync errors gracefully ([84cf7ea](https://github.com/Seenivers/App/commit/84cf7ea9a1cd930d3f1db6ff35d02a624dd41c38))
+* **watchlist:** handle errors and clear session on failure ([8bf9729](https://github.com/Seenivers/App/commit/8bf9729713497040ca4fa8d6fede8cd352ce404f))
+
+
+### Features
+
+* **add:** improve media detection and dedup logic ([35744ea](https://github.com/Seenivers/App/commit/35744eabf6a087cfeb485ed6e429e7cd78b13cbc))
+* **add:** introduce media service API layer ([13c0242](https://github.com/Seenivers/App/commit/13c024234085bf3305ff40f5f6dd51554726783d))
+* **api:** add trpc client instance ([22b917d](https://github.com/Seenivers/App/commit/22b917d871c81cb4b4f515d9281b36ded388d458))
+* **auth:** add local session management ([7fcdf75](https://github.com/Seenivers/App/commit/7fcdf757ad06e36d66cdd421ae361dfb3ee52a8a))
+* **auth:** add login page with session handling ([46a7678](https://github.com/Seenivers/App/commit/46a7678bdfa9cde1ce19955d2b5d53fca1aa903b))
+* **i18n:** add auth and login translations ([dd6f1a9](https://github.com/Seenivers/App/commit/dd6f1a943915cf16baf7fabd0d5a8aa1429af293))
+* **player:** sync watched status remotely ([23e663e](https://github.com/Seenivers/App/commit/23e663e59b3dfe805ef334208d062c89b0fe724f))
+* **settings:** add login tab ([fd10c98](https://github.com/Seenivers/App/commit/fd10c989c33bb2f3c4b033de7fb0bd57ea9e684a))
+
 # [0.41.0](https://github.com/Seenivers/App/compare/v0.40.0...v0.41.0) (2026-02-15)
 
 
