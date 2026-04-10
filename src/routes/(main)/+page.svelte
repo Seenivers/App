@@ -245,7 +245,7 @@
 	{#if !items}
 		<p class="w-full pb-2 text-center">loading...</p>
 		<div class="flex flex-wrap justify-center gap-4 pb-2 sm:gap-5">
-			{#each Array(30).fill(0) as _, i (i)}
+			{#each Array(30).fill(0), i (i)}
 				<div
 					class="skeleton card hover:bg-base-content/20 h-115 w-72 max-w-[18rem] min-w-48 grow shadow-xl transition-all duration-300 select-none hover:scale-105"
 				></div>
