@@ -14,6 +14,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import Rating from '$lib/components/rating.svelte';
 	import { getSettings } from '$lib/utils/settings/state';
+	import { resolve } from '$app/paths';
 
 	let { data }: { data: PageData } = $props();
 
@@ -80,7 +81,7 @@
 				.season_number}/episode/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">{m.openOnTMDB()}</a
+			rel="noopener noreferrer external">{m.openOnTMDB()}</a
 		>
 	{/snippet}
 </Navbar>
@@ -157,7 +158,7 @@
 						<div class="carousel carousel-center rounded-box w-full space-x-3">
 							{#each data.result.tmdb.credits.guest_stars as guestStars (guestStars.id)}
 								<a
-									href="./actor?id={guestStars.id}"
+									href={resolve(`/actor?id=${guestStars.id}`)}
 									class="carousel-item flex flex-col items-center"
 									data-sveltekit-preload-data="tap"
 								>
