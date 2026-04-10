@@ -49,6 +49,7 @@
 	async function navigateToNextEpisode() {
 		if (!data.nextEpisodeURL) return;
 		await invalidate('app:episode');
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
 		await goto(data.nextEpisodeURL, { replaceState: true });
 	}
 </script>
