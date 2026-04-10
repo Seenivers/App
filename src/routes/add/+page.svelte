@@ -71,7 +71,7 @@
 		searchList[modalID].status = 'waitForDownloading'; // Setze den Status auf "waitForDownloading" zurück
 
 		// Lade neue Filme
-		load();
+		void load();
 	}
 
 	// Öffne das Modal nur, wenn der Status der Richtige ist
@@ -109,7 +109,7 @@
 			class="btn grow"
 			onclick={async () => {
 				await selectTvFolder();
-				load();
+				void load();
 			}}
 		>
 			{m.selectSeriesFolder()}
@@ -118,7 +118,7 @@
 			class="btn grow"
 			onclick={async () => {
 				await selectFile();
-				load();
+				void load();
 			}}
 		>
 			{m.selectMovies()}
@@ -127,7 +127,7 @@
 			class="btn grow"
 			onclick={async () => {
 				await selectFolder();
-				load();
+				void load();
 			}}
 		>
 			{m.selectMoviesFolder()}
@@ -284,9 +284,9 @@
 						{@const year = 'release_date' in result ? result.release_date : result.first_air_date}
 						<button
 							class="border-base-300 bg-base-200 flex cursor-pointer space-y-2 rounded-lg border p-3"
-							onclick={async () => {
+							onclick={() => {
 								if (modalID !== null) {
-									await selectMovie(modalID, index);
+									void selectMovie(modalID, index);
 									modalID = null;
 								}
 							}}
