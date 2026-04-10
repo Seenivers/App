@@ -113,7 +113,7 @@
 			href="https://www.themoviedb.org/movie/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">{m.openOnTMDB()}</a
+			rel="noopener noreferrer external">{m.openOnTMDB()}</a
 		>
 	{/snippet}
 </Navbar>
