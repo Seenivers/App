@@ -39,7 +39,6 @@ export default defineConfig(
 		ignores: ['eslint.config.js', 'svelte.config.js'],
 		languageOptions: {
 			parserOptions: {
-				project: './tsconfig.json',
 				tsconfigRootDir: __dirname,
 				projectService: true,
 				extraFileExtensions: ['.svelte'],
