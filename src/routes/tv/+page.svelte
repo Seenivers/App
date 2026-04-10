@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 	import { openPath } from '@tauri-apps/plugin-opener';
 	import Img from '$lib/image/Img.svelte';
 	import { online } from 'svelte/reactivity/window';
@@ -17,11 +17,12 @@
 	import { api } from '$lib/trpc';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { getUserSession } from '$lib/utils/auth/session';
+	import { episode } from '$lib/utils/db/episode';
 
 	// Seite-Daten, z. B. aus load()
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 	let isBookmarked = $derived(data.serie.wantsToWatch || false);
-	let watched: boolean = $derived(data.serie.watched ?? false);
+	let watched = $derived(data.serie.watched ?? false);
 
 	// Erstelle eine reaktive Kopie der Staffeln, die lokal bearbeitet wird
 	let seasons = $derived(data.seasons);
@@ -125,6 +126,12 @@
 			console.error('Failed to open Path: ' + err);
 		}
 	}
+
+	async function setSeriesWatched(seriesId: number, watched: boolean) {
+		await Promise.all(data.episodes.map((e) => episode.update(e.id, { watched })));
+		await Promise.all(data.seasons.map((s) => season.update(s.id, { watched })));
+		await serie.update(seriesId, { watched });
+	}
 </script>
 
 <Navbar back={true}>
@@ -145,9 +152,15 @@
 			<!-- <button class="btn btn-sm md:btn-md" disabled={!data.serie} onclick={() => (modal = true)}>{m.edit()}</button> -->
 			<button
 				class="btn btn-sm md:btn-md"
-				onclick={() => {
-					watched = !watched;
-					serie.update(data.serie.id, { watched: watched, wantsToWatch: false });
+				onclick={async () => {
+					const newValue = !watched;
+					watched = newValue;
+
+					await setSeriesWatched(data.serie.id, newValue);
+
+					seasons = seasons.map((s) => ({ ...s, watched: newValue }));
+					data.seasons = data.seasons.map((s) => ({ ...s, watched: newValue }));
+					data.episodes = data.episodes.map((e) => ({ ...e, watched: newValue }));
 				}}
 				disabled={!data.serie}
 			>
@@ -184,7 +197,7 @@
 			href="https://www.themoviedb.org/tv/{data.serie.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer"
+			rel="noopener noreferrer external"
 		>
 			{m.openOnTMDB()}
 		</a>
@@ -245,7 +258,7 @@
 								href={`https://youtu.be/${trailer.key}`}
 								target="_blank"
 								class="btn btn-primary mt-2"
-								rel="noopener noreferrer"
+								rel="noopener noreferrer external"
 							>
 								{m.watchOnYouTube()}
 							</a>
@@ -264,7 +277,7 @@
 				<div class="carousel carousel-center rounded-box w-full space-x-3">
 					{#each data.serie.tmdb.credits.cast as cast (cast.id)}
 						<a
-							href="{resolve('/actor')}?id={cast.id}"
+							href={resolve(`/actor?id=${cast.id}`)}
 							class="carousel-item flex flex-col items-center"
 							data-sveltekit-preload-data="tap"
 						>
