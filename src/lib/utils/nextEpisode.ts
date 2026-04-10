@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { error } from '@sveltejs/kit';
 import { m } from '$lib/paraglide/messages';
+import { resolve } from '$app/paths';
 
 /**
  * Gibt die URL der nächsten Episode zurück.
@@ -38,7 +39,9 @@ export async function nextEpisode(
 	// Nächste Episode in der aktuellen Staffel
 	if (episodeIndex + 1 < seasonElement.tmdb.episodes.length) {
 		const nextEpisodeID = seasonElement.tmdb.episodes[episodeIndex + 1].id;
-		const url = `./episode?id=${serienID}&tvShowID=${tvShowID}&seasonNumber=${seasonNumber}&seasonID=${seasonID}&episodeID=${nextEpisodeID}`;
+		const url = resolve(
+			`/episode?id=${serienID}&tvShowID=${tvShowID}&seasonNumber=${seasonNumber}&seasonID=${seasonID}&episodeID=${nextEpisodeID}`
+		);
 		return url;
 	}
 
@@ -55,7 +58,9 @@ export async function nextEpisode(
 		if (nextSeason && nextSeason.tmdb.episodes.length > 0) {
 			const nextEpisodeID = nextSeason.tmdb.episodes[0].id;
 			const nextSeasonNumber = serieElement.tmdb.seasons[seasonIndex + 1].season_number;
-			const url = `./episode?id=${serienID}&tvShowID=${tvShowID}&seasonNumber=${nextSeasonNumber}&seasonID=${nextSeason.id}&episodeID=${nextEpisodeID}`;
+			const url = resolve(
+				`/episode?id=${serienID}&tvShowID=${tvShowID}&seasonNumber=${nextSeasonNumber}&seasonID=${nextSeason.id}&episodeID=${nextEpisodeID}`
+			);
 			return url;
 		}
 	}
