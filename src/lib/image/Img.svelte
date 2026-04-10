@@ -7,7 +7,7 @@
 	interface ImageProps {
 		params: Parameters<typeof image>;
 		alt: string;
-		[propName: string]: any;
+		[propName: string]: unknown;
 	}
 
 	// Props initialisieren
