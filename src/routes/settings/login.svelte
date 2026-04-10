@@ -69,6 +69,7 @@
 				class="input-bordered input w-full max-w-md"
 				bind:value={email}
 				disabled={session.loggedIn}
+				autocomplete="home email"
 				required
 			/>
 		</label>
@@ -81,6 +82,7 @@
 				class="input-bordered input w-full max-w-xs"
 				bind:value={password}
 				disabled={session.loggedIn}
+				autocomplete="current-password"
 				required
 			/>
 		</label>
