@@ -95,7 +95,7 @@
 				<ul class="space-y-2">
 					{#each movies as item (item.id)}
 						<li class="hover:bg-base-300 flex items-center gap-3 rounded-lg p-2 transition">
-							<a href="{resolve('/movie')}?id={item.id}" class="flex flex-1 items-center gap-3">
+							<a href={resolve(`/movie?id=${item.id}`)} class="flex flex-1 items-center gap-3">
 								<Img
 									params={[item.tmdb.poster_path, 'posters', false]}
 									class="h-48 w-auto rounded-lg object-cover"
@@ -142,7 +142,7 @@
 				<ul class="space-y-2">
 					{#each series as item (item.id)}
 						<li class="hover:bg-base-300 flex items-center gap-3 rounded-lg p-2 transition">
-							<a href="{resolve('/tv')}?id={item.id}" class="flex flex-1 items-center gap-3">
+							<a href={resolve(`/tv?id=${item.id}`)} class="flex flex-1 items-center gap-3">
 								<Img
 									params={[item.tmdb.poster_path, 'posters', false]}
 									class="h-48 w-auto rounded-lg object-cover"
