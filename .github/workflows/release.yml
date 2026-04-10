@@ -93,6 +93,35 @@ jobs:
             echo "should_run=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Update Cargo.toml version
+        shell: bash
+        run: |
+          TAG=${{ fromJson(env.release_details).tag_name }}
+
+          # Entfernt führendes "v", falls vorhanden (z. B. v0.42.0 → 0.42.0)
+          VERSION=${TAG#v}
+
+          echo "Setting Cargo.toml version to $VERSION"
+
+          sed -i 's/^version = ".*"/version = "'"$VERSION"'"/' src-tauri/Cargo.toml
+
+          echo "Updated Cargo.toml:"
+          cat src-tauri/Cargo.toml
+
+      - name: Commit updated Cargo.toml
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add src-tauri/Cargo.toml
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update tauri version to $VERSION"
+            git push
+          fi
+
   format:
     name: Code Formatting
     needs: semantic-release
