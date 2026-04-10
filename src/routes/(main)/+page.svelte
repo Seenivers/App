@@ -9,6 +9,7 @@
 	import Reset from '$lib/assets/SVG/reset.svelte';
 	import { buildIndex, type SearchItem } from './searchIndex';
 	import type Fuse from 'fuse.js';
+	import { resolve } from '$app/paths';
 
 	let fuse: Fuse<SearchItem> | null = null;
 	let indexMap = new Map<string, Item>();
@@ -42,8 +43,12 @@
 	}
 
 	function getHref(item: Item): string {
-		if (item.type === 'series') return `/tv?id=${item.id}`;
-		return `/${item.type}?id=${item.id}`;
+		if (item.type === 'series') return resolve(`/tv?id=${item.id}`);
+		if (item.type === 'movie') return resolve(`/movie?id=${item.id}`);
+		if (item.type === 'collection') return resolve(`/collection?id=${item.id}`);
+		// @ts-expect-error item.type sollte nicht null sein
+		console.error('Unknown item type: ' + item.type);
+		return resolve('/(main)');
 	}
 
 	function resetFilters() {
@@ -177,11 +182,11 @@
 
 <Navbar>
 	{#snippet left()}
-		<a href="./add" class="btn btn-ghost">{m['nav.add']()}</a>
-		<a href="./watchlist" class="btn btn-ghost">{m['watchlist']()}</a>
+		<a href={resolve('/add')} class="btn btn-ghost">{m['nav.add']()}</a>
+		<a href={resolve('/watchlist')} class="btn btn-ghost">{m['watchlist']()}</a>
 	{/snippet}
 	{#snippet right()}
-		<a href="./settings" class="btn btn-ghost">{m['nav.settings']()}</a>
+		<a href={resolve('/settings')} class="btn btn-ghost">{m['nav.settings']()}</a>
 	{/snippet}
 </Navbar>
 
