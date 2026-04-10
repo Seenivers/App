@@ -2,6 +2,7 @@
 	import * as Sentry from '@sentry/sveltekit';
 	import { page } from '$app/state';
 	import { m } from '$lib/paraglide/messages';
+	import { resolve } from '$app/paths';
 
 	function openFeedback() {
 		Sentry.showReportDialog({
@@ -22,7 +23,7 @@
 			{page.error?.message ?? 'An unexpected error occurred.'}
 		</p>
 
-		<a href="/" class="btn btn-primary">
+		<a href={resolve('/')} class="btn btn-primary">
 			{window.history.length > 1 ? m['nav.back']() : m['nav.backToHome']()}
 		</a>
 
