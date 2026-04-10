@@ -8,6 +8,7 @@
 	import { collection } from '$lib/utils/db/collection';
 	import { getSettings } from '$lib/utils/settings/state';
 	import { getLocale } from '$lib/paraglide/runtime';
+	import { resolve } from '$app/paths';
 
 	interface Props {
 		data: PageData;
@@ -71,7 +72,7 @@
 			href="https://www.themoviedb.org/collection/{data.id}"
 			class="btn btn-sm md:btn-md"
 			target="_blank"
-			rel="noopener noreferrer">{m.openOnTMDB()}</a
+			rel="noopener noreferrer external">{m.openOnTMDB()}</a
 		>
 	{/snippet}
 </Navbar>
@@ -116,7 +117,7 @@
 						{@const watched = !!dbMovie?.watched}
 
 						<a
-							href="/movie?id={movie.id}"
+							href={resolve('/movie?id={movie.id}')}
 							data-sveltekit-preload-data={downloadedMovie ? 'hover' : 'tap'}
 							class="bg-base-200 relative flex flex-col items-center gap-4 rounded-lg p-4 shadow-md transition-all duration-300 {isGridView
 								? 'transform hover:scale-105'
@@ -169,7 +170,7 @@
 		<div class="flex h-full w-full items-center justify-center">
 			<div class="grid gap-8 text-center">
 				<p class="text-4xl md:text-5xl">{m.noDataFound()}</p>
-				<a href="/" class="btn btn-lg mt-4 text-2xl">{m['nav.back']()}</a>
+				<a href={resolve('/')} class="btn btn-lg mt-4 text-2xl">{m['nav.back']()}</a>
 			</div>
 		</div>
 	{/if}
