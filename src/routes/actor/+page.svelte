@@ -85,7 +85,7 @@
 			href="https://www.themoviedb.org/person/{data.result.id}"
 			class="btn btn-ghost"
 			target="_blank"
-			rel="noopener noreferrer"
+			rel="noopener noreferrer external"
 		>
 			{m.openOnTMDB()}
 		</a>
