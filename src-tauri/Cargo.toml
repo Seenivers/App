@@ -1,6 +1,6 @@
 [package]
 name = "seenivers"
-version = "0.41.0"
+version = "0.43.0"
 description = "Seenivers is your personal hub for managing and enjoying movies and TV series. Track, stream, and stay updated—all in one app."
 authors = ["BlackTiger007"]
 homepage = "https://seenivers.com"
