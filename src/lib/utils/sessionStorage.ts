@@ -48,5 +48,5 @@ export function setFilter(searchCriteria: SearchCriteria) {
 }
 
 export function resetFilter() {
-	return defaultSearchCriteria;
+	return { ...defaultSearchCriteria };
 }
