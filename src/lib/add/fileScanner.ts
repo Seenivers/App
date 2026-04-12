@@ -114,7 +114,8 @@ export async function addNewPathsToStatus(newPaths: string[]) {
 	for (const path of newPaths) {
 		const fileNameWithExt = await basename(path);
 		const fileNameWithoutExt = fileNameWithExt.replace(/\.[^/.]+$/, '');
-		const parsed = filenameParse(fileNameWithoutExt);
+		const cleanedFileName = fileNameWithoutExt.replace(/ˈ/g, '');
+		const parsed = filenameParse(cleanedFileName);
 		const mediaType = await inferMediaType(path);
 
 		if (mediaType === 'tv') {
@@ -136,7 +137,7 @@ export async function addNewPathsToStatus(newPaths: string[]) {
 			},
 			options: {
 				path,
-				fileName: parsed.title.length > 1 ? parsed.title : fileNameWithoutExt,
+				fileName: parsed.title.length > 1 ? parsed.title : cleanedFileName,
 				primaryReleaseYear: parsed.year ?? ''
 			}
 		});
