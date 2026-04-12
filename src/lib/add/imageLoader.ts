@@ -17,8 +17,8 @@ export async function loadImages(
 
 	// Poster und Backdrop laden, falls vorhanden
 	await Promise.all([
-		loadImageIfExists('poster_path' in result ? result.poster_path : null, 'posters'), // Das Argument vom Typ "unknown" kann dem Parameter vom Typ "string | null | undefined" nicht zugewiesen werden.
-		loadImageIfExists('backdrop_path' in result ? result.backdrop_path : null, 'backdrops') // Das Argument vom Typ "unknown" kann dem Parameter vom Typ "string | null | undefined" nicht zugewiesen werden.
+		loadImageIfExists('poster_path' in result ? result.poster_path : null, 'posters'),
+		loadImageIfExists('backdrop_path' in result ? result.backdrop_path : null, 'backdrops')
 	]);
 
 	// Cast-Bilder laden, begrenzt durch settings.castImages
