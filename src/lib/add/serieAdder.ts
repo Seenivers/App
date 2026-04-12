@@ -28,7 +28,10 @@ export async function addNewSerie(entry: { id: number; index: number }) {
 		});
 
 		if (!(await serie.isIDUnique(entry.id))) {
-			await serie.update(entry.id, { path: searchList[entry.index].options.path });
+			await serie.update(entry.id, {
+				path: searchList[entry.index].options.path,
+				wantsToWatch: false
+			});
 			await addSeasonToDatabase(entry.index, response.id, response.seasons);
 			updateSearchStatus(entry.index, 'downloaded');
 			return;
