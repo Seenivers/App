@@ -94,22 +94,21 @@ jobs:
           fi
 
       - name: Update Cargo.toml version
+        id: update_version
         shell: bash
         run: |
-          TAG=${{ fromJson(env.release_details).tag_name }}
-
-          # Entfernt führendes "v", falls vorhanden (z. B. v0.42.0 → 0.42.0)
+          TAG=$(jq -r '.tag_name' release_info.json)
           VERSION=${TAG#v}
 
-          echo "Setting Cargo.toml version to $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
           sed -i 's/^version = ".*"/version = "'"$VERSION"'"/' src-tauri/Cargo.toml
 
-          echo "Updated Cargo.toml:"
-          cat src-tauri/Cargo.toml
-
       - name: Commit updated Cargo.toml
+        shell: bash
         run: |
+          VERSION="${{ steps.update_version.outputs.version }}"
+
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
