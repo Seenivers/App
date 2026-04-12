@@ -1,15 +1,46 @@
 <script lang="ts">
-	import Card from '$lib/components/card.svelte';
-	import { m } from '$lib/paraglide/messages';
-	import { onDestroy, onMount } from 'svelte';
-	import { loadBatch } from './load';
-	import { getFilter, resetFilter, setFilter } from '$lib/utils/sessionStorage';
-	import Navbar from '$lib/components/Navbar.svelte';
-	import Search from '$lib/assets/SVG/search.svelte';
-	import Reset from '$lib/assets/SVG/reset.svelte';
-	import { buildIndex, type SearchItem } from './searchIndex';
-	import type Fuse from 'fuse.js';
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import ArrowPath from '$lib/assets/SVG/ArrowPath.svelte';
+	import ExternalLink from '$lib/assets/SVG/ExternalLink.svelte';
+	import Eye from '$lib/assets/SVG/Eye.svelte';
+	import EyeSlash from '$lib/assets/SVG/EyeSlash.svelte';
+	import InfoCircle from '$lib/assets/SVG/InfoCircle.svelte';
+	import PencilSquare from '$lib/assets/SVG/PencilSquare.svelte';
+	import Reset from '$lib/assets/SVG/reset.svelte';
+	import Search from '$lib/assets/SVG/search.svelte';
+	import Trash from '$lib/assets/SVG/Trash.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
+	import Card from '$lib/components/card.svelte';
+	import ContextMenu from '$lib/components/ContextMenu.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { collection } from '$lib/utils/db/collection';
+	import { movie } from '$lib/utils/db/movie';
+	import { serie } from '$lib/utils/db/serie';
+	import { getFilter, resetFilter, setFilter } from '$lib/utils/sessionStorage';
+	import { openPath } from '@tauri-apps/plugin-opener';
+	import type Fuse from 'fuse.js';
+	import { onDestroy, onMount, type Component } from 'svelte';
+	import { buildIndex, type SearchItem } from './searchIndex';
+	import { loadBatch } from './load';
+
+	type ContextMenuActionId =
+		| 'toggle_watched'
+		| 'details'
+		| 'external'
+		| 'tmdb'
+		| 'delete'
+		| 'edit'
+		| 'metadata';
+
+	type ContextMenuAction = {
+		id: ContextMenuActionId;
+		label: string;
+		icon?: Component;
+		disabled?: boolean;
+		danger?: boolean;
+		separatorBefore?: boolean;
+	};
 
 	let fuse: Fuse<SearchItem> | null = null;
 	let indexMap = new Map<string, Item>();
@@ -17,9 +48,25 @@
 	type Batch = Awaited<ReturnType<typeof loadBatch>>;
 	type Item = Batch extends Array<infer T> ? T : never;
 
-	let items: Batch | null = null;
+	let items = $state<Batch | null>(null);
+	let contextMenu = $state({
+		open: false,
+		x: 0,
+		y: 0,
+		item: null as Item | null
+	});
 
-	let filter = getFilter();
+	const LONG_PRESS_DURATION_MS = 550;
+	const LONG_PRESS_MOVE_THRESHOLD = 10;
+	let longPressTimer: ReturnType<typeof setTimeout> | null = null;
+	let longPressStartPoint: { x: number; y: number } | null = null;
+	let suppressClickForKey: string | null = null;
+
+	let filter = $state(getFilter());
+
+	function getItemKey(item: Item): string {
+		return `${item.type}-${item.id}`;
+	}
 
 	function getTitle(item: Item): string {
 		switch (item.type) {
@@ -53,6 +100,214 @@
 
 	function resetFilters() {
 		filter = resetFilter();
+	}
+
+	function openContextMenuFor(item: Item, x: number, y: number) {
+		contextMenu.open = true;
+		contextMenu.x = x;
+		contextMenu.y = y;
+		contextMenu.item = item;
+	}
+
+	function closeContextMenu() {
+		contextMenu.open = false;
+		contextMenu.item = null;
+	}
+
+	function clearLongPressTimer() {
+		if (longPressTimer) {
+			clearTimeout(longPressTimer);
+			longPressTimer = null;
+		}
+
+		longPressStartPoint = null;
+	}
+
+	function getTMDBUrl(item: Item): string {
+		if (item.type === 'series') return `https://www.themoviedb.org/tv/${item.id}`;
+		if (item.type === 'movie') return `https://www.themoviedb.org/movie/${item.id}`;
+		return `https://www.themoviedb.org/collection/${item.id}`;
+	}
+
+	function updateLocalWatched(item: Item, watched: boolean) {
+		if (!items) return;
+
+		items = items.map((entry) =>
+			entry.id === item.id && entry.type === item.type ? { ...entry, watched } : entry
+		) as Batch;
+	}
+
+	async function toggleWatched(item: Item) {
+		const nextWatched = !item.watched;
+		updateLocalWatched(item, nextWatched);
+
+		try {
+			switch (item.type) {
+				case 'movie':
+					await movie.update(item.id, { watched: nextWatched, wantsToWatch: false });
+					return;
+
+				case 'series':
+					await serie.update(item.id, { watched: nextWatched, wantsToWatch: false });
+					return;
+
+				case 'collection':
+					await collection.update(item.id, { watched: nextWatched });
+					return;
+
+				default:
+					return;
+			}
+		} catch (error) {
+			updateLocalWatched(item, !nextWatched);
+			console.error('Failed to toggle watched state:', error);
+		}
+	}
+
+	async function openExternal(item: Item) {
+		if (item.type === 'collection' || !item.path) return;
+
+		try {
+			await openPath(item.path);
+		} catch (error) {
+			console.error('Failed to open external target:', error);
+		}
+	}
+
+	async function openTMDB(item: Item) {
+		try {
+			await openPath(getTMDBUrl(item));
+		} catch (error) {
+			console.error('Failed to open TMDB:', error);
+		}
+	}
+
+	function getContextMenuActions(item: Item | null): ContextMenuAction[] {
+		if (!item) return [];
+
+		const actions: ContextMenuAction[] = [
+			{
+				id: 'toggle_watched',
+				label: item.watched ? m['marked.asWatched']() : m['marked.notWatched'](),
+				icon: item.watched ? EyeSlash : Eye
+			},
+			{
+				id: 'details',
+				label: 'Details',
+				icon: InfoCircle
+			}
+		];
+
+		if (item.type !== 'collection' && item.path) {
+			actions.push({
+				id: 'external',
+				label: item.type === 'movie' ? m.startExternalPlayer() : m.openFolder(),
+				icon: ExternalLink
+			});
+		}
+
+		actions.push({
+			id: 'tmdb',
+			label: m.openOnTMDB(),
+			icon: ExternalLink,
+			separatorBefore: true
+		});
+
+		actions.push(
+			// Optional actions are already part of the menu model and can be enabled later.
+			{
+				id: 'edit',
+				label: m.edit(),
+				icon: PencilSquare,
+				disabled: true,
+				separatorBefore: true
+			},
+			{
+				id: 'delete',
+				label: m.delete(),
+				icon: Trash,
+				disabled: true,
+				danger: true
+			},
+			{
+				id: 'metadata',
+				label: 'Update metadata',
+				icon: ArrowPath,
+				disabled: true
+			}
+		);
+
+		return actions;
+	}
+
+	async function handleContextAction(actionId: string) {
+		const item = contextMenu.item;
+		if (!item) return;
+
+		switch (actionId as ContextMenuActionId) {
+			case 'toggle_watched':
+				await toggleWatched(item);
+				return;
+
+			case 'details':
+				// eslint-disable-next-line svelte/no-navigation-without-resolve
+				await goto(getHref(item));
+				return;
+
+			case 'external':
+				await openExternal(item);
+				return;
+
+			case 'tmdb':
+				await openTMDB(item);
+				return;
+
+			default:
+				return;
+		}
+	}
+
+	function handleCardContextMenu(event: MouseEvent, item: Item) {
+		event.preventDefault();
+		clearLongPressTimer();
+		openContextMenuFor(item, event.clientX, event.clientY);
+	}
+
+	function handleCardPointerDown(event: PointerEvent, item: Item) {
+		if (event.pointerType !== 'touch') return;
+
+		clearLongPressTimer();
+
+		const key = getItemKey(item);
+		const x = event.clientX;
+		const y = event.clientY;
+		longPressStartPoint = { x: event.clientX, y: event.clientY };
+
+		longPressTimer = setTimeout(() => {
+			suppressClickForKey = key;
+			openContextMenuFor(item, x, y);
+		}, LONG_PRESS_DURATION_MS);
+	}
+
+	function handleCardPointerMove(event: PointerEvent) {
+		if (event.pointerType !== 'touch' || !longPressStartPoint) return;
+
+		const movedX = Math.abs(event.clientX - longPressStartPoint.x);
+		const movedY = Math.abs(event.clientY - longPressStartPoint.y);
+
+		if (movedX > LONG_PRESS_MOVE_THRESHOLD || movedY > LONG_PRESS_MOVE_THRESHOLD) {
+			clearLongPressTimer();
+		}
+	}
+
+	function handleCardPointerUpOrCancel() {
+		clearLongPressTimer();
+	}
+
+	function handleCardClick(event: MouseEvent, item: Item) {
+		if (suppressClickForKey !== getItemKey(item)) return;
+		event.preventDefault();
+		suppressClickForKey = null;
 	}
 
 	function getDate(i: Item) {
@@ -176,6 +431,7 @@
 	});
 
 	onDestroy(() => {
+		clearLongPressTimer();
 		setFilter(filter);
 	});
 </script>
@@ -267,6 +523,12 @@
 					params={[getPoster(item), 'posters', true]}
 					watched={item.watched}
 					alt={m.posterAlt({ title })}
+					onClick={(event) => handleCardClick(event, item)}
+					onContextMenu={(event) => handleCardContextMenu(event, item)}
+					onPointerDown={(event) => handleCardPointerDown(event, item)}
+					onPointerMove={handleCardPointerMove}
+					onPointerUp={handleCardPointerUpOrCancel}
+					onPointerCancel={handleCardPointerUpOrCancel}
 				/>
 			{/each}
 		</div>
@@ -276,3 +538,12 @@
 		</p>
 	{/if}
 </main>
+
+<ContextMenu
+	open={contextMenu.open}
+	x={contextMenu.x}
+	y={contextMenu.y}
+	items={getContextMenuActions(contextMenu.item)}
+	onClose={closeContextMenu}
+	onSelect={handleContextAction}
+/>
