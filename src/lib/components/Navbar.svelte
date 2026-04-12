@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { m } from '$lib/paraglide/messages';
 	interface NavbarProps {
 		back?: boolean;
@@ -14,7 +15,7 @@
 		back = false,
 		onclick = () =>
 			window.history.length > 1 ? window.history.back() : (window.location.href = '/'),
-		ondblclick = () => goto('/'),
+		ondblclick = () => goto(resolve('/')),
 		left,
 		middle,
 		right
@@ -22,7 +23,7 @@
 </script>
 
 <nav
-	class="navbar bg-base-100 sticky top-0 z-10 flex justify-between p-2 shadow-lg md:p-4 print:hidden"
+	class="navbar bg-base-100 sticky top-0 z-10 flex justify-between p-1 shadow-lg md:px-2 print:hidden"
 >
 	{#if left || back}
 		<div class="gap-1">
