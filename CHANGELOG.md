@@ -1,3 +1,19 @@
+# [0.43.0](https://github.com/Seenivers/App/compare/v0.42.0...v0.43.0) (2026-04-12)
+
+
+### Bug Fixes
+
+* **scanner:** sanitize filenames before parsing ([2c877b3](https://github.com/Seenivers/App/commit/2c877b37d08c6216bfe989904b84863c09348b58))
+* **session:** return new object in resetFilter ([5b78e44](https://github.com/Seenivers/App/commit/5b78e445bf844673d930956b9c300868b295bc25))
+* **ui:** correct each block syntax ([9404aef](https://github.com/Seenivers/App/commit/9404aefecbad770a968891e0287948a2f7b2c121))
+* update pnpm-lock.yaml to match package.json ([f72bdff](https://github.com/Seenivers/App/commit/f72bdff487c1edc83d364efdd271de94f03cb673))
+
+
+### Features
+
+* **auth:** add autocomplete attributes ([00ac204](https://github.com/Seenivers/App/commit/00ac204700826ebae4cc6660c0df925227209995))
+* **tv:** sync watched state across episodes ([a8f8cb9](https://github.com/Seenivers/App/commit/a8f8cb9b9381c06b8ba1eef0bbd7d4a97c0fcdf2))
+
 # [0.42.0](https://github.com/Seenivers/App/compare/v0.41.0...v0.42.0) (2026-04-07)
 
 
