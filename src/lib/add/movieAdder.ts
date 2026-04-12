@@ -17,7 +17,7 @@ export async function addNewMovies(entries: { id: number; index: number }[]) {
 		if (await movie.isIDUnique(id)) {
 			uniqueEntries.push({ id, index });
 		} else {
-			await movie.update(id, { path: searchList[index].options.path });
+			await movie.update(id, { path: searchList[index].options.path, wantsToWatch: false });
 			updateSearchStatus(index, 'downloaded');
 		}
 	}
