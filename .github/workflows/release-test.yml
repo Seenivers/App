@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'windows-latest'
+          - platform: "windows-latest"
             args: '--config "src-tauri/tauri.windows.conf.test.json"'
 
     runs-on: ${{ matrix.platform }}
@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6.0.9
@@ -64,15 +64,15 @@ jobs:
           Import-PfxCertificate -Exportable -FilePath "cert.pfx" -CertStoreLocation 'cert:\CurrentUser\My' -Password (ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -Force -AsPlainText)
 
       - name: Build and Publish Tauri App
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@1deb371b0cd8bd54025b384f1cd735e725c4060f
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'Test v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseName: "Test v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
