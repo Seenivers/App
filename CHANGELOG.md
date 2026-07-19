@@ -1,3 +1,15 @@
+## [0.43.1](https://github.com/Seenivers/App/compare/v0.43.0...v0.43.1) (2026-07-19)
+
+
+### Bug Fixes
+
+* **deps:** update non-breaking updates ([e850e4f](https://github.com/Seenivers/App/commit/e850e4fff7907c090fb7f6715d51b64a9ae68798))
+* **deps:** update non-breaking updates ([b1256df](https://github.com/Seenivers/App/commit/b1256dfee7ec2baa88c0518c2359d31b8bc32087))
+* **movie:** reset wantsToWatch on update ([4bede0d](https://github.com/Seenivers/App/commit/4bede0d6207abca3423a54af3a100052f753aed7))
+* **serie:** reset wantsToWatch on update ([78e5b51](https://github.com/Seenivers/App/commit/78e5b511765c9bc75975c2b88124b0a7e7a4a899))
+* update pnpm-lock.yaml to match package.json ([0d6fff6](https://github.com/Seenivers/App/commit/0d6fff672550eac13f613080e3d52afea81fa529))
+* update pnpm-lock.yaml to match package.json ([986f5ef](https://github.com/Seenivers/App/commit/986f5efbd05b0adf4c8fd6eedb403d9f337dc22e))
+
 # [0.43.0](https://github.com/Seenivers/App/compare/v0.42.0...v0.43.0) (2026-04-12)
 
 
