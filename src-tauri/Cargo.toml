@@ -24,15 +24,15 @@ tauri-build = { version = "2.6.3", features = [] }
 [dependencies]
 serde_json = "1.0.150"
 serde = { version = "1.0.228", features = ["derive"] }
-tauri = { version = "2.10.3", features = ["protocol-asset"] }
+tauri = { version = "2.11.5", features = ["protocol-asset"] }
 tauri-plugin-dialog = "2.7.1"
 tauri-plugin-fs = "2.5.1"
 tauri-plugin-process = "2.3.1"
 tauri-plugin-sql = { version = "2.4.0", features = ["sqlite"] }
 tauri-plugin-opener = "2.5.4"
 include_dir = "0.7.4"
-sentry = { version = "0.48.3", features = ["panic", "log"] }
-sentry-log = "0.48.3"
+sentry = { version = "0.48.4", features = ["panic", "log"] }
+sentry-log = "0.48.4"
 log = "0.4.33"
 tauri-plugin-os = "2.3.2"
 
