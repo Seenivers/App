@@ -58,23 +58,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          tag_name=$(gh release view --json tagName --jq '.tagName')
-          body=$(gh release view --json body --jq '.body' | sed 's/"/'"'"'/g')
-          id=$(gh release view --json id --jq '.id')
-          draft=$(gh release view --json isDraft --jq '.isDraft')
-          prerelease=$(gh release view --json isPrerelease --jq '.isPrerelease')
+          gh release view --json tagName,body,id,isDraft,isPrerelease,assets > "${RUNNER_TEMP}/release.json"
 
-          asset_count=$(gh release view --json assets --jq '.assets | length')
+          jq '{
+            tag_name: .tagName,
+            id: (.id | tostring),
+            body: .body,
+            prerelease: .isPrerelease,
+            draft: .isDraft
+          }' "${RUNNER_TEMP}/release.json" > release_info.json
 
-          echo "asset_count=${asset_count}" >> $GITHUB_ENV
-
-          echo '{
-            "tag_name": "'"${tag_name}"'",
-            "id": "'"${id}"'",
-            "body": "'"${body//$'\n'/\\n}"'",
-            "prerelease": '"$prerelease"',
-            "draft": '"$draft"'
-          }' > release_info.json
+          asset_count=$(jq '.assets | length' "${RUNNER_TEMP}/release.json")
+          echo "asset_count=${asset_count}" >> "$GITHUB_ENV"
 
       - name: Upload Release Details
         uses: actions/upload-artifact@v7
@@ -163,17 +158,17 @@ jobs:
         id: read_release_details
         shell: bash
         run: |
-          release_info=$(cat release_info.json)
+          tag_name=$(jq -r '.tag_name' release_info.json)
+          release_details=$(jq -c --arg release_name "App ${tag_name}" '{
+            tag_name: .tag_name,
+            release_name: $release_name,
+            release_body: .body,
+            release_id: .id,
+            release_draft: .draft,
+            prerelease: .prerelease
+          }' release_info.json)
 
-          tag_name=$(echo "$release_info" | jq -r '.tag_name')
-          id=$(echo "$release_info" | jq -r '.id')
-          body=$(echo "$release_info" | jq -r '.body')
-          draft=$(echo "$release_info" | jq -r '.draft')
-          prerelease=$(echo "$release_info" | jq -r '.prerelease')
-
-          body=$(printf '%s' "$body" | awk '{gsub(/"/, "\\\""); printf "%s\\n", $0}' | tr '\n' '\\' | sed 's/\\$//')
-
-          echo "release_details={\"tag_name\":\"${tag_name}\",\"release_name\":\"App ${tag_name}\",\"release_body\":\"${body}\",\"release_id\":\"${id}\",\"release_draft\":${draft},\"prerelease\":${prerelease}}" >> $GITHUB_ENV
+          echo "release_details=${release_details}" >> "$GITHUB_ENV"
 
       - name: Checkout
         uses: actions/checkout@v7
