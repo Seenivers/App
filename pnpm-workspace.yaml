@@ -2,3 +2,6 @@ allowBuilds:
   better-sqlite3: true
   core-js: true
   esbuild: true
+
+overrides:
+  kysely: 0.28.17
