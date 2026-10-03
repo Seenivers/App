@@ -54,14 +54,7 @@ export const settingsSchema = z.object({
 	castImages: z.number().int().min(0).default(5),
 	backupInterval: backupIntervalSchema.default('manual'),
 	backupConfig: backupConfigSchema.default({ maxAgeDays: 0, maxBackups: 14, maxSizeMB: 0 }),
-	watchPaths: z.array(z.string()).default([]),
-	sentryEnabled: z.boolean().default(true),
-	sentrySampleRate: z.number().int().min(0).max(100).default(100),
-	sentryReplaySampleRate: z.number().int().min(0).max(100).default(10),
-	// sentryReplayOnErrorSampleRate: z.number().int().min(0).max(100).default(100),
-	// sentryMaxReplayDuration: z.number().int().min(0).default(60_000),
-	// sentryBlockAllMedia: z.boolean().default(true),
-	sentrySendDefaultPii: z.boolean().default(true)
+	watchPaths: z.array(z.string()).default([])
 });
 
 export type Settings = z.infer<typeof settingsSchema>;
