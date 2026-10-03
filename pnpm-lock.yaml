@@ -1187,23 +1187,6 @@ packages:
   '@seenivers/api@1.0.16':
     resolution: {integrity: sha512-4Ei5I+CZ9qHxTUDLzuRlTZP5W3mq7SzWrHFBE5+R9sCLnGgoEgFsrIkld01B4t5ELw1jO4BoGCJLhHx8J0XMHg==, tarball: https://npm.pkg.github.com/download/@seenivers/api/1.0.16/a9cd86c0e459f0aed42e69365af14e00f6ff76fe}
 
-  '@trpc/client@11.18.0':
-    resolution: {integrity: sha512-wOqeg3Fvl25V1ZisQhUD3K8G60ZJDlSGJNSyeXrLH24xAo5w6GSR2Kzb1cSNY9Y+IQ2YZvYGZstBU+V/ulo/ow==}
-    hasBin: true
-    peerDependencies:
-      '@trpc/server': 11.18.0
-      typescript: '>=5.7.2'
-
-  '@trpc/server@11.16.0':
-    resolution: {integrity: sha512-XgGuUMddrUTd04+za/WE5GFuZ1/YU9XQG0t3VL5WOIu2JspkOlq6k4RYEiqS6HSJt+S0RXaPdIoE2anIP/BBRQ==}
-    hasBin: true
-    peerDependencies:
-      typescript: '>=5.7.2'
-
-  tmdb-ts@2.3.0:
-    resolution: {integrity: sha512-j7V85Gs8+fsSDOYmsChjCLn//ouxrwdWqlUUwKOM518PIcBU8VBS4YN/Lh2KJiLjEICHjYjv2SRvhMWn1Tdk4w==}
-    engines: {node: '>=20.0.0'}
-
   '@semantic-release/changelog@6.0.3':
     resolution: {integrity: sha512-dZuR5qByyfe3Y03TpmCvAxCyTnp7r5XwtHRf/8vD9EAn4ZWbavUX8adMtXYzE86EVh0gyLA7lm5yW4IV30XUag==}
     engines: {node: '>=14.17'}
@@ -1502,11 +1485,24 @@ packages:
   '@tauri-apps/plugin-updater@2.13.1':
     resolution: {integrity: sha512-+STDzJ0sdQLImjc63zkv6Nncimqeo6jyCWoTQtbSwgGLNj1qbP9I6LC4p5R5ocBk3gNKAZs6i/AJz0jxysytiw==}
 
+  '@trpc/client@11.18.0':
+    resolution: {integrity: sha512-wOqeg3Fvl25V1ZisQhUD3K8G60ZJDlSGJNSyeXrLH24xAo5w6GSR2Kzb1cSNY9Y+IQ2YZvYGZstBU+V/ulo/ow==}
+    hasBin: true
+    peerDependencies:
+      '@trpc/server': 11.18.0
+      typescript: '>=5.7.2'
+
   '@trpc/client@11.19.0':
     resolution: {integrity: sha512-0MKkPq6MejsKB5Opca1Rl22KVIaqo2+A1EiXyZ8EGUsl9TLrPdpGn+Usux20TZKFwnSC2+wI/WilqNJaP4ODfw==}
     hasBin: true
     peerDependencies:
       '@trpc/server': 11.19.0
+      typescript: '>=5.7.2'
+
+  '@trpc/server@11.16.0':
+    resolution: {integrity: sha512-XgGuUMddrUTd04+za/WE5GFuZ1/YU9XQG0t3VL5WOIu2JspkOlq6k4RYEiqS6HSJt+S0RXaPdIoE2anIP/BBRQ==}
+    hasBin: true
+    peerDependencies:
       typescript: '>=5.7.2'
 
   '@trpc/server@11.19.0':
@@ -3580,6 +3576,10 @@ packages:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
+  tmdb-ts@2.3.0:
+    resolution: {integrity: sha512-j7V85Gs8+fsSDOYmsChjCLn//ouxrwdWqlUUwKOM518PIcBU8VBS4YN/Lh2KJiLjEICHjYjv2SRvhMWn1Tdk4w==}
+    engines: {node: '>=20.0.0'}
+
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
@@ -4559,17 +4559,6 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@trpc/client@11.18.0(@trpc/server@11.16.0(typescript@6.0.3))(typescript@6.0.3)':
-    dependencies:
-      '@trpc/server': 11.16.0(typescript@6.0.3)
-      typescript: 6.0.3
-
-  '@trpc/server@11.16.0(typescript@6.0.3)':
-    dependencies:
-      typescript: 6.0.3
-
-  tmdb-ts@2.3.0: {}
-
   '@semantic-release/changelog@6.0.3(semantic-release@25.0.9(typescript@6.0.3))':
     dependencies:
       '@semantic-release/error': 3.0.0
@@ -4867,9 +4856,18 @@ snapshots:
     dependencies:
       '@tauri-apps/api': 2.12.1
 
+  '@trpc/client@11.18.0(@trpc/server@11.16.0(typescript@6.0.3))(typescript@6.0.3)':
+    dependencies:
+      '@trpc/server': 11.16.0(typescript@6.0.3)
+      typescript: 6.0.3
+
   '@trpc/client@11.19.0(@trpc/server@11.19.0(typescript@6.0.3))(typescript@6.0.3)':
     dependencies:
       '@trpc/server': 11.19.0(typescript@6.0.3)
+      typescript: 6.0.3
+
+  '@trpc/server@11.16.0(typescript@6.0.3)':
+    dependencies:
       typescript: 6.0.3
 
   '@trpc/server@11.19.0(typescript@6.0.3)':
@@ -6779,6 +6777,8 @@ snapshots:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.7)
       picomatch: 4.0.7
+
+  tmdb-ts@2.3.0: {}
 
   to-regex-range@5.0.1:
     dependencies:
