@@ -1,5 +1,4 @@
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
-import { sentrySvelteKit } from '@sentry/sveltekit';
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
@@ -14,11 +13,6 @@ export default defineConfig({
 			project: './project.inlang',
 			outdir: './src/lib/paraglide',
 			strategy: ['globalVariable', 'localStorage']
-		}),
-		sentrySvelteKit({
-			org: 'seenivers',
-			project: 'app-svelte',
-			sentryUrl: 'https://glitchtip.seenivers.com/'
 		}),
 		tailwindcss(),
 		vidstack(),

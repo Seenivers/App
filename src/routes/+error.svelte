@@ -1,14 +1,7 @@
 <script lang="ts">
-	import * as Sentry from '@sentry/sveltekit';
 	import { page } from '$app/state';
 	import { m } from '$lib/paraglide/messages';
 	import { resolve } from '$app/paths';
-
-	function openFeedback() {
-		Sentry.showReportDialog({
-			eventId: Sentry.lastEventId()
-		});
-	}
 </script>
 
 <main class="flex grow content-center items-center p-4">
@@ -26,9 +19,5 @@
 		<a href={resolve('/')} class="btn btn-primary">
 			{window.history.length > 1 ? m['nav.back']() : m['nav.backToHome']()}
 		</a>
-
-		<div class="mt-8">
-			<button onclick={openFeedback} class="btn btn-secondary"> Send Feedback </button>
-		</div>
 	</div>
 </main>

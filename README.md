@@ -13,39 +13,38 @@
 
 </div>
 
-## Plattform-Unterstützung
+## Project status
 
-Der aktuelle Stand der plattformübergreifenden Unterstützung sieht wie folgt aus:
+Seenivers is no longer under active development. The latest release is the final maintenance release.
 
-| Betriebssystem | Distribution / Version | Status                  | Anmerkungen                               |
-| -------------- | ---------------------- | ----------------------- | ----------------------------------------- |
-| Windows        | Windows 10             | ✅ Unterstützt          | Erfolgreich getestet, funktioniert stabil |
-| Windows        | Windows 11             | ✅ Unterstützt          | Erfolgreich getestet, funktioniert stabil |
-| Linux          | Ubuntu                 | ❌ Nicht funktionsfähig | Getestet, derzeit nicht lauffähig         |
-| Linux          | Fedora Workstation     | ❌ Nicht funktionsfähig | Getestet, derzeit nicht lauffähig         |
-| macOS          | –                      | ⚠️ Nicht getestet       | Aktuell keine Testmöglichkeit vorhanden   |
+This repository is a personal project kept as a reference and portfolio project.
 
-**Hinweis:**  
-Die Unterstützung für Linux (Ubuntu, Fedora Workstation) wird aktiv bearbeitet.  
-macOS konnte bislang nicht getestet werden, da derzeit keine entsprechende Umgebung zur Verfügung steht.
+## Platform support
+
+| Operating system | Version | Status | Notes |
+| ---------------- | ------- | ------ | ----- |
+| Windows | Windows 10 | Supported | Tested and working |
+| Windows | Windows 11 | Supported | Tested and working |
+| Linux | — | Not supported | Linux is currently not supported |
+| macOS | — | Not tested | macOS has not been tested |
 
 ## Video Player
 
-### **Standard-Player**
+### **Default player**
 
-Der auf dem Rechner installierte Standard-Player.
+The default player installed on the computer.
 
-**Unterstützt:** Abhängig vom installierten Player
+**Supported formats:** Depends on the installed player
 
-### **[Plyr](https://plyr.io/) ([NPM-Seite](https://www.npmjs.com/package/plyr))**
+### **[Plyr](https://plyr.io/) ([NPM page](https://www.npmjs.com/package/plyr))**
 
-Ein moderner, funktionsreicher Video-Player.
+A modern, feature-rich video player.
 
-**Unterstützte Formate:** `.mp4`, `.ogg`, `.webm`
+**Supported formats:** `.mp4`, `.ogg`, `.webm`
 
-### **[Vidstack](https://github.com/vidstack/player#readme) ([NPM-Seite](https://www.npmjs.com/package/vidstack))**
+### **[Vidstack](https://github.com/vidstack/player#readme) ([NPM page](https://www.npmjs.com/package/vidstack))**
 
-Ein anpassbarer HTML5-Video-Player mit einer einfachen API und Unterstützung für moderne Medienformate.
+A customizable HTML5 video player with a simple API and support for modern media formats.
 
-**Unterstützte Formate:**  
+**Supported formats:**  
 `.mp4`, `.ogg`, `.ogv`, `.webm`, `.mov`, `.m4v`, `.m3u8`
